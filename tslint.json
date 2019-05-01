@@ -124,6 +124,7 @@
     "prefer-while": true,
     "promise-function-async": true,
     "quotemark": [true, "single", "avoid-escape"],
+    "quotemark": false,
     "radix": true,
     "restrict-plus-operands": false,
     "return-undefined": true,

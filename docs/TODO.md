@@ -1,29 +1,30 @@
 # TODO
 
-## Initial setup
+## First Prototype
 
 ### Functionality
 
-- [x] Get to show a div in the page
-- [x] Integrate React in the UI
-- [x] Show div when selecting text
-- [x] Show form in div
-- [ ] Create div trigger
+Only one language supported for this version: Mandarin
+
+- [ ] Characters display
+- [ ] Clear all
+- [ ] Error display
+- [ ] Dictionary load
+- [ ] Link to G. Translate, pronunciation and Dictionary
 
 ### Infrastructure
 
-- [x] Setup unit tests with Jest
-  - [x] Include coverage threshold (low at the moment)
-- [x] Setup Storybook for React
+- [ ] Setup Dockerfile with Chrome Headless
+- [ ] Setup Dockerfile with Sonar
 
 ## Backlog
 
 ### Functionality
 
 - [ ] Separate specific functionality in language packs
+- [ ] Ability to save texts, maybe songs
+- [ ] Ability to choose language
 
 ### Infrastructure
 
-- [ ] Setup Dockerfile with Chrome Headless
-- [ ] Setup Dockerfile with Sonar
 - [ ] Setup Stylelint: Delayed because using inline-styles

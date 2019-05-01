@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { getSelectedText } from './general'
 
@@ -15,4 +15,17 @@ export const useTextSelection = fn => {
       document.body.removeEventListener('mouseup', listener)
     }
   }, [])
+}
+
+// https://github.com/beizhedenglong/react-hooks-lib
+export const useHover = () => {
+  const [hovered, set] = useState(false)
+
+  return {
+    bind: {
+      onMouseEnter: () => set(true),
+      onMouseLeave: () => set(false),
+    },
+    hovered,
+  }
 }

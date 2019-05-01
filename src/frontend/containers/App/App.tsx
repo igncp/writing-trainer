@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 
 import { useTextSelection } from '../../utils/hooks'
 
+import PanelTrigger from '../../components/PanelTrigger/PanelTrigger'
+
 import Panel from '../Panel/Panel'
 
 const App = () => {
@@ -13,11 +15,12 @@ const App = () => {
 
     if (parsedText !== '' && !shouldShowPanel) {
       setUsedText(parsedText)
-      showPanel(true)
     }
   })
 
-  if (!shouldShowPanel) {
+  if (!shouldShowPanel && usedText) {
+    return <PanelTrigger onClick={() => showPanel(true)} />
+  } else if (!usedText) {
     return null
   }
 

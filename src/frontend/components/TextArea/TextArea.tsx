@@ -4,9 +4,13 @@ type TTextArea = React.FC<{
   [key: string]: any
 }>
 
-const TextArea: TTextArea = props => {
+const TextArea: TTextArea = ({ style, ...props }) => {
   return (
-    <textarea style={{ width: '100%' }} data-gramm_editor={false} {...props} />
+    <textarea
+      style={{ width: '100%', outline: 0, resize: 'none', ...style }}
+      data-gramm_editor={false}
+      {...props}
+    />
   )
 }
 
