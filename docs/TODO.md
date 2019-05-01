@@ -26,4 +26,4 @@
 
 - [ ] Setup Dockerfile with Chrome Headless
 - [ ] Setup Dockerfile with Sonar
-- [ ] Setup Stylelint: Delayed because using Stylelint
+- [ ] Setup Stylelint: Delayed because using inline-styles
