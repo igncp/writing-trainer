@@ -8,7 +8,8 @@ set -e
   "tslint.json" \
   ".prettierrc.js" \
   ".eslintrc.js" \
-  "src/**/*.ts" \
+  "src/**/*.{ts,tsx}" \
+  "docs/**/*.md" \
   "webpack/**/*.js" \
   "static/**/*.{html,json}" \
   "$@"

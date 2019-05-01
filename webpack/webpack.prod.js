@@ -1,11 +1,14 @@
 const path = require('path')
 
+const srcPath = path.join(__dirname, '../src')
+
 const config = {
   mode: 'production',
   entry: {
-    background: path.join(__dirname, '../src/background.ts'),
-    options: path.join(__dirname, '../src/options.ts'),
-    popup: path.join(__dirname, '../src/popup.ts'),
+    background: path.join(srcPath, 'background.ts'),
+    content: path.join(srcPath, 'content.tsx'),
+    options: path.join(srcPath, 'options.ts'),
+    popup: path.join(srcPath, 'popup.ts'),
   },
   output: {
     path: path.join(__dirname, '../dist/js'),

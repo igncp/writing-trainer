@@ -22,7 +22,7 @@
     "encoding": true,
     "eofline": true,
     "file-header": false,
-    "file-name-casing": [true, "camel-case"],
+    "file-name-casing": false,
     "forin": false,
     "import-blacklist": false,
     "import-spacing": false,
