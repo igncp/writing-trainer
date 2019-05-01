@@ -1,3 +1,5 @@
 .untracked
 node_modules
 dist
+storybook-static
+coverage

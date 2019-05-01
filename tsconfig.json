@@ -2,14 +2,16 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "jsx": "react",
     "module": "ES2015",
+    "moduleResolution": "node",
     "noEmitOnError": true,
     "noImplicitAny": false,
+    "noUnusedLocals": true,
     "outDir": "dist/js",
     "rootDir": "src",
     "sourceMap": false,
     "target": "es5",
-    "jsx": "react",
     "typeRoots": ["node_modules/@types"]
   }
 }

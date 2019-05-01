@@ -1,15 +1,41 @@
 import React from 'react'
 
-import { getSelectedText } from '../../utils/general'
+import TextArea from '../../components/TextArea/TextArea'
+import PanelBase from '../../components/PanelBase/PanelBase'
 
-const Panel = () => {
-  const selectedText = getSelectedText()
+type TPanel = React.FC<{
+  onHideRequest(): void
+  text: string
+}>
 
+const Panel: TPanel = ({ onHideRequest, text }) => {
   return (
-    <div style={{ border: '1px solid black' }}>
-      <h1>This is the Panel Content</h1>
-      <h2>{selectedText}</h2>
-    </div>
+    <PanelBase>
+      <div
+        style={{
+          cursor: 'pointer',
+          display: 'inline-block',
+          float: 'right',
+          fontSize: 20,
+          padding: 10,
+        }}
+        onClick={onHideRequest}
+      >
+        Hide
+      </div>
+      <div>
+        <p>Original text:</p>
+        <TextArea rows={3}>{text}</TextArea>
+        <p>Pronunciation:</p>
+        <TextArea rows={2} />
+        <p>Special characters:</p>
+        <TextArea rows={1} />
+        <p>Writing area:</p>
+        <TextArea rows={1} />
+        <p>Resulting Text:</p>
+        <TextArea rows={4} />
+      </div>
+    </PanelBase>
   )
 }
 

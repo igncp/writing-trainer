@@ -1,6 +1,9 @@
 !.eslintrc.js
 !.prettierrc.js
+!.storybook
 
 node_modules
 dist
 static
+storybook-static
+coverage

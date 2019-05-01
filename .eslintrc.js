@@ -9,7 +9,7 @@ module.exports = {
     indent: [2, 2],
     radix: 2,
     semi: [2, 'never'],
-    strict: 2,
+    strict: 0,
 
     'array-bracket-spacing': 2,
     'arrow-body-style': ['error', 'as-needed'],

@@ -1,15 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { getSelectedText } from './general'
 
-export const useTextSelection = () => {
-  const [isSelected, setIsSelected] = useState(false)
-
+export const useTextSelection = fn => {
   useEffect(() => {
     const listener = () => {
       const selectedText = getSelectedText()
 
-      setIsSelected(selectedText !== '')
+      fn(selectedText || '')
     }
     document.body.addEventListener('mouseup', listener)
 
@@ -17,6 +15,4 @@ export const useTextSelection = () => {
       document.body.removeEventListener('mouseup', listener)
     }
   }, [])
-
-  return [isSelected]
 }

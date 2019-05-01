@@ -7,23 +7,23 @@
 - [x] Get to show a div in the page
 - [x] Integrate React in the UI
 - [x] Show div when selecting text
-- [ ] Show form in div
+- [x] Show form in div
 - [ ] Create div trigger
 
 ### Infrastructure
 
-- [ ] Setup unit tests with Jest
-  - [ ] Include coverage threshold (low at the moment)
-- [ ] Setup Storybook for React
-- [ ] Setup Stylelint
+- [x] Setup unit tests with Jest
+  - [x] Include coverage threshold (low at the moment)
+- [x] Setup Storybook for React
 
 ## Backlog
 
 ### Functionality
 
-- N/A
+- [ ] Separate specific functionality in language packs
 
 ### Infrastructure
 
 - [ ] Setup Dockerfile with Chrome Headless
 - [ ] Setup Dockerfile with Sonar
+- [ ] Setup Stylelint: Delayed because using Stylelint

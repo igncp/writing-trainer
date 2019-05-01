@@ -1,17 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import { useTextSelection } from '../../utils/hooks'
 
 import Panel from '../Panel/Panel'
 
 const App = () => {
-  const [isTextSelected] = useTextSelection()
+  const [shouldShowPanel, showPanel] = useState(false)
+  const [usedText, setUsedText] = useState('')
 
-  if (!isTextSelected) {
+  useTextSelection(textSelected => {
+    const parsedText = textSelected.trim()
+
+    if (parsedText !== '' && !shouldShowPanel) {
+      setUsedText(parsedText)
+      showPanel(true)
+    }
+  })
+
+  if (!shouldShowPanel) {
     return null
   }
 
-  return <Panel />
+  return <Panel text={usedText} onHideRequest={() => showPanel(false)} />
 }
 
 export default App

@@ -8,4 +8,6 @@ npm run eslint
 
 npm run tslint
 
-npm test
+npm test -- --coverage
+
+npm run package
