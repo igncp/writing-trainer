@@ -1,21 +1,42 @@
 import React from 'react'
 
-type TCharactersDisplay = React.FC<{
+interface T_CharObj {
+  word: string
   pronunciation: string
-  specialChars: string
-  text: string
+}
+
+type TCharactersDisplay = React.FC<{
+  charsObjs: T_CharObj[]
+  onCharClick?(T_CharObj): void
+  shouldHidePronunciation: boolean
 }>
 
 const CharactersDisplay: TCharactersDisplay = ({
-  pronunciation,
-  specialChars,
-  text,
+  charsObjs,
+  onCharClick,
+  shouldHidePronunciation,
 }) => {
   return (
     <div>
-      <p>{text}</p>
-      <p>{pronunciation}</p>
-      <p>{specialChars}</p>
+      {charsObjs.map(charObj => {
+        const { word, pronunciation } = charObj
+
+        return (
+          <div
+            style={{ display: 'inline-block' }}
+            onClick={() => {
+              onCharClick(charObj)
+            }}
+          >
+            <div style={{ textAlign: 'center', height: 20, width: '100%' }}>
+              {shouldHidePronunciation ? '' : pronunciation}
+            </div>
+            <div style={{ width: 50, textAlign: 'center', fontSize: 30 }}>
+              {word}
+            </div>
+          </div>
+        )
+      })}
     </div>
   )
 }

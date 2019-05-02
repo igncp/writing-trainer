@@ -8,6 +8,7 @@ const TextArea: TTextArea = ({ style, ...props }) => {
   return (
     <textarea
       style={{ width: '100%', outline: 0, resize: 'none', ...style }}
+      spellCheck={false}
       data-gramm_editor={false}
       {...props}
     />

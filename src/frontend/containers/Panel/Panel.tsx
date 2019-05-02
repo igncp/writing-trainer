@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 
+import Button from '../../components/Button/Button'
 import CharactersDisplay from '../../components/CharactersDisplay/CharactersDisplay'
 import PanelBase from '../../components/PanelBase/PanelBase'
-import PanelCloseButton from '../../components/PanelCloseButton/PanelCloseButton'
 import TextArea from '../../components/TextArea/TextArea'
+
+import { convertToCharsObjs } from '../../languages/mandarin/utils'
 
 const createInputSetterFn = setValue => e => {
   setValue(e.target.value)
@@ -21,9 +23,21 @@ const Panel: TPanel = ({ onHideRequest, text }) => {
   const [writingValue, setWriting] = useState('')
   const [practiceValue, setPractice] = useState('')
 
+  const clearValues = () =>
+    [
+      setOriginalText,
+      setPronunciation,
+      setSpecialChars,
+      setWriting,
+      setPractice,
+    ].forEach(fn => fn(''))
+
   return (
     <PanelBase>
-      <PanelCloseButton onClick={onHideRequest} />
+      <Button onClick={clearValues}>Clear</Button>
+      <Button onClick={onHideRequest} style={{ float: 'right' }}>
+        Hide
+      </Button>
       <div>
         <TextArea
           onChange={createInputSetterFn(setOriginalText)}
@@ -44,9 +58,12 @@ const Panel: TPanel = ({ onHideRequest, text }) => {
           value={specialCharsValue}
         />
         <CharactersDisplay
-          pronunciation={pronunciationValue}
-          specialChars={specialCharsValue}
-          text={originalTextValue}
+          charsObjs={convertToCharsObjs({
+            charsToRemove: specialCharsValue,
+            pronunciation: pronunciationValue,
+            text: originalTextValue,
+          })}
+          shouldHidePronunciation={false}
         />
         <TextArea
           onChange={createInputSetterFn(setWriting)}

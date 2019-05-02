@@ -6,8 +6,8 @@
 
 Only one language supported for this version: Mandarin
 
+- [x] Clear all
 - [ ] Characters display
-- [ ] Clear all
 - [ ] Error display
 - [ ] Dictionary load
 - [ ] Link to G. Translate, pronunciation and Dictionary

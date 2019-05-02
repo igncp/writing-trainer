@@ -2,11 +2,13 @@ import React from 'react'
 
 import { useHover } from '../../utils/hooks'
 
-type TPanelCloseButton = React.FC<{
+type TButton = React.FC<{
+  style?: any
   onClick(): void
+  children: React.ReactNode
 }>
 
-const PanelCloseButton: TPanelCloseButton = ({ onClick }) => {
+const Button: TButton = ({ onClick, children, style }) => {
   const { hovered, bind } = useHover()
 
   return (
@@ -16,15 +18,15 @@ const PanelCloseButton: TPanelCloseButton = ({ onClick }) => {
       style={{
         cursor: 'pointer',
         display: 'inline-block',
-        float: 'right',
         fontSize: 20,
         opacity: hovered ? 1 : 0.7,
         padding: 10,
+        ...style,
       }}
     >
-      Hide
+      {children}
     </div>
   )
 }
 
-export default PanelCloseButton
+export default Button
