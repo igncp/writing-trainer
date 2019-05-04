@@ -1,4 +1,5 @@
 import * as dictionary from './converted-list-ma.csv'
+import specialCharactersList from './specialCharacters'
 
 export const charToPronunciationMap = {}
 export const pronunciationToCharMap = {}
@@ -8,10 +9,7 @@ dictionary.forEach(([char, pronunciation]) => {
   pronunciationToCharMap[pronunciation] = char
 })
 
-// tslint:disable no-irregular-whitespace
-export const SPECIAL_CHARS =
-  ',　!:;[]()「，、》。」…《﹕-？｜.！%：<>_+=【】/）（~?#|⋯～；『』︰&—@*–﹐'
-// tslint:enable no-irregular-whitespace
+export const SPECIAL_CHARS = specialCharactersList.join('')
 
 export const LETTERS_AND_NUMBERS =
   '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'

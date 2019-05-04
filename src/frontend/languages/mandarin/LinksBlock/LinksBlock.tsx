@@ -22,7 +22,7 @@ const LinksBlock: TLinksBlock = ({ text }) => {
     .join('')
 
   return (
-    <div>
+    <div style={{ width: '100%' }}>
       <Button
         style={linkStyle}
         shouldUseLink

@@ -44,7 +44,7 @@ const CharactersDisplay: TCharactersDisplay = ({
             <div style={{ textAlign: 'center', height: 20, width: '100%' }}>
               {shouldHidePronunciation ? '' : pronunciation}
             </div>
-            <div style={{ width: 40, textAlign: 'center', fontSize: 30 }}>
+            <div style={{ width: 45, textAlign: 'center', fontSize: 30 }}>
               {word}
             </div>
           </div>

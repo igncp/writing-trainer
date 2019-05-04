@@ -143,7 +143,8 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
         ? writingValue.slice(0, writingValue.length - 1)
         : writingValue + e.key
 
-    if (correctPronunciation === newWritingValue) {
+    // @TODO: Allow writing with tones here
+    if (correctPronunciation.replace(/[0-9]$/, '') === newWritingValue) {
       setWriting('')
       setPracticeHasError(false)
       setPractice(practiceValue + currentCharObj.word)
@@ -157,7 +158,7 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
   }
 
   return (
-    <PanelBase>
+    <PanelBase onOverlayClick={onHideRequest}>
       <Button onClick={clearValues}>Clear</Button>
       <Button onClick={createToggleFn(isShowingEdition, setShowingEdition)}>
         Toggle Edition

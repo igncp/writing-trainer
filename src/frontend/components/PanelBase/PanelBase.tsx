@@ -2,22 +2,45 @@ import React from 'react'
 
 type TPanelBase = React.FC<{
   children: React.ReactNode
+  onOverlayClick(): void
 }>
 
-const PanelBase: TPanelBase = ({ children }) => {
+const PanelBase: TPanelBase = ({ children, onOverlayClick }) => {
   return (
     <div
       style={{
-        backgroundColor: 'rgba(255,255,255,0.6)',
-        border: '1px solid black',
-        left: 10,
+        bottom: 0,
+        left: 0,
         position: 'fixed',
-        right: 10,
-        top: 10,
+        right: 0,
+        top: 0,
         zIndex: 9999999,
       }}
     >
-      {children}
+      <div
+        style={{
+          backgroundColor: 'rgba(255,255,255,1)',
+          border: '1px solid black',
+          left: 0,
+          margin: 10,
+          position: 'absolute',
+          right: 0,
+          zIndex: 2,
+        }}
+      >
+        {children}
+      </div>
+      <div
+        onClick={onOverlayClick}
+        style={{
+          bottom: 0,
+          left: 0,
+          position: 'absolute',
+          right: 0,
+          top: 0,
+          zIndex: 1,
+        }}
+      />
     </div>
   )
 }

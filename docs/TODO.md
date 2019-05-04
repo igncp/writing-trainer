@@ -12,6 +12,7 @@ Only one language supported for this version: Mandarin
 - [x] Dictionary load
 - [x] Link to G. Translate, pronunciation and Dictionary
 - [ ] Shortcuts to hide / show pronunciation / text
+- [ ] Allow practice with tones
 
 ### Infrastructure
 
