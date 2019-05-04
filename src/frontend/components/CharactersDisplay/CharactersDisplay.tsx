@@ -7,7 +7,11 @@ interface T_CharObj {
 
 type TCharactersDisplay = React.FC<{
   charsObjs: T_CharObj[]
-  onCharClick?(T_CharObj): void
+  onCharClick?(opts: {
+    charObj: T_CharObj
+    charsObjs: T_CharObj[]
+    index: number
+  }): void
   shouldHidePronunciation: boolean
 }>
 
@@ -18,20 +22,29 @@ const CharactersDisplay: TCharactersDisplay = ({
 }) => {
   return (
     <div>
-      {charsObjs.map(charObj => {
+      {charsObjs.map((charObj, index) => {
         const { word, pronunciation } = charObj
 
         return (
           <div
-            style={{ display: 'inline-block' }}
-            onClick={() => {
-              onCharClick(charObj)
+            style={{
+              cursor: pronunciation ? 'pointer' : 'default',
+              display: 'inline-block',
+            }}
+            key={`${index}${charObj.word}`}
+            onClick={e => {
+              e.stopPropagation()
+              onCharClick({
+                charObj,
+                charsObjs,
+                index,
+              })
             }}
           >
             <div style={{ textAlign: 'center', height: 20, width: '100%' }}>
               {shouldHidePronunciation ? '' : pronunciation}
             </div>
-            <div style={{ width: 50, textAlign: 'center', fontSize: 30 }}>
+            <div style={{ width: 40, textAlign: 'center', fontSize: 30 }}>
               {word}
             </div>
           </div>

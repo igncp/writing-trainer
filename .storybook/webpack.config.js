@@ -1,12 +1,23 @@
 module.exports = ({ config }) => {
-  config.module.rules.push({
-    test: /\.(ts|tsx)$/,
-    use: [
-      {
-        loader: require.resolve('ts-loader'),
+  config.module.rules.push(
+    {
+      test: /\.(ts|tsx)$/,
+      use: [
+        {
+          loader: require.resolve('ts-loader'),
+        },
+      ],
+    },
+    {
+      test: /\.csv$/,
+      loader: 'csv-loader',
+      options: {
+        dynamicTyping: true,
+        header: false,
+        skipEmptyLines: true,
       },
-    ],
-  })
+    }
+  )
 
   config.resolve.extensions.push('.ts', '.tsx')
 

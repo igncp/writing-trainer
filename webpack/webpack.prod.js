@@ -21,10 +21,19 @@ const config = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.csv$/,
+        loader: 'csv-loader',
+        options: {
+          dynamicTyping: true,
+          header: false,
+          skipEmptyLines: true,
+        },
+      },
     ],
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
+    extensions: ['.ts', '.tsx', '.js', '.csv'],
   },
 }
 

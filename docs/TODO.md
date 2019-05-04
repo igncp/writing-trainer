@@ -7,15 +7,20 @@
 Only one language supported for this version: Mandarin
 
 - [x] Clear all
-- [ ] Characters display
-- [ ] Error display
-- [ ] Dictionary load
-- [ ] Link to G. Translate, pronunciation and Dictionary
+- [x] Characters display
+- [x] Error display
+- [x] Dictionary load
+- [x] Link to G. Translate, pronunciation and Dictionary
+- [ ] Shortcuts to hide / show pronunciation / text
 
 ### Infrastructure
 
 - [ ] Setup Dockerfile with Chrome Headless
 - [ ] Setup Dockerfile with Sonar
+
+### Refactor
+
+- [ ] Organize general types and reduce `any` types
 
 ## Backlog
 
@@ -24,6 +29,8 @@ Only one language supported for this version: Mandarin
 - [ ] Separate specific functionality in language packs
 - [ ] Ability to save texts, maybe songs
 - [ ] Ability to choose language
+- [ ] Detect conflicts with passed pronunciation and dictionary pronunciation
+- [ ] Automatically save some values in storage
 
 ### Infrastructure
 

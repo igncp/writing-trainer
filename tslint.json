@@ -88,7 +88,7 @@
     "no-sparse-arrays": true,
     "no-string-literal": false,
     "no-string-throw": true,
-    "no-submodule-imports": true,
+    "no-submodule-imports": false,
     "no-switch-case-fall-through": true,
     "no-this-assignment": true,
     "no-trailing-whitespace": true,
