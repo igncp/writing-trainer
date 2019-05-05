@@ -36,6 +36,7 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
   const [isShowingPronunciation, setShowingPronunciation] = useState(true)
   const [isShowingEdition, setShowingEdition] = useState(true)
   const [doesPracticeHaveError, setPracticeHasError] = useState(false)
+  const [lastThreeKeys, setLastThreeKeys] = useState([])
 
   const tryToUpdatePronunciation = originalTextNewValue => {
     const maybePronunciation = getPronunciationOfText({
@@ -55,9 +56,33 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
     setOriginalText(val)
   }
 
+  const handleShortcuts = (e: any) => {
+    e.stopPropagation()
+
+    const value = e.key
+    const newArr = lastThreeKeys.slice(-2).concat([value])
+    const currentResult = newArr.join('+').toLowerCase()
+
+    if (currentResult === 'control+shift+a') {
+      setShowingPronunciation(!isShowingPronunciation)
+    } else if (currentResult === 'control+shift+x') {
+      setShowingEdition(!isShowingEdition)
+    }
+
+    console.log('newArr', newArr)
+
+    setLastThreeKeys(newArr)
+  }
+
   useEffect(() => {
     if (!pronunciationValue && originalTextValue) {
       tryToUpdatePronunciation(originalTextValue)
+    }
+
+    document.addEventListener('keydown', handleShortcuts)
+
+    return () => {
+      document.removeEventListener('keydown', handleShortcuts)
     }
   }, [])
 
