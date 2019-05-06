@@ -21,6 +21,13 @@ const createInputSetterFn = setValue => e => {
 }
 const createToggleFn = (val, fn) => () => fn(!val)
 
+const SHORTCUT_EDITING = 'control+control+shift'
+const SHORTCUT_PRONUNCIATION = 'shift+shift+control'
+
+const PRACTICE_TEXT_PLACEHOLDER = `Practice Text
+Toggle Editing: ${SHORTCUT_EDITING}
+Toggle Pronunciation: ${SHORTCUT_PRONUNCIATION}`
+
 type TPanel = React.FC<{
   onHideRequest(): void
   pronunciation?: string
@@ -56,27 +63,25 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
     setOriginalText(val)
   }
 
-  const handleShortcuts = (e: any) => {
-    e.stopPropagation()
-
-    const value = e.key
-    const newArr = lastThreeKeys.slice(-2).concat([value])
-    const currentResult = newArr.join('+').toLowerCase()
-
-    if (currentResult === 'control+shift+a') {
-      setShowingPronunciation(!isShowingPronunciation)
-    } else if (currentResult === 'control+shift+x') {
-      setShowingEdition(!isShowingEdition)
-    }
-
-    console.log('newArr', newArr)
-
-    setLastThreeKeys(newArr)
-  }
-
   useEffect(() => {
     if (!pronunciationValue && originalTextValue) {
       tryToUpdatePronunciation(originalTextValue)
+    }
+  }, [])
+
+  useEffect(() => {
+    const handleShortcuts = (e: any) => {
+      const value = e.key
+      const newArr = lastThreeKeys.slice(-2).concat([value])
+      const currentResult = newArr.join('+').toLowerCase()
+
+      if (currentResult === SHORTCUT_PRONUNCIATION) {
+        setShowingPronunciation(!isShowingPronunciation)
+      } else if (currentResult === SHORTCUT_EDITING) {
+        setShowingEdition(!isShowingEdition)
+      }
+
+      setLastThreeKeys(newArr)
     }
 
     document.addEventListener('keydown', handleShortcuts)
@@ -84,7 +89,7 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
     return () => {
       document.removeEventListener('keydown', handleShortcuts)
     }
-  }, [])
+  }, [lastThreeKeys, isShowingEdition, isShowingPronunciation])
 
   const charsObjs = convertToCharsObjs({
     charsToRemove: specialCharsValue + SPECIAL_CHARS,
@@ -199,7 +204,7 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
       <Button onClick={onHideRequest} style={{ float: 'right' }}>
         Hide
       </Button>
-      <div style={{ padding: 20 }}>
+      <div style={{ padding: '0 20px 20px 20px' }}>
         {isShowingEdition && (
           <div>
             <TextArea
@@ -240,7 +245,7 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
           />
           <TextArea
             onChange={createInputSetterFn(setPractice)}
-            placeholder="Practice text"
+            placeholder={PRACTICE_TEXT_PLACEHOLDER}
             rows={4}
             value={practiceValue}
             style={{
