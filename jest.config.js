@@ -9,12 +9,13 @@ module.exports = {
     '^.+\\.tsx?$': 'ts-jest',
   },
   coverageReporters: ['json', 'lcov', 'text-summary', 'cobertura'],
+  setupFilesAfterEnv: ['<rootDir>/helpers/testSetup.js'],
   coverageThreshold: {
     global: {
-      branches: 0,
-      statements: 1,
-      functions: 1,
-      lines: 1,
+      branches: 10,
+      functions: 10,
+      lines: 10,
+      statements: 10,
     },
   },
 }

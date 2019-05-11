@@ -6,7 +6,7 @@
     "module": "ES2015",
     "moduleResolution": "node",
     "noEmitOnError": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "noUnusedLocals": true,
     "outDir": "dist/js",
     "rootDir": "src",

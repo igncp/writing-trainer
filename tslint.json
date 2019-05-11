@@ -57,7 +57,7 @@
     "no-duplicate-switch-case": true,
     "no-duplicate-variable": true,
     "no-dynamic-delete": false,
-    "no-empty": true,
+    "no-empty": false,
     "no-empty-interface": true,
     "no-eval": false,
     "no-floating-promises": true,

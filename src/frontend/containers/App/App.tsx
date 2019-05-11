@@ -10,7 +10,7 @@ const App = () => {
   const [shouldShowPanel, showPanel] = useState(false)
   const [usedText, setUsedText] = useState('')
 
-  useTextSelection(textSelected => {
+  useTextSelection((textSelected: string) => {
     const parsedText = textSelected.trim()
 
     if (parsedText !== '' && !shouldShowPanel) {

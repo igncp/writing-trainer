@@ -6,6 +6,7 @@ import PanelBase from '../../components/PanelBase/PanelBase'
 import TextArea from '../../components/TextArea/TextArea'
 
 import LinksBlock from '../../languages/mandarin/LinksBlock/LinksBlock'
+import OptionsBlock from '../../languages/mandarin/OptionsBlock/OptionsBlock'
 import {
   convertToCharsObjs,
   getChineseCharsOnlyTextFn,
@@ -16,10 +17,10 @@ import {
 
 import { getCurrentPracticeWord } from './panelHelpers'
 
-const createInputSetterFn = setValue => e => {
+const createInputSetterFn = (setValue: Function) => (e: any) => {
   setValue(e.target.value)
 }
-const createToggleFn = (val, fn) => () => fn(!val)
+const createToggleFn = (val: any, fn: Function) => () => fn(!val)
 
 const SHORTCUT_EDITING = 'control+control+shift'
 const SHORTCUT_PRONUNCIATION = 'shift+shift+control'
@@ -44,8 +45,11 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
   const [isShowingEdition, setShowingEdition] = useState(true)
   const [doesPracticeHaveError, setPracticeHasError] = useState(false)
   const [lastThreeKeys, setLastThreeKeys] = useState([])
+  const [languageOptions, setLanguageOptions] = useState({
+    newTonesValue: 'without-tones',
+  })
 
-  const tryToUpdatePronunciation = originalTextNewValue => {
+  const tryToUpdatePronunciation = (originalTextNewValue: string) => {
     const maybePronunciation = getPronunciationOfText({
       charsToRemove: specialCharsValue,
       text: originalTextNewValue,
@@ -110,6 +114,7 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
     setShowingEdition(true)
   }
 
+  // @TODO: This should be specific to the language library (with some helpers)
   const handleWritingKeyDown = (e: any) => {
     if (e.key === 'Backspace' && writingValue.length === 0) {
       setPractice(practiceValue.slice(0, practiceValue.length - 1))
@@ -168,13 +173,17 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
     e.preventDefault()
 
     const { pronunciation: correctPronunciation } = currentCharObj
+
     const newWritingValue =
       e.key === 'Backspace'
         ? writingValue.slice(0, writingValue.length - 1)
         : writingValue + e.key
+    const parsedCorrectPronunciation =
+      languageOptions.newTonesValue === 'without-tones'
+        ? correctPronunciation.replace(/[0-9]$/, '')
+        : correctPronunciation
 
-    // @TODO: Allow writing with tones here
-    if (correctPronunciation.replace(/[0-9]$/, '') === newWritingValue) {
+    if (parsedCorrectPronunciation === newWritingValue) {
       setWriting('')
       setPracticeHasError(false)
       setPractice(practiceValue + currentCharObj.word)
@@ -185,6 +194,10 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
     setWriting(newWritingValue)
 
     setPracticeHasError(!correctPronunciation.startsWith(newWritingValue))
+  }
+
+  const handleLanguageOptionsChange = (opts: any) => {
+    setLanguageOptions(opts)
   }
 
   return (
@@ -225,6 +238,7 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
               rows={1}
               value={specialCharsValue}
             />
+            <OptionsBlock onOptionsChange={handleLanguageOptionsChange} />
           </div>
         )}{' '}
         <div>

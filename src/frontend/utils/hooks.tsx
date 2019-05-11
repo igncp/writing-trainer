@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { getSelectedText } from './general'
 
-export const useTextSelection = fn => {
+export const useTextSelection = (fn: Function): void => {
   useEffect(() => {
     const listener = () => {
       const selectedText = getSelectedText()

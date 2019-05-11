@@ -1,4 +1,12 @@
-const getIsParsedPracticeTextValid = ({ practiceText, origText }): boolean => {
+type T_getIsParsedPracticeTextValid = (opts: {
+  practiceText: string
+  origText: string
+}) => boolean
+
+const getIsParsedPracticeTextValid: T_getIsParsedPracticeTextValid = ({
+  practiceText,
+  origText,
+}) => {
   return practiceText.split('').reduce((acc, ch, idx) => {
     if (!acc) {
       return acc
@@ -16,7 +24,7 @@ type T_getCurrentPracticeWord = (opts: {
   origText: string
   practiceText: string
   specialChars: string
-  extractFn(string): (string) => string
+  extractFn(s: string): (s: string) => string
 }) => string | null
 
 export const getCurrentPracticeWord: T_getCurrentPracticeWord = ({

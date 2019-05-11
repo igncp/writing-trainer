@@ -1,10 +1,10 @@
 import * as dictionary from './converted-list-ma.csv'
 import specialCharactersList from './specialCharacters'
 
-export const charToPronunciationMap = {}
-export const pronunciationToCharMap = {}
+export const charToPronunciationMap: { [key: string]: string } = {}
+export const pronunciationToCharMap: { [key: string]: string } = {}
 
-dictionary.forEach(([char, pronunciation]) => {
+dictionary.forEach(([char, pronunciation]: [string, string]) => {
   charToPronunciationMap[char] = pronunciation
   pronunciationToCharMap[pronunciation] = char
 })
@@ -17,7 +17,7 @@ export const LETTERS_AND_NUMBERS =
 const CANTODICT_LINK =
   'http://www.cantonese.sheik.co.uk/scripts/wordsearch.php?level=0'
 
-type T_getChineseCharsOnlyTextFn = (string) => (string) => string
+type T_getChineseCharsOnlyTextFn = (s: string) => (s: string) => string
 
 export const getChineseCharsOnlyTextFn: T_getChineseCharsOnlyTextFn = extraSpecialChars => {
   const specialCharsArr = SPECIAL_CHARS.concat(LETTERS_AND_NUMBERS)
@@ -25,7 +25,7 @@ export const getChineseCharsOnlyTextFn: T_getChineseCharsOnlyTextFn = extraSpeci
     .split('')
 
   return str => {
-    const getIsNotSpecialChar = chr => {
+    const getIsNotSpecialChar = (chr: string) => {
       return !specialCharsArr.find(c => c === chr)
     }
 
@@ -39,8 +39,21 @@ export const getChineseCharsOnlyTextFn: T_getChineseCharsOnlyTextFn = extraSpeci
   }
 }
 
-export const convertToCharsObjs = ({ pronunciation, text, charsToRemove }) => {
-  const pronunciationArr = pronunciation.split(' ').filter(c => !!c)
+type T_convertToCharsObjs = (opts: {
+  pronunciation: string
+  text: string
+  charsToRemove: string
+}) => Array<{
+  word: string
+  pronunciation: string
+}>
+
+export const convertToCharsObjs: T_convertToCharsObjs = ({
+  pronunciation,
+  text,
+  charsToRemove,
+}) => {
+  const pronunciationArr = pronunciation.split(' ').filter((c: string) => !!c)
   const textSegments = text.split('').filter(c => !!c)
   const textSegmentsFiltered = textSegments.filter(
     c => charsToRemove.indexOf(c) === -1
@@ -68,7 +81,15 @@ export const convertToCharsObjs = ({ pronunciation, text, charsToRemove }) => {
   })
 }
 
-export const getPronunciationOfText = ({ text, charsToRemove }) => {
+type T_getPronunciationOfText = (opts: {
+  text: string
+  charsToRemove: string
+}) => string
+
+export const getPronunciationOfText: T_getPronunciationOfText = ({
+  text,
+  charsToRemove,
+}) => {
   const allCharsToRemove = charsToRemove.concat(SPECIAL_CHARS)
   const textSegments = text
     .split('')
