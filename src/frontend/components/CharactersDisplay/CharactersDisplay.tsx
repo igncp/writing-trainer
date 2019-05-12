@@ -5,13 +5,15 @@ interface T_CharObj {
   pronunciation: string
 }
 
+export type T_CharsDisplayClickHandler = (opts: {
+  charObj: T_CharObj
+  charsObjs: T_CharObj[]
+  index: number
+}) => void
+
 type TCharactersDisplay = React.FC<{
   charsObjs: T_CharObj[]
-  onCharClick?(opts: {
-    charObj: T_CharObj
-    charsObjs: T_CharObj[]
-    index: number
-  }): void
+  onCharClick: T_CharsDisplayClickHandler
   shouldHidePronunciation: boolean
 }>
 

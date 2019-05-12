@@ -1,10 +1,11 @@
 import _get from 'lodash/get'
 import React from 'react'
 
-type TTextArea = React.FC<{
-  withoutCursor?: boolean
-  [key: string]: any
-}>
+type TTextArea = React.FC<
+  {
+    withoutCursor?: boolean
+  } & React.TextareaHTMLAttributes<HTMLTextAreaElement>
+>
 
 const TextArea: TTextArea = ({ style, withoutCursor, ...props }) => {
   const color = _get(style, 'color', 'black')

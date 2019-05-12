@@ -22,7 +22,7 @@ Only one language supported for this version: Mandarin
 
 - [x] Enable `noImplicitAny`
 - [x] Raise coverage threshold to 10% (visible in Sonar)
-- [ ] Organize general types and reduce `any` types in Source Code
+- [x] Organize general types and reduce `any` types in source code
 - [ ] Reduce `Function` types
 - [ ] First iteration over UI
 

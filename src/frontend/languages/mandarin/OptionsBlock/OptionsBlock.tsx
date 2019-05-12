@@ -7,16 +7,16 @@ const OptionsBlock: React.FC<{
 
   const handleOptionsChange = (newValues: {}) => {
     onOptionsChange({
-      newTonesValue: tonesValue,
+      tonesValue,
       ...newValues,
     })
   }
 
-  const handleTonesChange = (e: any) => {
+  const handleTonesChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setTonesValue(e.target.value)
 
     handleOptionsChange({
-      newTonesValue: e.target.value,
+      tonesValue: e.target.value,
     })
   }
 

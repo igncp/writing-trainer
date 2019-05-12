@@ -3,7 +3,7 @@ import React from 'react'
 import { useHover } from '../../utils/hooks'
 
 type TButton = React.FC<{
-  style?: any
+  style?: React.CSSProperties
   shouldUseLink?: boolean
   href?: string
   onClick?(): void

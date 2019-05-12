@@ -5,8 +5,8 @@ chrome.storage.sync.get('color', data => {
   changeColor.setAttribute('value', data.color)
 })
 
-changeColor.onclick = element => {
-  const color = (element as any).target.value
+changeColor.onclick = (element: MouseEvent) => {
+  const color = (element.target as HTMLButtonElement).value
 
   chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
     chrome.tabs.executeScript(tabs[0].id, {

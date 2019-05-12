@@ -1,3 +1,5 @@
+import { T_CharsDisplayClickHandler } from '../../components/CharactersDisplay/CharactersDisplay'
+
 import * as dictionary from './converted-list-ma.csv'
 import specialCharactersList from './specialCharacters'
 
@@ -142,13 +144,7 @@ const sendCantodictFormForText = (text: string, id: string): void => {
   ;(document.body as any).removeChild(form)
 }
 
-type T_handleDisplayedCharClick = (opts: {
-  index: number
-  charObj: any
-  charsObjs: any
-}) => void
-
-export const handleDisplayedCharClick: T_handleDisplayedCharClick = ({
+export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
   index,
   charObj,
   charsObjs,

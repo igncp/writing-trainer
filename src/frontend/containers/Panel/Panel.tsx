@@ -6,6 +6,7 @@ import PanelBase from '../../components/PanelBase/PanelBase'
 import TextArea from '../../components/TextArea/TextArea'
 
 import LinksBlock from '../../languages/mandarin/LinksBlock/LinksBlock'
+import { T_MandarinLanguageOptions } from '../../languages/mandarin/mandarinTypes'
 import OptionsBlock from '../../languages/mandarin/OptionsBlock/OptionsBlock'
 import {
   convertToCharsObjs,
@@ -14,13 +15,17 @@ import {
   handleDisplayedCharClick,
   SPECIAL_CHARS,
 } from '../../languages/mandarin/utils'
+import { T_LanguageOptions } from '../../languages/types'
 
 import { getCurrentPracticeWord } from './panelHelpers'
 
-const createInputSetterFn = (setValue: Function) => (e: any) => {
+const createInputSetterFn = (setValue: Function) => (
+  e: React.ChangeEvent<HTMLTextAreaElement>
+) => {
   setValue(e.target.value)
 }
-const createToggleFn = (val: any, fn: Function) => () => fn(!val)
+const createToggleFn = (val: boolean, fn: (i: boolean) => void) => () =>
+  fn(!val)
 
 const SHORTCUT_EDITING = 'control+control+shift'
 const SHORTCUT_PRONUNCIATION = 'shift+shift+control'
@@ -36,18 +41,18 @@ type TPanel = React.FC<{
 }>
 
 const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
-  const [originalTextValue, setOriginalText] = useState(text)
-  const [pronunciationValue, setPronunciation] = useState('')
-  const [specialCharsValue, setSpecialChars] = useState('')
-  const [writingValue, setWriting] = useState('')
-  const [practiceValue, setPractice] = useState('')
-  const [isShowingPronunciation, setShowingPronunciation] = useState(true)
-  const [isShowingEdition, setShowingEdition] = useState(true)
-  const [doesPracticeHaveError, setPracticeHasError] = useState(false)
-  const [lastThreeKeys, setLastThreeKeys] = useState([])
-  const [languageOptions, setLanguageOptions] = useState({
-    newTonesValue: 'without-tones',
-  })
+  const [originalTextValue, setOriginalText] = useState<string>(text)
+  const [pronunciationValue, setPronunciation] = useState<string>('')
+  const [specialCharsValue, setSpecialChars] = useState<string>('')
+  const [writingValue, setWriting] = useState<string>('')
+  const [practiceValue, setPractice] = useState<string>('')
+  const [isShowingPronunciation, setShowingPronunciation] = useState<boolean>(
+    true
+  )
+  const [isShowingEdition, setShowingEdition] = useState<boolean>(true)
+  const [doesPracticeHaveError, setPracticeHasError] = useState<boolean>(false)
+  const [lastThreeKeys, setLastThreeKeys] = useState<string[]>([])
+  const [languageOptions, setLanguageOptions] = useState<T_LanguageOptions>({})
 
   const tryToUpdatePronunciation = (originalTextNewValue: string) => {
     const maybePronunciation = getPronunciationOfText({
@@ -59,11 +64,15 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
     }
   }
 
-  const handleOriginalTextUpdate = (e: any) => {
+  const handleOriginalTextUpdate = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const val = e.target.value
+
     if (val) {
       tryToUpdatePronunciation(val)
     }
+
     setOriginalText(val)
   }
 
@@ -74,7 +83,7 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
   }, [])
 
   useEffect(() => {
-    const handleShortcuts = (e: any) => {
+    const handleShortcuts = (e: KeyboardEvent) => {
       const value = e.key
       const newArr = lastThreeKeys.slice(-2).concat([value])
       const currentResult = newArr.join('+').toLowerCase()
@@ -115,7 +124,9 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
   }
 
   // @TODO: This should be specific to the language library (with some helpers)
-  const handleWritingKeyDown = (e: any) => {
+  const handleWritingKeyDown = (
+    e: React.KeyboardEvent<HTMLTextAreaElement>
+  ) => {
     if (e.key === 'Backspace' && writingValue.length === 0) {
       setPractice(practiceValue.slice(0, practiceValue.length - 1))
     }
@@ -178,10 +189,12 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
       e.key === 'Backspace'
         ? writingValue.slice(0, writingValue.length - 1)
         : writingValue + e.key
+
+    const { tonesValue } = languageOptions as T_MandarinLanguageOptions
     const parsedCorrectPronunciation =
-      languageOptions.newTonesValue === 'without-tones'
-        ? correctPronunciation.replace(/[0-9]$/, '')
-        : correctPronunciation
+      tonesValue === 'with-tones'
+        ? correctPronunciation
+        : correctPronunciation.replace(/[0-9]$/, '')
 
     if (parsedCorrectPronunciation === newWritingValue) {
       setWriting('')
@@ -196,7 +209,7 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
     setPracticeHasError(!correctPronunciation.startsWith(newWritingValue))
   }
 
-  const handleLanguageOptionsChange = (opts: any) => {
+  const handleLanguageOptionsChange = (opts: T_LanguageOptions) => {
     setLanguageOptions(opts)
   }
 
