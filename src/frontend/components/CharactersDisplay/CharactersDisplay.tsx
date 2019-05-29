@@ -1,5 +1,7 @@
 import React from 'react'
 
+const CHAR_WIDTH = 55
+
 interface T_CharObj {
   word: string
   pronunciation: string
@@ -43,10 +45,19 @@ const CharactersDisplay: TCharactersDisplay = ({
               })
             }}
           >
-            <div style={{ textAlign: 'center', height: 20, width: '100%' }}>
+            <div
+              style={{
+                height: 20,
+                marginBottom: 5,
+                textAlign: 'center',
+                width: CHAR_WIDTH,
+              }}
+            >
               {shouldHidePronunciation ? '' : pronunciation}
             </div>
-            <div style={{ width: 45, textAlign: 'center', fontSize: 30 }}>
+            <div
+              style={{ width: CHAR_WIDTH, textAlign: 'center', fontSize: 30 }}
+            >
               {word}
             </div>
           </div>

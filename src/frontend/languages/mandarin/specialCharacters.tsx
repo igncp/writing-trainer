@@ -2,6 +2,7 @@
 
 export default [
   "'",
+  "'",
   ' ',
   '!',
   '#',
@@ -25,9 +26,8 @@ export default [
   '?',
   '@',
   '[',
-  "'",
-  ']', // eslint-disable-line no-useless-escape
   ']',
+  ']', // eslint-disable-line no-useless-escape
   '_',
   '_',
   '|',
@@ -35,7 +35,6 @@ export default [
   '©',
   '®',
   '°',
-  '●',
   '·',
   'ç',
   'ê',
@@ -49,8 +48,11 @@ export default [
   '”',
   '•',
   '…',
+  '‧',
   '※',
+  '℃',
   '⋯',
+  '●',
   '☺',
   '⚠',
   '✔',
