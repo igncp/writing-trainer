@@ -11,13 +11,15 @@ dictionary.forEach(([char, pronunciation]: [string, string]) => {
   pronunciationToCharMap[pronunciation] = char
 })
 
-export const SPECIAL_CHARS = specialCharactersList.join('')
-
 export const LETTERS_AND_NUMBERS =
   '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 const CANTODICT_LINK =
   'http://www.cantonese.sheik.co.uk/scripts/wordsearch.php?level=0'
+
+export const SPECIAL_CHARS = specialCharactersList
+  .join('')
+  .concat(LETTERS_AND_NUMBERS)
 
 type T_getChineseCharsOnlyTextFn = (s: string) => (s: string) => string
 
