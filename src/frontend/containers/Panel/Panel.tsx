@@ -213,6 +213,10 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
     setLanguageOptions(opts)
   }
 
+  const handleWritingAreaClick = () => {
+    setLastThreeKeys([])
+  }
+
   return (
     <PanelBase onOverlayClick={onHideRequest}>
       <Button onClick={clearValues}>Clear</Button>
@@ -264,6 +268,7 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
           </div>
           <TextArea
             onChange={createInputSetterFn(setWriting)}
+            onClick={handleWritingAreaClick}
             placeholder={practiceValue ? '' : 'Writing area'}
             rows={1}
             onKeyDown={handleWritingKeyDown}
@@ -271,13 +276,14 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
             withoutCursor
           />
           <TextArea
+            autoScroll
             onChange={createInputSetterFn(setPractice)}
             placeholder={PRACTICE_TEXT_PLACEHOLDER}
-            rows={4}
+            rows={3}
             value={practiceValue}
             style={{
               border: `1px solid ${doesPracticeHaveError ? 'red' : 'white'}`,
-              fontSize: 26,
+              fontSize: 46,
             }}
           />
         </div>

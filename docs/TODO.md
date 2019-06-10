@@ -49,3 +49,4 @@ Only one language supported for this version: Mandarin
 
 - [ ] Netlify to serve static Storybook + Coverage
 - [ ] Add Japanese (no tones but pronunciation for Kanjis)
+- [ ] Instead of shortcut, use long key press for toggling in panel

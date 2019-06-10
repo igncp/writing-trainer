@@ -25,7 +25,7 @@ const CharactersDisplay: TCharactersDisplay = ({
   shouldHidePronunciation,
 }) => {
   return (
-    <div>
+    <div style={{ maxHeight: 160, overflow: 'auto' }}>
       {charsObjs.map((charObj, index) => {
         const { word, pronunciation } = charObj
 
@@ -56,7 +56,7 @@ const CharactersDisplay: TCharactersDisplay = ({
               {shouldHidePronunciation ? '' : pronunciation}
             </div>
             <div
-              style={{ width: CHAR_WIDTH, textAlign: 'center', fontSize: 30 }}
+              style={{ width: CHAR_WIDTH, textAlign: 'center', fontSize: 40 }}
             >
               {word}
             </div>

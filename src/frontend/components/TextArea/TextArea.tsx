@@ -1,13 +1,21 @@
 import _get from 'lodash/get'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 
-type TTextArea = React.FC<
+type TextArea = React.FC<
   {
     withoutCursor?: boolean
+    autoScroll?: boolean
   } & React.TextareaHTMLAttributes<HTMLTextAreaElement>
 >
 
-const TextArea: TTextArea = ({ style, withoutCursor, ...props }) => {
+const TextArea: TextArea = ({
+  style,
+  withoutCursor,
+  onChange,
+  autoScroll,
+  ...props
+}) => {
+  const ref = useRef()
   const color = _get(style, 'color', 'black')
   const cursorStyle = withoutCursor
     ? {
@@ -15,6 +23,13 @@ const TextArea: TTextArea = ({ style, withoutCursor, ...props }) => {
         textShadow: `0 0 0 ${color}`,
       }
     : {}
+
+  useEffect(() => {
+    if (autoScroll && ref.current) {
+      // tslint:disable-next-line semicolon
+      ;(ref as any).current.scrollTop! = (ref as any).current.scrollHeight!
+    }
+  })
 
   return (
     <textarea
@@ -28,11 +43,13 @@ const TextArea: TTextArea = ({ style, withoutCursor, ...props }) => {
       spellCheck={false}
       data-gramm_editor={false}
       {...props}
+      ref={ref}
     />
   )
 }
 
 TextArea.defaultProps = {
+  autoScroll: false,
   color: 'black',
 }
 
