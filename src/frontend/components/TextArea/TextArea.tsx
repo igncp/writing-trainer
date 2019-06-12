@@ -40,6 +40,7 @@ const TextArea: TextArea = ({
         ...cursorStyle,
         ...style,
       }}
+      onChange={onChange}
       spellCheck={false}
       data-gramm_editor={false}
       {...props}

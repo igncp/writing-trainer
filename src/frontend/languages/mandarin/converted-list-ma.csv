@@ -105,6 +105,7 @@
 波,bo1
 伯,bo2
 博,bo2
+泊,bo2
 駁,bo2
 捕,bu3
 補,bu3
@@ -229,6 +230,7 @@
 此,ci3
 刺,ci4
 次,ci4
+聰,cong1
 從,cong2
 粗,cu1
 促,cu4
@@ -313,6 +315,7 @@
 釘,ding1
 頂,ding3
 定,ding4
+掟,ding4
 訂,ding4
 丟,diu1
 冬,dong1
@@ -322,6 +325,7 @@
 洞,dong4
 兜,dou1
 鬥,dou3
+竇,dou4
 豆,dou4
 督,du1
 都,du1
@@ -534,6 +538,7 @@
 焊,han4
 豪,hao2
 好,hao3
+皓,hao4
 耗,hao4
 號,hao4
 喝,he1
@@ -574,6 +579,7 @@
 化,hua4
 畫,hua4
 話,hua4
+徊,huai2
 懷,huai2
 壞,huai4
 歡,huan1
@@ -588,6 +594,7 @@
 惶,huang2
 皇,huang2
 黃,huang2
+恢,hui1
 揮,hui1
 灰,hui1
 輝,hui1
@@ -684,6 +691,7 @@
 嬌,jiao1
 椒,jiao1
 焦,jiao1
+膠,jiao1
 驕,jiao1
 嚼,jiao2
 繳,jiao3
@@ -929,6 +937,7 @@
 樓,lou2
 嚕,lu1
 爐,lu2
+盧,lu2
 滷,lu3
 魯,lu3
 路,lu4
@@ -943,6 +952,7 @@
 囉,luo1
 羅,luo2
 螺,luo2
+邏,luo2
 鑼,luo2
 攞,luo3
 裸,luo3
@@ -957,6 +967,7 @@
 媽,ma1
 嗎,ma2
 麻,ma2
+瑪,ma3
 碼,ma3
 馬,ma3
 嘛,ma5
@@ -984,6 +995,7 @@
 貿,mao4
 麼,me
 媒,mei2
+枚,mei2
 梅,mei2
 楣,mei2
 沒,mei2
@@ -1019,6 +1031,7 @@
 妙,miao4
 乜,mie1
 咩,mie1
+滅,mie4
 民,min2
 敏,min3
 名,ming2
@@ -1091,6 +1104,7 @@
 爬,pa2
 怕,pa4
 拍,pai1
+徘,pai2
 排,pai2
 牌,pai2
 派,pai4
@@ -1101,6 +1115,7 @@
 胖,pang4
 咆,pao2
 炮,pao2
+袍,pao2
 跑,pao3
 泡,pao4
 胚,pei1
@@ -1159,6 +1174,7 @@
 企,qi3
 啟,qi3
 起,qi3
+器,qi4
 棄,qi4
 氣,qi4
 汽,qi4
@@ -1166,6 +1182,7 @@
 千,qian1
 籤,qian1
 遷,qian1
+騫,qian1
 前,qian2
 潛,qian2
 錢,qian2
@@ -1215,11 +1232,13 @@
 全,quan2
 權,quan2
 泉,quan2
+荃,quan2
 詮,quan2
 犬,quan3
 勸,quan4
 缺,que1
 卻,que4
+愨,que4
 慤,que4
 確,que4
 鵲,que4
@@ -1292,6 +1311,7 @@
 紹,shao4
 舌,she2
 蛇,she2
+射,she4
 捨,she4
 攝,she4
 涉,she4
@@ -1377,6 +1397,7 @@
 術,shu4
 述,shu4
 刷,shua1
+耍,shua3
 甩,shuai3
 帥,shuai4
 率,shuai4
@@ -1405,6 +1426,7 @@
 送,song4
 搜,sou1
 蘇,su1
+俗,su2
 宿,su4
 素,su4
 肅,su4
@@ -1504,6 +1526,7 @@
 徒,tu2
 涂,tu2
 途,tu2
+吋,tu3
 吐,tu3
 土,tu3
 團,tuan2
@@ -1512,6 +1535,7 @@
 退,tui4
 屯,tun2
 托,tuo1
+拖,tuo1
 脫,tuo1
 妥,tuo3
 拓,tuo4
@@ -1576,6 +1600,7 @@
 五,wu3
 伍,wu3
 午,wu3
+武,wu3
 舞,wu3
 務,wu4
 勿,wu4
@@ -1646,6 +1671,7 @@
 像,xiang4
 向,xiang4
 巷,xiang4
+橡,xiang4
 象,xiang4
 項,xiang4
 削,xiao1
@@ -1689,6 +1715,7 @@
 姓,xing4
 幸,xing4
 性,xing4
+胸,xiong1
 熊,xiong2
 雄,xiong2
 休,xiu1
@@ -1696,6 +1723,7 @@
 嗅,xiu4
 秀,xiu4
 繡,xiu4
+噓,xu1
 墟,xu1
 籲,xu1
 虛,xu1
@@ -1718,10 +1746,13 @@
 學,xue2
 血,xue4
 尋,xun2
+巡,xun2
 詢,xun2
 訊,xun4
 訓,xun4
+迅,xun4
 呀,ya1
+壓,ya1
 鴉,ya1
 涯,ya2
 牙,ya2
@@ -1925,6 +1956,7 @@
 窄,zhai3
 佔,zhan1
 沾,zhan1
+詹,zhan1
 展,zhan3
 嶄,zhan3
 戰,zhan4
@@ -1998,7 +2030,9 @@
 紙,zhi3
 衞,zhi3
 制,zhi4
+峙,zhi4
 志,zhi4
+擲,zhi4
 智,zhi4
 治,zhi4
 秩,zhi4
@@ -2040,6 +2074,7 @@
 駐,zhu4
 抓,zhua1
 專,zhuan1
+磚,zhuan1
 轉,zhuan3
 撰,zhuan4
 賺,zhuan4
@@ -2086,6 +2121,7 @@
 最,zui4
 罪,zui4
 醉,zui4
+樽,zun1
 鱒,zun1
 昨,zuo2
 左,zuo3
