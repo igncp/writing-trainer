@@ -10,8 +10,9 @@ set -e
   ".prettierrc.js" \
   ".eslintrc.js" \
   ".storybook/**/*.js" \
+  "helpers/**/*.{ts,tsx}" \
   "src/**/*.{ts,tsx}" \
   "docs/**/*.md" \
-  "webpack/**/*.js" \
+  "webpack.prod.js" \
   "static/**/*.{html,json}" \
   "$@"

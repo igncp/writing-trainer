@@ -6,7 +6,9 @@ import PanelTrigger from '../../components/PanelTrigger/PanelTrigger'
 
 import Panel from '../Panel/Panel'
 
-const App = () => {
+type App = React.FC
+
+const App: App = () => {
   const [shouldShowPanel, showPanel] = useState(false)
   const [usedText, setUsedText] = useState('')
 
@@ -19,12 +21,25 @@ const App = () => {
   })
 
   if (!shouldShowPanel && usedText) {
-    return <PanelTrigger onClick={() => showPanel(true)} />
+    return (
+      <PanelTrigger
+        onClick={() => {
+          showPanel(true)
+        }}
+      />
+    )
   } else if (!usedText) {
     return null
   }
 
-  return <Panel text={usedText} onHideRequest={() => showPanel(false)} />
+  return (
+    <Panel
+      text={usedText}
+      onHideRequest={() => {
+        showPanel(false)
+      }}
+    />
+  )
 }
 
 export default App

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
-const OptionsBlock: React.FC<{
-  onOptionsChange: Function
-}> = ({ onOptionsChange }) => {
+import { TOptionsBlock } from '#/languages/types'
+
+const OptionsBlock: TOptionsBlock = ({ onOptionsChange }) => {
   const [tonesValue, setTonesValue] = useState('without-tones')
 
   const handleOptionsChange = (newValues: {}) => {

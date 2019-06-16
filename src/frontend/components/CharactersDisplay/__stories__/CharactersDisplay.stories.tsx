@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions'
 import { storiesOf } from '@storybook/react'
 import * as React from 'react'
 
-import { convertToCharsObjs } from '../../../languages/mandarin/utils'
+import { convertToCharsObjs } from '#/languages/mandarin/mandarinUtils'
 
 import CharactersDisplay from '../CharactersDisplay'
 

@@ -1,31 +1,30 @@
 import React, { useEffect, useState } from 'react'
 
-import Button from '../../components/Button/Button'
-import CharactersDisplay from '../../components/CharactersDisplay/CharactersDisplay'
-import PanelBase from '../../components/PanelBase/PanelBase'
-import TextArea from '../../components/TextArea/TextArea'
-
-import LinksBlock from '../../languages/mandarin/LinksBlock/LinksBlock'
-import { T_MandarinLanguageOptions } from '../../languages/mandarin/mandarinTypes'
-import OptionsBlock from '../../languages/mandarin/OptionsBlock/OptionsBlock'
+import Button from '#/components/Button/Button'
+import CharactersDisplay from '#/components/CharactersDisplay/CharactersDisplay'
+import ChooseLanguage from '#/components/ChooseLanguage/ChooseLanguage'
+import PanelBase from '#/components/PanelBase/PanelBase'
+import TextArea from '#/components/TextArea/TextArea'
+import languageManager from '#/languages/languageManager'
 import {
-  convertToCharsObjs,
-  getChineseCharsOnlyTextFn,
-  getPronunciationOfText,
-  handleDisplayedCharClick,
-  SPECIAL_CHARS,
-} from '../../languages/mandarin/utils'
-import { T_LanguageOptions } from '../../languages/types'
+  TLanguageDefinition,
+  TLanguageId,
+  TLanguageOptions,
+} from '#/languages/types'
+import storage from '#/services/storage'
 
 import { getCurrentPracticeWord } from './panelHelpers'
+
+const STORAGE_LANGUAGE_KEY = 'selectedLanguage'
 
 const createInputSetterFn = (setValue: Function) => (
   e: React.ChangeEvent<HTMLTextAreaElement>
 ) => {
   setValue(e.target.value)
 }
-const createToggleFn = (val: boolean, fn: (i: boolean) => void) => () =>
+const createToggleFn = (val: boolean, fn: (i: boolean) => void) => () => {
   fn(!val)
+}
 
 const SHORTCUT_EDITING = 'control+control+shift'
 const SHORTCUT_PRONUNCIATION = 'shift+shift+control'
@@ -37,10 +36,15 @@ Toggle Pronunciation: ${SHORTCUT_PRONUNCIATION}`
 type TPanel = React.FC<{
   onHideRequest(): void
   pronunciation?: string
+  _stories?: {
+    defaultLanguage?: TLanguageId
+  }
   text: string
 }>
 
-const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
+const initialLanguageId = languageManager.getDefaultLanguage()
+
+const Panel: TPanel = ({ onHideRequest, text, pronunciation, _stories }) => {
   const [originalTextValue, setOriginalText] = useState<string>(text)
   const [pronunciationValue, setPronunciation] = useState<string>('')
   const [specialCharsValue, setSpecialChars] = useState<string>('')
@@ -52,13 +56,24 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
   const [isShowingEdition, setShowingEdition] = useState<boolean>(true)
   const [doesPracticeHaveError, setPracticeHasError] = useState<boolean>(false)
   const [lastThreeKeys, setLastThreeKeys] = useState<string[]>([])
-  const [languageOptions, setLanguageOptions] = useState<T_LanguageOptions>({})
+  const [languageOptions, setLanguageOptions] = useState<TLanguageOptions>({})
+  const [selectedLanguage, setSelectedLanguage] = useState<
+    TLanguageDefinition['id']
+  >(
+    _stories && _stories.defaultLanguage
+      ? _stories.defaultLanguage
+      : initialLanguageId
+  )
+  const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false)
 
   const tryToUpdatePronunciation = (originalTextNewValue: string) => {
-    const maybePronunciation = getPronunciationOfText({
-      charsToRemove: specialCharsValue,
-      text: originalTextNewValue,
-    })
+    const maybePronunciation = languageManager.getPronunciationOfText(
+      selectedLanguage,
+      {
+        charsToRemove: specialCharsValue,
+        text: originalTextNewValue,
+      }
+    )
     if (maybePronunciation) {
       setPronunciation(maybePronunciation)
     }
@@ -77,9 +92,24 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
   }
 
   useEffect(() => {
-    if (!pronunciationValue && originalTextValue) {
+    if (originalTextValue) {
       tryToUpdatePronunciation(originalTextValue)
     }
+  }, [selectedLanguage])
+
+  const updateLanguageWithStorage = async () => {
+    const storageSelectedLanguage = await storage.getValue(STORAGE_LANGUAGE_KEY)
+    if (
+      storageSelectedLanguage &&
+      storageSelectedLanguage !== selectedLanguage
+    ) {
+      setSelectedLanguage(storageSelectedLanguage)
+    }
+    setHasLoadedStorage(true)
+  }
+
+  useEffect(() => {
+    updateLanguageWithStorage().catch(() => {})
   }, [])
 
   useEffect(() => {
@@ -104,6 +134,9 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
     }
   }, [lastThreeKeys, isShowingEdition, isShowingPronunciation])
 
+  const SPECIAL_CHARS = languageManager.getSpecialChars(selectedLanguage)
+  const convertToCharsObjs = languageManager.getCharsObjsConverter()
+
   const charsObjs = convertToCharsObjs({
     charsToRemove: specialCharsValue + SPECIAL_CHARS,
     pronunciation: pronunciationValue,
@@ -118,103 +151,47 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
       setSpecialChars,
       setWriting,
       setPractice,
-    ].forEach(fn => fn(''))
+    ].forEach(fn => {
+      fn('')
+    })
     setShowingPronunciation(true)
     setShowingEdition(true)
   }
 
-  // @TODO: This should be specific to the language library (with some helpers)
-  const handleWritingKeyDown = (
-    e: React.KeyboardEvent<HTMLTextAreaElement>
-  ) => {
-    if (e.key === 'Backspace' && writingValue.length === 0) {
-      setPractice(practiceValue.slice(0, practiceValue.length - 1))
-    }
-
-    // special key
-    if (e.key === '`') {
-      e.preventDefault()
-      setWriting('')
-      setPracticeHasError(false)
-
-      return
-    }
-
-    if (e.key === 'Enter') {
-      setPractice(`${practiceValue}\n`)
-    }
-
-    // including capital letters so it doesn't write when shortcut
-    if (!/[a-z0-9A-Z]/.test(e.key)) {
-      e.preventDefault()
-
-      setPractice(practiceValue + e.key)
-
-      return
-    }
-
-    const currentPracticeWord = getCurrentPracticeWord({
-      extractFn: getChineseCharsOnlyTextFn,
-      origText: originalTextValue,
-      practiceText: practiceValue,
-      specialChars: specialCharsValue,
-    })
-
-    if (!currentPracticeWord) {
-      setPracticeHasError(false)
-
-      return
-    }
-
-    const currentCharObj = charsObjs.find(ch => ch.word === currentPracticeWord)
-
-    if (!currentCharObj) {
-      console.warn('missing char obj')
-      setPracticeHasError(false)
-
-      return
-    }
-
-    if (e.key.length !== 1 && e.key !== 'Backspace') {
-      e.preventDefault()
-
-      return
-    }
-
-    e.preventDefault()
-
-    const { pronunciation: correctPronunciation } = currentCharObj
-
-    const newWritingValue =
-      e.key === 'Backspace'
-        ? writingValue.slice(0, writingValue.length - 1)
-        : writingValue + e.key
-
-    const { tonesValue } = languageOptions as T_MandarinLanguageOptions
-    const parsedCorrectPronunciation =
-      tonesValue === 'with-tones'
-        ? correctPronunciation
-        : correctPronunciation.replace(/[0-9]$/, '')
-
-    if (parsedCorrectPronunciation === newWritingValue) {
-      setWriting('')
-      setPracticeHasError(false)
-      setPractice(practiceValue + currentCharObj.word)
-
-      return
-    }
-
-    setWriting(newWritingValue)
-
-    setPracticeHasError(!correctPronunciation.startsWith(newWritingValue))
+  const handleLanguageChange = (newSelectedLanguage: string) => {
+    storage.setValue(STORAGE_LANGUAGE_KEY, newSelectedLanguage)
+    setSelectedLanguage(newSelectedLanguage)
   }
 
-  const handleLanguageOptionsChange = (opts: T_LanguageOptions) => {
+  const handleWritingKeyDown = languageManager.getWritingKeyDownHandler({
+    charsObjs,
+    getCurrentPracticeWord,
+    languageOptions,
+    originalTextValue,
+    practiceValue,
+    setPractice,
+    setPracticeHasError,
+    setWriting,
+    specialCharsValue,
+    writingValue,
+  })
+
+  const handleLanguageOptionsChange = (opts: TLanguageOptions) => {
     setLanguageOptions(opts)
   }
 
   const handleWritingAreaClick = () => {
     setLastThreeKeys([])
+  }
+
+  const LinksBlock = languageManager.getLinksBlock(selectedLanguage)
+  const OptionsBlock = languageManager.getOptionsBlock(selectedLanguage)
+  const handleDisplayedCharClick = languageManager.getDisplayedCharHandler(
+    selectedLanguage
+  )
+
+  if (!hasLoadedStorage) {
+    return null
   }
 
   return (
@@ -231,6 +208,11 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
       >
         Toggle Pronunciation
       </Button>
+      <ChooseLanguage
+        languages={languageManager.getAvailableLanguages()}
+        selectedLanguage={selectedLanguage}
+        onOptionsChange={handleLanguageChange}
+      />
       <Button onClick={onHideRequest} style={{ float: 'right' }}>
         Hide
       </Button>
@@ -268,6 +250,7 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation }) => {
           </div>
           <TextArea
             onChange={createInputSetterFn(setWriting)}
+            autoFocus
             onClick={handleWritingAreaClick}
             placeholder={practiceValue ? '' : 'Writing area'}
             rows={1}

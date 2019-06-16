@@ -1,13 +1,18 @@
 import React from 'react'
 
-import { useHover } from '../../utils/hooks'
+import { useHover } from '#/utils/hooks'
+import {
+  COMP_TRANSITION,
+  DIM_COMP_OPACITY,
+  HOVERED_COMP_OPACITY,
+} from '#/utils/ui'
 
 type TButton = React.FC<{
-  style?: React.CSSProperties
-  shouldUseLink?: boolean
+  children: React.ReactNode
   href?: string
   onClick?(): void
-  children: React.ReactNode
+  shouldUseLink?: boolean
+  style?: React.CSSProperties
 }>
 
 const Button: TButton = ({ onClick, children, shouldUseLink, href, style }) => {
@@ -17,10 +22,10 @@ const Button: TButton = ({ onClick, children, shouldUseLink, href, style }) => {
     cursor: 'pointer',
     display: 'inline-block',
     fontSize: 20,
-    opacity: hovered ? 0.7 : 0.2,
+    opacity: hovered ? HOVERED_COMP_OPACITY : DIM_COMP_OPACITY,
     padding: 10,
     textDecoration: 'none',
-    transition: '1s all linear',
+    transition: COMP_TRANSITION,
     ...style,
   }
 

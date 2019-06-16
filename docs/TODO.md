@@ -6,29 +6,20 @@
 
 Only one language supported for this version: Mandarin
 
-- [x] Clear all
-- [x] Characters display
-- [x] Error display
-- [x] Dictionary load
-- [x] Link to G. Translate, pronunciation and Dictionary
-- [x] Shortcuts to hide / show pronunciation / text
-- [x] Allow practice with tones
-
-### Infrastructure
-
-- [x] Setup Dockerfile with Sonar server
+- [x] Separate specific functionality in language packs
+- [ ] Add Japanese
+  - no tones but pronunciation for Kanjis, Hiragana, Katakana
+- [ ] Save in storage the latest language
 
 ### Refactor
 
-- [x] Enable `noImplicitAny`
-- [x] Raise coverage threshold to 10% (visible in Sonar)
-- [x] Organize general types and reduce `any` types in source code
+- [ ] Increase Jest coverage threshold to 20% in all metrics
+- [ ] Standarize types naming: `T_` for functions, `T` for interfaces
 
 ## Backlog
 
 ### Functionality
 
-- [ ] Separate specific functionality in language packs
 - [ ] Ability to save texts in local storage, maybe songs
 - [ ] Ability to choose language
 - [ ] Detect conflicts with passed pronunciation and dictionary pronunciation
@@ -42,11 +33,10 @@ Only one language supported for this version: Mandarin
 
 ### Refactor
 
-- [ ] Reduce `Function` types
 - [ ] First iteration over UI
+- [ ] Convert some config files to TS
 
 ### Ideas
 
 - [ ] Netlify to serve static Storybook + Coverage
-- [ ] Add Japanese (no tones but pronunciation for Kanjis)
 - [ ] Instead of shortcut, use long key press for toggling in panel

@@ -23,8 +23,12 @@ export const useHover = () => {
 
   return {
     bind: {
-      onMouseEnter: () => set(true),
-      onMouseLeave: () => set(false),
+      onMouseEnter: () => {
+        set(true)
+      },
+      onMouseLeave: () => {
+        set(false)
+      },
     },
     hovered,
   }

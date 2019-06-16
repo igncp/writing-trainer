@@ -20,7 +20,7 @@ const getIsParsedPracticeTextValid: T_getIsParsedPracticeTextValid = ({
   }, true)
 }
 
-type T_getCurrentPracticeWord = (opts: {
+export type T_getCurrentPracticeWord = (opts: {
   origText: string
   practiceText: string
   specialChars: string

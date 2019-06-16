@@ -9,7 +9,11 @@ module.exports = {
     '^.+\\.tsx?$': 'ts-jest',
   },
   coverageReporters: ['json', 'lcov', 'text-summary', 'cobertura'],
-  setupFilesAfterEnv: ['<rootDir>/helpers/testSetup.js'],
+  setupFilesAfterEnv: ['<rootDir>/helpers/test/testSetup.js'],
+  moduleNameMapper: {
+    '#/(.*)$': '<rootDir>/src/frontend/$1',
+    '^.+.csv$': '<rootDir>/helpers/test/mockCsv.js',
+  },
   coverageThreshold: {
     global: {
       branches: 10,

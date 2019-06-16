@@ -1,29 +1,31 @@
-import { T_CharsDisplayClickHandler } from '../../components/CharactersDisplay/CharactersDisplay'
+import { T_CharsDisplayClickHandler } from '#/components/CharactersDisplay/CharactersDisplay'
 
-import * as dictionary from './converted-list-ma.csv'
-import specialCharactersList from './specialCharacters'
+import { getPronunciationOfTextFn } from '#/languages/common/commonLanguageUtils'
+import {
+  T_convertToCharsObjs,
+  T_getFilteredTextToPracticeFn,
+  T_getWritingKeyDownHandler,
+} from '#/languages/types'
 
-export const charToPronunciationMap: { [key: string]: string } = {}
-export const pronunciationToCharMap: { [key: string]: string } = {}
+import { LETTERS_AND_NUMBERS, SPECIAL_CHARS } from '../common/specialCharacters'
+
+import dictionary from './converted-list-ma.csv'
+import { T_MandarinLanguageOptions } from './mandarinTypes'
+
+const charToPronunciationMap: { [key: string]: string } = {}
+const pronunciationToCharMap: { [key: string]: string } = {}
 
 dictionary.forEach(([char, pronunciation]: [string, string]) => {
   charToPronunciationMap[char] = pronunciation
   pronunciationToCharMap[pronunciation] = char
 })
 
-export const LETTERS_AND_NUMBERS =
-  '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-
 const CANTODICT_LINK =
   'http://www.cantonese.sheik.co.uk/scripts/wordsearch.php?level=0'
 
-export const SPECIAL_CHARS = specialCharactersList
-  .join('')
-  .concat(LETTERS_AND_NUMBERS)
+export { SPECIAL_CHARS }
 
-type T_getChineseCharsOnlyTextFn = (s: string) => (s: string) => string
-
-export const getChineseCharsOnlyTextFn: T_getChineseCharsOnlyTextFn = extraSpecialChars => {
+export const getFilteredTextToPracticeFn: T_getFilteredTextToPracticeFn = extraSpecialChars => {
   const specialCharsArr = SPECIAL_CHARS.concat(LETTERS_AND_NUMBERS)
     .concat(extraSpecialChars)
     .split('')
@@ -42,15 +44,6 @@ export const getChineseCharsOnlyTextFn: T_getChineseCharsOnlyTextFn = extraSpeci
       .join('')
   }
 }
-
-type T_convertToCharsObjs = (opts: {
-  pronunciation: string
-  text: string
-  charsToRemove: string
-}) => Array<{
-  word: string
-  pronunciation: string
-}>
 
 export const convertToCharsObjs: T_convertToCharsObjs = ({
   pronunciation,
@@ -85,32 +78,10 @@ export const convertToCharsObjs: T_convertToCharsObjs = ({
   })
 }
 
-type T_getPronunciationOfText = (opts: {
-  text: string
-  charsToRemove: string
-}) => string
-
-export const getPronunciationOfText: T_getPronunciationOfText = ({
-  text,
-  charsToRemove,
-}) => {
-  const allCharsToRemove = charsToRemove.concat(SPECIAL_CHARS)
-  const textSegments = text
-    .split('')
-    .filter(c => !!c)
-    .filter(c => allCharsToRemove.indexOf(c) === -1)
-  const pronunciationArr = textSegments
-    .map(t => {
-      return charToPronunciationMap[t]
-    })
-    .filter(c => !!c)
-
-  if (pronunciationArr.length !== textSegments.length) {
-    return ''
-  }
-
-  return pronunciationArr.join(' ')
-}
+export const getPronunciationOfText = getPronunciationOfTextFn({
+  SPECIAL_CHARS,
+  charToPronunciationMap,
+})
 
 const sendCantodictFormForText = (text: string, id: string): void => {
   const form = document.createElement('form')
@@ -147,9 +118,9 @@ const sendCantodictFormForText = (text: string, id: string): void => {
 }
 
 export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
-  index,
   charObj,
   charsObjs,
+  index,
 }) => {
   if (!charObj || !charObj.pronunciation) {
     return
@@ -169,4 +140,98 @@ export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
   if (next && next.pronunciation) {
     sendCantodictFormForText(ch + next.word, 'right')
   }
+}
+
+export const getWritingKeyDownHandler: T_getWritingKeyDownHandler = ({
+  charsObjs,
+  getCurrentPracticeWord,
+  languageOptions,
+  originalTextValue,
+  practiceValue,
+  setPractice,
+  setPracticeHasError,
+  setWriting,
+  specialCharsValue,
+  writingValue,
+}) => e => {
+  if (e.key === 'Backspace' && writingValue.length === 0) {
+    setPractice(practiceValue.slice(0, practiceValue.length - 1))
+  }
+
+  // special key
+  if (e.key === '`') {
+    e.preventDefault()
+    setWriting('')
+    setPracticeHasError(false)
+
+    return
+  }
+
+  if (e.key === 'Enter') {
+    setPractice(`${practiceValue}\n`)
+  }
+
+  // including capital letters so it doesn't write when shortcut
+  if (!/[a-z0-9A-Z]/.test(e.key)) {
+    e.preventDefault()
+
+    setPractice(practiceValue + e.key)
+
+    return
+  }
+
+  const currentPracticeWord = getCurrentPracticeWord({
+    extractFn: getFilteredTextToPracticeFn,
+    origText: originalTextValue,
+    practiceText: practiceValue,
+    specialChars: specialCharsValue,
+  })
+
+  if (!currentPracticeWord) {
+    setPracticeHasError(false)
+
+    return
+  }
+
+  const currentCharObj = charsObjs.find(ch => ch.word === currentPracticeWord)
+
+  if (!currentCharObj) {
+    console.warn('missing char obj')
+    setPracticeHasError(false)
+
+    return
+  }
+
+  if (e.key.length !== 1 && e.key !== 'Backspace') {
+    e.preventDefault()
+
+    return
+  }
+
+  e.preventDefault()
+
+  const { pronunciation: correctPronunciation } = currentCharObj
+
+  const newWritingValue =
+    e.key === 'Backspace'
+      ? writingValue.slice(0, writingValue.length - 1)
+      : writingValue + e.key
+
+  const { tonesValue } = languageOptions as T_MandarinLanguageOptions
+  const parsedCorrectPronunciation =
+    tonesValue === 'with-tones'
+      ? correctPronunciation
+      : correctPronunciation.replace(/[0-9]$/, '')
+
+  if (parsedCorrectPronunciation === newWritingValue) {
+    setWriting('')
+    setPracticeHasError(false)
+    setPractice(practiceValue + currentCharObj.word)
+
+    return
+  }
+
+  setWriting(newWritingValue)
+
+  setPracticeHasError(!correctPronunciation.startsWith(newWritingValue))
 }

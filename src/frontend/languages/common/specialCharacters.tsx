@@ -1,6 +1,9 @@
 // tslint:disable no-irregular-whitespace
 
-export default [
+export const LETTERS_AND_NUMBERS =
+  '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+export const SPECIAL_SYMBOLS = [
   "'",
   "'",
   ' ',
@@ -56,6 +59,8 @@ export default [
   '☺',
   '⚠',
   '✔',
+  `
+`,
   '　',
   '、',
   '。',
@@ -96,3 +101,7 @@ export default [
   '～',
   '�️',
 ]
+
+export const SPECIAL_CHARS = SPECIAL_SYMBOLS.join('').concat(
+  LETTERS_AND_NUMBERS
+)

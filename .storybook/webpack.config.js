@@ -1,25 +1,18 @@
-module.exports = ({ config }) => {
-  config.module.rules.push(
-    {
-      test: /\.(ts|tsx)$/,
-      use: [
-        {
-          loader: require.resolve('ts-loader'),
-        },
-      ],
-    },
-    {
-      test: /\.csv$/,
-      loader: 'csv-loader',
-      options: {
-        dynamicTyping: true,
-        header: false,
-        skipEmptyLines: true,
-      },
-    }
-  )
+const webpack = require('webpack')
 
-  config.resolve.extensions.push('.ts', '.tsx')
+const buildConfig = require('../webpack.prod')
+
+module.exports = ({ config }) => {
+  buildConfig.module.rules.forEach(rule => {
+    config.module.rules.push(rule)
+  })
+
+  config.resolve = buildConfig.resolve
+  config.plugins.push(
+    new webpack.DefinePlugin({
+      __USE_CHROME_API__: false,
+    })
+  )
 
   return config
 }

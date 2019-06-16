@@ -10,6 +10,8 @@ npm run tslint
 
 npm test -- --coverage
 
+npm run type-coverage
+
 npm run build-storybook
 
 npm run package

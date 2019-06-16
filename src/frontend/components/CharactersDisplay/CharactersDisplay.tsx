@@ -1,11 +1,8 @@
 import React from 'react'
 
-const CHAR_WIDTH = 55
+import { T_CharObj } from '#/languages/types'
 
-interface T_CharObj {
-  word: string
-  pronunciation: string
-}
+const CHAR_WIDTH = 55
 
 export type T_CharsDisplayClickHandler = (opts: {
   charObj: T_CharObj

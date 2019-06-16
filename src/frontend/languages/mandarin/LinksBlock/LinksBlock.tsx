@@ -1,14 +1,12 @@
 import React from 'react'
 
-import Button from '../../../components/Button/Button'
-import { copyTextToClipboard } from '../../../utils/general'
+import Button from '#/components/Button/Button'
+import { copyTextToClipboard } from '#/utils/general'
+
+import { TLinksBlock } from '#/languages/types'
 
 const MANDARIN_CONVERTER_LINK =
   'https://www.chineseconverter.com/en/convert/chinese-to-pinyin'
-
-type TLinksBlock = React.FC<{
-  text: string
-}>
 
 const linkStyle = {
   marginRight: 10,

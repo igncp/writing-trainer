@@ -23,7 +23,7 @@ const PanelTrigger: TPanelTrigger = ({ onClick }) => {
         right: '0',
         top: '0',
         transition: 'all linear 1s',
-        zIndex: 99999,
+        zIndex: 9999999999,
       }}
     >
       Open Writing Trainer

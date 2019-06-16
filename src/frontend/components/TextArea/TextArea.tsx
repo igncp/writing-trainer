@@ -15,7 +15,7 @@ const TextArea: TextArea = ({
   autoScroll,
   ...props
 }) => {
-  const ref = useRef()
+  const ref = useRef<HTMLTextAreaElement>()
   const color = _get(style, 'color', 'black')
   const cursorStyle = withoutCursor
     ? {
@@ -26,8 +26,7 @@ const TextArea: TextArea = ({
 
   useEffect(() => {
     if (autoScroll && ref.current) {
-      // tslint:disable-next-line semicolon
-      ;(ref as any).current.scrollTop! = (ref as any).current.scrollHeight!
+      ref.current.scrollTop = ref.current.scrollHeight
     }
   })
 

@@ -1,17 +1,24 @@
 const path = require('path')
+const webpack = require('webpack')
 
-const srcPath = path.join(__dirname, '../src')
+const srcPath = path.join(__dirname, 'src')
+
+const plugins = [
+  new webpack.DefinePlugin({
+    __USE_CHROME_API__: true,
+  }),
+]
 
 const config = {
   mode: 'production',
   entry: {
-    background: path.join(srcPath, 'background.ts'),
+    background: path.join(srcPath, 'background.tsx'),
     content: path.join(srcPath, 'content.tsx'),
-    options: path.join(srcPath, 'options.ts'),
-    popup: path.join(srcPath, 'popup.ts'),
+    options: path.join(srcPath, 'options.tsx'),
+    popup: path.join(srcPath, 'popup.tsx'),
   },
   output: {
-    path: path.join(__dirname, '../dist/js'),
+    path: path.join(__dirname, 'dist/js'),
     filename: '[name].js',
   },
   module: {
@@ -20,6 +27,10 @@ const config = {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
+      },
+      {
+        test: /\.txt$/,
+        use: 'raw-loader',
       },
       {
         test: /\.csv$/,
@@ -32,8 +43,12 @@ const config = {
       },
     ],
   },
+  plugins,
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.csv'],
+    alias: {
+      '#': path.resolve(__dirname, 'src/frontend'),
+    },
   },
 }
 

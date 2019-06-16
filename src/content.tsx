@@ -1,3 +1,3 @@
 import main from './frontend/main'
 
-setTimeout(main, 1000)
+setTimeout(main, 100)
