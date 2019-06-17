@@ -8,7 +8,7 @@
     "eslint": "eslint .",
     "format": "sh helpers/format.sh",
     "package": "sh helpers/package.sh",
-    "sonar": "npm test -- --coverage && node helpers/sonar.js",
+    "sonar": "npm test -- --coverage && SONAR_TOKEN=$(cat sonar-token.txt) node helpers/sonar.js",
     "storybook": "start-storybook -p 6006",
     "test": "jest",
     "tslint": "tslint --project tsconfig.json '{helpers,src}/**/*.{ts,tsx}'",

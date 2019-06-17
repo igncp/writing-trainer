@@ -33,7 +33,7 @@ if (!process.env.SONAR_TOKEN) {
 }
 
 const sonarSources = ['src'].join(',')
-const sonarExclusions = [].join(',')
+const sonarExclusions = ['**/*.test.tsx', '**/*.stories.tsx'].join(',')
 
 const sonarHost = 'http://localhost:9002'
 const sonarProjectKey = 'writing-trainer'
