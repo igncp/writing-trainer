@@ -5,7 +5,7 @@ const srcPath = path.join(__dirname, 'src')
 
 const plugins = [
   new webpack.DefinePlugin({
-    __USE_CHROME_API__: true,
+    __STORAGE_TYPE__: JSON.stringify('chrome'),
   }),
 ]
 

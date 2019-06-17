@@ -10,4 +10,5 @@ declare module '*.txt' {
   export default value
 }
 
-declare var __USE_CHROME_API__: boolean
+declare var __STORAGE_TYPE__: 'dummy' | 'chrome' | 'localStorage'
+declare var __TEST__: boolean

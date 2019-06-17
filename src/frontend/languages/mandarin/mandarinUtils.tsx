@@ -83,38 +83,40 @@ export const getPronunciationOfText = getPronunciationOfTextFn({
   charToPronunciationMap,
 })
 
-const sendCantodictFormForText = (text: string, id: string): void => {
-  const form = document.createElement('form')
+const privateFns = {
+  sendCantodictFormForText: (text: string, id: string): void => {
+    const form = document.createElement('form')
 
-  form.setAttribute('method', 'POST')
-  form.setAttribute('action', CANTODICT_LINK)
-  form.setAttribute('target', `formresult${text}${id}`)
-  form.style.display = 'none'
+    form.setAttribute('method', 'POST')
+    form.setAttribute('action', CANTODICT_LINK)
+    form.setAttribute('target', `formresult${text}${id}`)
+    form.style.display = 'none'
 
-  const i1 = document.createElement('input')
-  const i2 = document.createElement('input')
-  const i3 = document.createElement('input')
-  const i4 = document.createElement('input')
+    const i1 = document.createElement('input')
+    const i2 = document.createElement('input')
+    const i3 = document.createElement('input')
+    const i4 = document.createElement('input')
 
-  i1.setAttribute('name', 'TEXT')
-  i1.setAttribute('value', text)
-  i2.setAttribute('name', 'SEARCHTYPE')
-  i2.setAttribute('value', text.length === 1 ? '0' : '1')
-  i3.setAttribute('name', 'radicaldropdown')
-  i3.setAttribute('value', '0')
-  i4.setAttribute('name', 'searchsubmit')
-  i4.setAttribute('value', '1')
+    i1.setAttribute('name', 'TEXT')
+    i1.setAttribute('value', text)
+    i2.setAttribute('name', 'SEARCHTYPE')
+    i2.setAttribute('value', text.length === 1 ? '0' : '1')
+    i3.setAttribute('name', 'radicaldropdown')
+    i3.setAttribute('value', '0')
+    i4.setAttribute('name', 'searchsubmit')
+    i4.setAttribute('value', '1')
 
-  form.appendChild(i1)
-  form.appendChild(i2)
-  form.appendChild(i3)
-  form.appendChild(i4)
-  ;(document.body as any).appendChild(form)
+    form.appendChild(i1)
+    form.appendChild(i2)
+    form.appendChild(i3)
+    form.appendChild(i4)
+    ;(document.body as any).appendChild(form)
 
-  // creating the 'formresult' window with custom features prior to submitting the form
-  window.open('', `formresult${text}${id}`)
-  form.submit()
-  ;(document.body as any).removeChild(form)
+    // creating the 'formresult' window with custom features prior to submitting the form
+    window.open('', `formresult${text}${id}`)
+    form.submit()
+    ;(document.body as any).removeChild(form)
+  },
 }
 
 export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
@@ -128,17 +130,17 @@ export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
 
   const ch = charObj.word
 
-  sendCantodictFormForText(ch, 'single')
+  privateFns.sendCantodictFormForText(ch, 'single')
 
   const prev = charsObjs[index - 1]
   const next = charsObjs[index + 1]
 
   if (prev && prev.pronunciation) {
-    sendCantodictFormForText(prev.word + ch, 'left')
+    privateFns.sendCantodictFormForText(prev.word + ch, 'left')
   }
 
   if (next && next.pronunciation) {
-    sendCantodictFormForText(ch + next.word, 'right')
+    privateFns.sendCantodictFormForText(ch + next.word, 'right')
   }
 }
 
@@ -235,3 +237,18 @@ export const getWritingKeyDownHandler: T_getWritingKeyDownHandler = ({
 
   setPracticeHasError(!correctPronunciation.startsWith(newWritingValue))
 }
+
+interface Test {
+  privateFns?: typeof privateFns
+}
+
+const _test: Test = {
+  privateFns: null,
+}
+
+// istanbul ignore else
+if (__TEST__) {
+  _test.privateFns = privateFns
+}
+
+export { _test }

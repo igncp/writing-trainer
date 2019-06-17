@@ -10,7 +10,7 @@ module.exports = ({ config }) => {
   config.resolve = buildConfig.resolve
   config.plugins.push(
     new webpack.DefinePlugin({
-      __USE_CHROME_API__: false,
+      __STORAGE_TYPE__: JSON.stringify('localStorage'),
     })
   )
 

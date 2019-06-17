@@ -5,6 +5,9 @@ import CharactersDisplay from '#/components/CharactersDisplay/CharactersDisplay'
 import ChooseLanguage from '#/components/ChooseLanguage/ChooseLanguage'
 import PanelBase from '#/components/PanelBase/PanelBase'
 import TextArea from '#/components/TextArea/TextArea'
+import RecordsSection, {
+  RecordsScreen,
+} from '#/containers/RecordsSection/RecordsSection'
 import languageManager from '#/languages/languageManager'
 import {
   TLanguageDefinition,
@@ -45,6 +48,9 @@ type TPanel = React.FC<{
 const initialLanguageId = languageManager.getDefaultLanguage()
 
 const Panel: TPanel = ({ onHideRequest, text, pronunciation, _stories }) => {
+  const [showingRecordsInitScreen, setShowingRecordsInitScreen] = useState<
+    RecordsScreen | ''
+  >('')
   const [originalTextValue, setOriginalText] = useState<string>(text)
   const [pronunciationValue, setPronunciation] = useState<string>('')
   const [specialCharsValue, setSpecialChars] = useState<string>('')
@@ -76,6 +82,8 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation, _stories }) => {
     )
     if (maybePronunciation) {
       setPronunciation(maybePronunciation)
+      setShowingPronunciation(false)
+      setShowingEdition(false)
     }
   }
 
@@ -190,13 +198,35 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation, _stories }) => {
     selectedLanguage
   )
 
+  const saveRecord = () => {
+    setShowingRecordsInitScreen('Save')
+  }
+
+  const listRecords = () => {
+    setShowingRecordsInitScreen('List')
+  }
+
   if (!hasLoadedStorage) {
     return null
+  }
+
+  if (showingRecordsInitScreen) {
+    return (
+      <PanelBase onOverlayClick={onHideRequest}>
+        <RecordsSection
+          initScreen={showingRecordsInitScreen}
+          onRecordsClose={() => {
+            setShowingRecordsInitScreen('')
+          }}
+        />
+      </PanelBase>
+    )
   }
 
   return (
     <PanelBase onOverlayClick={onHideRequest}>
       <Button onClick={clearValues}>Clear</Button>
+      <Button onClick={listRecords}>Records</Button>
       <Button onClick={createToggleFn(isShowingEdition, setShowingEdition)}>
         Toggle Edition
       </Button>
@@ -213,6 +243,7 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation, _stories }) => {
         selectedLanguage={selectedLanguage}
         onOptionsChange={handleLanguageChange}
       />
+      <Button onClick={saveRecord}>Save</Button>
       <Button onClick={onHideRequest} style={{ float: 'right' }}>
         Hide
       </Button>

@@ -18,14 +18,35 @@ const chromeGetValue = (key: string): Promise<string> => {
 const dummySetValue = () => {}
 const dummyGetValue = () => Promise.resolve('')
 
+const localStorageSetValue = (key: string, value: string) => {
+  localStorage.setItem(key, value)
+}
+const localStorageGetValue = (key: string): Promise<string> => {
+  const result = localStorage.getItem(key) || ''
+
+  return Promise.resolve(result)
+}
+
+const getValueMap = {
+  chrome: chromeGetValue,
+  dummy: dummyGetValue,
+  localStorage: localStorageGetValue,
+}
+
+const setValueMap = {
+  chrome: chromeSetValue,
+  dummy: dummySetValue,
+  localStorage: localStorageSetValue,
+}
+
 interface Storage {
   setValue(key: string, value: string): void
   getValue(key: string): Promise<string>
 }
 
 const storage: Storage = {
-  getValue: __USE_CHROME_API__ ? chromeGetValue : dummyGetValue,
-  setValue: __USE_CHROME_API__ ? chromeSetValue : dummySetValue,
+  getValue: getValueMap[__STORAGE_TYPE__],
+  setValue: setValueMap[__STORAGE_TYPE__],
 }
 
 export default storage

@@ -20,7 +20,7 @@ const config = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      __USE_CHROME_API__: false
+      __STORAGE_TYPE__: JSON.stringify('dummy')
     })
   ],
   module: buildConfig.module,
