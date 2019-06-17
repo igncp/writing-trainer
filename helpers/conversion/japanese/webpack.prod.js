@@ -20,7 +20,8 @@ const config = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      __STORAGE_TYPE__: JSON.stringify('dummy')
+      __STORAGE_TYPE__: JSON.stringify('dummy'),
+      __TEST__: false,
     })
   ],
   module: buildConfig.module,

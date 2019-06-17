@@ -11,6 +11,7 @@ module.exports = ({ config }) => {
   config.plugins.push(
     new webpack.DefinePlugin({
       __STORAGE_TYPE__: JSON.stringify('localStorage'),
+      __TEST__: false,
     })
   )
 
