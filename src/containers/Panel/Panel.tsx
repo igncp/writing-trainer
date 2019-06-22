@@ -8,6 +8,7 @@ import TextArea from '#/components/TextArea/TextArea'
 import RecordsSection, {
   RecordsScreen,
 } from '#/containers/RecordsSection/RecordsSection'
+import { Record } from '#/containers/RecordsSection/recordsTypes'
 import languageManager from '#/languages/languageManager'
 import {
   TLanguageDefinition,
@@ -65,11 +66,7 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation, _stories }) => {
   const [languageOptions, setLanguageOptions] = useState<TLanguageOptions>({})
   const [selectedLanguage, setSelectedLanguage] = useState<
     TLanguageDefinition['id']
-  >(
-    _stories && _stories.defaultLanguage
-      ? _stories.defaultLanguage
-      : initialLanguageId
-  )
+  >(_stories.defaultLanguage ? _stories.defaultLanguage : initialLanguageId)
   const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false)
 
   const tryToUpdatePronunciation = (originalTextNewValue: string) => {
@@ -109,7 +106,8 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation, _stories }) => {
     const storageSelectedLanguage = await storage.getValue(STORAGE_LANGUAGE_KEY)
     if (
       storageSelectedLanguage &&
-      storageSelectedLanguage !== selectedLanguage
+      storageSelectedLanguage !== selectedLanguage &&
+      !_stories.defaultLanguage
     ) {
       setSelectedLanguage(storageSelectedLanguage)
     }
@@ -215,6 +213,20 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation, _stories }) => {
       <PanelBase onOverlayClick={onHideRequest}>
         <RecordsSection
           initScreen={showingRecordsInitScreen}
+          selectedLanguage={selectedLanguage}
+          onRecordLoad={(record: Record) => {
+            clearValues()
+            if (record.language !== selectedLanguage) {
+              handleLanguageChange(record.language)
+            }
+            setShowingRecordsInitScreen('')
+            setShowingEdition(false)
+            setShowingPronunciation(false)
+            setOriginalText(record.text)
+            setPronunciation(record.pronunciation)
+          }}
+          text={originalTextValue}
+          pronunciation={pronunciationValue}
           onRecordsClose={() => {
             setShowingRecordsInitScreen('')
           }}
@@ -305,6 +317,10 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation, _stories }) => {
       <LinksBlock text={originalTextValue} />
     </PanelBase>
   )
+}
+
+Panel.defaultProps = {
+  _stories: {},
 }
 
 export default Panel

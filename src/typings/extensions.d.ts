@@ -11,4 +11,5 @@ declare module '*.txt' {
 }
 
 declare var __STORAGE_TYPE__: 'dummy' | 'chrome' | 'localStorage'
+declare var __USE_CHROME_TABS_FEATURE__: boolean
 declare var __TEST__: boolean

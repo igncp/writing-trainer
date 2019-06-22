@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
+import { TLanguageId } from '#/languages/types'
 import storage from '#/services/storage'
 
 import { Record } from './recordsTypes'
@@ -18,10 +19,21 @@ const getMaxRecordId = (records: Record[]) => {
 
 type RecordsSection = React.FC<{
   initScreen: RecordsScreen
+  selectedLanguage: TLanguageId
+  text: string
+  onRecordLoad(r: Record): void
+  pronunciation: string
   onRecordsClose(): void
 }>
 
-const RecordsSection: RecordsSection = ({ initScreen, onRecordsClose }) => {
+const RecordsSection: RecordsSection = ({
+  initScreen,
+  onRecordLoad,
+  onRecordsClose,
+  pronunciation,
+  selectedLanguage,
+  text,
+}) => {
   const [currentScreen, setCurrentScreen] = useState<RecordsScreen>(initScreen)
   const [records, setRecords] = useState<Record[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -50,11 +62,25 @@ const RecordsSection: RecordsSection = ({ initScreen, onRecordsClose }) => {
     setRecords(newRecords)
   }
 
+  const handleRecordLoad = (record: Record) => {
+    const newRecords = [...records]
+
+    newRecords.find(r => r.id === record.id).lastLoadedOn = Date.now()
+
+    saveRecords(newRecords)
+    onRecordLoad(record)
+  }
+
   const handleRecordSave = (newRecord: RecordToSave) => {
     const newRecords = records.concat({
+      createdOn: Date.now(),
       id: getMaxRecordId(records) + 1,
+      language: selectedLanguage,
+      lastLoadedOn: Date.now(),
+      link: newRecord.link,
       name: newRecord.name,
-      timestamp: newRecord.timestamp,
+      pronunciation,
+      text,
     })
 
     saveRecords(newRecords)
@@ -78,12 +104,7 @@ const RecordsSection: RecordsSection = ({ initScreen, onRecordsClose }) => {
   if (currentScreen === 'Save') {
     return (
       <RecordsWrapper onRecordsClose={onRecordsClose}>
-        <RecordSave
-          onRecordSave={handleRecordSave}
-          onRecordsList={() => {
-            setCurrentScreen('List')
-          }}
-        />
+        <RecordSave onRecordSave={handleRecordSave} />
       </RecordsWrapper>
     )
   }
@@ -91,7 +112,11 @@ const RecordsSection: RecordsSection = ({ initScreen, onRecordsClose }) => {
   if (currentScreen === 'List') {
     return (
       <RecordsWrapper onRecordsClose={onRecordsClose}>
-        <RecordsList records={records} onRecordRemove={handleRecordRemove} />
+        <RecordsList
+          records={records}
+          onRecordRemove={handleRecordRemove}
+          onRecordLoad={handleRecordLoad}
+        />
       </RecordsWrapper>
     )
   }

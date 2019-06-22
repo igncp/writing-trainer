@@ -44,7 +44,7 @@ const text = Object.keys(result)
 
 const filePath = path.resolve(
   __dirname,
-  '../../../../src/frontend/languages/japanese/converted-list-jp.csv'
+  '../../../../src/languages/japanese/converted-list-jp.csv'
 )
 
 if (argv[2] === 'y') {

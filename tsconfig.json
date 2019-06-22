@@ -11,7 +11,7 @@
     "noUnusedLocals": true,
     "outDir": "dist/js",
     "paths": {
-      "#/*": ["src/frontend/*"]
+      "#/*": ["src/*"]
     },
     "rootDir": ".",
     "sourceMap": false,

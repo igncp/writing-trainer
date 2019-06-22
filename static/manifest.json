@@ -8,6 +8,7 @@
     "declarativeContent",
     "http://*/*",
     "https://*/*",
+    "tabs",
     "storage"
   ],
   "background": {

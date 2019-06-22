@@ -12,11 +12,14 @@ Only one language supported for this version: Mandarin
 - [x] Save in storage the latest language
 - [x] Ability to choose language
 - [ ] Have the ability to save, list, remove texts (no edit)
+- [ ] Disable all pages except the ones listed
 
 ### Refactor
 
 - [x] Increase Jest coverage threshold to 20% in all metrics
 - [x] Standarize types naming: `T_` for functions, `T` for interfaces
+- [ ] Increase Jest coverage threshold to 30% in all metrics
+- [ ] Minify and optimize build
 
 ## Backlog
 

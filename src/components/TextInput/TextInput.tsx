@@ -3,10 +3,18 @@ import React from 'react'
 type TextInput = React.FC<
   {
     onEnterPress(): void
+    inputRef?: React.RefObject<HTMLInputElement>
   } & React.InputHTMLAttributes<HTMLInputElement>
 >
 
-const TextInput: TextInput = ({ onEnterPress, onChange, value, ...props }) => {
+const TextInput: TextInput = ({
+  onEnterPress,
+  onChange,
+  value,
+  style,
+  inputRef,
+  ...props
+}) => {
   return (
     <input
       type="text"
@@ -15,6 +23,7 @@ const TextInput: TextInput = ({ onEnterPress, onChange, value, ...props }) => {
         borderBottom: '1px solid black',
         outline: 'none',
         padding: 5,
+        ...style,
       }}
       onChange={onChange}
       spellCheck={false}
@@ -25,6 +34,7 @@ const TextInput: TextInput = ({ onEnterPress, onChange, value, ...props }) => {
           onEnterPress()
         }
       }}
+      ref={inputRef || null}
       {...props}
     />
   )
@@ -32,6 +42,7 @@ const TextInput: TextInput = ({ onEnterPress, onChange, value, ...props }) => {
 
 TextInput.defaultProps = {
   onEnterPress: () => {},
+  style: {},
 }
 
 export default TextInput

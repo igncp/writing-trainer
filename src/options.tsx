@@ -1,17 +1,14 @@
-let page = document.getElementById('buttonDiv')
-const kButtonColors = ['#3aa757', '#e8453c', '#f9bb2d', '#4688f1']
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-const constructOptions = () => {
-  for (const item of kButtonColors) {
-    const button = document.createElement('button')
-    button.style.backgroundColor = item
-    button.addEventListener('click', () => {
-      chrome.storage.sync.set({ color: item }, () => {
-        console.log(`color is ${item}`)
-      })
-    })
-    page.appendChild(button)
-  }
+import Options from '#/containers/Options/Options'
+
+const main = () => {
+  const div = document.createElement('div')
+
+  document.body.prepend(div)
+
+  ReactDOM.render(<Options />, div)
 }
 
-constructOptions()
+setTimeout(main, 100)

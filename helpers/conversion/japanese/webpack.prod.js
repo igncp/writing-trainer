@@ -22,6 +22,7 @@ const config = {
     new webpack.DefinePlugin({
       __STORAGE_TYPE__: JSON.stringify('dummy'),
       __TEST__: false,
+      __USE_CHROME_TABS_FEATURE__: false,
     })
   ],
   module: buildConfig.module,

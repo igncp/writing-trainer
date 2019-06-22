@@ -1,18 +1,21 @@
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set({ color: '#3aa757' }, () => {
-    console.log('The color is green.')
-  })
+import { MessageType } from '#/utils/constants'
 
-  chrome.declarativeContent.onPageChanged.removeRules(undefined, () => {
-    chrome.declarativeContent.onPageChanged.addRules([
-      {
-        actions: [new chrome.declarativeContent.ShowPageAction()],
-        conditions: [
-          new chrome.declarativeContent.PageStateMatcher({
-            pageUrl: { hostEquals: 'developer.chrome.com' },
-          }),
-        ],
-      },
-    ])
-  })
-})
+interface Message {
+  type: MessageType
+}
+
+chrome.runtime.onMessage.addListener(
+  (
+    content: Message,
+    sender: unknown,
+    sendResponse: (v: unknown) => void
+  ): boolean => {
+    if (content.type === MessageType.RequestUrl) {
+      chrome.tabs.query({ active: true }, tabs => {
+        sendResponse(tabs[0].url)
+      })
+
+      return true
+    }
+  }
+)

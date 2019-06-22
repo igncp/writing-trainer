@@ -6,6 +6,7 @@ const srcPath = path.join(__dirname, 'src')
 const plugins = [
   new webpack.DefinePlugin({
     __STORAGE_TYPE__: JSON.stringify('chrome'),
+    __USE_CHROME_TABS_FEATURE__: true,
     __TEST__: false,
   }),
 ]
@@ -48,7 +49,7 @@ const config = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.csv'],
     alias: {
-      '#': path.resolve(__dirname, 'src/frontend'),
+      '#': path.resolve(__dirname, 'src'),
     },
   },
 }
