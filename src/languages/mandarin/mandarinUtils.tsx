@@ -5,6 +5,7 @@ import {
   T_convertToCharsObjs,
   T_getFilteredTextToPracticeFn,
   T_handleWritingKeyDown,
+  TCharObj,
 } from '#/languages/types'
 
 import { LETTERS_AND_NUMBERS, SPECIAL_CHARS } from '../common/specialCharacters'
@@ -54,7 +55,7 @@ export const convertToCharsObjs: T_convertToCharsObjs = ({
   const textSegments = text.split('').filter(c => !!c)
 
   let pronunciationIdxOffset = 0
-  const charsObjs = []
+  const charsObjs: TCharObj[] = []
 
   for (let index = 0; index < textSegments.length; index += 1) {
     let pronunciationItem = ''
@@ -111,12 +112,12 @@ const privateFns = {
     form.appendChild(i2)
     form.appendChild(i3)
     form.appendChild(i4)
-    ;(document.body as any).appendChild(form)
+    document.body.appendChild(form)
 
     // creating the 'formresult' window with custom features prior to submitting the form
     window.open('', `formresult${text}${id}`)
     form.submit()
-    ;(document.body as any).removeChild(form)
+    document.body.removeChild(form)
   },
 }
 

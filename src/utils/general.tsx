@@ -9,9 +9,11 @@ export const copyTextToClipboard = (str: string): void => {
 
   element.style.position = 'absolute'
   element.style.left = '-9999px'
-  ;(document.body as any).appendChild(element)
+
+  document.body.appendChild(element)
 
   element.select()
   document.execCommand('copy')
-  ;(document.body as any).removeChild(element)
+
+  document.body.removeChild(element)
 }

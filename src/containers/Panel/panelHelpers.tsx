@@ -1,15 +1,15 @@
-import { T_CharObj } from '#/languages/types'
+import { TCharObj } from '#/languages/types'
 
 export type T_getCurrentCharObj = (opts: {
-  originalCharsObjs: T_CharObj[]
-  practiceCharsObjs: T_CharObj[]
-}) => T_CharObj | null
+  originalCharsObjs: TCharObj[]
+  practiceCharsObjs: TCharObj[]
+}) => TCharObj | null
 
 export const getCurrentCharObj: T_getCurrentCharObj = ({
   originalCharsObjs,
   practiceCharsObjs,
 }) => {
-  const hasPronunciation = (c: T_CharObj) => !!c.pronunciation
+  const hasPronunciation = (c: TCharObj) => !!c.pronunciation
   const originalCharsWithPronunciation = originalCharsObjs.filter(
     hasPronunciation
   )

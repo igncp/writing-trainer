@@ -53,7 +53,7 @@
     "webpack-cli": "^3.3.1"
   },
   "typeCoverage": {
-    "atLeast": 99
+    "atLeast": 100
   },
   "husky": {
     "hooks": {

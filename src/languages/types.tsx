@@ -1,6 +1,6 @@
 import React from 'react'
 
-export interface T_CharObj {
+export interface TCharObj {
   index: number
   pronunciation: string
   word: string
@@ -20,7 +20,7 @@ export type T_convertToCharsObjs = (opts: {
   pronunciation: string
   text: string
   charsToRemove: string
-}) => T_CharObj[]
+}) => TCharObj[]
 
 export type T_getPronunciationOfText = (opts: {
   text: string
@@ -30,8 +30,8 @@ export type T_getPronunciationOfText = (opts: {
 export type T_getFilteredTextToPracticeFn = (s: string) => (s: string) => string
 
 export type T_handleWritingKeyDown = (opts: {
-  charsObjs: T_CharObj[]
-  currentCharObj: T_CharObj
+  charsObjs: TCharObj[]
+  currentCharObj: TCharObj
   keyEvent: React.KeyboardEvent<HTMLTextAreaElement>
   languageOptions: TLanguageOptions
   originalTextValue: string

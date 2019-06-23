@@ -1,18 +1,18 @@
 import React, { useEffect, useRef } from 'react'
 
-import { T_CharObj } from '#/languages/types'
+import { TCharObj } from '#/languages/types'
 
 const CHAR_WIDTH = 55
 const MAX_HEIGHT = 160
 
 export type T_CharsDisplayClickHandler = (opts: {
-  charObj: T_CharObj
-  charsObjs: T_CharObj[]
+  charObj: TCharObj
+  charsObjs: TCharObj[]
   index: number
 }) => void
 
 type TCharactersDisplay = React.FC<{
-  charsObjs: T_CharObj[]
+  charsObjs: TCharObj[]
   focusedIndex?: number
   onCharClick: T_CharsDisplayClickHandler
   shouldHidePronunciation: boolean
@@ -31,7 +31,7 @@ const CharactersDisplay: TCharactersDisplay = ({
       return () => {}
     }
 
-    const charEl: any = wrapperRef.current.childNodes[focusedIndex]
+    const charEl = wrapperRef.current.childNodes[focusedIndex] as HTMLDivElement
 
     if (!charEl) {
       return () => {}
