@@ -7,24 +7,35 @@ import {
   HOVERED_COMP_OPACITY,
 } from '#/utils/ui'
 
+const noop = () => {}
+
 type TButton = React.FC<{
   children: React.ReactNode
+  disabled?: boolean
   href?: string
   onClick?(): void
   shouldUseLink?: boolean
   style?: React.CSSProperties
 }>
 
-const Button: TButton = ({ onClick, children, shouldUseLink, href, style }) => {
+const Button: TButton = ({
+  children,
+  disabled,
+  href,
+  onClick,
+  shouldUseLink,
+  style,
+}) => {
   const { hovered, bind } = useHover()
   const finalStyle = {
     color: 'black',
-    cursor: 'pointer',
+    cursor: disabled ? 'default' : 'pointer',
     display: 'inline-block',
     fontSize: 20,
-    opacity: hovered ? HOVERED_COMP_OPACITY : DIM_COMP_OPACITY,
+    opacity: hovered && !disabled ? HOVERED_COMP_OPACITY : DIM_COMP_OPACITY,
     padding: 10,
     textDecoration: 'none',
+    textShadow: disabled ? '1px 1px 5px blue' : '',
     transition: COMP_TRANSITION,
     ...style,
   }
@@ -44,7 +55,7 @@ const Button: TButton = ({ onClick, children, shouldUseLink, href, style }) => {
   }
 
   return (
-    <div {...bind} onClick={onClick} style={finalStyle}>
+    <div {...bind} onClick={disabled ? noop : onClick} style={finalStyle}>
       {children}
     </div>
   )

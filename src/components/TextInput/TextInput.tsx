@@ -20,7 +20,7 @@ const TextInput: TextInput = ({
       type="text"
       style={{
         border: 'none',
-        borderBottom: '1px solid black',
+        borderBottom: '1px solid #777',
         outline: 'none',
         padding: 5,
         ...style,

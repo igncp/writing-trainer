@@ -24,11 +24,7 @@ Only one language supported for this version: Mandarin
 
 ### Infrastructure
 
-- [ ] Setup Travis to run prepush hook
-- [ ] Setup project badges
 - [ ] Setup Stylelint: Delayed because using inline-styles
-- [ ] Setup Dockerfile for Sonar scanner (in addition to server)
-- [ ] Setup Dockerfile with Chrome Headless: not possible to install extension, only for Storybook
 
 ### Refactor
 
@@ -37,7 +33,7 @@ Only one language supported for this version: Mandarin
 
 ### Ideas
 
-- [ ] Netlify to serve static Storybook + Coverage
+- [ ] Export / Import saved entries to file
 - [ ] Instead of shortcut, use long key press for toggling in panel
 - [ ] Add user guide and tutorial points
 - [ ] Add animation in main README.md

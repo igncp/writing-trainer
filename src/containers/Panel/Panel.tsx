@@ -131,11 +131,11 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation, _stories }) => {
     text: originalTextValue,
   })
 
-  const getCurrentCharObjFromPractice = () => {
+  const getCurrentCharObjFromPractice = (practiceText = practiceValue) => {
     const practiceCharsObjs = convertToCharsObjs({
       charsToRemove: specialCharsValue + SPECIAL_CHARS,
       pronunciation: pronunciationValue,
-      text: practiceValue,
+      text: practiceText,
     })
 
     return getCurrentCharObj({
@@ -147,14 +147,12 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation, _stories }) => {
   useEffect(() => {
     const currentCharObj = getCurrentCharObjFromPractice()
 
-    if (!currentCharObj) {
-      return () => {}
+    if (currentCharObj) {
+      setCurrentDisplayCharIdx(currentCharObj.index)
     }
 
-    setCurrentDisplayCharIdx(currentCharObj.index)
-
     return () => {}
-  }, [practiceValue])
+  }, [practiceValue, pronunciationValue])
 
   useEffect(() => {
     const handleShortcuts = (e: KeyboardEvent) => {
@@ -202,7 +200,15 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation, _stories }) => {
     e: React.KeyboardEvent<HTMLTextAreaElement>
   ) => {
     if (e.key === 'Backspace' && writingValue.length === 0) {
-      setPractice(practiceValue.slice(0, practiceValue.length - 1))
+      const newPracticeText = practiceValue.slice(0, practiceValue.length - 1)
+      setPractice(newPracticeText)
+      const newCurrentCharObj = getCurrentCharObjFromPractice(newPracticeText)
+
+      if (newCurrentCharObj) {
+        setCurrentDisplayCharIdx(newCurrentCharObj.index)
+      }
+
+      return
     }
 
     // special key

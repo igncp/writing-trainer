@@ -3,7 +3,13 @@ import { copyTextToClipboard, getSelectedText } from '../general'
 beforeEach(() => {
   window.getSelection = jest.fn()
   document.execCommand = jest.fn()
+
   jest.spyOn(document, 'createElement')
+})
+
+afterEach(() => {
+  // tslint:disable-next-line semicolon
+  ;(document as any).createElement.mockRestore()
 })
 
 describe('utils/general', () => {

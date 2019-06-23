@@ -38,17 +38,21 @@ const CharactersDisplay: TCharactersDisplay = ({
     }
 
     const { scrollTop } = wrapperRef.current
-    const { top, height } = charEl.getBoundingClientRect()
+    const { offsetTop } = charEl
+    const { height } = charEl.getBoundingClientRect()
 
-    if (top + height > scrollTop + MAX_HEIGHT) {
-      wrapperRef.current.scrollTop = top + height - MAX_HEIGHT
-    } else if (top < scrollTop) {
-      wrapperRef.current.scrollTop = top
+    if (offsetTop + height > scrollTop + MAX_HEIGHT) {
+      wrapperRef.current.scrollTop = offsetTop + height - MAX_HEIGHT
+    } else if (offsetTop < scrollTop) {
+      wrapperRef.current.scrollTop = offsetTop
     }
   }, [focusedIndex])
 
   return (
-    <div style={{ maxHeight: MAX_HEIGHT, overflow: 'auto' }} ref={wrapperRef}>
+    <div
+      style={{ maxHeight: MAX_HEIGHT, overflow: 'auto', position: 'relative' }}
+      ref={wrapperRef}
+    >
       {charsObjs.map((charObj, index) => {
         const { word, pronunciation } = charObj
 
@@ -57,6 +61,7 @@ const CharactersDisplay: TCharactersDisplay = ({
             style={{
               cursor: pronunciation ? 'pointer' : 'default',
               display: 'inline-block',
+              marginBottom: 10,
               opacity: index === focusedIndex ? 1 : 0.5,
             }}
             key={`${index}${charObj.word}`}
@@ -71,8 +76,9 @@ const CharactersDisplay: TCharactersDisplay = ({
           >
             <div
               style={{
-                height: 20,
-                marginBottom: 5,
+                fontSize: 13,
+                height: 10,
+                marginBottom: 1,
                 textAlign: 'center',
                 width: CHAR_WIDTH,
               }}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { getSelectedText } from './general'
 
@@ -40,4 +40,17 @@ export const useHover = () => {
     },
     hovered,
   }
+}
+
+export const useBodyOverflowSwitch = (switchValue: boolean): void => {
+  const bodyOverflow = useRef<string>('')
+
+  useEffect(() => {
+    if (switchValue) {
+      bodyOverflow.current = document.body.style.overflow || ''
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = bodyOverflow.current || ''
+    }
+  }, [switchValue])
 }

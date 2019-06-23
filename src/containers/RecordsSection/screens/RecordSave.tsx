@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import Button from '#/components/Button/Button'
 import TextInput from '#/components/TextInput/TextInput'
+import getCurrentUrl from '#/services/getCurrentUrl'
 
 export interface RecordToSave {
   name: string
@@ -13,12 +14,30 @@ type RecordSave = React.FC<{
 }>
 
 const RecordSave: RecordSave = ({ onRecordSave }) => {
-  const [recordName, setRecordName] = useState('')
-  const [recordLink, setRecordLink] = useState('')
+  const [recordName, setRecordName] = useState<string>('')
+  const [recordLink, setRecordLink] = useState<string>('')
+  const [currentUrl, setCurrentUrl] = useState<string>('')
   const linkInputRef = useRef<HTMLInputElement>()
 
+  useEffect(() => {
+    getCurrentUrl()
+      .then(newCurrentUrl => {
+        setCurrentUrl(newCurrentUrl)
+        setRecordLink(newCurrentUrl)
+      })
+      .catch((e: Error) => {
+        console.log(e)
+      })
+  }, [])
+
+  if (!currentUrl) {
+    return null
+  }
+
+  const isSaveButtonDisabled = !recordName
+
   const handleRecordSave = () => {
-    if (recordName) {
+    if (!isSaveButtonDisabled) {
       onRecordSave({
         link: recordLink.trim(),
         name: recordName,
@@ -27,7 +46,7 @@ const RecordSave: RecordSave = ({ onRecordSave }) => {
   }
 
   return (
-    <div>
+    <React.Fragment>
       <div>
         <div style={{ padding: 10 }}>
           Name:{' '}
@@ -39,7 +58,9 @@ const RecordSave: RecordSave = ({ onRecordSave }) => {
                 setRecordName(e.target.value)
               }}
               onEnterPress={() => {
-                linkInputRef.current.focus()
+                if (recordName) {
+                  linkInputRef.current.focus()
+                }
               }}
             />
           </span>
@@ -59,9 +80,11 @@ const RecordSave: RecordSave = ({ onRecordSave }) => {
         </div>
       </div>
       <div>
-        <Button onClick={handleRecordSave}>Save</Button>
+        <Button onClick={handleRecordSave} disabled={isSaveButtonDisabled}>
+          Save
+        </Button>
       </div>
-    </div>
+    </React.Fragment>
   )
 }
 

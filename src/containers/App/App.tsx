@@ -6,7 +6,7 @@ import getCurrentUrl from '#/services/getCurrentUrl'
 import log from '#/services/log'
 import storage from '#/services/storage'
 import { STORAGE_ENABLED_PAGES_KEY } from '#/utils/constants'
-import { useTextSelection } from '#/utils/hooks'
+import { useBodyOverflowSwitch, useTextSelection } from '#/utils/hooks'
 
 const getIsCurrentPageEnabled = (currentUrl: string, enabledPages: string) => {
   const pagesList = enabledPages
@@ -50,6 +50,8 @@ const App: App = ({ onAppEnabledResult }) => {
       log('ERROR', e)
     })
   }, [])
+
+  useBodyOverflowSwitch(shouldShowPanel)
 
   useTextSelection(isExtensionEnabled, (textSelected: string) => {
     const parsedText = textSelected.trim()

@@ -1,11 +1,13 @@
 import React from 'react'
 import { fireEvent, render } from 'react-testing-library'
 
+import { DIM_COMP_OPACITY, HOVERED_COMP_OPACITY } from '#/utils/ui'
+
 import Button from '../Button'
 
 const commonProps = {
   children: 'Test Content',
-  onClick: () => {},
+  onClick: jest.fn(),
 }
 
 describe('Button', () => {
@@ -41,10 +43,34 @@ describe('Button', () => {
 
     const linkEl = baseElement.querySelector('a')
 
-    expect(linkEl.style.opacity).toEqual('0.2')
+    expect(linkEl.style.opacity).toEqual(DIM_COMP_OPACITY.toString())
 
     fireEvent.mouseEnter(linkEl)
 
-    expect(linkEl.style.opacity).toEqual('0.7')
+    expect(linkEl.style.opacity).toEqual(HOVERED_COMP_OPACITY.toString())
+  })
+
+  it('click has no effect when disabled', () => {
+    const { baseElement } = render(<Button {...commonProps} disabled />)
+
+    const el: HTMLDivElement = baseElement.querySelector('div')
+
+    expect(commonProps.onClick.mock.calls.length).toEqual(0)
+
+    fireEvent.click(el.childNodes[0] as any)
+
+    expect(commonProps.onClick.mock.calls.length).toEqual(0)
+  })
+
+  it('click has effect when not disabled', () => {
+    const { baseElement } = render(<Button {...commonProps} />)
+
+    const el: HTMLDivElement = baseElement.querySelector('div')
+
+    expect(commonProps.onClick.mock.calls.length).toEqual(0)
+
+    fireEvent.click(el.childNodes[0] as any)
+
+    expect(commonProps.onClick.mock.calls.length).toEqual(1)
   })
 })

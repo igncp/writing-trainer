@@ -5,5 +5,10 @@ import * as React from 'react'
 import RecordSave from '../RecordSave'
 
 storiesOf('Containers|RecordSave', module).add('common', () => {
-  return <RecordSave onRecordSave={action('onRecordSave')} />
+  return (
+    <React.Fragment>
+      <p>The link will automatically default to the current URL</p>
+      <RecordSave onRecordSave={action('onRecordSave')} />
+    </React.Fragment>
+  )
 })
