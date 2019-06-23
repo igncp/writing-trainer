@@ -7,7 +7,7 @@ rm -rf node_modules
 npm ci
 
 npm test -- --coverage
-npm run build-storybook
+npm run build-storybook > /dev/null 2>&1
 
 rm -rf dist
 
