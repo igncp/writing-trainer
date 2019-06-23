@@ -4,7 +4,7 @@ import { getPronunciationOfTextFn } from '#/languages/common/commonLanguageUtils
 import {
   T_convertToCharsObjs,
   T_getFilteredTextToPracticeFn,
-  T_getWritingKeyDownHandler,
+  T_handleWritingKeyDown,
 } from '#/languages/types'
 
 import { LETTERS_AND_NUMBERS, SPECIAL_CHARS } from '../common/specialCharacters'
@@ -52,30 +52,31 @@ export const convertToCharsObjs: T_convertToCharsObjs = ({
 }) => {
   const pronunciationArr = pronunciation.split(' ').filter((c: string) => !!c)
   const textSegments = text.split('').filter(c => !!c)
-  const textSegmentsFiltered = textSegments.filter(
-    c => charsToRemove.indexOf(c) === -1
-  )
-
-  if (pronunciationArr.length !== textSegmentsFiltered.length) {
-    return []
-  }
 
   let pronunciationIdxOffset = 0
+  const charsObjs = []
 
-  return textSegments.map((segment, idx) => {
+  for (let index = 0; index < textSegments.length; index += 1) {
     let pronunciationItem = ''
+    const segment = textSegments[index]
 
     if (charsToRemove.indexOf(segment) === -1) {
-      pronunciationItem = pronunciationArr[idx + pronunciationIdxOffset]
+      pronunciationItem =
+        pronunciationArr[
+          (index + pronunciationIdxOffset) % pronunciationArr.length
+        ]
     } else {
       pronunciationIdxOffset -= 1
     }
 
-    return {
+    charsObjs.push({
+      index,
       pronunciation: pronunciationItem,
       word: segment,
-    }
-  })
+    })
+  }
+
+  return charsObjs
 }
 
 export const getPronunciationOfText = getPronunciationOfTextFn({
@@ -144,9 +145,10 @@ export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
   }
 }
 
-export const getWritingKeyDownHandler: T_getWritingKeyDownHandler = ({
+export const handleWritingKeyDown: T_handleWritingKeyDown = ({
   charsObjs,
-  getCurrentPracticeWord,
+  currentCharObj,
+  keyEvent,
   languageOptions,
   originalTextValue,
   practiceValue,
@@ -155,69 +157,30 @@ export const getWritingKeyDownHandler: T_getWritingKeyDownHandler = ({
   setWriting,
   specialCharsValue,
   writingValue,
-}) => e => {
-  if (e.key === 'Backspace' && writingValue.length === 0) {
-    setPractice(practiceValue.slice(0, practiceValue.length - 1))
-  }
-
-  // special key
-  if (e.key === '`') {
-    e.preventDefault()
-    setWriting('')
-    setPracticeHasError(false)
-
-    return
-  }
-
-  if (e.key === 'Enter') {
-    setPractice(`${practiceValue}\n`)
-  }
-
+}) => {
   // including capital letters so it doesn't write when shortcut
-  if (!/[a-z0-9A-Z]/.test(e.key)) {
-    e.preventDefault()
+  if (!/[a-z0-9A-Z]/.test(keyEvent.key)) {
+    keyEvent.preventDefault()
 
-    setPractice(practiceValue + e.key)
-
-    return
-  }
-
-  const currentPracticeWord = getCurrentPracticeWord({
-    extractFn: getFilteredTextToPracticeFn,
-    origText: originalTextValue,
-    practiceText: practiceValue,
-    specialChars: specialCharsValue,
-  })
-
-  if (!currentPracticeWord) {
-    setPracticeHasError(false)
+    setPractice(practiceValue + keyEvent.key)
 
     return
   }
 
-  const currentCharObj = charsObjs.find(ch => ch.word === currentPracticeWord)
-
-  if (!currentCharObj) {
-    console.warn('missing char obj')
-    setPracticeHasError(false)
+  if (keyEvent.key.length !== 1 && keyEvent.key !== 'Backspace') {
+    keyEvent.preventDefault()
 
     return
   }
 
-  if (e.key.length !== 1 && e.key !== 'Backspace') {
-    e.preventDefault()
-
-    return
-  }
-
-  e.preventDefault()
+  keyEvent.preventDefault()
 
   const { pronunciation: correctPronunciation } = currentCharObj
 
   const newWritingValue =
-    e.key === 'Backspace'
+    keyEvent.key === 'Backspace'
       ? writingValue.slice(0, writingValue.length - 1)
-      : writingValue + e.key
+      : writingValue + keyEvent.key
 
   const { tonesValue } = languageOptions as T_MandarinLanguageOptions
   const parsedCorrectPronunciation =

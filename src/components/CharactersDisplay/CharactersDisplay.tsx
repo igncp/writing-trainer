@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 
 import { T_CharObj } from '#/languages/types'
 
 const CHAR_WIDTH = 55
+const MAX_HEIGHT = 160
 
 export type T_CharsDisplayClickHandler = (opts: {
   charObj: T_CharObj
@@ -12,17 +13,42 @@ export type T_CharsDisplayClickHandler = (opts: {
 
 type TCharactersDisplay = React.FC<{
   charsObjs: T_CharObj[]
+  focusedIndex?: number
   onCharClick: T_CharsDisplayClickHandler
   shouldHidePronunciation: boolean
 }>
 
 const CharactersDisplay: TCharactersDisplay = ({
   charsObjs,
+  focusedIndex,
   onCharClick,
   shouldHidePronunciation,
 }) => {
+  const wrapperRef = useRef<HTMLDivElement>()
+
+  useEffect(() => {
+    if (!wrapperRef.current || !wrapperRef.current.childNodes) {
+      return () => {}
+    }
+
+    const charEl: any = wrapperRef.current.childNodes[focusedIndex]
+
+    if (!charEl) {
+      return () => {}
+    }
+
+    const { scrollTop } = wrapperRef.current
+    const { top, height } = charEl.getBoundingClientRect()
+
+    if (top + height > scrollTop + MAX_HEIGHT) {
+      wrapperRef.current.scrollTop = top + height - MAX_HEIGHT
+    } else if (top < scrollTop) {
+      wrapperRef.current.scrollTop = top
+    }
+  }, [focusedIndex])
+
   return (
-    <div style={{ maxHeight: 160, overflow: 'auto' }}>
+    <div style={{ maxHeight: MAX_HEIGHT, overflow: 'auto' }} ref={wrapperRef}>
       {charsObjs.map((charObj, index) => {
         const { word, pronunciation } = charObj
 
@@ -31,6 +57,7 @@ const CharactersDisplay: TCharactersDisplay = ({
             style={{
               cursor: pronunciation ? 'pointer' : 'default',
               display: 'inline-block',
+              opacity: index === focusedIndex ? 1 : 0.5,
             }}
             key={`${index}${charObj.word}`}
             onClick={e => {

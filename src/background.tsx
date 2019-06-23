@@ -1,8 +1,4 @@
-import { MessageType } from '#/utils/constants'
-
-interface Message {
-  type: MessageType
-}
+import { Message, MessageType } from '#/utils/constants'
 
 chrome.runtime.onMessage.addListener(
   (
@@ -11,7 +7,13 @@ chrome.runtime.onMessage.addListener(
     sendResponse: (v: unknown) => void
   ): boolean => {
     if (content.type === MessageType.RequestUrl) {
-      chrome.tabs.query({ active: true }, tabs => {
+      chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
+        if (!tabs.length) {
+          sendResponse('')
+
+          return
+        }
+
         sendResponse(tabs[0].url)
       })
 

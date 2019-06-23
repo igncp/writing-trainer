@@ -9,6 +9,12 @@ const { privateFns } = _test
 
 const origPrivateFns = { ...privateFns }
 
+type T_addIndexOnMap = <O extends object>(
+  o: O,
+  index: number
+) => O & { index: number }
+const addIndexOnMap: T_addIndexOnMap = (o, index) => ({ ...o, index })
+
 beforeEach(() => {
   Object.keys(origPrivateFns).forEach(fnName => {
     // tslint:disable-next-line semicolon
@@ -36,6 +42,7 @@ describe('mandarinUtils', () => {
 
     it('sends once form when single item', () => {
       const charObj = {
+        index: 0,
         pronunciation: 'foo',
         word: 'Foo',
       }
@@ -48,12 +55,13 @@ describe('mandarinUtils', () => {
 
     it('sends twice form when last item', () => {
       const charObj = {
+        index: 1,
         pronunciation: 'foo',
         word: 'Foo',
       }
       handleDisplayedCharClick({
         charObj,
-        charsObjs: [{ word: 'bar', pronunciation: 'b' }, charObj],
+        charsObjs: [{ word: 'bar', pronunciation: 'b', index: 0 }, charObj],
         index: 1,
       })
 
@@ -65,12 +73,13 @@ describe('mandarinUtils', () => {
 
     it('sends twice form when first item', () => {
       const charObj = {
+        index: 0,
         pronunciation: 'foo',
         word: 'Foo',
       }
       handleDisplayedCharClick({
         charObj,
-        charsObjs: [charObj, { word: 'baz', pronunciation: 'BAM' }],
+        charsObjs: [charObj, { word: 'baz', pronunciation: 'BAM', index: 1 }],
         index: 0,
       })
 
@@ -82,15 +91,16 @@ describe('mandarinUtils', () => {
 
     it('sends form three times when middle item', () => {
       const charObj = {
+        index: 1,
         pronunciation: 'foo',
         word: 'Foo',
       }
       handleDisplayedCharClick({
         charObj,
         charsObjs: [
-          { word: 'Bam', pronunciation: '1' },
+          { word: 'Bam', pronunciation: '1', index: 0 },
           charObj,
-          { word: 'baz', pronunciation: 'BAM' },
+          { word: 'baz', pronunciation: 'BAM', index: 2 },
         ],
         index: 1,
       })
@@ -104,16 +114,6 @@ describe('mandarinUtils', () => {
   })
 
   describe('convertToCharsObjs', () => {
-    it('returns empty array when no pronunciation', () => {
-      const result = convertToCharsObjs({
-        charsToRemove: '',
-        pronunciation: '',
-        text: 'foo',
-      })
-
-      expect(result).toEqual([])
-    })
-
     it('returns the expected array when valid', () => {
       const result = convertToCharsObjs({
         charsToRemove: '',
@@ -121,20 +121,22 @@ describe('mandarinUtils', () => {
         text: 'ABC',
       })
 
-      expect(result).toEqual([
-        {
-          pronunciation: 'foo',
-          word: 'A',
-        },
-        {
-          pronunciation: 'bar',
-          word: 'B',
-        },
-        {
-          pronunciation: 'baz',
-          word: 'C',
-        },
-      ])
+      expect(result).toEqual(
+        [
+          {
+            pronunciation: 'foo',
+            word: 'A',
+          },
+          {
+            pronunciation: 'bar',
+            word: 'B',
+          },
+          {
+            pronunciation: 'baz',
+            word: 'C',
+          },
+        ].map(addIndexOnMap)
+      )
     })
 
     it('returns the expected array when removing a char', () => {
@@ -144,20 +146,22 @@ describe('mandarinUtils', () => {
         text: 'ABC',
       })
 
-      expect(result).toEqual([
-        {
-          pronunciation: 'foo',
-          word: 'A',
-        },
-        {
-          pronunciation: '',
-          word: 'B',
-        },
-        {
-          pronunciation: 'bar',
-          word: 'C',
-        },
-      ])
+      expect(result).toEqual(
+        [
+          {
+            pronunciation: 'foo',
+            word: 'A',
+          },
+          {
+            pronunciation: '',
+            word: 'B',
+          },
+          {
+            pronunciation: 'bar',
+            word: 'C',
+          },
+        ].map(addIndexOnMap)
+      )
     })
   })
 

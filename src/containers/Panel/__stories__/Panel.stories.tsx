@@ -10,6 +10,19 @@ storiesOf('Containers|Panel', module)
       <Panel onHideRequest={action('hide-request')} text="崩比筆,壁必畢.閉編" />
     )
   })
+  .add('mandarin, long text', () => {
+    const text = Array.from({ length: 5 })
+      .map(() => '崩比筆,壁必畢.閉編')
+      .join('')
+
+    return (
+      <Panel
+        onHideRequest={action('hide-request')}
+        text={text}
+        _stories={{ defaultPractice: text.slice(0, text.length - 5) }}
+      />
+    )
+  })
   .add('japanese', () => {
     return (
       <Panel

@@ -1,5 +1,5 @@
 import React from 'react'
-import { render } from 'react-testing-library'
+import { fireEvent, render } from 'react-testing-library'
 
 import RecordsList from '../RecordsList'
 
@@ -32,5 +32,34 @@ describe('RecordsList', () => {
     expect(() => getByText(txt => /text value/.test(txt))).toThrow()
     expect(() => getByText(txt => /pronunciation value/.test(txt))).toThrow()
     expect(() => getByText(txt => /link value/.test(txt))).toThrow()
+  })
+
+  it('filters when updating text', () => {
+    const { container, getByText } = render(<RecordsList {...commonProps} />)
+
+    expect(() => getByText(txt => /name value/.test(txt))).not.toThrow()
+
+    // several filterings
+    ;[
+      ['name', true],
+      ['FOO', false],
+      ['name value', true],
+      ['name FOO', false],
+      ['name spanish', true],
+    ].forEach(([value, shouldDisplayItem]) => {
+      fireEvent.change(container.querySelector('input'), {
+        target: {
+          value,
+        },
+      })
+
+      const fn = () => getByText(txt => /name value/.test(txt))
+
+      if (shouldDisplayItem) {
+        expect(fn).not.toThrow()
+      } else {
+        expect(fn).toThrow()
+      }
+    })
   })
 })

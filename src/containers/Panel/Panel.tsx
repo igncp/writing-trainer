@@ -17,7 +17,7 @@ import {
 } from '#/languages/types'
 import storage from '#/services/storage'
 
-import { getCurrentPracticeWord } from './panelHelpers'
+import { getCurrentCharObj } from './panelHelpers'
 
 const STORAGE_LANGUAGE_KEY = 'selectedLanguage'
 
@@ -41,6 +41,7 @@ type TPanel = React.FC<{
   onHideRequest(): void
   pronunciation?: string
   _stories?: {
+    defaultPractice?: string
     defaultLanguage?: TLanguageId
   }
   text: string
@@ -56,7 +57,9 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation, _stories }) => {
   const [pronunciationValue, setPronunciation] = useState<string>('')
   const [specialCharsValue, setSpecialChars] = useState<string>('')
   const [writingValue, setWriting] = useState<string>('')
-  const [practiceValue, setPractice] = useState<string>('')
+  const [practiceValue, setPractice] = useState<string>(
+    _stories.defaultPractice || ''
+  )
   const [isShowingPronunciation, setShowingPronunciation] = useState<boolean>(
     true
   )
@@ -68,6 +71,7 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation, _stories }) => {
     TLanguageDefinition['id']
   >(_stories.defaultLanguage ? _stories.defaultLanguage : initialLanguageId)
   const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false)
+  const [currentDisplayCharIdx, setCurrentDisplayCharIdx] = useState<number>(0)
 
   const tryToUpdatePronunciation = (originalTextNewValue: string) => {
     const maybePronunciation = languageManager.getPronunciationOfText(
@@ -118,6 +122,40 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation, _stories }) => {
     updateLanguageWithStorage().catch(() => {})
   }, [])
 
+  const SPECIAL_CHARS = languageManager.getSpecialChars(selectedLanguage)
+  const convertToCharsObjs = languageManager.getCharsObjsConverter()
+
+  const charsObjs = convertToCharsObjs({
+    charsToRemove: specialCharsValue + SPECIAL_CHARS,
+    pronunciation: pronunciationValue,
+    text: originalTextValue,
+  })
+
+  const getCurrentCharObjFromPractice = () => {
+    const practiceCharsObjs = convertToCharsObjs({
+      charsToRemove: specialCharsValue + SPECIAL_CHARS,
+      pronunciation: pronunciationValue,
+      text: practiceValue,
+    })
+
+    return getCurrentCharObj({
+      originalCharsObjs: charsObjs,
+      practiceCharsObjs,
+    })
+  }
+
+  useEffect(() => {
+    const currentCharObj = getCurrentCharObjFromPractice()
+
+    if (!currentCharObj) {
+      return () => {}
+    }
+
+    setCurrentDisplayCharIdx(currentCharObj.index)
+
+    return () => {}
+  }, [practiceValue])
+
   useEffect(() => {
     const handleShortcuts = (e: KeyboardEvent) => {
       const value = e.key
@@ -140,15 +178,6 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation, _stories }) => {
     }
   }, [lastThreeKeys, isShowingEdition, isShowingPronunciation])
 
-  const SPECIAL_CHARS = languageManager.getSpecialChars(selectedLanguage)
-  const convertToCharsObjs = languageManager.getCharsObjsConverter()
-
-  const charsObjs = convertToCharsObjs({
-    charsToRemove: specialCharsValue + SPECIAL_CHARS,
-    pronunciation: pronunciationValue,
-    text: originalTextValue,
-  })
-
   const clearValues = () => {
     // tslint:disable-next-line semicolon
     ;[
@@ -169,18 +198,51 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation, _stories }) => {
     setSelectedLanguage(newSelectedLanguage)
   }
 
-  const handleWritingKeyDown = languageManager.getWritingKeyDownHandler({
-    charsObjs,
-    getCurrentPracticeWord,
-    languageOptions,
-    originalTextValue,
-    practiceValue,
-    setPractice,
-    setPracticeHasError,
-    setWriting,
-    specialCharsValue,
-    writingValue,
-  })
+  const handleWritingKeyDown = (
+    e: React.KeyboardEvent<HTMLTextAreaElement>
+  ) => {
+    if (e.key === 'Backspace' && writingValue.length === 0) {
+      setPractice(practiceValue.slice(0, practiceValue.length - 1))
+    }
+
+    // special key
+    if (e.key === '`') {
+      e.preventDefault()
+      setWriting('')
+      setPracticeHasError(false)
+
+      return
+    }
+
+    if (e.key === 'Enter') {
+      setPractice(`${practiceValue}\n`)
+    }
+
+    const currentCharObj = getCurrentCharObjFromPractice()
+
+    if (!currentCharObj) {
+      console.warn('missing char obj')
+      setPracticeHasError(false)
+
+      return
+    }
+
+    setCurrentDisplayCharIdx(currentCharObj.index)
+
+    languageManager.handleWritingKeyDown({
+      charsObjs,
+      currentCharObj,
+      keyEvent: e,
+      languageOptions,
+      originalTextValue,
+      practiceValue,
+      setPractice,
+      setPracticeHasError,
+      setWriting,
+      specialCharsValue,
+      writingValue,
+    })
+  }
 
   const handleLanguageOptionsChange = (opts: TLanguageOptions) => {
     setLanguageOptions(opts)
@@ -287,6 +349,7 @@ const Panel: TPanel = ({ onHideRequest, text, pronunciation, _stories }) => {
           <div style={{ marginTop: 5, marginBottom: 10 }}>
             <CharactersDisplay
               charsObjs={charsObjs}
+              focusedIndex={currentDisplayCharIdx}
               onCharClick={handleDisplayedCharClick}
               shouldHidePronunciation={!isShowingPronunciation}
             />

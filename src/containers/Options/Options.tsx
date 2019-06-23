@@ -21,6 +21,7 @@ const Options: Options = () => {
 
   const updateLanguageWithStorage = async () => {
     const enabledPages = await storage.getValue(STORAGE_ENABLED_PAGES_KEY)
+
     if (enabledPages) {
       setEnabledPagesValue(enabledPages)
       setSavedEnabledPagesValue(enabledPages)

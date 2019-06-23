@@ -6,20 +6,15 @@
 
 Only one language supported for this version: Mandarin
 
-- [x] Separate specific functionality in language packs
-- [x] Add Japanese
-  - no tones but pronunciation for Kanjis, Hiragana, Katakana
-- [x] Save in storage the latest language
-- [x] Ability to choose language
-- [ ] Have the ability to save, list, remove texts (no edit)
-- [ ] Disable all pages except the ones listed
+- [x] Automatically scroll the chars display when writing
+- [ ] Popup option to include this page into whitelisted pages
+- [ ] Complete functions for Japanese for `languageManager`
 
 ### Refactor
 
-- [x] Increase Jest coverage threshold to 20% in all metrics
-- [x] Standarize types naming: `T_` for functions, `T` for interfaces
-- [ ] Increase Jest coverage threshold to 30% in all metrics
+- [ ] Do a general round to detect performance bottle-necks
 - [ ] Minify and optimize build
+- [ ] Increase Jest coverage threshold to 40% in all metrics
 
 ## Backlog
 
@@ -44,3 +39,5 @@ Only one language supported for this version: Mandarin
 
 - [ ] Netlify to serve static Storybook + Coverage
 - [ ] Instead of shortcut, use long key press for toggling in panel
+- [ ] Add user guide and tutorial points
+- [ ] Add animation in main README.md

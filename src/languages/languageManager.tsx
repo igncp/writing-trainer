@@ -4,7 +4,7 @@ import {
   T_convertToCharsObjs,
   T_getFilteredTextToPracticeFn,
   T_getPronunciationOfText,
-  T_getWritingKeyDownHandler,
+  T_handleWritingKeyDown,
   TLanguageDefinition,
   TLanguageId,
   TLinksBlock,
@@ -32,7 +32,7 @@ interface LanguageManager {
     opts: Parameters<T_getPronunciationOfText>[0]
   ): ReturnType<T_getPronunciationOfText>
   getSpecialChars(id: TLanguageId): string
-  getWritingKeyDownHandler: T_getWritingKeyDownHandler
+  handleWritingKeyDown: T_handleWritingKeyDown
 }
 
 const languageManager: LanguageManager = {
@@ -110,7 +110,7 @@ const languageManager: LanguageManager = {
       languageMap[languageManager.getDefaultLanguage()]
     )
   },
-  getWritingKeyDownHandler: mandarinUtils.getWritingKeyDownHandler,
+  handleWritingKeyDown: mandarinUtils.handleWritingKeyDown,
 }
 
 export default languageManager

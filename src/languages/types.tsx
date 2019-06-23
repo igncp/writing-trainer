@@ -1,10 +1,9 @@
 import React from 'react'
 
-import { T_getCurrentPracticeWord } from '#/containers/Panel/panelHelpers'
-
 export interface T_CharObj {
-  word: string
+  index: number
   pronunciation: string
+  word: string
 }
 
 export type TLanguageOptions = object
@@ -21,10 +20,7 @@ export type T_convertToCharsObjs = (opts: {
   pronunciation: string
   text: string
   charsToRemove: string
-}) => Array<{
-  word: string
-  pronunciation: string
-}>
+}) => T_CharObj[]
 
 export type T_getPronunciationOfText = (opts: {
   text: string
@@ -33,9 +29,10 @@ export type T_getPronunciationOfText = (opts: {
 
 export type T_getFilteredTextToPracticeFn = (s: string) => (s: string) => string
 
-export type T_getWritingKeyDownHandler = (opts: {
+export type T_handleWritingKeyDown = (opts: {
   charsObjs: T_CharObj[]
-  getCurrentPracticeWord: T_getCurrentPracticeWord
+  currentCharObj: T_CharObj
+  keyEvent: React.KeyboardEvent<HTMLTextAreaElement>
   languageOptions: TLanguageOptions
   originalTextValue: string
   practiceValue: string
@@ -44,7 +41,7 @@ export type T_getWritingKeyDownHandler = (opts: {
   setWriting(o: string): void
   specialCharsValue: string
   writingValue: string
-}) => (e: React.KeyboardEvent<HTMLTextAreaElement>) => void
+}) => void
 
 export interface TLanguageDefinition {
   id: string

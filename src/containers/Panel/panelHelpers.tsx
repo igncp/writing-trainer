@@ -1,50 +1,41 @@
-type T_getIsParsedPracticeTextValid = (opts: {
-  practiceText: string
-  origText: string
-}) => boolean
+import { T_CharObj } from '#/languages/types'
 
-const getIsParsedPracticeTextValid: T_getIsParsedPracticeTextValid = ({
-  practiceText,
-  origText,
+export type T_getCurrentCharObj = (opts: {
+  originalCharsObjs: T_CharObj[]
+  practiceCharsObjs: T_CharObj[]
+}) => T_CharObj | null
+
+export const getCurrentCharObj: T_getCurrentCharObj = ({
+  originalCharsObjs,
+  practiceCharsObjs,
 }) => {
-  return practiceText.split('').reduce((acc, ch, idx) => {
-    if (!acc) {
-      return acc
+  const hasPronunciation = (c: T_CharObj) => !!c.pronunciation
+  const originalCharsWithPronunciation = originalCharsObjs.filter(
+    hasPronunciation
+  )
+  const practiceCharsWithPronunciation = practiceCharsObjs.filter(
+    hasPronunciation
+  )
+
+  for (
+    let practiceIndex = 0;
+    practiceIndex < practiceCharsWithPronunciation.length;
+    practiceIndex += 1
+  ) {
+    const expectedChar =
+      originalCharsWithPronunciation[
+        practiceIndex % originalCharsWithPronunciation.length
+      ]
+
+    if (
+      expectedChar.word !== practiceCharsWithPronunciation[practiceIndex].word
+    ) {
+      return expectedChar
     }
-
-    if (ch !== origText[idx % origText.length]) {
-      return false
-    }
-
-    return acc
-  }, true)
-}
-
-export type T_getCurrentPracticeWord = (opts: {
-  origText: string
-  practiceText: string
-  specialChars: string
-  extractFn(s: string): (s: string) => string
-}) => string | null
-
-export const getCurrentPracticeWord: T_getCurrentPracticeWord = ({
-  origText,
-  practiceText,
-  specialChars,
-  extractFn,
-}) => {
-  const getChineseCharsOnlyText = extractFn(specialChars)
-  const usedOrigText = getChineseCharsOnlyText(origText)
-  const usedPracticeText = getChineseCharsOnlyText(practiceText)
-
-  const isValid = getIsParsedPracticeTextValid({
-    origText: usedOrigText,
-    practiceText: usedPracticeText,
-  })
-
-  if (!isValid) {
-    return null
   }
 
-  return usedOrigText[usedPracticeText.length % usedOrigText.length]
+  return originalCharsWithPronunciation[
+    practiceCharsWithPronunciation.length %
+      originalCharsWithPronunciation.length
+  ]
 }
