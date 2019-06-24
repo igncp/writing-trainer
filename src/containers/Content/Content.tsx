@@ -3,9 +3,14 @@ import React, { useEffect, useState } from 'react'
 import PanelTrigger from '#/components/PanelTrigger/PanelTrigger'
 import Panel from '#/containers/Panel/Panel'
 import getCurrentUrl from '#/services/getCurrentUrl'
+import listenToRuntimeMessage from '#/services/listenToRuntimeMessage'
 import log from '#/services/log'
 import storage from '#/services/storage'
-import { STORAGE_ENABLED_PAGES_KEY } from '#/utils/constants'
+import {
+  Message,
+  MessageType,
+  STORAGE_ENABLED_PAGES_KEY,
+} from '#/utils/constants'
 import { useBodyOverflowSwitch, useTextSelection } from '#/utils/hooks'
 
 const getIsCurrentPageEnabled = (currentUrl: string, enabledPages: string) => {
@@ -21,11 +26,11 @@ const getIsCurrentPageEnabled = (currentUrl: string, enabledPages: string) => {
   })
 }
 
-type App = React.FC<{
-  onAppEnabledResult?(r: boolean): void
+type Content = React.FC<{
+  onContentEnabledResult?(r: boolean): void
 }>
 
-const App: App = ({ onAppEnabledResult }) => {
+const Content: Content = ({ onContentEnabledResult }) => {
   const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false)
   const [isExtensionEnabled, setIsExtensionEnabled] = useState<boolean>(false)
   const [shouldShowPanel, showPanel] = useState<boolean>(false)
@@ -36,11 +41,11 @@ const App: App = ({ onAppEnabledResult }) => {
       storage.getValue(STORAGE_ENABLED_PAGES_KEY),
       getCurrentUrl(),
     ])
-    const isAppEnabled = getIsCurrentPageEnabled(currentUrl, enabledPages)
+    const isContentEnabled = getIsCurrentPageEnabled(currentUrl, enabledPages)
 
-    setIsExtensionEnabled(isAppEnabled)
-    if (onAppEnabledResult) {
-      onAppEnabledResult(isAppEnabled)
+    setIsExtensionEnabled(isContentEnabled)
+    if (onContentEnabledResult) {
+      onContentEnabledResult(isContentEnabled)
     }
     setHasLoadedStorage(true)
   }
@@ -49,6 +54,20 @@ const App: App = ({ onAppEnabledResult }) => {
     updateLanguageWithStorage().catch((e: Error) => {
       log('ERROR', e)
     })
+  }, [])
+
+  useEffect(() => {
+    listenToRuntimeMessage(
+      (message: Message, _, sendResponse: (v: boolean) => void) => {
+        if (message.type === MessageType.EnableOnce && !isExtensionEnabled) {
+          setIsExtensionEnabled(true)
+
+          return true
+        }
+
+        return false
+      }
+    )
   }, [])
 
   useBodyOverflowSwitch(shouldShowPanel)
@@ -87,4 +106,4 @@ const App: App = ({ onAppEnabledResult }) => {
   )
 }
 
-export default App
+export default Content

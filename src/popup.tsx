@@ -1,20 +1,14 @@
-let changeColor = document.getElementById('changeColor')
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-interface TData {
-  color: string
+import Popup from '#/containers/Popup/Popup'
+
+const main = () => {
+  const div = document.createElement('div')
+
+  document.body.prepend(div)
+
+  ReactDOM.render(<Popup />, div)
 }
 
-chrome.storage.sync.get('color', (data: TData) => {
-  changeColor.style.backgroundColor = data.color
-  changeColor.setAttribute('value', data.color)
-})
-
-changeColor.onclick = (element: MouseEvent) => {
-  const color: string = (element.target as HTMLButtonElement).value
-
-  chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-    chrome.tabs.executeScript(tabs[0].id, {
-      code: `document.body.style.backgroundColor = "${color}";`,
-    })
-  })
-}
+setTimeout(main, 100)

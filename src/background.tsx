@@ -1,10 +1,11 @@
+import listenToRuntimeMessage from '#/services/listenToRuntimeMessage'
 import { Message, MessageType } from '#/utils/constants'
 
-chrome.runtime.onMessage.addListener(
+listenToRuntimeMessage(
   (
     content: Message,
     sender: unknown,
-    sendResponse: (v: unknown) => void
+    sendResponse: (v: string) => void
   ): boolean => {
     if (content.type === MessageType.RequestUrl) {
       chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
@@ -21,3 +22,8 @@ chrome.runtime.onMessage.addListener(
     }
   }
 )
+
+// this enables the popup
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  chrome.pageAction.show(tabId)
+})

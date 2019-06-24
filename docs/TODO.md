@@ -7,8 +7,9 @@
 Only one language supported for this version: Mandarin
 
 - [x] Automatically scroll the chars display when writing
-- [ ] Popup option to include this page into whitelisted pages
+- [x] Popup option to include this page into whitelisted pages
 - [ ] Complete functions for Japanese for `languageManager`
+- [ ] Export / Import saved records to file
 
 ### Refactor
 
@@ -33,7 +34,6 @@ Only one language supported for this version: Mandarin
 
 ### Ideas
 
-- [ ] Export / Import saved entries to file
 - [ ] Instead of shortcut, use long key press for toggling in panel
 - [ ] Add user guide and tutorial points
 - [ ] Add animation in main README.md

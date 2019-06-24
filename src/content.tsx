@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import App from '#/containers/App/App'
+import Content from '#/containers/Content/Content'
 import log from '#/services/log'
 
 const main = () => {
@@ -10,8 +10,8 @@ const main = () => {
   document.body.prepend(div)
 
   ReactDOM.render(
-    <App
-      onAppEnabledResult={result => {
+    <Content
+      onContentEnabledResult={result => {
         log('ENABLED', result)
       }}
     />,
