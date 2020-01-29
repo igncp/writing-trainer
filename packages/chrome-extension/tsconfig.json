@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "jsx": "react",
+    "module": "ES2015",
+    "moduleResolution": "node",
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "outDir": "dist/js",
+    "paths": {
+      "#/*": ["src/*"]
+    },
+    "rootDir": ".",
+    "sourceMap": false,
+    "target": "es5",
+    "typeRoots": ["node_modules/@types", "src/typings"]
+  },
+  "include": ["**/*.js", "**/*.ts", "**/*.tsx", ".storybook/**/*.js"]
+}

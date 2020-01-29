@@ -1,0 +1,6 @@
+.untracked
+dist
+coverage
+.scannerwork
+sonar-token.txt
+node_modules

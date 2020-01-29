@@ -1,0 +1,1 @@
+console.info = jest.fn()
