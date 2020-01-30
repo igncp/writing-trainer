@@ -4,6 +4,7 @@ import { fireEvent, render } from 'react-testing-library'
 import RecordsList from '../RecordsList'
 
 const commonProps = {
+  onRecordEdit: jest.fn(),
   onRecordLoad: jest.fn(),
   onRecordRemove: jest.fn(),
   records: [

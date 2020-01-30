@@ -1,8 +1,7 @@
 import { action } from '@storybook/addon-actions'
 import { storiesOf } from '@storybook/react'
 import * as React from 'react'
-
-import { Record } from '../../recordsTypes'
+import { records as coreRecords } from 'writing-trainer-core'
 
 import RecordsList from '../RecordsList'
 
@@ -19,7 +18,7 @@ const createRandomStr = () => {
   return result
 }
 
-const records: Record[] = []
+const records: coreRecords.T_Record[] = []
 
 const HOURS_10_IN_MS = 1000 * 60 * 60 * 10
 
@@ -39,9 +38,10 @@ for (let x = 0; x <= 50; x++) {
 storiesOf('Containers|RecordsList', module).add('common', () => {
   return (
     <RecordsList
-      records={records}
-      onRecordRemove={action('onRecordRemove')}
+      onRecordEdit={action('onRecordEdit')}
       onRecordLoad={action('onRecordLoad')}
+      onRecordRemove={action('onRecordRemove')}
+      records={records}
     />
   )
 })

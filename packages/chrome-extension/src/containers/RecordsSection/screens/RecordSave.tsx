@@ -10,12 +10,22 @@ export interface RecordToSave {
 }
 
 type RecordSave = React.FC<{
+  initialRecord: RecordToSave | null
   onRecordSave(r: RecordToSave): void
+  onShowRecordsList(): void
 }>
 
-const RecordSave: RecordSave = ({ onRecordSave }) => {
-  const [recordName, setRecordName] = useState<string>('')
-  const [recordLink, setRecordLink] = useState<string>('')
+const RecordSave: RecordSave = ({
+  onRecordSave,
+  initialRecord,
+  onShowRecordsList,
+}) => {
+  const [recordName, setRecordName] = useState<string>(
+    initialRecord ? initialRecord.name : ''
+  )
+  const [recordLink, setRecordLink] = useState<string>(
+    initialRecord ? initialRecord.link : ''
+  )
   const [currentUrl, setCurrentUrl] = useState<string>('')
   const linkInputRef = useRef<HTMLInputElement>()
 
@@ -48,12 +58,14 @@ const RecordSave: RecordSave = ({ onRecordSave }) => {
   return (
     <React.Fragment>
       <div>
+        <Button onClick={onShowRecordsList}>List</Button>
+      </div>
+      <div>
         <div style={{ padding: 10 }}>
           Name:{' '}
           <span style={{ marginLeft: 10 }}>
             <TextInput
               autoFocus
-              value={recordName}
               onChange={e => {
                 setRecordName(e.target.value)
               }}
@@ -62,6 +74,7 @@ const RecordSave: RecordSave = ({ onRecordSave }) => {
                   linkInputRef.current.focus()
                 }
               }}
+              value={recordName}
             />
           </span>
         </div>
@@ -70,17 +83,17 @@ const RecordSave: RecordSave = ({ onRecordSave }) => {
           <span style={{ marginLeft: 10 }}>
             <TextInput
               inputRef={linkInputRef}
-              value={recordLink}
               onChange={e => {
                 setRecordLink(e.target.value)
               }}
               onEnterPress={handleRecordSave}
+              value={recordLink}
             />
           </span>
         </div>
       </div>
       <div>
-        <Button onClick={handleRecordSave} disabled={isSaveButtonDisabled}>
+        <Button disabled={isSaveButtonDisabled} onClick={handleRecordSave}>
           Save
         </Button>
       </div>

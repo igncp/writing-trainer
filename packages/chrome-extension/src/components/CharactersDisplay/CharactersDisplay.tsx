@@ -47,20 +47,14 @@ const CharactersDisplay: T_CharactersDisplay = ({
 
   return (
     <div
-      style={{ maxHeight: MAX_HEIGHT, overflow: 'auto', position: 'relative' }}
       ref={wrapperRef}
+      style={{ maxHeight: MAX_HEIGHT, overflow: 'auto', position: 'relative' }}
     >
       {charsObjs.map((charObj, index) => {
         const { word, pronunciation } = charObj
 
         return (
           <div
-            style={{
-              cursor: pronunciation && onCharClick ? 'pointer' : 'default',
-              display: 'inline-block',
-              marginBottom: 10,
-              opacity: index === focusedIndex ? 1 : 0.5,
-            }}
             key={`${index}${charObj.word}`}
             onClick={e => {
               e.stopPropagation()
@@ -74,6 +68,12 @@ const CharactersDisplay: T_CharactersDisplay = ({
                 charsObjs,
                 index,
               })
+            }}
+            style={{
+              cursor: pronunciation && onCharClick ? 'pointer' : 'default',
+              display: 'inline-block',
+              marginBottom: 10,
+              opacity: index === focusedIndex ? 1 : 0.5,
             }}
           >
             <div

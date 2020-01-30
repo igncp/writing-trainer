@@ -22,13 +22,13 @@ const LinksBlock: T_LinksBlock = ({ text }) => {
 
   return (
     <div style={{ width: '100%' }}>
-      <GTButton text={text} language="zh-CN" style={linkStyle} />
+      <GTButton language="zh-CN" style={linkStyle} text={text} />
       <Button
-        style={linkStyle}
         onClick={() => {
           copyTextToClipboard(hrefText)
           window.open(MANDARIN_CONVERTER_LINK)
         }}
+        style={linkStyle}
       >
         Pronunciation
       </Button>

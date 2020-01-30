@@ -1,14 +1,10 @@
 ## Tasks
 
-- Fix japanese
-  - Create several stories for each language
-  - More tests for each language
-- Generalize dictionary and inputvalue outside of langopts
+- Move records filtering to the core
 - Find common logic in getCharObjs functions
-- Update types names
-- Improve records list UX
-- Save config in records
-- Add Cantonese
+- Save config in records (which subpanels are displayed)
+- Add Cantonese language with it own language
+- Generalize dictionary and inputvalue outside of langopts?
 
 ## Refactor
 

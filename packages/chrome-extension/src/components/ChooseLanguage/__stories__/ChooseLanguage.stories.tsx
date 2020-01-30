@@ -9,11 +9,6 @@ const StoryComp = () => {
 
   return (
     <ChooseLanguage
-      onOptionsChange={id => {
-        setSelectedLanguage(id)
-        action('options-change')(id)
-      }}
-      selectedLanguage={selectedLanguage}
       languages={[
         {
           id: 'mandarin',
@@ -24,6 +19,11 @@ const StoryComp = () => {
           name: 'Cantonese',
         },
       ]}
+      onOptionsChange={id => {
+        setSelectedLanguage(id)
+        action('options-change')(id)
+      }}
+      selectedLanguage={selectedLanguage}
     />
   )
 }

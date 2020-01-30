@@ -1,29 +1,51 @@
 import React, { useEffect, useState } from 'react'
+import { records as coreRecords } from 'writing-trainer-core'
 
 import { T_LanguageId } from '#/languages/types'
 import storage from '#/services/storage'
 
-import { Record } from './recordsTypes'
 import RecordsWrapper from './RecordsWrapper'
 
 import RecordSave, { RecordToSave } from './screens/RecordSave'
 import RecordsList from './screens/RecordsList'
 
-export type RecordsScreen = 'Save' | 'List'
+export type RecordsScreen = 'Save' | 'List' | 'Edit'
 
 const RECORDS_STORAGE = 'records'
 
-const getMaxRecordId = (records: Record[]) => {
-  return Math.max(...records.map(r => r.id)) || 0
+const getMaxRecordId = (records: coreRecords.T_Record[]) => {
+  return records.length ? Math.max(...records.map(r => r.id)) : 0
+}
+
+type T_getInitialRecord = (o: {
+  records: coreRecords.T_Record[]
+  editingRecordId: coreRecords.T_Record['id'] | null
+}) => RecordToSave
+
+const getInitialRecord: T_getInitialRecord = ({ records, editingRecordId }) => {
+  if (editingRecordId === null) {
+    return null
+  }
+
+  const record = records.find(r => r.id === editingRecordId)
+
+  if (!record) {
+    return null
+  }
+
+  return {
+    link: record.link,
+    name: record.name,
+  }
 }
 
 type RecordsSection = React.FC<{
   initScreen: RecordsScreen
+  onRecordLoad(r: coreRecords.T_Record): void
+  onRecordsClose(): void
+  pronunciation: string
   selectedLanguage: T_LanguageId
   text: string
-  onRecordLoad(r: Record): void
-  pronunciation: string
-  onRecordsClose(): void
 }>
 
 const RecordsSection: RecordsSection = ({
@@ -35,7 +57,10 @@ const RecordsSection: RecordsSection = ({
   text,
 }) => {
   const [currentScreen, setCurrentScreen] = useState<RecordsScreen>(initScreen)
-  const [records, setRecords] = useState<Record[]>([])
+  const [editingRecordId, setEditingRecordId] = useState<
+    coreRecords.T_Record['id'] | null
+  >(null)
+  const [records, setRecords] = useState<coreRecords.T_Record[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const retrieveRecords = async () => {
@@ -44,7 +69,7 @@ const RecordsSection: RecordsSection = ({
     const recordsStr = await storage.getValue(RECORDS_STORAGE)
 
     if (recordsStr) {
-      const parsedRecords: Record[] = JSON.parse(recordsStr)
+      const parsedRecords: coreRecords.T_Record[] = JSON.parse(recordsStr)
 
       setRecords(parsedRecords)
     }
@@ -56,19 +81,24 @@ const RecordsSection: RecordsSection = ({
     retrieveRecords().catch(() => {})
   }, [])
 
-  const saveRecords = (newRecords: Record[]) => {
+  const saveRecords = (newRecords: coreRecords.T_Record[]) => {
     const recordsStr = JSON.stringify(newRecords)
     storage.setValue(RECORDS_STORAGE, recordsStr)
     setRecords(newRecords)
   }
 
-  const handleRecordLoad = (record: Record) => {
+  const handleRecordLoad = (record: coreRecords.T_Record) => {
     const newRecords = [...records]
 
     newRecords.find(r => r.id === record.id).lastLoadedOn = Date.now()
 
     saveRecords(newRecords)
     onRecordLoad(record)
+  }
+
+  const handleRecordEdit = (record: coreRecords.T_Record) => {
+    setEditingRecordId(record.id)
+    setCurrentScreen('Edit')
   }
 
   const handleRecordSave = (newRecord: RecordToSave) => {
@@ -87,7 +117,28 @@ const RecordsSection: RecordsSection = ({
     setCurrentScreen('List')
   }
 
-  const handleRecordRemove = (record: Record) => {
+  const handleShowRecordsList = () => {
+    setEditingRecordId(null)
+    setCurrentScreen('List')
+  }
+
+  const handleRecordEdited = (newRecord: RecordToSave) => {
+    const newRecords = records.map(r =>
+      r.id === editingRecordId
+        ? {
+            ...r,
+            link: newRecord.link,
+            name: newRecord.name,
+          }
+        : r
+    )
+
+    saveRecords(newRecords)
+    setEditingRecordId(null)
+    setCurrentScreen('List')
+  }
+
+  const handleRecordRemove = (record: coreRecords.T_Record) => {
     const newRecords = records.filter(r => r.id !== record.id)
 
     saveRecords(newRecords)
@@ -101,10 +152,30 @@ const RecordsSection: RecordsSection = ({
     )
   }
 
+  const commonRecordsSaveProps = {
+    onShowRecordsList: handleShowRecordsList,
+  }
+
   if (currentScreen === 'Save') {
     return (
       <RecordsWrapper onRecordsClose={onRecordsClose}>
-        <RecordSave onRecordSave={handleRecordSave} />
+        <RecordSave
+          initialRecord={null}
+          onRecordSave={handleRecordSave}
+          {...commonRecordsSaveProps}
+        />
+      </RecordsWrapper>
+    )
+  }
+
+  if (currentScreen === 'Edit') {
+    return (
+      <RecordsWrapper onRecordsClose={onRecordsClose}>
+        <RecordSave
+          initialRecord={getInitialRecord({ editingRecordId, records })}
+          onRecordSave={handleRecordEdited}
+          {...commonRecordsSaveProps}
+        />
       </RecordsWrapper>
     )
   }
@@ -113,9 +184,10 @@ const RecordsSection: RecordsSection = ({
     return (
       <RecordsWrapper onRecordsClose={onRecordsClose}>
         <RecordsList
-          records={records}
-          onRecordRemove={handleRecordRemove}
+          onRecordEdit={handleRecordEdit}
           onRecordLoad={handleRecordLoad}
+          onRecordRemove={handleRecordRemove}
+          records={records}
         />
       </RecordsWrapper>
     )

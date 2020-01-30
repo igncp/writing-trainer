@@ -26,7 +26,7 @@ describe('Button', () => {
 
   it('renders a link when requested', () => {
     const { baseElement } = render(
-      <Button {...commonProps} shouldUseLink href="hrefValue" />
+      <Button {...commonProps} href="hrefValue" shouldUseLink />
     )
 
     expect(baseElement.querySelectorAll('div').length).toEqual(1)
@@ -39,7 +39,7 @@ describe('Button', () => {
 
   it('changes opacity when hovered', () => {
     const { baseElement } = render(
-      <Button {...commonProps} shouldUseLink href="hrefValue" />
+      <Button {...commonProps} href="hrefValue" shouldUseLink />
     )
 
     const linkEl = baseElement.querySelector('a')

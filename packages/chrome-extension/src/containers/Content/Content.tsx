@@ -100,10 +100,10 @@ const Content: Content = ({ onContentEnabledResult }) => {
 
   return (
     <Panel
-      text={usedText}
       onHideRequest={() => {
         showPanel(false)
       }}
+      text={usedText}
     />
   )
 }

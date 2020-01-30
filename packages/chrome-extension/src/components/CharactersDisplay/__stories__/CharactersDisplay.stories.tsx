@@ -47,9 +47,9 @@ storiesOf('Components|CharactersDisplay', module)
     return (
       <CharactersDisplay
         {...commonProps}
-        shouldHidePronunciation
-        shouldHaveDifferentWidths
         charsObjs={charObjsEnglish}
+        shouldHaveDifferentWidths
+        shouldHidePronunciation
       />
     )
   })

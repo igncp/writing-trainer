@@ -33,12 +33,12 @@ storiesOf('Containers|Panel', module)
   .add('mandarin', () => {
     return (
       <Panel
-        onHideRequest={action('hide-request')}
-        text="崩比筆,壁必畢.閉編"
         _stories={{
           defaultLanguage: mandarinHandler.id,
           langOpts: mandarinLangOpts,
         }}
+        onHideRequest={action('hide-request')}
+        text="崩比筆,壁必畢.閉編"
       />
     )
   })
@@ -62,21 +62,21 @@ storiesOf('Containers|Panel', module)
   .add('japanese', () => {
     return (
       <Panel
-        onHideRequest={action('hide-request')}
-        text="あいうえお"
         _stories={{
           defaultLanguage: japaneseHandler.id,
           defaultPronunciation: 'a i u e o',
         }}
+        onHideRequest={action('hide-request')}
+        text="あいうえお"
       />
     )
   })
   .add('english', () => {
     return (
       <Panel
+        _stories={{ defaultLanguage: englishHandler.id }}
         onHideRequest={action('hide-request')}
         text="The feeling around the ground at that moment was distinct from the usual triumphalism. As the players lined up in an oddly formal crocodile to shake hands there was a feeling for the first time of a step into something else"
-        _stories={{ defaultLanguage: englishHandler.id }}
       />
     )
   })

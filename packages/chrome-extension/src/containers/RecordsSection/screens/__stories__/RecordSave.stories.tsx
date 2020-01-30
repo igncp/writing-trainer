@@ -8,7 +8,11 @@ storiesOf('Containers|RecordSave', module).add('common', () => {
   return (
     <React.Fragment>
       <p>The link will automatically default to the current URL</p>
-      <RecordSave onRecordSave={action('onRecordSave')} />
+      <RecordSave
+        initialRecord={null}
+        onRecordSave={action('onRecordSave')}
+        onShowRecordsList={action('onShowRecordsList')}
+      />
     </React.Fragment>
   )
 })

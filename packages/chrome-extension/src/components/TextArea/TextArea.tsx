@@ -32,6 +32,9 @@ const TextArea: TextArea = ({
 
   return (
     <textarea
+      data-gramm_editor={false}
+      onChange={onChange}
+      spellCheck={false}
       style={{
         outline: 0,
         resize: 'none',
@@ -39,9 +42,6 @@ const TextArea: TextArea = ({
         ...cursorStyle,
         ...style,
       }}
-      onChange={onChange}
-      spellCheck={false}
-      data-gramm_editor={false}
       {...props}
       ref={ref}
     />

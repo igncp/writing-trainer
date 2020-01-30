@@ -17,7 +17,15 @@ const TextInput: TextInput = ({
 }) => {
   return (
     <input
-      type="text"
+      data-gramm_editor={false}
+      onChange={onChange}
+      onKeyPress={e => {
+        if (e.key === 'Enter') {
+          onEnterPress()
+        }
+      }}
+      ref={inputRef || null}
+      spellCheck={false}
       style={{
         border: 'none',
         borderBottom: '1px solid #777',
@@ -25,16 +33,8 @@ const TextInput: TextInput = ({
         padding: 5,
         ...style,
       }}
-      onChange={onChange}
-      spellCheck={false}
-      data-gramm_editor={false}
+      type="text"
       value={value}
-      onKeyPress={e => {
-        if (e.key === 'Enter') {
-          onEnterPress()
-        }
-      }}
-      ref={inputRef || null}
       {...props}
     />
   )

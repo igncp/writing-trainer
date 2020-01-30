@@ -58,10 +58,6 @@ module.exports = {
         'no-console': 0,
         'require-atomic-updates': 0,
         semi: 0,
-
-        'react/jsx-no-target-blank': 0,
-        'react/no-unescaped-entities': 0,
-        'react/prop-types': 0,
       },
     },
     {

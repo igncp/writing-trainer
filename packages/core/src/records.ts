@@ -1,6 +1,6 @@
-import { T_LanguageId } from '#/languages/types'
+import { T_LanguageId } from './constants'
 
-export interface Record {
+export interface T_Record {
   createdOn: number
   id: number
   language: T_LanguageId

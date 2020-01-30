@@ -7,7 +7,7 @@ import { T_LinksBlock } from '#/languages/types'
 const LinksBlock: T_LinksBlock = ({ text }) => {
   return (
     <div style={{ width: '100%' }}>
-      <GTButton text={text} language="ja" />
+      <GTButton language="ja" text={text} />
     </div>
   )
 }

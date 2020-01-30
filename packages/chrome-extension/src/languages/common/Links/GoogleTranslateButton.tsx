@@ -17,8 +17,8 @@ const GoogleTranslateButton: T_GoogleTranslateButton = ({ text, language }) => {
 
   return (
     <Button
-      shouldUseLink
       href={`https://translate.google.com/#${language}/en/${hrefText}`}
+      shouldUseLink
     >
       Google Translate
     </Button>

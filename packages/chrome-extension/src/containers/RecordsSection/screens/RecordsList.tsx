@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
+import { records as coreRecords } from 'writing-trainer-core'
 
 import Button from '#/components/Button/Button'
 import TextInput from '#/components/TextInput/TextInput'
-
-import { Record } from '../recordsTypes'
 
 type Cell = React.FC<{
   bold?: boolean
@@ -45,15 +44,17 @@ const formatRecordDate = (d: number): string => {
 }
 
 type RecordsList = React.FC<{
-  records: Record[]
-  onRecordRemove(r: Record): void
-  onRecordLoad(r: Record): void
+  onRecordEdit(r: coreRecords.T_Record): void
+  onRecordLoad(r: coreRecords.T_Record): void
+  onRecordRemove(r: coreRecords.T_Record): void
+  records: coreRecords.T_Record[]
 }>
 
 const RecordsList: RecordsList = ({
-  records,
-  onRecordRemove,
+  onRecordEdit,
   onRecordLoad,
+  onRecordRemove,
+  records,
 }) => {
   const [filterValue, setFilterValue] = useState<string>('')
   const lowercaseFilterValue = filterValue.toLowerCase()
@@ -74,7 +75,7 @@ const RecordsList: RecordsList = ({
         return name.indexOf(segment) !== -1 || language.indexOf(segment) !== -1
       })
     })
-    .sort((a: Record, b: Record) => {
+    .sort((a: coreRecords.T_Record, b: coreRecords.T_Record) => {
       return b.lastLoadedOn - a.lastLoadedOn
     })
 
@@ -84,15 +85,15 @@ const RecordsList: RecordsList = ({
         <div style={{ padding: 10, position: 'relative' }}>
           <TextInput
             autoFocus
-            placeholder="Filter by name and language"
+            onChange={e => {
+              setFilterValue(e.target.value)
+            }}
             onEnterPress={() => {
               if (filteredRecords.length > 0) {
                 onRecordLoad(filteredRecords[0])
               }
             }}
-            onChange={e => {
-              setFilterValue(e.target.value)
-            }}
+            placeholder="Filter by name and language"
             style={{ width: '100%' }}
           />
         </div>
@@ -106,13 +107,13 @@ const RecordsList: RecordsList = ({
               <Cell label="Name" value={name} />
               <Cell title="Created" value={formatRecordDate(createdOn)} />
               <Cell title="Loaded" value={formatRecordDate(lastLoadedOn)} />
-              <Cell title="Language" value={record.language} bold />
+              <Cell bold title="Language" value={record.language} />
               {record.link && (
                 <a
                   href={record.link}
+                  style={{ marginRight: 15 }}
                   target="_blank"
                   title={record.link}
-                  style={{ marginRight: 15 }}
                 >
                   Website
                 </a>
@@ -123,6 +124,13 @@ const RecordsList: RecordsList = ({
                 }}
               >
                 Load
+              </Button>
+              <Button
+                onClick={() => {
+                  onRecordEdit(record)
+                }}
+              >
+                Edit
               </Button>
               <Button
                 onClick={() => {

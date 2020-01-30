@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { constants, languageManager } from 'writing-trainer-core'
+import {
+  constants,
+  languageManager,
+  records as coreRecords,
+} from 'writing-trainer-core'
 
 import Button from '#/components/Button/Button'
 import CharactersDisplay from '#/components/CharactersDisplay/CharactersDisplay'
@@ -9,7 +13,6 @@ import TextArea from '#/components/TextArea/TextArea'
 import RecordsSection, {
   RecordsScreen,
 } from '#/containers/RecordsSection/RecordsSection'
-import { Record } from '#/containers/RecordsSection/recordsTypes'
 import languageUIManager from '#/languages/languageUIManager'
 import { T_LanguageId, T_LangOpts } from '#/languages/types'
 import storage from '#/services/storage'
@@ -63,6 +66,9 @@ const Panel: T_Panel = ({ onHideRequest, text, _stories }) => {
   const [showingRecordsInitScreen, setShowingRecordsInitScreen] = useState<
     RecordsScreen | ''
   >('')
+  const [currentRecord, setCurrentRecord] = useState<
+    coreRecords.T_Record['id'] | null
+  >(null)
   const [originalTextValue, setOriginalText] = useState<string>(text)
   const [pronunciationValue, setPronunciation] = useState<string>(
     _stories.defaultPronunciation || ''
@@ -211,6 +217,7 @@ const Panel: T_Panel = ({ onHideRequest, text, _stories }) => {
     })
     setShowingPronunciation(true)
     setShowingEdition(true)
+    setCurrentRecord(null)
   }
 
   const handleLanguageChange = (newSelectedLanguage: string) => {
@@ -279,24 +286,26 @@ const Panel: T_Panel = ({ onHideRequest, text, _stories }) => {
       <PanelBase onOverlayClick={onHideRequest}>
         <RecordsSection
           initScreen={showingRecordsInitScreen}
-          selectedLanguage={selectedLanguage}
-          onRecordLoad={(record: Record) => {
+          onRecordLoad={(record: coreRecords.T_Record) => {
             clearValues()
 
             if (record.language !== selectedLanguage) {
               handleLanguageChange(record.language)
             }
+
             setShowingRecordsInitScreen('')
             setShowingEdition(false)
             setShowingPronunciation(false)
             setOriginalText(record.text)
+            setCurrentRecord(record.id)
             setPronunciation(record.pronunciation)
           }}
-          text={originalTextValue}
-          pronunciation={pronunciationValue}
           onRecordsClose={() => {
             setShowingRecordsInitScreen('')
           }}
+          pronunciation={pronunciationValue}
+          selectedLanguage={selectedLanguage}
+          text={originalTextValue}
         />
       </PanelBase>
     )
@@ -322,7 +331,18 @@ const Panel: T_Panel = ({ onHideRequest, text, _stories }) => {
         onOptionsChange={handleLanguageChange}
         selectedLanguage={selectedLanguage}
       />
-      <Button onClick={saveRecord}>Save</Button>
+      <Button onClick={saveRecord}>
+        {currentRecord === null ? 'Save' : 'Update'}
+      </Button>
+      {currentRecord !== null && (
+        <Button
+          onClick={() => {
+            setCurrentRecord(null)
+          }}
+        >
+          Close Record
+        </Button>
+      )}
       <Button onClick={onHideRequest} style={{ float: 'right' }}>
         Hide
       </Button>
@@ -361,12 +381,12 @@ const Panel: T_Panel = ({ onHideRequest, text, _stories }) => {
             />
           </div>
           <TextArea
-            onChange={createInputSetterFn(setWriting)}
             autoFocus
+            onChange={createInputSetterFn(setWriting)}
             onClick={handleWritingAreaClick}
+            onKeyDown={handleWritingKeyDown}
             placeholder={practiceValue ? '' : 'Writing area'}
             rows={1}
-            onKeyDown={handleWritingKeyDown}
             value={writingValue}
             withoutCursor
           />
@@ -375,11 +395,11 @@ const Panel: T_Panel = ({ onHideRequest, text, _stories }) => {
             onChange={createInputSetterFn(setPractice)}
             placeholder={PRACTICE_TEXT_PLACEHOLDER}
             rows={3}
-            value={practiceValue}
             style={{
               border: `1px solid ${doesPracticeHaveError ? 'red' : 'white'}`,
               fontSize: 46,
             }}
+            value={practiceValue}
           />
         </div>
       </div>

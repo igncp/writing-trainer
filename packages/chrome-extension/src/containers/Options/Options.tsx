@@ -60,8 +60,8 @@ const Options: Options = () => {
       <Button onClick={handleSave}>Save</Button>
       <TextArea
         defaultValue={enabledPagesValue}
-        rows={20}
         onChange={handleEnabledPagesChange}
+        rows={20}
       />
     </div>
   )
