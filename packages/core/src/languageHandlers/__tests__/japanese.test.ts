@@ -96,6 +96,33 @@ describe('convertToCharsObjs', () => {
         word: 'うえお',
       },
     ])
+
+    expect(
+      japanese.convertToCharsObjs({
+        charsToRemove: [],
+        langOpts: {
+          pronunciationInput: 'ai0 eu1',
+        },
+        text: 'あい えう',
+      })
+    ).toEqual([
+      {
+        pronunciation: 'ai',
+        word: 'あい',
+      },
+      {
+        pronunciation: '',
+        word: ' ',
+      },
+      {
+        pronunciation: 'eu',
+        word: 'え',
+      },
+      {
+        pronunciation: '?',
+        word: 'う',
+      },
+    ])
   })
 })
 

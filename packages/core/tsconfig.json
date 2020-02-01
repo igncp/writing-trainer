@@ -4,6 +4,7 @@
     "baseUrl": ".",
     "declaration": true,
     "esModuleInterop": true,
+    "lib": ["es7"],
     "module": "CommonJS",
     "moduleResolution": "node",
     "noEmitOnError": true,

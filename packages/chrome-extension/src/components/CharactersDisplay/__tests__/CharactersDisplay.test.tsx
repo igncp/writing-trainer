@@ -19,7 +19,10 @@ describe('Button', () => {
   })
 
   // eslint-disable-next-line padding-line-between-statements
-  ;[['word', 'FOO'], ['pronunciation', 'bar']].forEach(([item, txt]) => {
+  ;[
+    ['word', 'FOO'],
+    ['pronunciation', 'bar'],
+  ].forEach(([item, txt]) => {
     it(`calls onCharClick when clicking the ${item} with the expected data`, () => {
       const { getByText } = render(<CharactersDisplay {...commonProps} />)
 

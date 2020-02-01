@@ -4,6 +4,10 @@ import { records as coreRecords } from 'writing-trainer-core'
 import Button from '#/components/Button/Button'
 import TextInput from '#/components/TextInput/TextInput'
 
+const { filterRecords } = coreRecords
+
+type T_Record = coreRecords.T_Record
+
 type Cell = React.FC<{
   bold?: boolean
   label?: string
@@ -44,10 +48,10 @@ const formatRecordDate = (d: number): string => {
 }
 
 type RecordsList = React.FC<{
-  onRecordEdit(r: coreRecords.T_Record): void
-  onRecordLoad(r: coreRecords.T_Record): void
-  onRecordRemove(r: coreRecords.T_Record): void
-  records: coreRecords.T_Record[]
+  onRecordEdit(r: T_Record): void
+  onRecordLoad(r: T_Record): void
+  onRecordRemove(r: T_Record): void
+  records: T_Record[]
 }>
 
 const RecordsList: RecordsList = ({
@@ -57,27 +61,10 @@ const RecordsList: RecordsList = ({
   records,
 }) => {
   const [filterValue, setFilterValue] = useState<string>('')
-  const lowercaseFilterValue = filterValue.toLowerCase()
-  const filterValueSegments = lowercaseFilterValue
-    .split(' ')
-    .map(s => s.trim())
-    .filter(s => !!s)
-
-  const filteredRecords = records
-    .filter(r => {
-      if (!filterValue.trim()) {
-        return true
-      }
-      const name = r.name.toLowerCase()
-      const language = r.language.toLowerCase()
-
-      return filterValueSegments.every(segment => {
-        return name.indexOf(segment) !== -1 || language.indexOf(segment) !== -1
-      })
-    })
-    .sort((a: coreRecords.T_Record, b: coreRecords.T_Record) => {
-      return b.lastLoadedOn - a.lastLoadedOn
-    })
+  const filteredRecords = filterRecords({
+    filterText: filterValue,
+    records,
+  })
 
   return (
     <div>

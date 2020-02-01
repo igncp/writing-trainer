@@ -34,16 +34,18 @@ const convertToCharsObjs: T_convertToCharsObjs = ({
   let nextWord = ''
 
   const addWord = () => {
-    if (nextWord) {
-      charsObjs.push({
-        pronunciation: pronunciationInputArr.length
-          ? pronunciationInputArr.shift().text
-          : '?',
-        word: nextWord,
-      })
-
-      nextWord = ''
+    if (!nextWord) {
+      return
     }
+
+    charsObjs.push({
+      pronunciation: pronunciationInputArr.length
+        ? pronunciationInputArr.shift().text
+        : '?',
+      word: nextWord,
+    })
+
+    nextWord = ''
   }
 
   text.split('').forEach(ch => {

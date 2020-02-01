@@ -18,7 +18,9 @@ const createRandomStr = () => {
   return result
 }
 
-const records: coreRecords.T_Record[] = []
+type T_Record = coreRecords.T_Record
+
+const records: T_Record[] = []
 
 const HOURS_10_IN_MS = 1000 * 60 * 60 * 10
 

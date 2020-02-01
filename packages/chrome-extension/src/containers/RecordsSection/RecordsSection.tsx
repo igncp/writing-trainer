@@ -11,15 +11,17 @@ import RecordsList from './screens/RecordsList'
 
 export type RecordsScreen = 'Save' | 'List' | 'Edit'
 
+type T_Record = coreRecords.T_Record
+
 const RECORDS_STORAGE = 'records'
 
-const getMaxRecordId = (records: coreRecords.T_Record[]) => {
+const getMaxRecordId = (records: T_Record[]) => {
   return records.length ? Math.max(...records.map(r => r.id)) : 0
 }
 
 type T_getInitialRecord = (o: {
-  records: coreRecords.T_Record[]
-  editingRecordId: coreRecords.T_Record['id'] | null
+  records: T_Record[]
+  editingRecordId: T_Record['id'] | null
 }) => RecordToSave
 
 const getInitialRecord: T_getInitialRecord = ({ records, editingRecordId }) => {
@@ -41,7 +43,7 @@ const getInitialRecord: T_getInitialRecord = ({ records, editingRecordId }) => {
 
 type RecordsSection = React.FC<{
   initScreen: RecordsScreen
-  onRecordLoad(r: coreRecords.T_Record): void
+  onRecordLoad(r: T_Record): void
   onRecordsClose(): void
   pronunciation: string
   selectedLanguage: T_LanguageId
@@ -57,10 +59,10 @@ const RecordsSection: RecordsSection = ({
   text,
 }) => {
   const [currentScreen, setCurrentScreen] = useState<RecordsScreen>(initScreen)
-  const [editingRecordId, setEditingRecordId] = useState<
-    coreRecords.T_Record['id'] | null
-  >(null)
-  const [records, setRecords] = useState<coreRecords.T_Record[]>([])
+  const [editingRecordId, setEditingRecordId] = useState<T_Record['id'] | null>(
+    null
+  )
+  const [records, setRecords] = useState<T_Record[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const retrieveRecords = async () => {
@@ -69,7 +71,7 @@ const RecordsSection: RecordsSection = ({
     const recordsStr = await storage.getValue(RECORDS_STORAGE)
 
     if (recordsStr) {
-      const parsedRecords: coreRecords.T_Record[] = JSON.parse(recordsStr)
+      const parsedRecords: T_Record[] = JSON.parse(recordsStr)
 
       setRecords(parsedRecords)
     }
@@ -81,13 +83,13 @@ const RecordsSection: RecordsSection = ({
     retrieveRecords().catch(() => {})
   }, [])
 
-  const saveRecords = (newRecords: coreRecords.T_Record[]) => {
+  const saveRecords = (newRecords: T_Record[]) => {
     const recordsStr = JSON.stringify(newRecords)
     storage.setValue(RECORDS_STORAGE, recordsStr)
     setRecords(newRecords)
   }
 
-  const handleRecordLoad = (record: coreRecords.T_Record) => {
+  const handleRecordLoad = (record: T_Record) => {
     const newRecords = [...records]
 
     newRecords.find(r => r.id === record.id).lastLoadedOn = Date.now()
@@ -96,7 +98,7 @@ const RecordsSection: RecordsSection = ({
     onRecordLoad(record)
   }
 
-  const handleRecordEdit = (record: coreRecords.T_Record) => {
+  const handleRecordEdit = (record: T_Record) => {
     setEditingRecordId(record.id)
     setCurrentScreen('Edit')
   }
@@ -138,7 +140,7 @@ const RecordsSection: RecordsSection = ({
     setCurrentScreen('List')
   }
 
-  const handleRecordRemove = (record: coreRecords.T_Record) => {
+  const handleRecordRemove = (record: T_Record) => {
     const newRecords = records.filter(r => r.id !== record.id)
 
     saveRecords(newRecords)

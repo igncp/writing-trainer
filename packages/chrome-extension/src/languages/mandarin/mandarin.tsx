@@ -28,10 +28,13 @@ const register = () => {
   languageManager.registerLanguage(mandarinHandler)
 }
 
-const parsePronunciation = (text: string, opts: T_MandarinLanguageOptions) => {
+const parsePronunciation = (text: string, opts: T_LangOpts) => {
   let parsedText = text.toLowerCase()
 
-  if (opts && opts.tonesValue === 'without-tones') {
+  if (
+    (opts?.tonesValue as T_MandarinLanguageOptions['tonesValue']) ===
+    'without-tones'
+  ) {
     parsedText = parsedText.replace(/[0-9]/g, '')
   }
 

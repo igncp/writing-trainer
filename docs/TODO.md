@@ -1,15 +1,14 @@
 ## Tasks
 
-- Move records filtering to the core
 - Find common logic in getCharObjs functions
-- Save config in records (which subpanels are displayed)
-- Add Cantonese language with it own language
+- Persist config in records (which subpanels are displayed)
+- Add Cantonese language with its own dictionary
 - Generalize dictionary and inputvalue outside of langopts?
 
 ## Refactor
 
 - Start splitting the codebase between `core` and `chrome-extension`
-  - In future there will be more, like a package for common UI values
+  - In future there will be more, like a package for common UI values / styles
 - Pull up as many config as possible to share between packages
 - Hoist Lerna packages
 
