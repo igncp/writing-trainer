@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import Button from 'writing-trainer-react-ui/dist/components/Button/Button'
+import TextArea from 'writing-trainer-react-ui/dist/components/TextArea/TextArea'
 
-import Button from '#/components/Button/Button'
-import TextArea from '#/components/TextArea/TextArea'
 import storage from '#/services/storage'
 import { STORAGE_ENABLED_PAGES_KEY } from '#/utils/constants'
 
@@ -15,9 +15,8 @@ type Options = React.FC
 const Options: Options = () => {
   const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false)
   const [enabledPagesValue, setEnabledPagesValue] = useState<string>('')
-  const [savedEnabledPagesValue, setSavedEnabledPagesValue] = useState<string>(
-    ''
-  )
+  const [savedEnabledPagesValue, setSavedEnabledPagesValue] =
+    useState<string>('')
 
   const updateLanguageWithStorage = async () => {
     const enabledPages = await storage.getValue(STORAGE_ENABLED_PAGES_KEY)

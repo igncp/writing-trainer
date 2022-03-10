@@ -68,7 +68,7 @@ describe('convertToCharsObjs', () => {
         text: '你好嗎?我很好',
       })
     ).toEqual(
-      correctResult.map(c =>
+      correctResult.map((c) =>
         c.word === '很' ? { ...c, pronunciation: '?' } : c
       )
     )
@@ -80,7 +80,7 @@ describe('convertToCharsObjs', () => {
         text: '你好嗎?我很好',
       })
     ).toEqual(
-      correctResult.map(c =>
+      correctResult.map((c) =>
         c.pronunciation ? { ...c, pronunciation: '?' } : c
       )
     )
@@ -91,7 +91,7 @@ describe('convertToCharsObjs', () => {
         text: '你好嗎?我很好',
       })
     ).toEqual(
-      correctResult.map(c =>
+      correctResult.map((c) =>
         c.pronunciation ? { ...c, pronunciation: '?' } : c
       )
     )

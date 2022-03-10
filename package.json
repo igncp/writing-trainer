@@ -4,29 +4,15 @@
   "private": true,
   "scripts": {
     "build": "lerna run build --stream",
-    "clean": "lerna clean",
-    "eslint": "eslint . --ext ts --ext tsx --ext js",
-    "format": "sh helpers/format.sh && lerna run format --stream",
-    "postinstall": "lerna bootstrap",
-    "test": "lerna run test --stream --no-prefix",
-    "modules": "npm run -s clean -- -y && npm i"
+    "check": "lerna run check --stream",
+    "clean": "sh helpers/clean.sh",
+    "format": "lerna run format --stream",
+    "lerna-link": "lerna link",
+    "modules": "npm run -s clean -- -y && rm -rf node_modules && npm i",
+    "postinstall": "lerna bootstrap && npm run build",
+    "test": "lerna run test --stream --no-prefix"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.18.0",
-    "@typescript-eslint/parser": "^2.18.0",
-    "eslint": "^6.6.0",
-    "eslint-plugin-eslint-comments": "^3.1.2",
-    "eslint-plugin-import": "^2.19.1",
-    "eslint-plugin-jest": "^23.1.1",
-    "husky": "^2.1.0",
-    "lerna": "^3.20.2",
-    "prettier": "^1.19.1",
-    "typescript": "^3.7.5"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lerna run pre-commit --stream --no-prefix",
-      "pre-push": "lerna run pre-push --stream --no-prefix"
-    }
+    "lerna": "^3.20.2"
   }
 }

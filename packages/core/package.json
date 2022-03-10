@@ -5,31 +5,32 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "rm -rf dist && tsc",
+    "check": "sh helpers/check.sh",
     "eslint": "eslint . --ext ts --ext tsx --ext js",
     "format": "sh helpers/format.sh",
-    "pre-commit": "sh helpers/gitHooks/precommit.sh",
-    "pre-push": "sh helpers/gitHooks/prepush.sh",
+    "lerna-link": "(cd ../.. && ./node_modules/.bin/lerna link)",
     "sonar": "npm test -- --coverage && SONAR_TOKEN=$(cat sonar-token.txt) node helpers/sonar.js",
     "test": "jest --runInBand",
-    "type-coverage": "type-coverage -p . --detail --strict --ignore-files **/*.test.ts"
+    "type-coverage": "typescript-coverage-report --ignore-files '**/*.json'"
   },
   "keywords": [],
   "devDependencies": {
-    "@types/jest": "^25.1.1",
-    "@typescript-eslint/eslint-plugin": "^2.18.0",
-    "@typescript-eslint/parser": "^2.18.0",
-    "eslint": "^6.6.0",
-    "eslint-plugin-eslint-comments": "^3.1.2",
-    "eslint-plugin-import": "^2.19.1",
-    "eslint-plugin-jest": "^23.1.1",
-    "jest": "^25.1.0",
-    "prettier": "^1.19.1",
+    "@types/jest": "^27.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.14.0",
+    "@typescript-eslint/parser": "^5.14.0",
+    "eslint": "^8.10.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jest": "^26.1.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.5.1",
+    "prettier": "^2.5.1",
     "sonarqube-scanner": "^2.5.0",
-    "ts-jest": "^25.1.0",
-    "type-coverage": "^2.4.0",
-    "typescript": "^3.7.5"
+    "ts-jest": "^27.1.3",
+    "typescript": "^4.6.2",
+    "typescript-coverage-report": "^0.6.4"
   },
   "typeCoverage": {
-    "atLeast": 100
+    "atLeast": 95
   }
 }

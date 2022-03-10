@@ -124,6 +124,40 @@ describe('convertToCharsObjs', () => {
       },
     ])
   })
+
+  it('replaces the expected characters', () => {
+    expect(
+      japanese.convertToCharsObjs({
+        charsToRemove: [],
+        langOpts: {
+          pronunciationInput: 'fō2',
+        },
+        text: 'あい',
+      })
+    ).toEqual([
+      {
+        pronunciation: 'fou',
+        word: 'あい',
+      },
+    ])
+  })
+
+  it('turns all letters to lowercase', () => {
+    expect(
+      japanese.convertToCharsObjs({
+        charsToRemove: [],
+        langOpts: {
+          pronunciationInput: 'AbCdE2',
+        },
+        text: 'あい',
+      })
+    ).toEqual([
+      {
+        pronunciation: 'abcde',
+        word: 'あい',
+      },
+    ])
+  })
 })
 
 describe('filterTextToPractice', () => {

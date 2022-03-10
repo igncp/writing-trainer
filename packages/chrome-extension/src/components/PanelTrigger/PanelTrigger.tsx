@@ -1,6 +1,5 @@
 import React from 'react'
-
-import { useHover } from '../../utils/hooks'
+import { useHover } from 'writing-trainer-react-ui/dist/utils/hooks'
 
 type T_PanelTrigger = React.FC<{
   onClick(): void

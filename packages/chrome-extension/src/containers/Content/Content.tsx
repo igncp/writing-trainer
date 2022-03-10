@@ -1,28 +1,37 @@
 import React, { useEffect, useState } from 'react'
+import Panel from 'writing-trainer-react-ui/dist/containers/Panel/Panel'
+import PanelBase from 'writing-trainer-react-ui/dist/components/PanelBase/PanelBase'
+import {
+  useBodyOverflowSwitch,
+  useTextSelection,
+} from 'writing-trainer-react-ui/dist/utils/hooks'
+import { LanguageUIManager } from 'writing-trainer-react-ui/dist/languages/languageUIManager'
+import { LanguageManager } from 'writing-trainer-core'
 
 import PanelTrigger from '#/components/PanelTrigger/PanelTrigger'
-import Panel from '#/containers/Panel/Panel'
 import getCurrentUrl from '#/services/getCurrentUrl'
 import listenToRuntimeMessage from '#/services/listenToRuntimeMessage'
 import log from '#/services/log'
 import storage from '#/services/storage'
-import languageUIManager from '#/languages/languageUIManager'
 import {
   Message,
   MessageType,
   STORAGE_ENABLED_PAGES_KEY,
 } from '#/utils/constants'
-import { useBodyOverflowSwitch, useTextSelection } from '#/utils/hooks'
 
+const languageManager = new LanguageManager()
+const languageUIManager = new LanguageUIManager(languageManager)
 languageUIManager.init()
+
+const panelServices = { getCurrentUrl, storage }
 
 const getIsCurrentPageEnabled = (currentUrl: string, enabledPages: string) => {
   const pagesList = enabledPages
     .split('\n')
-    .map(p => p.trim())
-    .filter(p => !!p)
+    .map((p) => p.trim())
+    .filter((p) => !!p)
 
-  return pagesList.some(p => {
+  return pagesList.some((p) => {
     const reg = new RegExp(p)
 
     return reg.test(currentUrl)
@@ -98,13 +107,20 @@ const Content: Content = ({ onContentEnabledResult }) => {
     return null
   }
 
+  const hidePanel = () => {
+    showPanel(false)
+  }
+
   return (
-    <Panel
-      onHideRequest={() => {
-        showPanel(false)
-      }}
-      text={usedText}
-    />
+    <PanelBase onOverlayClick={hidePanel}>
+      <Panel
+        languageManager={languageManager}
+        languageUIManager={languageUIManager}
+        onHideRequest={hidePanel}
+        services={panelServices}
+        text={usedText}
+      />
+    </PanelBase>
   )
 }
 

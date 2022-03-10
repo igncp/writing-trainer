@@ -3,7 +3,7 @@ const { join } = require('path')
 
 const pjson = require('../package.json')
 
-const getIgnoredRulesCommandOpts = ignoredRules => {
+const getIgnoredRulesCommandOpts = (ignoredRules) => {
   if (ignoredRules.length === 0) {
     return ''
   }
@@ -45,10 +45,12 @@ const javascriptGlobals = [].join(',')
 const sonarJavascriptReportPath = join('coverage', 'lcov.info')
 const sonarCoverageExclusions = [].join(',')
 
-const ignoredRulesOpts = getIgnoredRulesCommandOpts([{
-  resourceKeyValue: '**/*.tsx',
-  ruleKeyValue: 'typescript:S1116'
-}])
+const ignoredRulesOpts = getIgnoredRulesCommandOpts([
+  {
+    resourceKeyValue: '**/*.tsx',
+    ruleKeyValue: 'typescript:S1116',
+  },
+])
 
 /* eslint-disable prefer-template */
 const command =
@@ -60,8 +62,12 @@ const command =
   `-Dsonar.sources="${sonarSources}" ` +
   `-Dsonar.javascript.lcov.reportPath="${sonarJavascriptReportPath}" ` +
   (sonarExclusions ? `-Dsonar.exclusions="${sonarExclusions}" ` : '') +
-  (javascriptGlobals ? `-Dsonar.javascript.globals="${javascriptGlobals}" ` : '') +
-  (sonarCoverageExclusions ? `-Dsonar.coverage.exclusions="${sonarCoverageExclusions}" ` : '') +
+  (javascriptGlobals
+    ? `-Dsonar.javascript.globals="${javascriptGlobals}" `
+    : '') +
+  (sonarCoverageExclusions
+    ? `-Dsonar.coverage.exclusions="${sonarCoverageExclusions}" `
+    : '') +
   `${ignoredRulesOpts} ` +
   `-Dsonar.host.url="${sonarHost}"`
 /* eslint-enable prefer-template */
@@ -72,15 +78,15 @@ console.log(`Sonar command:\n${command}\n`)
 
 const sonar = exec(command)
 
-sonar.on('close', code => {
+sonar.on('close', (code) => {
   console.log(`sonar ended with: ${code}`)
 })
 
-sonar.on('error', err => {
+sonar.on('error', (err) => {
   console.log(`sonar errd with: ${err}`)
   process.exit(1)
 })
 
-sonar.stdout.on('data', d => {
+sonar.stdout.on('data', (d) => {
   console.log(`sonar: ${d}`)
 })

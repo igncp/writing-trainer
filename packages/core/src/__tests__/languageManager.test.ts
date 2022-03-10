@@ -1,9 +1,11 @@
 import { T_LanguageId } from '../constants'
 import {
-  languageManager,
+  LanguageManager,
   T_CharObj,
   T_LanguageHandler,
 } from '../languageManager'
+
+const languageManager = new LanguageManager()
 
 const createDummyLanguageHandler = (id: T_LanguageId): T_LanguageHandler => {
   const convertToCharsObjs = () => {
@@ -22,9 +24,12 @@ const createDummyLanguageHandler = (id: T_LanguageId): T_LanguageHandler => {
     return result
   }
 
+  const getCurrentCharObj = (): null => null
+
   return {
     convertToCharsObjs,
     filterTextToPractice,
+    getCurrentCharObj,
     getSpecialChars,
     id,
     name: 'Some Name',

@@ -1,16 +1,31 @@
 ## Tasks
 
-- Find common logic in getCharObjs functions
+- Pass manager via context
+- Review TODO document
 - Persist config in records (which subpanels are displayed)
-- Add Cantonese language with its own dictionary
+- Add Cantonese language with its own dictionary 
 - Generalize dictionary and inputvalue outside of langopts?
+- Add collections: Lists of records that can be exported and imported
+- Find parts of the extension that could be moved to the core
+  - commonLanguageUtils
 
-## Refactor
+## Ideas
 
-- Start splitting the codebase between `core` and `chrome-extension`
-  - In future there will be more, like a package for common UI values / styles
-- Pull up as many config as possible to share between packages
-- Hoist Lerna packages
+- Packages:
+  - CLI
+  - Google nest
+  - Smart watch
+
+## Code Quality
+
+- Host static pages in github pages and add link in main README
+- Don't import from dist, but setup package.json
+- Sort react props
+- TS prune
+- Import alias
+- Sort imports
+- Fix tests coverage in core
+- GH actions to check, build and serve some subpackages
 
 ## Periodic
 
@@ -27,7 +42,7 @@
 ## New Ideas
 
 - Decouple code to have a core (and plugins?) to be able to support:
-  - Mobile app (react native, flutter, ...)
+  - Mobile app (react native, capacitor, ...)
   - Website
   - Chrome Extension
 - Core and non-UI: Tests

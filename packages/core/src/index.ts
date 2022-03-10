@@ -1,5 +1,19 @@
+/* istanbul ignore file */
+
 import * as constants from './constants'
 import * as records from './records'
-import { languageManager, T_CharObj } from './languageManager'
+import {
+  LanguageManager,
+  T_CharObj,
+  T_CurrentCharObj,
+  T_LanguageHandler,
+} from './languageManager'
 
-export { T_CharObj, constants, languageManager, records }
+export {
+  LanguageManager,
+  T_CharObj,
+  T_CurrentCharObj,
+  T_LanguageHandler,
+  constants,
+  records,
+}

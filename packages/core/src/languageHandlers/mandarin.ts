@@ -4,7 +4,11 @@ import {
   T_convertToCharsObjs,
 } from '../languageManager'
 
-import { defaultFilterTextToPractice, defaultGetSpecialChars } from './_common'
+import {
+  defaultFilterTextToPractice,
+  defaultGetSpecialChars,
+  defaultGetCurrentCharObj,
+} from './_common'
 
 type T_Dictionary = { [k: string]: string }
 
@@ -16,7 +20,7 @@ const convertToCharsObjs: T_convertToCharsObjs = ({
   const dictionary: T_Dictionary = (langOpts.dictionary || {}) as T_Dictionary
   const pronunciationInput: string = (langOpts.pronunciationInput ||
     '') as string
-  const pronunciationInputArr = pronunciationInput.split(' ').filter(c => !!c)
+  const pronunciationInputArr = pronunciationInput.split(' ').filter((c) => !!c)
 
   const defaultSpecialChars = defaultGetSpecialChars()
   const allCharsToRemove = defaultSpecialChars
@@ -45,6 +49,7 @@ const convertToCharsObjs: T_convertToCharsObjs = ({
 const mandarinHandler: T_LanguageHandler = {
   convertToCharsObjs,
   filterTextToPractice: defaultFilterTextToPractice,
+  getCurrentCharObj: defaultGetCurrentCharObj,
   getSpecialChars: defaultGetSpecialChars,
   id: 'mandarin',
   name: 'Mandarin',

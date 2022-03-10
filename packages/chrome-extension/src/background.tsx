@@ -8,7 +8,7 @@ listenToRuntimeMessage(
     sendResponse: (v: string) => void
   ): boolean => {
     if (content.type === MessageType.RequestUrl) {
-      chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
+      chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
         if (!tabs.length) {
           sendResponse('')
 
@@ -24,6 +24,6 @@ listenToRuntimeMessage(
 )
 
 // this enables the popup
-chrome.tabs.onUpdated.addListener(tabId => {
+chrome.tabs.onUpdated.addListener((tabId) => {
   chrome.pageAction.show(tabId)
 })

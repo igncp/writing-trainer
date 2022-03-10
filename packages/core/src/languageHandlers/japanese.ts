@@ -4,7 +4,11 @@ import {
   T_convertToCharsObjs,
 } from '../languageManager'
 
-import { defaultFilterTextToPractice, defaultGetSpecialChars } from './_common'
+import {
+  defaultFilterTextToPractice,
+  defaultGetCurrentCharObj,
+  defaultGetSpecialChars,
+} from './_common'
 
 const convertToCharsObjs: T_convertToCharsObjs = ({
   text,
@@ -18,9 +22,11 @@ const convertToCharsObjs: T_convertToCharsObjs = ({
   const pronunciationInput: string = (langOpts.pronunciationInput ||
     '') as string
   const pronunciationInputArr = pronunciationInput
+    .replace(/ō/g, 'ou')
+    .toLowerCase()
     .split(' ')
-    .filter(c => !!c)
-    .map(segment => {
+    .filter((c) => !!c)
+    .map((segment) => {
       const numRegResul = /([a-z]+)([0-9]+)/.exec(segment)
 
       if (!numRegResul || !numRegResul[1] || !numRegResul[2]) {
@@ -48,7 +54,7 @@ const convertToCharsObjs: T_convertToCharsObjs = ({
     nextWord = ''
   }
 
-  text.split('').forEach(ch => {
+  text.split('').forEach((ch) => {
     if (allCharsToRemove.includes(ch)) {
       addWord()
 
@@ -78,6 +84,7 @@ const convertToCharsObjs: T_convertToCharsObjs = ({
 const englishHandler: T_LanguageHandler = {
   convertToCharsObjs,
   filterTextToPractice: defaultFilterTextToPractice,
+  getCurrentCharObj: defaultGetCurrentCharObj,
   getSpecialChars: defaultGetSpecialChars,
   id: 'japanese',
   name: 'Japanese',

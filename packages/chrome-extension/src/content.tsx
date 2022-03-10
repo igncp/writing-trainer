@@ -11,7 +11,7 @@ const main = () => {
 
   ReactDOM.render(
     <Content
-      onContentEnabledResult={result => {
+      onContentEnabledResult={(result) => {
         log('ENABLED', result)
       }}
     />,

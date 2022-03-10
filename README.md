@@ -4,8 +4,10 @@
 
 Project under construction. For more info:
 
-- [core](./packages/core)
 - [chrome-extension](./packages/chrome-extension)
+- [core](./packages/core)
+- [react-ui](./packages/react-ui)
+- [web-app](./packages/web-app)
 
 ## Setup
 

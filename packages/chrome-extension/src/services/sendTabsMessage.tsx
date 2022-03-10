@@ -3,8 +3,8 @@ import { Message } from '#/utils/constants'
 type T_sendTabsMessage = (msg: Message) => Promise<boolean>
 
 const sendReal: T_sendTabsMessage = (msg: Message) => {
-  return new Promise(resolve => {
-    chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
+  return new Promise((resolve) => {
+    chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
       if (!tabs.length) {
         resolve(false)
 

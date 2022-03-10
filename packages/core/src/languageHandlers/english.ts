@@ -4,7 +4,11 @@ import {
   T_convertToCharsObjs,
 } from '../languageManager'
 
-import { defaultFilterTextToPractice, defaultGetSpecialChars } from './_common'
+import {
+  defaultFilterTextToPractice,
+  defaultGetSpecialChars,
+  defaultGetCurrentCharObj,
+} from './_common'
 
 const convertToCharsObjs: T_convertToCharsObjs = ({ text, charsToRemove }) => {
   const defaultSpecialChars = defaultGetSpecialChars()
@@ -26,7 +30,7 @@ const convertToCharsObjs: T_convertToCharsObjs = ({ text, charsToRemove }) => {
     }
   }
 
-  text.split('').forEach(ch => {
+  text.split('').forEach((ch) => {
     if (allCharsToRemove.includes(ch)) {
       addWord()
 
@@ -47,6 +51,7 @@ const convertToCharsObjs: T_convertToCharsObjs = ({ text, charsToRemove }) => {
 const englishHandler: T_LanguageHandler = {
   convertToCharsObjs,
   filterTextToPractice: defaultFilterTextToPractice,
+  getCurrentCharObj: defaultGetCurrentCharObj,
   getSpecialChars: defaultGetSpecialChars,
   id: 'english',
   name: 'English',

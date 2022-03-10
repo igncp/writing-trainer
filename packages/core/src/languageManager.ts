@@ -1,4 +1,4 @@
-import { T_LanguageDefinition, T_LanguageId } from './constants'
+import { T_LanguageDefinition } from './constants'
 
 interface T_CharObj {
   pronunciation: string
@@ -16,74 +16,73 @@ type T_filterTextToPractice = (opts: {
   charsToRemove: string[]
 }) => string
 
+type T_CurrentCharObj = { ch: T_CharObj | null; index: number }
+
+type T_getCurrentCharObj = (opts: {
+  originalCharsObjs: T_CharObj[]
+  practiceCharsObjs: T_CharObj[]
+}) => T_CurrentCharObj | null
+
 interface T_LanguageHandler {
-  id: T_LanguageDefinition['id']
-  name: T_LanguageDefinition['name']
   convertToCharsObjs: T_convertToCharsObjs
   /**
    * Given a certain text from the user, filter characters out to match with the pronunciation
    */
   filterTextToPractice: T_filterTextToPractice
+  getCurrentCharObj: T_getCurrentCharObj
   getSpecialChars(): string[]
+  id: T_LanguageDefinition['id']
+  name: T_LanguageDefinition['name']
 }
 
-interface T_LanguageManager {
-  clear(): void
-  getAvailableLanguages(): T_LanguageId[]
-  getCurrentLanguageHandler(): T_LanguageHandler | null
-  getLanguageHandler(id: T_LanguageId): T_LanguageHandler | null
-  registerLanguage(handler: T_LanguageHandler): void
-  setCurrentLanguageHandler(id: T_LanguageId): void
-  unregisterLanguage(id: T_LanguageId): void
-}
+class LanguageManager {
+  private languages: T_LanguageHandler[] = []
+  private currentLanguageHandlerId: T_LanguageDefinition['id'] | null = null
 
-const createLanguageManager = (): T_LanguageManager => {
-  let languages: T_LanguageHandler[] = []
-  let currentLanguageHandlerId: string | null = null
+  private getLanguagesIds() {
+    return this.languages.map((l) => l.id)
+  }
 
-  const getLanguagesIds = () => languages.map(l => l.id)
+  public clear() {
+    this.languages.length = 0
+    this.currentLanguageHandlerId = null
+  }
 
-  return {
-    clear: () => {
-      languages.length = 0
-      currentLanguageHandlerId = null
-    },
-    getAvailableLanguages: () => {
-      return getLanguagesIds()
-    },
-    getCurrentLanguageHandler: () => {
-      if (!currentLanguageHandlerId) {
-        return null
-      }
+  public getAvailableLanguages() {
+    return this.getLanguagesIds()
+  }
 
-      const languagesIds = getLanguagesIds()
+  public getCurrentLanguageHandler() {
+    if (!this.currentLanguageHandlerId) {
+      return null
+    }
 
-      const idx = languagesIds.indexOf(currentLanguageHandlerId)
+    const languagesIds = this.getLanguagesIds()
 
-      return idx !== -1 ? languages[idx] : null
-    },
-    getLanguageHandler: id => {
-      return languages.find(l => l.id === id) || null
-    },
-    registerLanguage: lang => {
-      languages.push(lang)
-    },
-    setCurrentLanguageHandler: v => {
-      currentLanguageHandlerId = v
-    },
-    unregisterLanguage: langId => {
-      languages = languages.filter(l => l.id !== langId)
-    },
+    const idx = languagesIds.indexOf(this.currentLanguageHandlerId)
+
+    return idx !== -1 ? this.languages[idx] : null
+  }
+  public getLanguageHandler(id: string) {
+    return this.languages.find((l) => l.id === id) || null
+  }
+  public registerLanguage(lang: T_LanguageHandler) {
+    this.languages.push(lang)
+  }
+  public setCurrentLanguageHandler(v: string) {
+    this.currentLanguageHandlerId = v
+  }
+  public unregisterLanguage(langId: string) {
+    this.languages = this.languages.filter((l) => l.id !== langId)
   }
 }
 
-const languageManager = createLanguageManager()
-
 export {
+  LanguageManager,
   T_CharObj,
+  T_CurrentCharObj,
   T_LanguageHandler,
-  T_LanguageManager,
   T_convertToCharsObjs,
   T_filterTextToPractice,
-  languageManager,
+  T_getCurrentCharObj,
 }

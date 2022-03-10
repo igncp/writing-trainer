@@ -24,15 +24,15 @@ const filterRecords: T_filterRecords = ({ records, filterText }) => {
   const lowercaseFilterValue = filterText.toLowerCase()
   const filterValueSegments = lowercaseFilterValue
     .split(' ')
-    .map(s => s.trim())
-    .filter(s => !!s)
+    .map((s) => s.trim())
+    .filter((s) => !!s)
 
   return records
-    .filter(r => {
+    .filter((r) => {
       const name = r.name.toLowerCase()
       const language = r.language.toLowerCase()
 
-      return filterValueSegments.every(segment => {
+      return filterValueSegments.every((segment) => {
         return name.indexOf(segment) !== -1 || language.indexOf(segment) !== -1
       })
     })

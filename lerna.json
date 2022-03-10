@@ -1,4 +1,5 @@
 {
+  "hoist": false,
   "packages": [
     "packages/*"
   ],

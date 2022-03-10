@@ -3,7 +3,7 @@ import { MessageType } from '#/utils/constants'
 type T_getCurrentUrl = () => Promise<string>
 
 const getWithChrome: T_getCurrentUrl = () => {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     chrome.runtime.sendMessage(
       { type: MessageType.RequestUrl },
       (content: string) => {
@@ -14,7 +14,7 @@ const getWithChrome: T_getCurrentUrl = () => {
 }
 
 const getFromHref: T_getCurrentUrl = () => {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     resolve(window.location.href)
   })
 }

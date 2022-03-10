@@ -5,8 +5,8 @@ const chromeSetValue = (key: string, value: string) => {
 }
 
 const chromeGetValue = (key: string): Promise<string> => {
-  return new Promise(resolve => {
-    chrome.storage.local.get([key], result => {
+  return new Promise((resolve) => {
+    chrome.storage.local.get([key], (result) => {
       if (typeof result[key] === 'string') {
         resolve(result[key])
 

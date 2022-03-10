@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const buildConfig = require('../webpack.prod')
 
 module.exports = ({ config }) => {
-  buildConfig.module.rules.forEach(rule => {
+  buildConfig.module.rules.forEach((rule) => {
     config.module.rules.push(rule)
   })
 

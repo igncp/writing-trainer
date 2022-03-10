@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
+import Button from 'writing-trainer-react-ui/dist/components/Button/Button'
 
-import Button from '#/components/Button/Button'
 import openOptionsPage from '#/services/openOptionsPage'
 import sendTabsMessage from '#/services/sendTabsMessage'
 import { MessageType } from '#/utils/constants'

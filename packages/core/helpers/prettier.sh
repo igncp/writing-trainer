@@ -8,7 +8,5 @@ set -e
   "jest.config.js" \
   ".prettierrc.js" \
   ".eslintrc.js" \
-  "helpers/**/*.{ts,tsx}" \
   "src/**/*.{ts,tsx}" \
-  "docs/**/*.md" \
   "$@"
