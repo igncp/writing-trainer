@@ -1,0 +1,144 @@
+
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>Content.tsx</title>
+      <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" type="text/css" rel="stylesheet">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.2/codemirror.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.2/mode/javascript/javascript.min.js" type="text/javascript" charset="utf-8"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.2/codemirror.min.css" type="text/css" rel="stylesheet">
+<script src="../../../../assets/source-file.js" type="text/javascript" charset="utf-8"></script>
+<link href="../../../../assets/source-file.css" type="text/css" rel="stylesheet">
+    </head>
+    <body>
+    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Content/Content.tsx</td><td class="">100.00%</td><td class="">95%</td><td class="">141</td><td class="">141</td><td class="">0</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import PanelTrigger from &#x27;#/components/PanelTrigger/PanelTrigger&#x27;
+import getCurrentUrl from &#x27;#/services/getCurrentUrl&#x27;
+import listenToRuntimeMessage from &#x27;#/services/listenToRuntimeMessage&#x27;
+import log from &#x27;#/services/log&#x27;
+import storage from &#x27;#/services/storage&#x27;
+import {
+  Message,
+  MessageType,
+  STORAGE_ENABLED_PAGES_KEY,
+} from &#x27;#/utils/constants&#x27;
+import React, { useEffect, useState } from &#x27;react&#x27;
+import { LanguageManager } from &#x27;writing-trainer-core&#x27;
+import {
+  LanguageUIManager,
+  Panel,
+  PanelBase,
+  useBodyOverflowSwitch,
+  useTextSelection,
+} from &#x27;writing-trainer-react-ui&#x27;
+
+const languageManager = new LanguageManager()
+const languageUIManager = new LanguageUIManager(languageManager)
+languageUIManager.init()
+
+const panelServices = { getCurrentUrl, storage }
+
+const getIsCurrentPageEnabled = (currentUrl: string, enabledPages: string) =&gt; {
+  const pagesList = enabledPages
+    .split(&#x27;\n&#x27;)
+    .map(p =&gt; p.trim())
+    .filter(p =&gt; !!p)
+
+  return pagesList.some(p =&gt; {
+    const reg = new RegExp(p)
+
+    return reg.test(currentUrl)
+  })
+}
+
+type ContentProps = {
+  onContentEnabledResult?: (r: boolean) =&gt; void
+}
+
+const Content = ({ onContentEnabledResult }: ContentProps) =&gt; {
+  const [hasLoadedStorage, setHasLoadedStorage] = useState&lt;boolean&gt;(false)
+  const [isExtensionEnabled, setIsExtensionEnabled] = useState&lt;boolean&gt;(false)
+  const [shouldShowPanel, showPanel] = useState&lt;boolean&gt;(false)
+  const [usedText, setUsedText] = useState&lt;string&gt;(&#x27;&#x27;)
+
+  const updateLanguageWithStorage = async () =&gt; {
+    const [enabledPages, currentUrl] = await Promise.all([
+      storage.getValue(STORAGE_ENABLED_PAGES_KEY),
+      getCurrentUrl(),
+    ])
+    const isContentEnabled = getIsCurrentPageEnabled(currentUrl, enabledPages)
+
+    setIsExtensionEnabled(isContentEnabled)
+
+    if (onContentEnabledResult) {
+      onContentEnabledResult(isContentEnabled)
+    }
+    setHasLoadedStorage(true)
+  }
+
+  useEffect(() =&gt; {
+    updateLanguageWithStorage().catch((e: Error) =&gt; {
+      log(&#x27;ERROR&#x27;, e)
+    })
+  }, [])
+
+  useEffect(() =&gt; {
+    listenToRuntimeMessage((message: Message) =&gt; {
+      if (message.type === MessageType.EnableOnce &amp;&amp; !isExtensionEnabled) {
+        setIsExtensionEnabled(true)
+
+        return true
+      }
+
+      return false
+    })
+  }, [])
+
+  useBodyOverflowSwitch(shouldShowPanel)
+
+  useTextSelection(isExtensionEnabled, (textSelected: string) =&gt; {
+    const parsedText = textSelected.trim()
+
+    if (parsedText !== &#x27;&#x27; &amp;&amp; !shouldShowPanel) {
+      setUsedText(parsedText)
+    }
+  })
+
+  if (!hasLoadedStorage || !isExtensionEnabled) {
+    return null
+  }
+
+  if (!shouldShowPanel &amp;&amp; usedText) {
+    return (
+      &lt;PanelTrigger
+        onClick={() =&gt; {
+          showPanel(true)
+        }}
+      /&gt;
+    )
+  } else if (!usedText) {
+    return null
+  }
+
+  const hidePanel = () =&gt; {
+    showPanel(false)
+  }
+
+  return (
+    &lt;PanelBase onOverlayClick={hidePanel}&gt;
+      &lt;Panel
+        languageManager={languageManager}
+        languageUIManager={languageUIManager}
+        onHideRequest={hidePanel}
+        services={panelServices}
+        text={usedText}
+      /&gt;
+    &lt;/PanelBase&gt;
+  )
+}
+
+export default Content
+</textarea><pre id="annotations" style="display:none">[]</pre></div>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sat, 12 Mar 2022 20:08:16 GMT</p>
+    </body>
+  </html>
+  

@@ -1,0 +1,155 @@
+
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>RecordsList.tsx</title>
+      <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" type="text/css" rel="stylesheet">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.2/codemirror.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.2/mode/javascript/javascript.min.js" type="text/javascript" charset="utf-8"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.2/codemirror.min.css" type="text/css" rel="stylesheet">
+<script src="../../../../../assets/source-file.js" type="text/javascript" charset="utf-8"></script>
+<link href="../../../../../assets/source-file.css" type="text/css" rel="stylesheet">
+    </head>
+    <body>
+    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/RecordsSection/screens/RecordsList.tsx</td><td class="">100.00%</td><td class="">95%</td><td class="">171</td><td class="">171</td><td class="">0</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useState } from &#x27;react&#x27;
+import { records as coreRecords } from &#x27;writing-trainer-core&#x27;
+
+import Button from &#x27;../../../components/Button/Button&#x27;
+import TextInput from &#x27;../../../components/TextInput/TextInput&#x27;
+
+const { filterRecords } = coreRecords
+
+type T_Record = coreRecords.T_Record
+
+type CellProps = {
+  bold?: boolean
+  label?: string
+  title?: string
+  value: string
+}
+
+const Cell = ({ label, value, title, bold }: CellProps) =&gt; {
+  return (
+    &lt;div
+      style={{
+        display: &#x27;inline-block&#x27;,
+        marginRight: 30,
+        ...(bold ? { fontWeight: 700 } : {}),
+      }}
+      {...(title ? { title } : {})}
+    &gt;
+      {label &amp;&amp; (
+        &lt;React.Fragment&gt;
+          &lt;b&gt;{label}&lt;/b&gt;:{&#x27; &#x27;}
+        &lt;/React.Fragment&gt;
+      )}
+      {value}
+    &lt;/div&gt;
+  )
+}
+
+const formatRecordDate = (d: number): string =&gt; {
+  const date = new Date(d)
+
+  const dateStr = date.toLocaleDateString(&#x27;en-US&#x27;, {
+    hour: &#x27;2-digit&#x27;,
+    hour12: false,
+    minute: &#x27;2-digit&#x27;,
+  })
+
+  return `[${dateStr}]`
+}
+
+type RecordsListProps = {
+  onRecordEdit: (r: T_Record) =&gt; void
+  onRecordLoad: (r: T_Record) =&gt; void
+  onRecordRemove: (r: T_Record) =&gt; void
+  records: T_Record[]
+}
+
+const RecordsList = ({
+  onRecordEdit,
+  onRecordLoad,
+  onRecordRemove,
+  records,
+}: RecordsListProps) =&gt; {
+  const [filterValue, setFilterValue] = useState&lt;string&gt;(&#x27;&#x27;)
+  const filteredRecords = filterRecords({
+    filterText: filterValue,
+    records,
+  })
+
+  return (
+    &lt;div&gt;
+      {records.length &gt; 0 &amp;&amp; (
+        &lt;div style={{ padding: 10, position: &#x27;relative&#x27; }}&gt;
+          &lt;TextInput
+            autoFocus
+            onChange={e =&gt; {
+              setFilterValue(e.target.value)
+            }}
+            onEnterPress={() =&gt; {
+              if (filteredRecords.length &gt; 0) {
+                onRecordLoad(filteredRecords[0])
+              }
+            }}
+            placeholder=&quot;Filter by name and language&quot;
+            style={{ width: &#x27;100%&#x27; }}
+          /&gt;
+        &lt;/div&gt;
+      )}
+      &lt;div style={{ maxHeight: 300, overflow: &#x27;auto&#x27; }}&gt;
+        {filteredRecords.map(record =&gt; {
+          const { id, name, createdOn, lastLoadedOn } = record
+
+          return (
+            &lt;div key={id} style={{ padding: 10 }}&gt;
+              &lt;Cell label=&quot;Name&quot; value={name} /&gt;
+              &lt;Cell title=&quot;Created&quot; value={formatRecordDate(createdOn)} /&gt;
+              &lt;Cell title=&quot;Loaded&quot; value={formatRecordDate(lastLoadedOn)} /&gt;
+              &lt;Cell bold title=&quot;Language&quot; value={record.language} /&gt;
+              {record.link &amp;&amp; (
+                &lt;a
+                  href={record.link}
+                  style={{ marginRight: 15 }}
+                  target=&quot;_blank&quot;
+                  title={record.link}
+                &gt;
+                  Website
+                &lt;/a&gt;
+              )}
+              &lt;Button
+                onClick={() =&gt; {
+                  onRecordLoad(record)
+                }}
+              &gt;
+                Load
+              &lt;/Button&gt;
+              &lt;Button
+                onClick={() =&gt; {
+                  onRecordEdit(record)
+                }}
+              &gt;
+                Edit
+              &lt;/Button&gt;
+              &lt;Button
+                onClick={() =&gt; {
+                  onRecordRemove(record)
+                }}
+              &gt;
+                Remove
+              &lt;/Button&gt;
+            &lt;/div&gt;
+          )
+        })}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default RecordsList
+</textarea><pre id="annotations" style="display:none">[]</pre></div>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sat, 12 Mar 2022 20:06:59 GMT</p>
+    </body>
+  </html>
+  

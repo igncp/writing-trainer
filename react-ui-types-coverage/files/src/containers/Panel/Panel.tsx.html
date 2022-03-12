@@ -1,0 +1,452 @@
+
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>Panel.tsx</title>
+      <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" type="text/css" rel="stylesheet">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.2/codemirror.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.2/mode/javascript/javascript.min.js" type="text/javascript" charset="utf-8"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.2/codemirror.min.css" type="text/css" rel="stylesheet">
+<script src="../../../../assets/source-file.js" type="text/javascript" charset="utf-8"></script>
+<link href="../../../../assets/source-file.css" type="text/css" rel="stylesheet">
+    </head>
+    <body>
+    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Panel/Panel.tsx</td><td class="">99.63%</td><td class="">95%</td><td class="">538</td><td class="">536</td><td class="">2</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useState } from &#x27;react&#x27;
+import {
+  LanguageDefinition,
+  LanguageManager,
+  records as coreRecords,
+} from &#x27;writing-trainer-core&#x27;
+
+import Button from &#x27;../../components/Button/Button&#x27;
+import CharactersDisplay from &#x27;../../components/CharactersDisplay/CharactersDisplay&#x27;
+import ChooseLanguage from &#x27;../../components/ChooseLanguage/ChooseLanguage&#x27;
+import TextArea from &#x27;../../components/TextArea/TextArea&#x27;
+import { LanguageUIManager } from &#x27;../../languages/languageUIManager&#x27;
+import {
+  T_LangOpts,
+  T_getCurrentCharObjFromPractice,
+} from &#x27;../../languages/types&#x27;
+import { T_Services } from &#x27;../../typings/mainTypes&#x27;
+import RecordsSection, { RecordsScreen } from &#x27;../RecordsSection/RecordsSection&#x27;
+
+const STORAGE_LANGUAGE_KEY = &#x27;selectedLanguage&#x27;
+
+const createInputSetterFn =
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (setValue: any) =&gt; (e: React.ChangeEvent&lt;HTMLTextAreaElement&gt;) =&gt; {
+    setValue(e.target.value)
+  }
+
+const createToggleFn = (val: boolean, fn: (i: boolean) =&gt; void) =&gt; () =&gt; {
+  fn(!val)
+}
+
+const SHORTCUT_EDITING = &#x27;control+control+shift&#x27;
+const SHORTCUT_PRONUNCIATION = &#x27;shift+shift+control&#x27;
+
+const PRACTICE_TEXT_PLACEHOLDER = `Practice Text
+Toggle Editing: ${SHORTCUT_EDITING}
+Toggle Pronunciation: ${SHORTCUT_PRONUNCIATION}`
+
+type T_Panel = React.FC&lt;{
+  UI?: {
+    noHideButton?: boolean
+  }
+  languageManager: LanguageManager
+  languageUIManager: LanguageUIManager
+  onHideRequest?: () =&gt; void
+  services: T_Services
+  text: string
+  _stories?: {
+    defaultLanguage?: LanguageDefinition[&#x27;id&#x27;]
+    defaultPractice?: string
+    defaultPronunciation?: string
+    langOpts?: T_LangOpts
+  }
+}&gt;
+
+const getLanguageDefinitions = (languageManager: LanguageManager) =&gt; {
+  return languageManager.getAvailableLanguages().map(langId =&gt; {
+    const languageHandler = languageManager.getLanguageHandler(langId)
+
+    return languageHandler!.language
+  })
+}
+
+const Panel: T_Panel = ({
+  _stories,
+  onHideRequest,
+  services,
+  text,
+  UI,
+  languageManager,
+  languageUIManager,
+}) =&gt; {
+  const initialLanguageId = languageUIManager.getDefaultLanguage()
+  const [showingRecordsInitScreen, setShowingRecordsInitScreen] = useState&lt;
+    RecordsScreen | &#x27;&#x27;
+  &gt;(&#x27;&#x27;)
+  const [currentRecord, setCurrentRecord] = useState&lt;
+    coreRecords.T_Record[&#x27;id&#x27;] | null
+  &gt;(null)
+  const [originalTextValue, setOriginalText] = useState&lt;string&gt;(text)
+  const [pronunciationValue, setPronunciation] = useState&lt;string&gt;(
+    _stories!.defaultPronunciation ?? &#x27;&#x27;,
+  )
+  const [specialCharsValue, setSpecialChars] = useState&lt;string&gt;(&#x27;&#x27;)
+  const [writingValue, setWriting] = useState&lt;string&gt;(&#x27;&#x27;)
+  const [practiceValue, setPractice] = useState&lt;string&gt;(
+    _stories!.defaultPractice ?? &#x27;&#x27;,
+  )
+  const [isShowingPronunciation, setShowingPronunciation] =
+    useState&lt;boolean&gt;(true)
+  const [isShowingEdition, setShowingEdition] = useState&lt;boolean&gt;(true)
+  const [doesPracticeHaveError, setPracticeHasError] = useState&lt;boolean&gt;(false)
+  const [lastThreeKeys, setLastThreeKeys] = useState&lt;string[]&gt;([])
+  const [languageOptions, setLanguageOptions] = useState&lt;T_LangOpts&gt;({})
+  const [selectedLanguage, setSelectedLanguage] =
+    useState&lt;LanguageDefinition[&#x27;id&#x27;]&gt;(initialLanguageId)
+  const [hasLoadedStorage, setHasLoadedStorage] = useState&lt;boolean&gt;(false)
+  const [currentDisplayCharIdx, setCurrentDisplayCharIdx] = useState&lt;number&gt;(0)
+
+  const uiHandler = languageUIManager.getUIHandler()
+  const langHandler = languageManager.getCurrentLanguageHandler()
+
+  const tryToUpdatePronunciation = () =&gt; {}
+
+  const { storage } = services
+
+  const handleOriginalTextUpdate = (
+    e: React.ChangeEvent&lt;HTMLTextAreaElement&gt;,
+  ) =&gt; {
+    const val = e.target.value
+
+    if (val) {
+      tryToUpdatePronunciation()
+    }
+
+    setOriginalText(val)
+  }
+
+  useEffect(() =&gt; {
+    if (originalTextValue) {
+      tryToUpdatePronunciation()
+    }
+  }, [selectedLanguage])
+
+  const updateLanguage = (lang: LanguageDefinition[&#x27;id&#x27;]) =&gt; {
+    languageManager.setCurrentLanguageHandler(lang)
+    setSelectedLanguage(lang)
+  }
+
+  useEffect(() =&gt; {
+    if (!_stories!.defaultLanguage) {
+      return
+    }
+
+    updateLanguage(_stories!.defaultLanguage)
+  }, [_stories!.defaultLanguage])
+
+  const updateLanguageWithStorage = async () =&gt; {
+    const storageSelectedLanguage = await storage.getValue(STORAGE_LANGUAGE_KEY)
+
+    if (
+      storageSelectedLanguage &amp;&amp;
+      storageSelectedLanguage !== selectedLanguage &amp;&amp;
+      !_stories!.defaultLanguage
+    ) {
+      updateLanguage(storageSelectedLanguage)
+    }
+    setHasLoadedStorage(true)
+  }
+
+  useEffect(() =&gt; {
+    updateLanguageWithStorage().catch(() =&gt; {})
+  }, [])
+
+  const SPECIAL_CHARS = langHandler!.getSpecialChars()
+  const langOpts = _stories!.langOpts ?? uiHandler.getLangOpts()
+  const langOptsObj = {
+    langOpts: {
+      pronunciationInput: pronunciationValue,
+      ...((langOpts as unknown as object | undefined) ?? {}),
+    },
+  }
+
+  const charsObjs = langHandler!.convertToCharsObjs({
+    ...langOptsObj,
+    charsToRemove: specialCharsValue.split(&#x27;&#x27;).concat(SPECIAL_CHARS),
+    text: originalTextValue,
+  })
+
+  const getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice = (
+    practiceText = practiceValue,
+  ) =&gt; {
+    const practiceCharsObjs = langHandler!.convertToCharsObjs({
+      ...langOptsObj,
+      charsToRemove: specialCharsValue.split(&#x27;&#x27;).concat(SPECIAL_CHARS),
+      text: practiceText,
+    })
+
+    return langHandler!.getCurrentCharObj({
+      originalCharsObjs: charsObjs,
+      practiceCharsObjs,
+    })
+  }
+
+  useEffect(() =&gt; {
+    const practiceCharObj = getCurrentCharObjFromPractice()
+
+    if (practiceCharObj?.ch) {
+      setCurrentDisplayCharIdx(practiceCharObj.index)
+    }
+
+    return () =&gt; {}
+  }, [practiceValue, pronunciationValue])
+
+  useEffect(() =&gt; {
+    const handleShortcuts = (e: KeyboardEvent) =&gt; {
+      const value = e.key
+      const newArr = lastThreeKeys.slice(-2).concat([value])
+      const currentResult = newArr.join(&#x27;+&#x27;).toLowerCase()
+
+      if (currentResult === SHORTCUT_PRONUNCIATION) {
+        setShowingPronunciation(!isShowingPronunciation)
+      } else if (currentResult === SHORTCUT_EDITING) {
+        setShowingEdition(!isShowingEdition)
+      }
+
+      setLastThreeKeys(newArr)
+    }
+
+    document.addEventListener(&#x27;keydown&#x27;, handleShortcuts)
+
+    return () =&gt; {
+      document.removeEventListener(&#x27;keydown&#x27;, handleShortcuts)
+    }
+  }, [lastThreeKeys, isShowingEdition, isShowingPronunciation])
+
+  const clearValues = () =&gt; {
+    // eslint-disable-next-line padding-line-between-statements,@typescript-eslint/no-extra-semi
+    ;[
+      setOriginalText,
+      setPronunciation,
+      setSpecialChars,
+      setWriting,
+      setPractice,
+    ].forEach(fn =&gt; {
+      fn(&#x27;&#x27;)
+    })
+    setShowingPronunciation(true)
+    setShowingEdition(true)
+    setCurrentRecord(null)
+  }
+
+  const handleLanguageChange = (newSelectedLanguage: string) =&gt; {
+    storage.setValue(STORAGE_LANGUAGE_KEY, newSelectedLanguage)
+    updateLanguage(newSelectedLanguage)
+  }
+
+  const handleWritingKeyDown = (
+    e: React.KeyboardEvent&lt;HTMLTextAreaElement&gt;,
+  ) =&gt; {
+    // special key
+    if (e.key === &#x27;`&#x27;) {
+      e.preventDefault()
+      setWriting(&#x27;&#x27;)
+      setPracticeHasError(false)
+
+      return
+    }
+
+    if (e.key === &#x27;Enter&#x27;) {
+      setPractice(`${practiceValue}\n`)
+    }
+
+    uiHandler.handleWritingKeyDown({
+      charsObjs,
+      getCurrentCharObjFromPractice,
+      keyEvent: e,
+      languageOptions,
+      originalTextValue,
+      practiceValue,
+      setCurrentDisplayCharIdx,
+      setPractice,
+      setPracticeHasError,
+      setWriting,
+      specialCharsValue,
+      writingValue,
+    })
+  }
+
+  const handleLanguageOptionsChange = (opts: T_LangOpts) =&gt; {
+    setLanguageOptions(opts)
+  }
+
+  const handleWritingAreaClick = () =&gt; {
+    setLastThreeKeys([])
+  }
+
+  const LinksBlock = uiHandler.getLinksBlock()
+  const OptionsBlock = uiHandler.getOptionsBlock()
+  const handleDisplayedCharClick = uiHandler.getDisplayedCharHandler()
+
+  const saveRecord = () =&gt; {
+    setShowingRecordsInitScreen(&#x27;Save&#x27;)
+  }
+
+  const listRecords = () =&gt; {
+    setShowingRecordsInitScreen(&#x27;List&#x27;)
+  }
+
+  if (!hasLoadedStorage) {
+    return null
+  }
+
+  if (showingRecordsInitScreen) {
+    return (
+      &lt;RecordsSection
+        initScreen={showingRecordsInitScreen}
+        onRecordLoad={(record: coreRecords.T_Record) =&gt; {
+          clearValues()
+
+          if (record.language !== selectedLanguage) {
+            handleLanguageChange(record.language)
+          }
+
+          setShowingRecordsInitScreen(&#x27;&#x27;)
+          setShowingEdition(false)
+          setShowingPronunciation(false)
+          setOriginalText(record.text)
+          setCurrentRecord(record.id)
+          setPronunciation(record.pronunciation)
+        }}
+        onRecordsClose={() =&gt; {
+          setShowingRecordsInitScreen(&#x27;&#x27;)
+        }}
+        pronunciation={pronunciationValue}
+        selectedLanguage={selectedLanguage}
+        services={services}
+        text={originalTextValue}
+      /&gt;
+    )
+  }
+
+  return (
+    &lt;React.Fragment&gt;
+      &lt;Button onClick={clearValues}&gt;Clear&lt;/Button&gt;
+      &lt;Button onClick={listRecords}&gt;Records&lt;/Button&gt;
+      &lt;Button onClick={createToggleFn(isShowingEdition, setShowingEdition)}&gt;
+        Toggle Edition
+      &lt;/Button&gt;
+      &lt;Button
+        onClick={createToggleFn(
+          isShowingPronunciation,
+          setShowingPronunciation,
+        )}
+      &gt;
+        Toggle Pronunciation
+      &lt;/Button&gt;
+      &lt;ChooseLanguage
+        languages={getLanguageDefinitions(languageManager)}
+        onOptionsChange={handleLanguageChange}
+        selectedLanguage={selectedLanguage}
+      /&gt;
+      &lt;Button onClick={saveRecord}&gt;
+        {currentRecord === null ? &#x27;Save&#x27; : &#x27;Update&#x27;}
+      &lt;/Button&gt;
+      {currentRecord !== null &amp;&amp; (
+        &lt;Button
+          onClick={() =&gt; {
+            setCurrentRecord(null)
+          }}
+        &gt;
+          Close Record
+        &lt;/Button&gt;
+      )}
+      &lt;Button
+        onClick={onHideRequest ?? undefined}
+        style={{
+          display: UI?.noHideButton ? &#x27;none&#x27; : &#x27;block&#x27;,
+          float: &#x27;right&#x27;,
+        }}
+      &gt;
+        Hide
+      &lt;/Button&gt;
+      &lt;div style={{ padding: &#x27;0 20px 20px 20px&#x27; }}&gt;
+        {isShowingEdition &amp;&amp; (
+          &lt;div&gt;
+            &lt;TextArea
+              onChange={handleOriginalTextUpdate}
+              placeholder=&quot;Original text&quot;
+              rows={3}
+              value={originalTextValue}
+            /&gt;
+            &lt;TextArea
+              onChange={createInputSetterFn(setPronunciation)}
+              placeholder=&quot;Pronunciation&quot;
+              rows={2}
+              value={pronunciationValue}
+            /&gt;
+            &lt;TextArea
+              onChange={createInputSetterFn(setSpecialChars)}
+              placeholder=&quot;Special characters&quot;
+              rows={1}
+              value={specialCharsValue}
+            /&gt;
+            &lt;OptionsBlock
+              languageOptions={languageOptions}
+              onOptionsChange={handleLanguageOptionsChange}
+            /&gt;
+          &lt;/div&gt;
+        )}{&#x27; &#x27;}
+        &lt;div&gt;
+          &lt;div style={{ marginBottom: 10, marginTop: 5 }}&gt;
+            &lt;CharactersDisplay
+              charsObjs={charsObjs}
+              focusedIndex={currentDisplayCharIdx}
+              onCharClick={handleDisplayedCharClick}
+              shouldHaveDifferentWidths={!uiHandler.shouldAllCharsHaveSameWidth}
+              shouldHidePronunciation={!isShowingPronunciation}
+            /&gt;
+          &lt;/div&gt;
+          &lt;TextArea
+            autoFocus
+            onChange={createInputSetterFn(setWriting)}
+            onClick={handleWritingAreaClick}
+            onKeyDown={handleWritingKeyDown}
+            placeholder={practiceValue ? &#x27;&#x27; : &#x27;Writing area&#x27;}
+            rows={1}
+            value={writingValue}
+            withoutCursor
+          /&gt;
+          &lt;TextArea
+            autoScroll
+            onChange={createInputSetterFn(setPractice)}
+            placeholder={PRACTICE_TEXT_PLACEHOLDER}
+            rows={3}
+            style={{
+              border: `1px solid ${doesPracticeHaveError ? &#x27;red&#x27; : &#x27;white&#x27;}`,
+              fontSize: 46,
+              lineHeight: &#x27;46px&#x27;,
+            }}
+            value={practiceValue}
+          /&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;LinksBlock text={originalTextValue} /&gt;
+    &lt;/React.Fragment&gt;
+  )
+}
+
+Panel.defaultProps = {
+  _stories: {},
+}
+
+export default Panel
+</textarea><pre id="annotations" style="display:none">[{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:23,&quot;character&quot;:3,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:24,&quot;character&quot;:4,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1}]</pre></div>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sat, 12 Mar 2022 20:06:59 GMT</p>
+    </body>
+  </html>
+  

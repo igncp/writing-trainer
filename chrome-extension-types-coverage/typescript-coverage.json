@@ -1,0 +1,170 @@
+{
+  "fileCounts": {},
+  "anys": [
+    {
+      "file": "src/containers/Options/Options.tsx",
+      "line": 27,
+      "character": 38,
+      "text": "error",
+      "kind": 1
+    },
+    {
+      "file": "src/containers/Options/Options.tsx",
+      "line": 28,
+      "character": 18,
+      "text": "error",
+      "kind": 1
+    },
+    {
+      "file": "src/services/__tests__/getCurrentUrl.test.tsx",
+      "line": 6,
+      "character": 6,
+      "text": "chrome",
+      "kind": 1
+    },
+    {
+      "file": "src/services/__tests__/getCurrentUrl.test.tsx",
+      "line": 11,
+      "character": 29,
+      "text": "chrome",
+      "kind": 1
+    },
+    {
+      "file": "src/services/__tests__/getCurrentUrl.test.tsx",
+      "line": 14,
+      "character": 2,
+      "text": "chrome",
+      "kind": 1
+    },
+    {
+      "file": "src/services/__tests__/getCurrentUrl.test.tsx",
+      "line": 14,
+      "character": 9,
+      "text": "runtime",
+      "kind": 1
+    },
+    {
+      "file": "src/services/__tests__/getCurrentUrl.test.tsx",
+      "line": 14,
+      "character": 17,
+      "text": "sendMessage",
+      "kind": 1
+    },
+    {
+      "file": "src/services/__tests__/getCurrentUrl.test.tsx",
+      "line": 14,
+      "character": 29,
+      "text": "mockImplementation",
+      "kind": 1
+    },
+    {
+      "file": "src/services/__tests__/getCurrentUrl.test.tsx",
+      "line": 14,
+      "character": 49,
+      "text": "_",
+      "kind": 1
+    },
+    {
+      "file": "src/services/__tests__/getCurrentUrl.test.tsx",
+      "line": 14,
+      "character": 57,
+      "text": "fn",
+      "kind": 1
+    },
+    {
+      "file": "src/services/__tests__/getCurrentUrl.test.tsx",
+      "line": 15,
+      "character": 4,
+      "text": "fn",
+      "kind": 1
+    },
+    {
+      "file": "src/services/__tests__/getCurrentUrl.test.tsx",
+      "line": 25,
+      "character": 11,
+      "text": "chrome",
+      "kind": 1
+    },
+    {
+      "file": "src/services/__tests__/getCurrentUrl.test.tsx",
+      "line": 25,
+      "character": 18,
+      "text": "runtime",
+      "kind": 1
+    },
+    {
+      "file": "src/services/__tests__/getCurrentUrl.test.tsx",
+      "line": 25,
+      "character": 26,
+      "text": "sendMessage",
+      "kind": 1
+    },
+    {
+      "file": "src/services/__tests__/getCurrentUrl.test.tsx",
+      "line": 25,
+      "character": 38,
+      "text": "mock",
+      "kind": 1
+    },
+    {
+      "file": "src/services/__tests__/getCurrentUrl.test.tsx",
+      "line": 25,
+      "character": 43,
+      "text": "calls",
+      "kind": 1
+    },
+    {
+      "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
+      "line": 19,
+      "character": 10,
+      "text": "panelEl",
+      "kind": 1
+    },
+    {
+      "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
+      "line": 21,
+      "character": 11,
+      "text": "panelEl",
+      "kind": 1
+    },
+    {
+      "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
+      "line": 21,
+      "character": 19,
+      "text": "style",
+      "kind": 1
+    },
+    {
+      "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
+      "line": 21,
+      "character": 25,
+      "text": "background",
+      "kind": 1
+    },
+    {
+      "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
+      "line": 25,
+      "character": 11,
+      "text": "panelEl",
+      "kind": 1
+    },
+    {
+      "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
+      "line": 25,
+      "character": 19,
+      "text": "style",
+      "kind": 1
+    },
+    {
+      "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
+      "line": 25,
+      "character": 25,
+      "text": "background",
+      "kind": 1
+    }
+  ],
+  "percentage": 97.27488151658768,
+  "total": 844,
+  "covered": 821,
+  "uncovered": 23
+}

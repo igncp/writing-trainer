@@ -1,0 +1,159 @@
+
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>languageManager.test.ts</title>
+      <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" type="text/css" rel="stylesheet">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.2/codemirror.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.2/mode/javascript/javascript.min.js" type="text/javascript" charset="utf-8"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.2/codemirror.min.css" type="text/css" rel="stylesheet">
+<script src="../../assets/source-file.js" type="text/javascript" charset="utf-8"></script>
+<link href="../../assets/source-file.css" type="text/css" rel="stylesheet">
+    </head>
+    <body>
+    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">test/languageManager.test.ts</td><td class="">100.00%</td><td class="">95%</td><td class="">186</td><td class="">186</td><td class="">0</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import {
+  CharObj,
+  LanguageDefinition,
+  LanguageManager,
+  T_LanguageHandler,
+} from &#x27;../src&#x27;
+
+const languageManager = new LanguageManager()
+
+const createDummyLanguageHandler = (
+  id: LanguageDefinition[&#x27;id&#x27;],
+): T_LanguageHandler =&gt; {
+  const convertToCharsObjs = () =&gt; {
+    const result: CharObj[] = []
+
+    return result
+  }
+
+  const filterTextToPractice = () =&gt; {
+    return &#x27;&#x27;
+  }
+
+  const getSpecialChars = () =&gt; {
+    const result: string[] = []
+
+    return result
+  }
+
+  const getCurrentCharObj = (): null =&gt; null
+
+  return {
+    convertToCharsObjs,
+    filterTextToPractice,
+    getCurrentCharObj,
+    getSpecialChars,
+    language: new LanguageDefinition({
+      id,
+      name: &#x27;Some Name&#x27;,
+    }),
+  }
+}
+
+const dummyHandlerA = createDummyLanguageHandler(&#x27;dummyA&#x27;)
+const dummyHandlerB = createDummyLanguageHandler(&#x27;dummyB&#x27;)
+
+beforeEach(() =&gt; {
+  languageManager.clear()
+})
+
+describe(&#x27;registerLanguage&#x27;, () =&gt; {
+  it(&#x27;sets a new language&#x27;, () =&gt; {
+    expect(languageManager.getAvailableLanguages()).toEqual([])
+
+    languageManager.registerLanguage(dummyHandlerA)
+
+    expect(languageManager.getAvailableLanguages()).toEqual([
+      dummyHandlerA.language.id,
+    ])
+  })
+})
+
+describe(&#x27;clear&#x27;, () =&gt; {
+  it(&#x27;can remove a registered language&#x27;, () =&gt; {
+    languageManager.registerLanguage(dummyHandlerA)
+    languageManager.setCurrentLanguageHandler(dummyHandlerA.language.id)
+
+    expect(languageManager.getAvailableLanguages()).toEqual([
+      dummyHandlerA.language.id,
+    ])
+
+    expect(languageManager.getCurrentLanguageHandler()!.language.id).toEqual(
+      dummyHandlerA.language.id,
+    )
+
+    languageManager.clear()
+
+    expect(languageManager.getCurrentLanguageHandler()).toEqual(null)
+    expect(languageManager.getAvailableLanguages()).toEqual([])
+  })
+})
+
+describe(&#x27;getCurrentLanguageHandler&#x27;, () =&gt; {
+  it(&#x27;returns null when no handlers&#x27;, () =&gt; {
+    expect(languageManager.getAvailableLanguages()).toEqual([])
+
+    expect(languageManager.getCurrentLanguageHandler()).toEqual(null)
+  })
+
+  it(&#x27;returns null when no matched&#x27;, () =&gt; {
+    languageManager.registerLanguage(dummyHandlerA)
+
+    expect(languageManager.getCurrentLanguageHandler()).toEqual(null)
+
+    languageManager.setCurrentLanguageHandler(&#x27;foo&#x27;)
+
+    expect(languageManager.getCurrentLanguageHandler()).toEqual(null)
+
+    languageManager.setCurrentLanguageHandler(dummyHandlerA.language.id)
+
+    expect(languageManager.getCurrentLanguageHandler()).toEqual(dummyHandlerA)
+  })
+})
+
+describe(&#x27;unregisterLanguage&#x27;, () =&gt; {
+  it(&#x27;removes only the registered language&#x27;, () =&gt; {
+    languageManager.registerLanguage(dummyHandlerA)
+    languageManager.registerLanguage(dummyHandlerB)
+
+    expect(languageManager.getAvailableLanguages()).toEqual([
+      dummyHandlerA.language.id,
+      dummyHandlerB.language.id,
+    ])
+
+    languageManager.unregisterLanguage(dummyHandlerA.language.id)
+
+    expect(languageManager.getAvailableLanguages()).toEqual([
+      dummyHandlerB.language.id,
+    ])
+  })
+})
+
+describe(&#x27;getLanguageHandler&#x27;, () =&gt; {
+  it(&#x27;returns the expected value&#x27;, () =&gt; {
+    expect(
+      languageManager.getLanguageHandler(dummyHandlerA.language.id),
+    ).toEqual(null)
+
+    languageManager.registerLanguage(dummyHandlerA)
+
+    expect(
+      languageManager.getLanguageHandler(dummyHandlerA.language.id),
+    ).toEqual(dummyHandlerA)
+    expect(languageManager.getLanguageHandler(&#x27;foo&#x27;)).toEqual(null)
+
+    languageManager.unregisterLanguage(dummyHandlerA.language.id)
+
+    expect(
+      languageManager.getLanguageHandler(dummyHandlerA.language.id),
+    ).toEqual(null)
+  })
+})
+</textarea><pre id="annotations" style="display:none">[]</pre></div>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sat, 12 Mar 2022 20:06:18 GMT</p>
+    </body>
+  </html>
+  
