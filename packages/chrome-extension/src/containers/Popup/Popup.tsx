@@ -1,16 +1,19 @@
-import React, { useState } from 'react'
-import Button from 'writing-trainer-react-ui/dist/components/Button/Button'
-
 import openOptionsPage from '#/services/openOptionsPage'
 import sendTabsMessage from '#/services/sendTabsMessage'
 import { MessageType } from '#/utils/constants'
+import React, { useState } from 'react'
+import { Button } from 'writing-trainer-react-ui'
 
-type Popup = React.FC<{
-  onEnableOnceClick?(opt: { setButtonOneEnabled(v: boolean): void }): void
-  onOptionsPageClick?(): void
-}>
+type onEnableOnceClickOpts = {
+  setButtonOneEnabled: (v: boolean) => void
+}
 
-const Popup: Popup = ({ onEnableOnceClick, onOptionsPageClick }) => {
+type PopupProps = {
+  onEnableOnceClick?: (opt: onEnableOnceClickOpts) => void
+  onOptionsPageClick?: () => void
+}
+
+const Popup = ({ onEnableOnceClick, onOptionsPageClick }: PopupProps) => {
   const [isButtonOneEnabled, setButtonOneEnabled] = useState<boolean>(true)
 
   return (
@@ -19,7 +22,7 @@ const Popup: Popup = ({ onEnableOnceClick, onOptionsPageClick }) => {
         <Button
           disabled={!isButtonOneEnabled}
           onClick={() => {
-            onEnableOnceClick({ setButtonOneEnabled })
+            onEnableOnceClick?.({ setButtonOneEnabled })
           }}
         >
           Enable one time
@@ -33,7 +36,7 @@ const Popup: Popup = ({ onEnableOnceClick, onOptionsPageClick }) => {
 }
 
 Popup.defaultProps = {
-  onEnableOnceClick: ({ setButtonOneEnabled }) => {
+  onEnableOnceClick: ({ setButtonOneEnabled }: onEnableOnceClickOpts) => {
     sendTabsMessage({ type: MessageType.EnableOnce })
       .then((received: boolean) => {
         if (received) {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { constants } from 'writing-trainer-core'
+import { LanguageDefinition } from 'writing-trainer-core'
 
 import { useHover } from '../../utils/hooks'
 import {
@@ -9,9 +9,9 @@ import {
 } from '../../utils/ui'
 
 type T_ChooseLanguage = React.FC<{
-  languages: constants.T_LanguageDefinition[]
-  onOptionsChange(id: string): void
-  selectedLanguage: constants.T_LanguageDefinition['id']
+  languages: LanguageDefinition[]
+  onOptionsChange: (id: string) => void
+  selectedLanguage: LanguageDefinition['id']
 }>
 
 const ChooseLanguage: T_ChooseLanguage = ({
@@ -35,7 +35,7 @@ const ChooseLanguage: T_ChooseLanguage = ({
       value={selectedLanguage}
       {...bind}
     >
-      {languages.map((languageDefinition) => {
+      {languages.map(languageDefinition => {
         return (
           <option key={languageDefinition.id} value={languageDefinition.id}>
             {languageDefinition.name}

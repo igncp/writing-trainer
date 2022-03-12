@@ -1,27 +1,42 @@
-import { T_LanguageDefinition } from './constants'
+import { LanguageDefinition } from './constants'
 
-interface T_CharObj {
-  pronunciation: string
-  word: string
+class CharObj {
+  public readonly pronunciation: string
+  public readonly word: string // @TODO: rename to "text"
+
+  public constructor(opt: {
+    pronunciation: CharObj['pronunciation']
+    word: CharObj['word']
+  }) {
+    this.pronunciation = opt.pronunciation
+    this.word = opt.word
+  }
+}
+
+class CurrentCharObj {
+  public readonly ch: CharObj
+  public readonly index: number
+  public constructor(opts: { ch: CharObj; index: number }) {
+    this.ch = opts.ch
+    this.index = opts.index
+  }
 }
 
 type T_convertToCharsObjs = (opts: {
   text: string
   charsToRemove: string[]
   langOpts?: { [k: string]: unknown }
-}) => T_CharObj[]
+}) => CharObj[]
 
 type T_filterTextToPractice = (opts: {
   text: string
   charsToRemove: string[]
 }) => string
 
-type T_CurrentCharObj = { ch: T_CharObj | null; index: number }
-
 type T_getCurrentCharObj = (opts: {
-  originalCharsObjs: T_CharObj[]
-  practiceCharsObjs: T_CharObj[]
-}) => T_CurrentCharObj | null
+  originalCharsObjs: CharObj[]
+  practiceCharsObjs: CharObj[]
+}) => CurrentCharObj | null
 
 interface T_LanguageHandler {
   convertToCharsObjs: T_convertToCharsObjs
@@ -30,18 +45,13 @@ interface T_LanguageHandler {
    */
   filterTextToPractice: T_filterTextToPractice
   getCurrentCharObj: T_getCurrentCharObj
-  getSpecialChars(): string[]
-  id: T_LanguageDefinition['id']
-  name: T_LanguageDefinition['name']
+  getSpecialChars: () => string[]
+  language: LanguageDefinition
 }
 
 class LanguageManager {
   private languages: T_LanguageHandler[] = []
-  private currentLanguageHandlerId: T_LanguageDefinition['id'] | null = null
-
-  private getLanguagesIds() {
-    return this.languages.map((l) => l.id)
-  }
+  private currentLanguageHandlerId: LanguageDefinition['id'] | null = null
 
   public clear() {
     this.languages.length = 0
@@ -63,26 +73,26 @@ class LanguageManager {
 
     return idx !== -1 ? this.languages[idx] : null
   }
+
   public getLanguageHandler(id: string) {
-    return this.languages.find((l) => l.id === id) || null
+    return this.languages.find(l => l.language.id === id) ?? null
   }
+
   public registerLanguage(lang: T_LanguageHandler) {
     this.languages.push(lang)
   }
+
   public setCurrentLanguageHandler(v: string) {
     this.currentLanguageHandlerId = v
   }
+
   public unregisterLanguage(langId: string) {
-    this.languages = this.languages.filter((l) => l.id !== langId)
+    this.languages = this.languages.filter(l => l.language.id !== langId)
+  }
+
+  private getLanguagesIds() {
+    return this.languages.map(l => l.language.id)
   }
 }
 
-export {
-  LanguageManager,
-  T_CharObj,
-  T_CurrentCharObj,
-  T_LanguageHandler,
-  T_convertToCharsObjs,
-  T_filterTextToPractice,
-  T_getCurrentCharObj,
-}
+export { CharObj, CurrentCharObj, LanguageManager, T_LanguageHandler }

@@ -1,15 +1,16 @@
+import * as React from 'react'
+import {
+  LanguageManager,
+  englishHandler,
+  japaneseHandler,
+  mandarinHandler,
+} from 'writing-trainer-core'
+
 import { action } from '@storybook/addon-actions'
 import { storiesOf, addDecorator } from '@storybook/react'
-import * as React from 'react'
 
-import { LanguageManager } from 'writing-trainer-core'
-import mandarinHandler from 'writing-trainer-core/dist/languageHandlers/mandarin'
-import englishHandler from 'writing-trainer-core/dist/languageHandlers/english'
-import japaneseHandler from 'writing-trainer-core/dist/languageHandlers/japanese'
-
-import { LanguageUIManager } from '../../../languages/languageUIManager'
 import { dummyServices } from '../../../__stories__/storybookHelpers'
-
+import { LanguageUIManager } from '../../../languages/languageUIManager'
 import Panel from '../Panel'
 
 const mandarinLangOpts = {
@@ -28,7 +29,7 @@ const mandarinLangOpts = {
 const languageManager = new LanguageManager()
 const languageUIManager = new LanguageUIManager(languageManager)
 
-addDecorator((fn) => {
+addDecorator(fn => {
   languageUIManager.init()
 
   return <div>{fn()}</div>
@@ -39,7 +40,7 @@ storiesOf('Containers|Panel', module)
     return (
       <Panel
         _stories={{
-          defaultLanguage: mandarinHandler.id,
+          defaultLanguage: mandarinHandler.language.id,
           langOpts: mandarinLangOpts,
         }}
         languageManager={languageManager}
@@ -58,7 +59,7 @@ storiesOf('Containers|Panel', module)
     return (
       <Panel
         _stories={{
-          defaultLanguage: mandarinHandler.id,
+          defaultLanguage: mandarinHandler.language.id,
           defaultPractice: text.slice(0, text.length - 5),
           langOpts: mandarinLangOpts,
         }}
@@ -74,7 +75,7 @@ storiesOf('Containers|Panel', module)
     return (
       <Panel
         _stories={{
-          defaultLanguage: japaneseHandler.id,
+          defaultLanguage: japaneseHandler.language.id,
           defaultPronunciation: 'a i u e o',
         }}
         languageManager={languageManager}
@@ -88,12 +89,12 @@ storiesOf('Containers|Panel', module)
   .add('english', () => {
     return (
       <Panel
-        _stories={{ defaultLanguage: englishHandler.id }}
+        _stories={{ defaultLanguage: englishHandler.language.id }}
         languageManager={languageManager}
         languageUIManager={languageUIManager}
         onHideRequest={action('hide-request')}
         services={dummyServices}
-        text="The feeling around the ground at that moment was distinct from the usual triumphalism. As the players lined up in an oddly formal crocodile to shake hands there was a feeling for the first time of a step into something else"
+        text="Sample of English text"
       />
     )
   })

@@ -1,12 +1,12 @@
-import { constants } from 'writing-trainer-core'
+import { T_Storage } from 'writing-trainer-core'
 
 const chromeSetValue = (key: string, value: string) => {
   chrome.storage.local.set({ [key]: value })
 }
 
 const chromeGetValue = (key: string): Promise<string> => {
-  return new Promise((resolve) => {
-    chrome.storage.local.get([key], (result) => {
+  return new Promise(resolve => {
+    chrome.storage.local.get([key], result => {
       if (typeof result[key] === 'string') {
         resolve(result[key])
 
@@ -26,7 +26,7 @@ const localStorageSetValue = (key: string, value: string) => {
 }
 
 const localStorageGetValue = (key: string): Promise<string> => {
-  const result = localStorage.getItem(key) || ''
+  const result = localStorage.getItem(key) ?? ''
 
   return Promise.resolve(result)
 }
@@ -43,7 +43,7 @@ const setValueMap = {
   localStorage: localStorageSetValue,
 }
 
-const storage: constants.T_Storage = {
+const storage: T_Storage = {
   getValue: getValueMap[__STORAGE_TYPE__],
   setValue: setValueMap[__STORAGE_TYPE__],
 }

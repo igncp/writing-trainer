@@ -1,35 +1,37 @@
 import React, { useEffect, useState } from 'react'
-import { records as coreRecords } from 'writing-trainer-core'
+import {
+  LanguageDefinition,
+  records as coreRecords,
+} from 'writing-trainer-core'
 
-import { T_LanguageId } from '../../languages/types'
 import { T_Services } from '../../typings/mainTypes'
 
 import RecordsWrapper from './RecordsWrapper'
-
 import RecordSave, { RecordToSave } from './screens/RecordSave'
 import RecordsList from './screens/RecordsList'
 
-export type RecordsScreen = 'Save' | 'List' | 'Edit'
+export type RecordsScreen = 'Edit' | 'List' | 'Save'
 
 type T_Record = coreRecords.T_Record
 
 const RECORDS_STORAGE = 'records'
 
 const getMaxRecordId = (records: T_Record[]) => {
-  return records.length ? Math.max(...records.map((r) => r.id)) : 0
+  return records.length ? Math.max(...records.map(r => r.id)) : 0
 }
 
-type T_getInitialRecord = (o: {
+const getInitialRecord = ({
+  records,
+  editingRecordId,
+}: {
   editingRecordId: T_Record['id'] | null
   records: T_Record[]
-}) => RecordToSave
-
-const getInitialRecord: T_getInitialRecord = ({ records, editingRecordId }) => {
+}) => {
   if (editingRecordId === null) {
     return null
   }
 
-  const record = records.find((r) => r.id === editingRecordId)
+  const record = records.find(r => r.id === editingRecordId)
 
   if (!record) {
     return null
@@ -41,17 +43,17 @@ const getInitialRecord: T_getInitialRecord = ({ records, editingRecordId }) => {
   }
 }
 
-type RecordsSection = React.FC<{
+type IProps = {
   initScreen: RecordsScreen
-  onRecordLoad(r: T_Record): void
-  onRecordsClose(): void
+  onRecordLoad: (r: T_Record) => void
+  onRecordsClose: () => void
   pronunciation: string
-  selectedLanguage: T_LanguageId
+  selectedLanguage: LanguageDefinition['id']
   services: T_Services
   text: string
-}>
+}
 
-const RecordsSection: RecordsSection = ({
+const RecordsSection = ({
   initScreen,
   onRecordLoad,
   onRecordsClose,
@@ -59,10 +61,10 @@ const RecordsSection: RecordsSection = ({
   selectedLanguage,
   services,
   text,
-}) => {
+}: IProps) => {
   const [currentScreen, setCurrentScreen] = useState<RecordsScreen>(initScreen)
   const [editingRecordId, setEditingRecordId] = useState<T_Record['id'] | null>(
-    null
+    null,
   )
   const [records, setRecords] = useState<T_Record[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -96,7 +98,7 @@ const RecordsSection: RecordsSection = ({
   const handleRecordLoad = (record: T_Record) => {
     const newRecords = [...records]
 
-    newRecords.find((r) => r.id === record.id).lastLoadedOn = Date.now()
+    newRecords.find(r => r.id === record.id)!.lastLoadedOn = Date.now()
 
     saveRecords(newRecords)
     onRecordLoad(record)
@@ -129,14 +131,14 @@ const RecordsSection: RecordsSection = ({
   }
 
   const handleRecordEdited = (newRecord: RecordToSave) => {
-    const newRecords = records.map((r) =>
+    const newRecords = records.map(r =>
       r.id === editingRecordId
         ? {
             ...r,
             link: newRecord.link,
             name: newRecord.name,
           }
-        : r
+        : r,
     )
 
     saveRecords(newRecords)
@@ -145,7 +147,7 @@ const RecordsSection: RecordsSection = ({
   }
 
   const handleRecordRemove = (record: T_Record) => {
-    const newRecords = records.filter((r) => r.id !== record.id)
+    const newRecords = records.filter(r => r.id !== record.id)
 
     saveRecords(newRecords)
   }
@@ -187,20 +189,16 @@ const RecordsSection: RecordsSection = ({
     )
   }
 
-  if (currentScreen === 'List') {
-    return (
-      <RecordsWrapper onRecordsClose={onRecordsClose}>
-        <RecordsList
-          onRecordEdit={handleRecordEdit}
-          onRecordLoad={handleRecordLoad}
-          onRecordRemove={handleRecordRemove}
-          records={records}
-        />
-      </RecordsWrapper>
-    )
-  }
-
-  return null
+  return (
+    <RecordsWrapper onRecordsClose={onRecordsClose}>
+      <RecordsList
+        onRecordEdit={handleRecordEdit}
+        onRecordLoad={handleRecordLoad}
+        onRecordRemove={handleRecordRemove}
+        records={records}
+      />
+    </RecordsWrapper>
+  )
 }
 
 export default RecordsSection

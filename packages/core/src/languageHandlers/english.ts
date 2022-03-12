@@ -1,8 +1,5 @@
-import {
-  T_CharObj,
-  T_LanguageHandler,
-  T_convertToCharsObjs,
-} from '../languageManager'
+import { LanguageDefinition } from '../constants'
+import { CharObj, T_LanguageHandler } from '../languageManager'
 
 import {
   defaultFilterTextToPractice,
@@ -10,34 +7,40 @@ import {
   defaultGetCurrentCharObj,
 } from './_common'
 
-const convertToCharsObjs: T_convertToCharsObjs = ({ text, charsToRemove }) => {
+const convertToCharsObjs: T_LanguageHandler['convertToCharsObjs'] = ({
+  text,
+  charsToRemove,
+}) => {
   const defaultSpecialChars = defaultGetSpecialChars()
   const allCharsToRemove = defaultSpecialChars
     .concat(charsToRemove)
     .concat([' '])
 
-  const charsObjs: T_CharObj[] = []
+  const charsObjs: CharObj[] = []
   let nextWord = ''
 
   const addWord = () => {
     if (nextWord) {
-      charsObjs.push({
+      const charObj = new CharObj({
         pronunciation: nextWord,
         word: nextWord,
       })
+      charsObjs.push(charObj)
 
       nextWord = ''
     }
   }
 
-  text.split('').forEach((ch) => {
+  text.split('').forEach(ch => {
     if (allCharsToRemove.includes(ch)) {
       addWord()
 
-      charsObjs.push({
+      const charObj = new CharObj({
         pronunciation: '',
         word: ch,
       })
+
+      charsObjs.push(charObj)
     } else {
       nextWord += ch
     }
@@ -48,13 +51,17 @@ const convertToCharsObjs: T_convertToCharsObjs = ({ text, charsToRemove }) => {
   return charsObjs
 }
 
+const language = new LanguageDefinition({
+  id: 'english',
+  name: 'English',
+})
+
 const englishHandler: T_LanguageHandler = {
   convertToCharsObjs,
   filterTextToPractice: defaultFilterTextToPractice,
   getCurrentCharObj: defaultGetCurrentCharObj,
   getSpecialChars: defaultGetSpecialChars,
-  id: 'english',
-  name: 'English',
+  language,
 }
 
-export default englishHandler
+export { englishHandler }

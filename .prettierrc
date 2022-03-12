@@ -1,0 +1,20 @@
+{
+  "importOrderParserPlugins": ["jsx", "typescript", "classProperties"],
+  "importOrder": [
+    "^[^.@]",
+    "^@[^/]",
+    "^@/common",
+    "^@/components",
+    "^@/demos",
+    "^@/",
+    "^\\.\\.",
+    "^\\.",
+    "\\.css$"
+  ],
+  "arrowParens": "avoid",
+  "importOrderSeparation": true,
+  "quoteProps": "preserve",
+  "semi": false,
+  "singleQuote": true,
+  "trailingComma": "all"
+}

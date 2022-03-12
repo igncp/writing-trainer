@@ -1,5 +1,5 @@
 export const getSelectedText = (): string => {
-  return window.getSelection().toString()
+  return window.getSelection()?.toString() ?? ''
 }
 
 export const copyTextToClipboard = (str: string): void => {

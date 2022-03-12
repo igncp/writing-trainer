@@ -19,7 +19,7 @@ describe('Button', () => {
   it('uses the expected Google Translate link', () => {
     const { getByText } = render(<LinksBlock {...commonProps} />)
     const el = getByText('Google Translate')
-    const href: string = el.getAttribute('href')
+    const href = el.getAttribute('href') as string
 
     expect(href).toEqual('https://translate.google.com/#ja/en/FOO_BAR')
   })

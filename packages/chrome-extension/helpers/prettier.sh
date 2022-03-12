@@ -6,7 +6,6 @@ set -e
   "README.md" \
   "tsconfig.json" \
   "jest.config.js" \
-  ".prettierrc.js" \
   ".eslintrc.js" \
   ".storybook/**/*.js" \
   "src/**/*.{ts,tsx}" \

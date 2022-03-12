@@ -1,13 +1,12 @@
-import { LanguageManager } from 'writing-trainer-core'
-import mandarinHandler from 'writing-trainer-core/dist/languageHandlers/mandarin'
+import { LanguageManager, mandarinHandler } from 'writing-trainer-core'
 
-import { T_UIHandler, T_LangOpts, T_CharsDisplayClickHandler } from '../types'
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
+import { T_UIHandler, T_LangOpts, T_CharsDisplayClickHandler } from '../types'
 
-import { T_MandarinLanguageOptions } from './mandarinTypes'
 import LinksBlock from './LinksBlock/LinksBlock'
 import OptionsBlock from './OptionsBlock/OptionsBlock'
 import dictionary from './converted-list-ma.csv'
+import { T_MandarinLanguageOptions } from './mandarinTypes'
 
 const charToPronunciationMap: { [key: string]: string } = {}
 const pronunciationToCharMap: { [key: string]: string } = {}
@@ -28,7 +27,7 @@ const parsePronunciation = (text: string, opts: T_LangOpts) => {
   let parsedText = text.toLowerCase()
 
   if (
-    (opts?.tonesValue as T_MandarinLanguageOptions['tonesValue']) ===
+    (opts.tonesValue as T_MandarinLanguageOptions['tonesValue']) ===
     'without-tones'
   ) {
     parsedText = parsedText.replace(/[0-9]/g, '')
@@ -37,7 +36,7 @@ const parsePronunciation = (text: string, opts: T_LangOpts) => {
   return parsedText
 }
 
-const handleWritingKeyDown: T_UIHandler['handleWritingKeyDown'] = (params) => {
+const handleWritingKeyDown: T_UIHandler['handleWritingKeyDown'] = params => {
   commonHandleWritingKeyDown(params, {
     parsePronunciation,
   })
@@ -88,7 +87,7 @@ export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
   charsObjs,
   index,
 }) => {
-  if (!charObj || !charObj.pronunciation) {
+  if (!(charObj as unknown) || !charObj.pronunciation) {
     return
   }
 
@@ -99,11 +98,11 @@ export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
   const prev = charsObjs[index - 1]
   const next = charsObjs[index + 1]
 
-  if (prev && prev.pronunciation) {
+  if ((prev as unknown) && prev.pronunciation) {
     privateFns.sendCantodictFormForText(prev.word + ch, 'left')
   }
 
-  if (next && next.pronunciation) {
+  if ((next as unknown) && next.pronunciation) {
     privateFns.sendCantodictFormForText(ch + next.word, 'right')
   }
 }
@@ -114,7 +113,7 @@ const uiHandler: T_UIHandler = {
   getLinksBlock: () => LinksBlock,
   getOptionsBlock: () => OptionsBlock,
   handleWritingKeyDown,
-  id: mandarinHandler.id,
+  id: mandarinHandler.language.id,
   register,
   shouldAllCharsHaveSameWidth: false,
 }

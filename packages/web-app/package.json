@@ -2,7 +2,9 @@
   "name": "writing-trainer-web-app",
   "private": true,
   "version": "0.1.0",
+  "sideEffects": false,
   "dependencies": {
+    "@types/react-helmet": "^6.1.5",
     "csv-loader": "^3.0.3",
     "gatsby": "^4.4.0",
     "gatsby-plugin-gatsby-cloud": "^4.4.0",
@@ -14,29 +16,27 @@
     "gatsby-source-filesystem": "^4.4.0",
     "gatsby-transformer-sharp": "^4.4.0",
     "jest": "^27.5.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
-    "writing-trainer-core": "../core",
-    "writing-trainer-react-ui": "../react-ui"
+    "writing-trainer-core": "^1.0.0",
+    "writing-trainer-react-ui": "^1.0.0"
   },
   "devDependencies": {
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-jest": "^26.1.1",
     "eslint-plugin-prettier": "^4.0.0",
-    "prettier": "^1.19.1",
     "typescript": "^4.6.2"
   },
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf .cache && gatsby build",
-    "check": "npm run eslint && npm run prettier -- -c && npm run build",
+    "build": "rm -rf .cache && tsc --project ./tsconfig.check.json && gatsby build",
+    "check": "npm run eslint && npm run prettier:check && npm run build",
     "clean": "gatsby clean",
     "develop": "gatsby develop --host=0.0.0.0",
     "eslint": "eslint . --ext ts --ext tsx --ext js",
-    "format": "npm run prettier -- --write",
     "lerna-link": "(cd ../.. && ./node_modules/.bin/lerna link)",
-    "prettier": "prettier \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "prettier": "../../node_modules/.bin/prettier \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "prettier:check": "npm run prettier -- --list-different",
+    "prettier:fix": "npm run prettier -- --write",
     "serve": "gatsby serve",
     "start": "npm run develop"
   }

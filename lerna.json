@@ -1,5 +1,8 @@
 {
-  "hoist": false,
+  "hoist": [
+    "@types/react",
+    "prettier"
+  ],
   "packages": [
     "packages/*"
   ],

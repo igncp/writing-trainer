@@ -26,19 +26,22 @@ describe('RecordsList', () => {
     const { getByText } = render(<RecordsList {...commonProps} />)
 
     // should render these values
-    expect(() => getByText((txt) => /name value/.test(txt))).not.toThrow()
-    expect(() => getByText((txt) => /spanish/.test(txt))).not.toThrow()
+    expect(() => getByText(txt => txt.includes('name value'))).not.toThrow()
+    expect(() => getByText(txt => txt.includes('spanish'))).not.toThrow()
 
     // should not render these values
-    expect(() => getByText((txt) => /text value/.test(txt))).toThrow()
-    expect(() => getByText((txt) => /pronunciation value/.test(txt))).toThrow()
-    expect(() => getByText((txt) => /link value/.test(txt))).toThrow()
+    expect(() => getByText(txt => txt.includes('text value'))).toThrow()
+
+    expect(() =>
+      getByText(txt => txt.includes('pronunciation value')),
+    ).toThrow()
+    expect(() => getByText(txt => txt.includes('link value'))).toThrow()
   })
 
   it('filters when updating text', () => {
     const { container, getByText } = render(<RecordsList {...commonProps} />)
 
-    expect(() => getByText((txt) => /name value/.test(txt))).not.toThrow()
+    expect(() => getByText(txt => txt.includes('name value'))).not.toThrow()
 
     // several filterings
     ;[
@@ -48,13 +51,13 @@ describe('RecordsList', () => {
       ['name FOO', false],
       ['name spanish', true],
     ].forEach(([value, shouldDisplayItem]) => {
-      fireEvent.change(container.querySelector('input'), {
+      fireEvent.change(container.querySelector('input') as HTMLInputElement, {
         target: {
           value,
         },
       })
 
-      const fn = () => getByText((txt) => /name value/.test(txt))
+      const fn = () => getByText(txt => txt.includes('name value'))
 
       if (shouldDisplayItem) {
         // eslint-disable-next-line jest/no-conditional-expect

@@ -2,9 +2,10 @@
   "name": "writing-trainer-core",
   "version": "1.0.0",
   "private": true,
+  "sideEffects": false,
   "main": "dist/index.js",
   "scripts": {
-    "build": "rm -rf dist && tsc",
+    "build": "rm -rf dist && tsc -p ./tsconfig.build.json",
     "check": "sh helpers/check.sh",
     "eslint": "eslint . --ext ts --ext tsx --ext js",
     "format": "sh helpers/format.sh",

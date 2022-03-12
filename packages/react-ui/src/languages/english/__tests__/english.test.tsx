@@ -1,9 +1,11 @@
-import { LanguageManager } from 'writing-trainer-core'
-import englishHandler from 'writing-trainer-core/dist/languageHandlers/english'
+import {
+  CurrentCharObj,
+  LanguageManager,
+  englishHandler,
+} from 'writing-trainer-core'
 
 import LinksBlock from '../LinksBlock/LinksBlock'
 import OptionsBlock from '../OptionsBlock'
-
 import englishUIHandler, { _test } from '../english'
 
 const { langOpts } = _test!
@@ -41,10 +43,11 @@ describe('handleWritingKeyDown', () => {
   it('removes a word (leaving a space) and select the previous one when deleting', () => {
     const opts: any = {
       ...commonOpts,
-      getCurrentCharObjFromPractice: () => ({
-        ch: 'charValue',
-        index: 'indexValue',
-      }),
+      getCurrentCharObjFromPractice: () =>
+        new CurrentCharObj({
+          ch: 'charValue' as any,
+          index: 'indexValue' as any,
+        }),
       keyEvent: { key: 'Backspace' },
       writingValue: '',
     }
@@ -104,6 +107,8 @@ describe('register', () => {
 
     englishUIHandler.register(languageManager)
 
-    expect(languageManager.getAvailableLanguages()).toEqual([englishHandler.id])
+    expect(languageManager.getAvailableLanguages()).toEqual([
+      englishHandler.language.id,
+    ])
   })
 })

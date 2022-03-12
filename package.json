@@ -13,6 +13,15 @@
     "test": "lerna run test --stream --no-prefix"
   },
   "devDependencies": {
-    "lerna": "^3.20.2"
+    "@types/react": "^17.0.40",
+    "@types/react-dom": "^17.0.13"
+  },
+  "dependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^3.1.1",
+    "lerna": "^3.20.2",
+    "prettier": "^2.5.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "ts-prune": "^0.10.3"
   }
 }

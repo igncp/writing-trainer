@@ -8,12 +8,12 @@ type T_CommonHandleWritingKeyDown = (
   opts2: {
     onPracticeBackspaceFormat?: T_OnPracticeBackspaceFormat
     parsePronunciation?: T_ParsePronunciation
-  }
+  },
 ) => ReturnType<T_UIHandler['handleWritingKeyDown']>
 
-const parsePronunciationDefault: T_ParsePronunciation = (p) => p.toLowerCase()
+const parsePronunciationDefault: T_ParsePronunciation = p => p.toLowerCase()
 
-const onPracticeBackspaceFormatDefault: T_OnPracticeBackspaceFormat = (p) => {
+const onPracticeBackspaceFormatDefault: T_OnPracticeBackspaceFormat = p => {
   return p
     .split(' ')
     .filter((ch, idx, arr) => idx !== arr.length - 1 || ch.trim() !== '')
@@ -37,7 +37,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
   {
     onPracticeBackspaceFormat = onPracticeBackspaceFormatDefault,
     parsePronunciation = parsePronunciationDefault,
-  }
+  },
 ) => {
   if (keyEvent.key === 'Backspace' && writingValue.length === 0) {
     const newPracticeText = onPracticeBackspaceFormat(practiceValue)

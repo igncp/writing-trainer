@@ -1,19 +1,27 @@
 /* istanbul ignore file */
-
-import * as constants from './constants'
-import * as records from './records'
+import { LanguageDefinition, T_Storage } from './constants'
+import { SPECIAL_SYMBOLS } from './languageHandlers/_commonChars'
+import { englishHandler } from './languageHandlers/english'
+import { japaneseHandler } from './languageHandlers/japanese'
+import { mandarinHandler } from './languageHandlers/mandarin'
 import {
+  CharObj,
+  CurrentCharObj,
   LanguageManager,
-  T_CharObj,
-  T_CurrentCharObj,
   T_LanguageHandler,
 } from './languageManager'
+import * as records from './records'
 
 export {
+  CharObj,
+  CurrentCharObj,
+  LanguageDefinition,
   LanguageManager,
-  T_CharObj,
-  T_CurrentCharObj,
+  SPECIAL_SYMBOLS,
   T_LanguageHandler,
-  constants,
+  T_Storage,
+  englishHandler,
+  japaneseHandler,
+  mandarinHandler,
   records,
 }

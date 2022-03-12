@@ -11,6 +11,7 @@
     "noEmitOnError": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
+    "strictNullChecks": true,
     "outDir": "dist",
     "paths": {
       "#/*": ["src/*"]

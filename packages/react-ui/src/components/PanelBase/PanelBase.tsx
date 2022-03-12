@@ -2,7 +2,7 @@ import React from 'react'
 
 type T_PanelBase = React.FC<{
   children: React.ReactNode
-  onOverlayClick(): void
+  onOverlayClick: () => void
 }>
 
 const PanelBase: T_PanelBase = ({ children, onOverlayClick }) => {

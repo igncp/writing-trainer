@@ -1,24 +1,27 @@
-import japanese from '../japanese'
-import english from '../english'
-import mandarin from '../mandarin'
+import {
+  CharObj,
+  englishHandler,
+  japaneseHandler,
+  mandarinHandler,
+} from '../../src'
 
-const LANGUAGES = [japanese, english, mandarin]
+const HANDLERS = [japaneseHandler, englishHandler, mandarinHandler]
 
 const DUMMY_CHAR_OBJS = [
-  {
+  new CharObj({
     pronunciation: 'foo',
     word: 'a',
-  },
-  {
+  }),
+  new CharObj({
     pronunciation: 'bar',
     word: 'b',
-  },
+  }),
 ]
 
 describe('getCurrentCharObj', () => {
-  LANGUAGES.forEach((language) => {
-    it(`gets the expected result for empty arrays - ${language.id}`, () => {
-      const result = language.getCurrentCharObj({
+  HANDLERS.forEach(handler => {
+    it(`gets the expected result for empty arrays - ${handler.language.id}`, () => {
+      const result = handler.getCurrentCharObj({
         originalCharsObjs: [],
         practiceCharsObjs: [],
       })
@@ -26,8 +29,8 @@ describe('getCurrentCharObj', () => {
       expect(result).toEqual(null)
     })
 
-    it(`gets the expected result for exact sentence - ${language.id}`, () => {
-      const result = language.getCurrentCharObj({
+    it(`gets the expected result for exact sentence - ${handler.language.id}`, () => {
+      const result = handler.getCurrentCharObj({
         originalCharsObjs: DUMMY_CHAR_OBJS,
         practiceCharsObjs: DUMMY_CHAR_OBJS,
       })
@@ -35,8 +38,8 @@ describe('getCurrentCharObj', () => {
       expect(result).toEqual({ ch: DUMMY_CHAR_OBJS[0], index: 0 })
     })
 
-    it(`gets the expected result for smaller pronunciation - ${language.id}`, () => {
-      const result = language.getCurrentCharObj({
+    it(`gets the expected result for smaller pronunciation - ${handler.language.id}`, () => {
+      const result = handler.getCurrentCharObj({
         originalCharsObjs: DUMMY_CHAR_OBJS,
         practiceCharsObjs: DUMMY_CHAR_OBJS.slice(0, 1),
       })
@@ -44,8 +47,8 @@ describe('getCurrentCharObj', () => {
       expect(result).toEqual({ ch: DUMMY_CHAR_OBJS[1], index: 1 })
     })
 
-    it(`gets the expected result for bigger pronunciation - ${language.id}`, () => {
-      const result = language.getCurrentCharObj({
+    it(`gets the expected result for bigger pronunciation - ${handler.language.id}`, () => {
+      const result = handler.getCurrentCharObj({
         originalCharsObjs: DUMMY_CHAR_OBJS,
         practiceCharsObjs: DUMMY_CHAR_OBJS.concat(DUMMY_CHAR_OBJS.slice(0, 1)),
       })
@@ -53,14 +56,14 @@ describe('getCurrentCharObj', () => {
       expect(result).toEqual({ ch: DUMMY_CHAR_OBJS[1], index: 1 })
     })
 
-    it(`gets the expected result for invalid pronunciation - ${language.id}`, () => {
-      const result = language.getCurrentCharObj({
+    it(`gets the expected result for invalid pronunciation - ${handler.language.id}`, () => {
+      const result = handler.getCurrentCharObj({
         originalCharsObjs: DUMMY_CHAR_OBJS,
         practiceCharsObjs: [
-          {
+          new CharObj({
             pronunciation: 'invalidPronunciation',
             word: 'invalid',
-          },
+          }),
         ],
       })
 

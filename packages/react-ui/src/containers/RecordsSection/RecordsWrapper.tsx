@@ -2,12 +2,12 @@ import React from 'react'
 
 import Button from '../../components/Button/Button'
 
-type RecordsWrapper = React.FC<{
-  onRecordsClose(): void
+type IProps = {
+  onRecordsClose: () => void
   children: React.ReactNode
-}>
+}
 
-const RecordsWrapper: RecordsWrapper = ({ onRecordsClose, children }) => {
+const RecordsWrapper = ({ onRecordsClose, children }: IProps) => {
   return (
     <div>
       <Button onClick={onRecordsClose}>Close</Button>

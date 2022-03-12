@@ -3,7 +3,7 @@ const { join } = require('path')
 
 const pjson = require('../package.json')
 
-const getIgnoredRulesCommandOpts = (ignoredRules) => {
+const getIgnoredRulesCommandOpts = ignoredRules => {
   if (ignoredRules.length === 0) {
     return ''
   }
@@ -78,15 +78,15 @@ console.log(`Sonar command:\n${command}\n`)
 
 const sonar = exec(command)
 
-sonar.on('close', (code) => {
+sonar.on('close', code => {
   console.log(`sonar ended with: ${code}`)
 })
 
-sonar.on('error', (err) => {
+sonar.on('error', err => {
   console.log(`sonar errd with: ${err}`)
   process.exit(1)
 })
 
-sonar.stdout.on('data', (d) => {
+sonar.stdout.on('data', d => {
   console.log(`sonar: ${d}`)
 })

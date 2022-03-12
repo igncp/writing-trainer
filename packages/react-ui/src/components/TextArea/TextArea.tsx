@@ -1,21 +1,19 @@
 import _get from 'lodash/get'
 import React, { useEffect, useRef } from 'react'
 
-type TextArea = React.FC<
-  {
-    withoutCursor?: boolean
-    autoScroll?: boolean
-  } & React.TextareaHTMLAttributes<HTMLTextAreaElement>
->
+type TextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+  withoutCursor?: boolean
+  autoScroll?: boolean
+}
 
-const TextArea: TextArea = ({
+const TextArea = ({
   style,
   withoutCursor,
   onChange,
   autoScroll,
   ...props
-}) => {
-  const ref = useRef<HTMLTextAreaElement>()
+}: TextAreaProps) => {
+  const ref = useRef<HTMLTextAreaElement>(null)
   const color = _get(style, 'color', 'black')
   const cursorStyle = withoutCursor
     ? {

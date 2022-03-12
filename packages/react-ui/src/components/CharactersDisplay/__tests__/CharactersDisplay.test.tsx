@@ -1,10 +1,11 @@
 import React from 'react'
 import { fireEvent, render } from 'react-testing-library'
+import { CharObj } from 'writing-trainer-core'
 
 import CharactersDisplay from '../CharactersDisplay'
 
 const commonProps = {
-  charsObjs: [{ index: 0, pronunciation: 'bar', word: 'FOO' }],
+  charsObjs: [new CharObj({ pronunciation: 'bar', word: 'FOO' })],
   focusedIndex: 0,
   onCharClick: jest.fn(),
   shouldHidePronunciation: false,

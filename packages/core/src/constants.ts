@@ -1,11 +1,17 @@
-export interface T_LanguageDefinition {
-  id: string
-  name: string
+export class LanguageDefinition {
+  public id: string
+  public name: string
+
+  public constructor(opts: {
+    id: LanguageDefinition['id']
+    name: LanguageDefinition['name']
+  }) {
+    this.id = opts.id
+    this.name = opts.name
+  }
 }
 
-export type T_LanguageId = T_LanguageDefinition['id']
-
 export interface T_Storage {
-  setValue(key: string, value: string): void
-  getValue(key: string): Promise<string>
+  setValue: (key: string, value: string) => void
+  getValue: (key: string) => Promise<string>
 }

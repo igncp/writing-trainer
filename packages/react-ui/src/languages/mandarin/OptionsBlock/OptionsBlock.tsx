@@ -4,9 +4,10 @@ import { T_OptionsBlock } from '../../types'
 
 const OptionsBlock: T_OptionsBlock = ({ onOptionsChange, languageOptions }) => {
   const [tonesValue, setTonesValue] = useState(
-    (languageOptions.tonesValue as string) || 'without-tones'
+    (languageOptions.tonesValue as string) || 'without-tones',
   )
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleOptionsChange = (newValues: any) => {
     onOptionsChange({
       tonesValue,

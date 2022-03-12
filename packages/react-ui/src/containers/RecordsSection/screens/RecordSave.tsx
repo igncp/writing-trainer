@@ -1,40 +1,40 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import { T_Services } from '../../../typings/mainTypes'
 import Button from '../../../components/Button/Button'
 import TextInput from '../../../components/TextInput/TextInput'
+import { T_Services } from '../../../typings/mainTypes'
 
 export interface RecordToSave {
   name: string
   link: string
 }
 
-type RecordSave = React.FC<{
+type RecordSaveProps = {
   initialRecord: RecordToSave | null
-  onRecordSave(r: RecordToSave): void
-  onShowRecordsList(): void
+  onRecordSave: (r: RecordToSave) => void
+  onShowRecordsList: () => void
   services: T_Services
-}>
+}
 
-const RecordSave: RecordSave = ({
+const RecordSave = ({
   initialRecord,
   onRecordSave,
   onShowRecordsList,
   services,
-}) => {
+}: RecordSaveProps) => {
   const [recordName, setRecordName] = useState<string>(
-    initialRecord ? initialRecord.name : ''
+    initialRecord ? initialRecord.name : '',
   )
   const [recordLink, setRecordLink] = useState<string>(
-    initialRecord ? initialRecord.link : ''
+    initialRecord ? initialRecord.link : '',
   )
   const [currentUrl, setCurrentUrl] = useState<string>('')
-  const linkInputRef = useRef<HTMLInputElement>()
+  const linkInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     services
       .getCurrentUrl()
-      .then((newCurrentUrl) => {
+      .then(newCurrentUrl => {
         setCurrentUrl(newCurrentUrl)
         setRecordLink(newCurrentUrl)
       })
@@ -69,12 +69,12 @@ const RecordSave: RecordSave = ({
           <span style={{ marginLeft: 10 }}>
             <TextInput
               autoFocus
-              onChange={(e) => {
+              onChange={e => {
                 setRecordName(e.target.value)
               }}
               onEnterPress={() => {
                 if (recordName) {
-                  linkInputRef.current.focus()
+                  linkInputRef.current?.focus()
                 }
               }}
               value={recordName}
@@ -86,7 +86,7 @@ const RecordSave: RecordSave = ({
           <span style={{ marginLeft: 10 }}>
             <TextInput
               inputRef={linkInputRef}
-              onChange={(e) => {
+              onChange={e => {
                 setRecordLink(e.target.value)
               }}
               onEnterPress={handleRecordSave}

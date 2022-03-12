@@ -3,20 +3,20 @@ exports.onCreateWebpackConfig = ({ plugins, actions }) => {
     module: {
       rules: [
         {
-          loader: "csv-loader",
+          loader: 'csv-loader',
           options: {
             dynamicTyping: true,
             header: false,
-            skipEmptyLines: true
+            skipEmptyLines: true,
           },
-          test: /\.csv$/
-        }
-      ]
+          test: /\.csv$/,
+        },
+      ],
     },
     plugins: [
       plugins.define({
-        __TEST__: false
-      })
-    ]
+        __TEST__: false,
+      }),
+    ],
   })
 }

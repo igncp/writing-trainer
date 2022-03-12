@@ -1,30 +1,28 @@
-import React from 'react'
-import { fireEvent, render, waitFor } from '@testing-library/react'
-
+import mockStorage from '#/services/storage'
 import { STORAGE_ENABLED_PAGES_KEY } from '#/utils/constants'
+import React from 'react'
 
-const mockStorage = {
-  getValue: jest.fn(),
-  setValue: jest.fn(),
-}
-
-jest.mock('#/services/storage', () => mockStorage)
+import { fireEvent, render, waitFor } from '@testing-library/react'
 
 import Options from '../Options'
 
+jest.mock('#/services/storage', () => ({
+  getValue: jest.fn(),
+  setValue: jest.fn(),
+}))
+
 const commonProps = {}
 
-// eslint-disable-next-line jest/no-disabled-tests
-describe.skip('Options', () => {
+describe('Options', () => {
   it('renders the content', async () => {
     const { getByText, container } = render(<Options {...commonProps} />)
 
     await waitFor(() =>
-      getByText((txt: string) => /Pages where it is enabled/.test(txt))
+      getByText((txt: string) => txt.includes('Pages where it is enabled')),
     )
 
     expect(() =>
-      getByText((txt) => /Pages where it is enabled/.test(txt))
+      getByText(txt => txt.includes('Pages where it is enabled')),
     ).not.toThrow()
     expect(container.querySelectorAll('textarea')).toHaveLength(1)
   })
@@ -33,21 +31,24 @@ describe.skip('Options', () => {
     const { container, getByText } = render(<Options {...commonProps} />)
 
     await waitFor(() =>
-      getByText((txt: string) => /Pages where it is enabled/.test(txt))
+      getByText((txt: string) => txt.includes('Pages where it is enabled')),
     )
 
-    expect(mockStorage.setValue.mock.calls).toEqual([])
+    expect((mockStorage.setValue as jest.Mock).mock.calls).toEqual([])
 
-    fireEvent.change(container.querySelector('textarea'), {
-      target: {
-        value: 'textValue',
+    fireEvent.change(
+      container.querySelector('textarea') as HTMLTextAreaElement,
+      {
+        target: {
+          value: 'textValue',
+        },
       },
-    })
+    )
 
     const button = getByText('Save')
     fireEvent.click(button)
 
-    expect(mockStorage.setValue.mock.calls).toEqual([
+    expect((mockStorage.setValue as jest.Mock).mock.calls).toEqual([
       [STORAGE_ENABLED_PAGES_KEY, 'textValue'],
     ])
   })

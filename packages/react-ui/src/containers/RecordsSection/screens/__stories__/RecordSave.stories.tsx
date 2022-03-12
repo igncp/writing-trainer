@@ -1,9 +1,9 @@
-import { action } from '@storybook/addon-actions'
-import { storiesOf } from '@storybook/react'
 import * as React from 'react'
 
-import { dummyServices } from '../../../../__stories__/storybookHelpers'
+import { action } from '@storybook/addon-actions'
+import { storiesOf } from '@storybook/react'
 
+import { dummyServices } from '../../../../__stories__/storybookHelpers'
 import RecordSave from '../RecordSave'
 
 storiesOf('Containers|RecordSave', module).add('common', () => {

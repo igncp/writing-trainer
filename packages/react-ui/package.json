@@ -2,7 +2,8 @@
   "name": "writing-trainer-react-ui",
   "version": "1.0.0",
   "private": true,
-  "main": "index.js",
+  "sideEffects": false,
+  "main": "dist/index.js",
   "scripts": {
     "build": "sh helpers/build.sh",
     "build-storybook": "build-storybook",
@@ -18,7 +19,7 @@
   },
   "keywords": [],
   "dependencies": {
-    "writing-trainer-core": "../core"
+    "writing-trainer-core": "^1.0.0"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^5.0.11",
@@ -26,8 +27,7 @@
     "@storybook/react": "^5.0.11",
     "@types/jest": "^25.1.1",
     "@types/lodash": "^4.14.123",
-    "@types/react": "^16.14.21",
-    "@types/react-dom": "^16.8.4",
+    "@types/react": "^17.0.40",
     "@types/storybook__addon-actions": "^3.4.2",
     "@types/storybook__react": "^4.0.1",
     "@typescript-eslint/eslint-plugin": "^5.8.0",
@@ -46,8 +46,6 @@
     "papaparse": "^4.6.3",
     "prettier": "^2.5.1",
     "raw-loader": "^3.0.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
     "react-testing-library": "^7.0.0",
     "react-use": "^17.3.1",
     "sonarqube-scanner": "^2.5.0",

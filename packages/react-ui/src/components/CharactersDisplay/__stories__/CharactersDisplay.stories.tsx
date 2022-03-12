@@ -1,8 +1,8 @@
+import * as React from 'react'
+import { mandarinHandler, englishHandler } from 'writing-trainer-core'
+
 import { action } from '@storybook/addon-actions'
 import { storiesOf } from '@storybook/react'
-import * as React from 'react'
-import mandarinHandler from 'writing-trainer-core/dist/languageHandlers/mandarin'
-import englishHandler from 'writing-trainer-core/dist/languageHandlers/english'
 
 import CharactersDisplay from '../CharactersDisplay'
 
@@ -30,7 +30,7 @@ const commonProps = {
 
 const charObjsEnglish = englishHandler.convertToCharsObjs({
   charsToRemove: [],
-  text: 'The feeling around the ground at that moment was distinct from the usual triumphalism. As the players lined up in an oddly formal crocodile to shake hands there was a feeling for the first time of a step into something else',
+  text: 'Sample of English text',
 })
 
 storiesOf('Components|CharactersDisplay', module)

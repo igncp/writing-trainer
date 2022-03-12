@@ -1,8 +1,5 @@
-import {
-  T_CharObj,
-  T_LanguageHandler,
-  T_convertToCharsObjs,
-} from '../languageManager'
+import { LanguageDefinition } from '../constants'
+import { CharObj, T_LanguageHandler } from '../languageManager'
 
 import {
   defaultFilterTextToPractice,
@@ -12,7 +9,7 @@ import {
 
 type T_Dictionary = { [k: string]: string }
 
-const convertToCharsObjs: T_convertToCharsObjs = ({
+const convertToCharsObjs: T_LanguageHandler['convertToCharsObjs'] = ({
   text,
   charsToRemove,
   langOpts = {},
@@ -20,39 +17,46 @@ const convertToCharsObjs: T_convertToCharsObjs = ({
   const dictionary: T_Dictionary = (langOpts.dictionary || {}) as T_Dictionary
   const pronunciationInput: string = (langOpts.pronunciationInput ||
     '') as string
-  const pronunciationInputArr = pronunciationInput.split(' ').filter((c) => !!c)
+  const pronunciationInputArr = pronunciationInput.split(' ').filter(c => !!c)
 
   const defaultSpecialChars = defaultGetSpecialChars()
   const allCharsToRemove = defaultSpecialChars
     .concat(charsToRemove)
     .concat([' '])
 
-  const charsObjs: T_CharObj[] = []
+  const charsObjs: CharObj[] = []
 
   text.split('').forEach((ch, chIdx) => {
     if (allCharsToRemove.includes(ch)) {
-      charsObjs.push({
+      const charObj = new CharObj({
         pronunciation: '',
         word: ch,
       })
+
+      charsObjs.push(charObj)
     } else {
-      charsObjs.push({
+      const charObj = new CharObj({
         pronunciation: pronunciationInputArr[chIdx] || dictionary[ch] || '?',
         word: ch,
       })
+      charsObjs.push(charObj)
     }
   })
 
   return charsObjs
 }
 
+const language = new LanguageDefinition({
+  id: 'mandarin',
+  name: 'Mandarin',
+})
+
 const mandarinHandler: T_LanguageHandler = {
   convertToCharsObjs,
   filterTextToPractice: defaultFilterTextToPractice,
   getCurrentCharObj: defaultGetCurrentCharObj,
   getSpecialChars: defaultGetSpecialChars,
-  id: 'mandarin',
-  name: 'Mandarin',
+  language,
 }
 
-export default mandarinHandler
+export { mandarinHandler }

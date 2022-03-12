@@ -9,11 +9,11 @@ import {
 
 const noop = () => {}
 
-export type T_ButtonProps = {
+type T_ButtonProps = {
   children: React.ReactNode
   disabled?: boolean
   href?: string
-  onClick?(): void
+  onClick?: () => void
   shouldUseLink?: boolean
   style?: React.CSSProperties
 }

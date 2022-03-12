@@ -4,7 +4,8 @@ import { getSelectedText } from './general'
 
 export const useTextSelection = (
   isExtensionEnabled: boolean,
-  fn: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  fn: any,
 ): void => {
   useEffect(() => {
     if (!isExtensionEnabled) {

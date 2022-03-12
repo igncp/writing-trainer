@@ -1,6 +1,8 @@
+import * as React from 'react'
+import { LanguageDefinition } from 'writing-trainer-core'
+
 import { action } from '@storybook/addon-actions'
 import { storiesOf } from '@storybook/react'
-import * as React from 'react'
 
 import ChooseLanguage from '../ChooseLanguage'
 
@@ -10,16 +12,16 @@ const StoryComp = () => {
   return (
     <ChooseLanguage
       languages={[
-        {
+        new LanguageDefinition({
           id: 'mandarin',
           name: 'Mandarin',
-        },
-        {
+        }),
+        new LanguageDefinition({
           id: 'cantonese',
           name: 'Cantonese',
-        },
+        }),
       ]}
-      onOptionsChange={(id) => {
+      onOptionsChange={id => {
         setSelectedLanguage(id)
         action('options-change')(id)
       }}

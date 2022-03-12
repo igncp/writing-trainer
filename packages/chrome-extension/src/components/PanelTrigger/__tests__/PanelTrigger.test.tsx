@@ -7,8 +7,7 @@ const commonProps = {
   onClick: () => {},
 }
 
-// eslint-disable-next-line jest/no-disabled-tests
-describe.skip('PanelTrigger', () => {
+describe('PanelTrigger', () => {
   it('renders the expected text', () => {
     const { getByText } = render(<PanelTrigger {...commonProps} />)
 

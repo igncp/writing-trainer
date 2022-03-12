@@ -23,7 +23,7 @@ const rules = [
 ]
 
 module.exports = ({ config }) => {
-  rules.forEach((rule) => {
+  rules.forEach(rule => {
     config.module.rules.push(rule)
   })
 
@@ -38,7 +38,7 @@ module.exports = ({ config }) => {
     new webpack.DefinePlugin({
       __TEST__: false,
       __USE_CHROME_TABS_FEATURE__: false,
-    })
+    }),
   )
 
   return config

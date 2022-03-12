@@ -1,30 +1,28 @@
 import React from 'react'
 
-type TextInput = React.FC<
-  {
-    onEnterPress(): void
-    inputRef?: React.RefObject<HTMLInputElement>
-  } & React.InputHTMLAttributes<HTMLInputElement>
->
+type IProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  onEnterPress: () => void
+  inputRef?: React.RefObject<HTMLInputElement>
+}
 
-const TextInput: TextInput = ({
+const TextInput = ({
   onEnterPress,
   onChange,
   value,
   style,
   inputRef,
   ...props
-}) => {
+}: IProps) => {
   return (
     <input
       data-gramm_editor={false}
       onChange={onChange}
-      onKeyPress={(e) => {
+      onKeyPress={e => {
         if (e.key === 'Enter') {
           onEnterPress()
         }
       }}
-      ref={inputRef || null}
+      ref={inputRef ?? null}
       spellCheck={false}
       style={{
         border: 'none',

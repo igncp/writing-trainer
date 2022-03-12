@@ -1,27 +1,26 @@
-import english from '../english'
-import { SPECIAL_SYMBOLS } from '../_commonChars'
+import { englishHandler, SPECIAL_SYMBOLS } from '../../src'
 
 describe('values', () => {
   it('has the correct values', () => {
-    expect(english.id).toEqual('english')
-    expect(english.name).toEqual('English')
+    expect(englishHandler.language.id).toEqual('english')
+    expect(englishHandler.language.name).toEqual('English')
   })
 })
 
 describe('getSpecialChars', () => {
   it('returns the expected array', () => {
-    expect(english.getSpecialChars()).toEqual(SPECIAL_SYMBOLS)
-    expect(english.getSpecialChars()).toEqual(SPECIAL_SYMBOLS)
+    expect(englishHandler.getSpecialChars()).toEqual(SPECIAL_SYMBOLS)
+    expect(englishHandler.getSpecialChars()).toEqual(SPECIAL_SYMBOLS)
   })
 })
 
 describe('convertToCharsObjs', () => {
   it('returns the correct array', () => {
     expect(
-      english.convertToCharsObjs({
+      englishHandler.convertToCharsObjs({
         charsToRemove: [],
         text: 'fo__o',
-      })
+      }),
     ).toEqual([
       {
         pronunciation: 'fo',
@@ -42,10 +41,10 @@ describe('convertToCharsObjs', () => {
     ])
 
     expect(
-      english.convertToCharsObjs({
+      englishHandler.convertToCharsObjs({
         charsToRemove: [],
         text: 'ab c',
-      })
+      }),
     ).toEqual([
       {
         pronunciation: 'ab',
@@ -66,11 +65,11 @@ describe('convertToCharsObjs', () => {
 describe('filterTextToPractice', () => {
   it('returns the expected string', () => {
     expect(
-      english.filterTextToPractice({ charsToRemove: [], text: 'foo' })
+      englishHandler.filterTextToPractice({ charsToRemove: [], text: 'foo' }),
     ).toEqual('foo')
 
     expect(
-      english.filterTextToPractice({ charsToRemove: [], text: 'f_o_o' })
+      englishHandler.filterTextToPractice({ charsToRemove: [], text: 'f_o_o' }),
     ).toEqual('foo')
   })
 })

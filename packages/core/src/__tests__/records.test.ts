@@ -24,18 +24,18 @@ const dummyRecords: T_Record[] = [
 describe('filterRecords', () => {
   it('returns the original input when no text', () => {
     expect(filterRecords({ filterText: '', records: dummyRecords })).toEqual(
-      dummyRecords
+      dummyRecords,
     )
     expect(filterRecords({ filterText: '', records: [] })).toEqual([])
   })
 
   it('returns the expected lists', () => {
     expect(
-      filterRecords({ filterText: 'japanese', records: dummyRecords })
+      filterRecords({ filterText: 'japanese', records: dummyRecords }),
     ).toEqual([dummyRecords[0]])
 
     expect(
-      filterRecords({ filterText: 'nameValue', records: dummyRecords })
+      filterRecords({ filterText: 'nameValue', records: dummyRecords }),
     ).toEqual(dummyRecords.slice(0).reverse())
   })
 })

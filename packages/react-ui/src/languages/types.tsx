@@ -1,9 +1,9 @@
 import React from 'react'
 import {
+  CharObj,
   LanguageManager,
-  T_CharObj,
-  T_CurrentCharObj,
-  constants,
+  CurrentCharObj,
+  LanguageDefinition,
 } from 'writing-trainer-core'
 
 export type T_LangOpts = { [k: string]: unknown }
@@ -14,6 +14,7 @@ export type T_LinksBlock = React.FC<{
 
 export type T_OptionsBlock = React.FC<{
   languageOptions: T_LangOpts
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onOptionsChange: (...args: any[]) => void
 }>
 
@@ -23,41 +24,35 @@ export type T_getPronunciationOfText = (opts: {
 }) => string
 
 export type T_getCurrentCharObjFromPractice = (
-  t?: string
-) => T_CurrentCharObj | null
+  t?: string,
+) => CurrentCharObj | null
 
 type T_handleWritingKeyDown = (opts: {
-  charsObjs: T_CharObj[]
+  charsObjs: CharObj[]
   getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice
   keyEvent: React.KeyboardEvent<HTMLTextAreaElement>
   languageOptions: T_LangOpts
   originalTextValue: string
   practiceValue: string
-  setCurrentDisplayCharIdx(idx: number): void
-  setPractice(o: string): void
-  setPracticeHasError(o: boolean): void
-  setWriting(o: string): void
+  setCurrentDisplayCharIdx: (idx: number) => void
+  setPractice: (o: string) => void
+  setPracticeHasError: (o: boolean) => void
+  setWriting: (o: string) => void
   specialCharsValue: string
   writingValue: string
 }) => void
 
-export type T_LanguageId = constants.T_LanguageDefinition['id']
-
 export type T_CharsDisplayClickHandler =
+  | ((opts: { charObj: CharObj; charsObjs: CharObj[]; index: number }) => void)
   | null
-  | ((opts: {
-      charObj: T_CharObj
-      charsObjs: T_CharObj[]
-      index: number
-    }) => void)
 
 export interface T_UIHandler {
-  getDisplayedCharHandler(): T_CharsDisplayClickHandler
-  getLangOpts(): T_LangOpts
-  getLinksBlock(): T_LinksBlock
-  getOptionsBlock(): T_OptionsBlock
+  getDisplayedCharHandler: () => T_CharsDisplayClickHandler
+  getLangOpts: () => T_LangOpts
+  getLinksBlock: () => T_LinksBlock
+  getOptionsBlock: () => T_OptionsBlock
   handleWritingKeyDown: T_handleWritingKeyDown
-  id: T_LanguageId
-  register(manager: LanguageManager): void
+  id: LanguageDefinition['id']
+  register: (manager: LanguageManager) => void
   shouldAllCharsHaveSameWidth: boolean
 }

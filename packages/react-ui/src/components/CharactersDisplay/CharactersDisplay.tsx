@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { T_CharObj } from 'writing-trainer-core'
+import { CharObj } from 'writing-trainer-core'
 
 import { T_CharsDisplayClickHandler } from '../../languages/types'
 
@@ -7,7 +7,7 @@ const CHAR_WIDTH = 55
 const MAX_HEIGHT = 160
 
 type T_CharactersDisplay = React.FC<{
-  charsObjs: T_CharObj[]
+  charsObjs: CharObj[]
   focusedIndex?: number
   onCharClick: T_CharsDisplayClickHandler
   shouldHaveDifferentWidths?: boolean
@@ -21,16 +21,18 @@ const CharactersDisplay: T_CharactersDisplay = ({
   shouldHaveDifferentWidths,
   shouldHidePronunciation,
 }) => {
-  const wrapperRef = useRef<HTMLDivElement>()
+  const wrapperRef = useRef<HTMLDivElement | undefined>()
 
   useEffect(() => {
-    if (!wrapperRef.current || !wrapperRef.current.childNodes) {
+    if (!wrapperRef.current || (!wrapperRef.current.childNodes as unknown)) {
       return () => {}
     }
 
-    const charEl = wrapperRef.current.childNodes[focusedIndex] as HTMLDivElement
+    const charEl = wrapperRef.current.childNodes[
+      focusedIndex as number
+    ] as HTMLDivElement
 
-    if (!charEl) {
+    if (!(charEl as unknown)) {
       return () => {}
     }
 
@@ -47,7 +49,7 @@ const CharactersDisplay: T_CharactersDisplay = ({
 
   return (
     <div
-      ref={wrapperRef}
+      ref={wrapperRef as React.MutableRefObject<HTMLDivElement>}
       style={{ maxHeight: MAX_HEIGHT, overflow: 'auto', position: 'relative' }}
     >
       {charsObjs.map((charObj, index) => {
@@ -56,7 +58,7 @@ const CharactersDisplay: T_CharactersDisplay = ({
         return (
           <div
             key={`${index}${charObj.word}`}
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation()
 
               if (!onCharClick) {

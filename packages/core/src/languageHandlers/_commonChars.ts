@@ -1,9 +1,3 @@
-const LETTERS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
-
-const NUMBERS = '0123456789'.split('')
-
-const LETTERS_AND_NUMBERS = LETTERS.concat(NUMBERS)
-
 const SPECIAL_SYMBOLS = [
   "'",
   "'",
@@ -103,6 +97,4 @@ const SPECIAL_SYMBOLS = [
   '�️',
 ]
 
-const SPECIAL_CHARS = SPECIAL_SYMBOLS.concat(LETTERS_AND_NUMBERS)
-
-export { LETTERS, LETTERS_AND_NUMBERS, NUMBERS, SPECIAL_CHARS, SPECIAL_SYMBOLS }
+export { SPECIAL_SYMBOLS }

@@ -1,10 +1,9 @@
 import { LanguageManager } from 'writing-trainer-core'
 
-import { T_UIHandler } from './types'
-
 import englishUIHandler from './english/english'
-import mandarinUIHandler from './mandarin/mandarin'
 import japaneseUIHandler from './japanese/japanese'
+import mandarinUIHandler from './mandarin/mandarin'
+import { T_UIHandler } from './types'
 
 // @TODO: completely remove this default when not used.
 // Consumer apps should pass this instead of using a default.
@@ -15,11 +14,11 @@ const defaultLanguageUIHandlers = [
 ]
 
 class LanguageUIManager {
-  private manager: LanguageManager
-  private handlers: T_UIHandler[]
-  private idToLanguageUIHandlerMap: { [k: string]: T_UIHandler } = {}
+  private readonly manager: LanguageManager
+  private readonly handlers: T_UIHandler[]
+  private readonly idToLanguageUIHandlerMap: { [k: string]: T_UIHandler } = {}
 
-  constructor(manager: LanguageManager, handlers?: T_UIHandler[]) {
+  public constructor(manager: LanguageManager, handlers?: T_UIHandler[]) {
     this.manager = manager
     this.handlers = handlers ?? defaultLanguageUIHandlers
 
@@ -43,15 +42,16 @@ class LanguageUIManager {
   public getUIHandler() {
     const languageHandler = this.manager.getCurrentLanguageHandler()
 
-    if (!languageHandler) {
+    if (!languageHandler as unknown) {
       throw new Error('No language handler set')
     }
 
-    const uiHandler = this.idToLanguageUIHandlerMap[languageHandler.id]
+    const uiHandler =
+      this.idToLanguageUIHandlerMap[languageHandler!.language.id]
 
-    if (!uiHandler) {
+    if (!uiHandler as unknown) {
       throw new Error(
-        `No UI language handler for language: ${languageHandler.id}`
+        `No UI language handler for language: ${languageHandler!.language.id}`,
       )
     }
 
@@ -61,7 +61,7 @@ class LanguageUIManager {
   public init() {
     this.manager.clear()
 
-    this.handlers.forEach((uiHandler) => {
+    this.handlers.forEach(uiHandler => {
       uiHandler.register(this.manager)
     })
 
@@ -72,10 +72,10 @@ class LanguageUIManager {
 }
 
 let _test:
-  | undefined
   | {
       defaultLanguageUIHandlers: T_UIHandler[]
     }
+  | undefined
 
 // istanbuil ignore else
 if (__TEST__) {

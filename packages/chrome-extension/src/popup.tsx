@@ -1,7 +1,6 @@
+import Popup from '#/containers/Popup/Popup'
 import React from 'react'
 import ReactDOM from 'react-dom'
-
-import Popup from '#/containers/Popup/Popup'
 
 const main = () => {
   const div = document.createElement('div')

@@ -4,7 +4,7 @@ type T_sendResponse = (v: unknown) => void
 type T_Listener = (
   m: Message,
   sender: unknown,
-  sendResponse: T_sendResponse
+  sendResponse: T_sendResponse,
 ) => void
 type T_listenToRuntimeMessage = (fn: T_Listener) => void
 

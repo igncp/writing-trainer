@@ -14,21 +14,21 @@ describe('TextInput', () => {
     const { container } = render(<TextInput {...commonProps} />)
     const el = container.querySelector('input')
 
-    expect(el.value).toEqual('textInputValue')
+    expect(el?.value).toEqual('textInputValue')
   })
 
   it('disables grammarly', async () => {
     const { baseElement } = render(<TextInput {...commonProps} />)
 
     expect(
-      baseElement.querySelector('input').getAttribute('data-gramm_editor')
+      baseElement.querySelector('input')?.getAttribute('data-gramm_editor'),
     ).toEqual('false')
   })
 
   it('calls the expected method on Enter press', () => {
     const { baseElement } = render(<TextInput {...commonProps} />)
 
-    const input = baseElement.querySelector('input')
+    const input = baseElement.querySelector('input') as HTMLInputElement
 
     fireEvent.keyPress(input, {
       charCode: 'A'.charCodeAt(0),

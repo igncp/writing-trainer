@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import Button from 'writing-trainer-react-ui/dist/components/Button/Button'
-import TextArea from 'writing-trainer-react-ui/dist/components/TextArea/TextArea'
-
 import storage from '#/services/storage'
 import { STORAGE_ENABLED_PAGES_KEY } from '#/utils/constants'
+import React, { useEffect, useState } from 'react'
+import { Button, TextArea } from 'writing-trainer-react-ui'
 
 type T_Wrapper = React.FC<{ children: React.ReactNode }>
 
 const SpanWrapper: T_Wrapper = ({ children }) => <span>{children}</span>
 const BWrapper: T_Wrapper = ({ children }) => <b>{children}</b>
 
-type Options = React.FC
-
-const Options: Options = () => {
+const Options = () => {
   const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false)
   const [enabledPagesValue, setEnabledPagesValue] = useState<string>('')
   const [savedEnabledPagesValue, setSavedEnabledPagesValue] =
@@ -29,11 +25,13 @@ const Options: Options = () => {
   }
 
   useEffect(() => {
-    updateLanguageWithStorage().catch(() => {})
+    updateLanguageWithStorage().catch(error => {
+      console.log(error)
+    })
   }, [])
 
   const handleEnabledPagesChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
     setEnabledPagesValue(e.target.value)
   }

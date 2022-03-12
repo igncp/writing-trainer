@@ -1,9 +1,9 @@
-import { T_LanguageId } from './constants'
+import { LanguageDefinition } from './constants'
 
 interface T_Record {
   createdOn: number
   id: number
-  language: T_LanguageId
+  language: LanguageDefinition['id']
   lastLoadedOn: number
   link: string
   name: string
@@ -24,16 +24,16 @@ const filterRecords: T_filterRecords = ({ records, filterText }) => {
   const lowercaseFilterValue = filterText.toLowerCase()
   const filterValueSegments = lowercaseFilterValue
     .split(' ')
-    .map((s) => s.trim())
-    .filter((s) => !!s)
+    .map(s => s.trim())
+    .filter(s => !!s)
 
   return records
-    .filter((r) => {
+    .filter(r => {
       const name = r.name.toLowerCase()
       const language = r.language.toLowerCase()
 
-      return filterValueSegments.every((segment) => {
-        return name.indexOf(segment) !== -1 || language.indexOf(segment) !== -1
+      return filterValueSegments.every(segment => {
+        return name.includes(segment) || language.includes(segment)
       })
     })
     .sort((a: T_Record, b: T_Record) => {

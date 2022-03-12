@@ -2,7 +2,6 @@ import React from 'react'
 import { fireEvent, render } from 'react-testing-library'
 
 import { DIM_COMP_OPACITY, HOVERED_COMP_OPACITY } from '../../../utils/ui'
-
 import Button from '../Button'
 
 const commonProps = {
@@ -26,23 +25,23 @@ describe('Button', () => {
 
   it('renders a link when requested', () => {
     const { baseElement } = render(
-      <Button {...commonProps} href="hrefValue" shouldUseLink />
+      <Button {...commonProps} href="hrefValue" shouldUseLink />,
     )
 
     expect(baseElement.querySelectorAll('div').length).toEqual(1)
     expect(baseElement.querySelectorAll('a').length).toEqual(1)
 
-    expect(baseElement.querySelector('a').getAttribute('href')).toEqual(
-      'hrefValue'
+    expect(baseElement.querySelector('a')?.getAttribute('href')).toEqual(
+      'hrefValue',
     )
   })
 
   it('changes opacity when hovered', () => {
     const { baseElement } = render(
-      <Button {...commonProps} href="hrefValue" shouldUseLink />
+      <Button {...commonProps} href="hrefValue" shouldUseLink />,
     )
 
-    const linkEl = baseElement.querySelector('a')
+    const linkEl = baseElement.querySelector('a') as HTMLAnchorElement
 
     expect(linkEl.style.opacity).toEqual(DIM_COMP_OPACITY.toString())
 
@@ -54,7 +53,7 @@ describe('Button', () => {
   it('click has no effect when disabled', () => {
     const { baseElement } = render(<Button {...commonProps} disabled />)
 
-    const el: HTMLDivElement = baseElement.querySelector('div')
+    const el = baseElement.querySelector('div') as HTMLDivElement
 
     expect(commonProps.onClick.mock.calls.length).toEqual(0)
 
@@ -66,7 +65,7 @@ describe('Button', () => {
   it('click has effect when not disabled', () => {
     const { baseElement } = render(<Button {...commonProps} />)
 
-    const el: HTMLDivElement = baseElement.querySelector('div')
+    const el = baseElement.querySelector('div') as HTMLDivElement
 
     expect(commonProps.onClick.mock.calls.length).toEqual(0)
 

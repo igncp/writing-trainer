@@ -2,9 +2,9 @@ const globalConfig = require('../../jest.config')
 
 module.exports = Object.assign(globalConfig, {
   collectCoverageFrom: [
-    'src/**/*.{ts,tsx}',
     '!**/__stories__/**',
     '!**/__tests__/**',
+    'src/**/*.{ts,tsx}',
   ],
   coverageThreshold: {
     global: {
@@ -15,12 +15,15 @@ module.exports = Object.assign(globalConfig, {
     },
   },
   globals: {
-    __TEST__: true,
+    __TEST__: true, // @TODO: use NODE_ENV
+    'ts-jest': {
+      tsconfig: 'tsconfig.test.json',
+    },
   },
   moduleNameMapper: {
     '#/(.*)$': '<rootDir>/src/$1',
     '^.+.csv$': '<rootDir>/helpers/test/mockCsv.js',
   },
-  roots: ['<rootDir>/src'],
+  roots: ['<rootDir>/src', '<rootDir>/test'],
   setupFilesAfterEnv: ['<rootDir>/helpers/test/testSetup.js'],
 })

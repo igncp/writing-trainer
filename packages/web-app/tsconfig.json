@@ -10,6 +10,7 @@
     "moduleResolution": "node",
     "noEmitOnError": true,
     "noImplicitAny": true,
+    "strictNullChecks": true,
     "noUnusedLocals": true,
     "outDir": "dist",
     "paths": {
@@ -17,7 +18,7 @@
     },
     "rootDir": "src",
     "sourceMap": false,
-    "target": "es5",
+    "target": "es6",
     "typeRoots": [
       "node_modules/@types",
       "src/typings",

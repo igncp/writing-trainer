@@ -1,15 +1,17 @@
-import { T_LanguageId } from '../constants'
 import {
+  CharObj,
+  LanguageDefinition,
   LanguageManager,
-  T_CharObj,
   T_LanguageHandler,
-} from '../languageManager'
+} from '../src'
 
 const languageManager = new LanguageManager()
 
-const createDummyLanguageHandler = (id: T_LanguageId): T_LanguageHandler => {
+const createDummyLanguageHandler = (
+  id: LanguageDefinition['id'],
+): T_LanguageHandler => {
   const convertToCharsObjs = () => {
-    const result: T_CharObj[] = []
+    const result: CharObj[] = []
 
     return result
   }
@@ -31,8 +33,10 @@ const createDummyLanguageHandler = (id: T_LanguageId): T_LanguageHandler => {
     filterTextToPractice,
     getCurrentCharObj,
     getSpecialChars,
-    id,
-    name: 'Some Name',
+    language: new LanguageDefinition({
+      id,
+      name: 'Some Name',
+    }),
   }
 }
 
@@ -49,19 +53,23 @@ describe('registerLanguage', () => {
 
     languageManager.registerLanguage(dummyHandlerA)
 
-    expect(languageManager.getAvailableLanguages()).toEqual([dummyHandlerA.id])
+    expect(languageManager.getAvailableLanguages()).toEqual([
+      dummyHandlerA.language.id,
+    ])
   })
 })
 
 describe('clear', () => {
   it('can remove a registered language', () => {
     languageManager.registerLanguage(dummyHandlerA)
-    languageManager.setCurrentLanguageHandler(dummyHandlerA.id)
+    languageManager.setCurrentLanguageHandler(dummyHandlerA.language.id)
 
-    expect(languageManager.getAvailableLanguages()).toEqual([dummyHandlerA.id])
+    expect(languageManager.getAvailableLanguages()).toEqual([
+      dummyHandlerA.language.id,
+    ])
 
-    expect(languageManager.getCurrentLanguageHandler().id).toEqual(
-      dummyHandlerA.id
+    expect(languageManager.getCurrentLanguageHandler()!.language.id).toEqual(
+      dummyHandlerA.language.id,
     )
 
     languageManager.clear()
@@ -87,7 +95,7 @@ describe('getCurrentLanguageHandler', () => {
 
     expect(languageManager.getCurrentLanguageHandler()).toEqual(null)
 
-    languageManager.setCurrentLanguageHandler(dummyHandlerA.id)
+    languageManager.setCurrentLanguageHandler(dummyHandlerA.language.id)
 
     expect(languageManager.getCurrentLanguageHandler()).toEqual(dummyHandlerA)
   })
@@ -99,29 +107,35 @@ describe('unregisterLanguage', () => {
     languageManager.registerLanguage(dummyHandlerB)
 
     expect(languageManager.getAvailableLanguages()).toEqual([
-      dummyHandlerA.id,
-      dummyHandlerB.id,
+      dummyHandlerA.language.id,
+      dummyHandlerB.language.id,
     ])
 
-    languageManager.unregisterLanguage(dummyHandlerA.id)
+    languageManager.unregisterLanguage(dummyHandlerA.language.id)
 
-    expect(languageManager.getAvailableLanguages()).toEqual([dummyHandlerB.id])
+    expect(languageManager.getAvailableLanguages()).toEqual([
+      dummyHandlerB.language.id,
+    ])
   })
 })
 
 describe('getLanguageHandler', () => {
   it('returns the expected value', () => {
-    expect(languageManager.getLanguageHandler(dummyHandlerA.id)).toEqual(null)
+    expect(
+      languageManager.getLanguageHandler(dummyHandlerA.language.id),
+    ).toEqual(null)
 
     languageManager.registerLanguage(dummyHandlerA)
 
-    expect(languageManager.getLanguageHandler(dummyHandlerA.id)).toEqual(
-      dummyHandlerA
-    )
+    expect(
+      languageManager.getLanguageHandler(dummyHandlerA.language.id),
+    ).toEqual(dummyHandlerA)
     expect(languageManager.getLanguageHandler('foo')).toEqual(null)
 
-    languageManager.unregisterLanguage(dummyHandlerA.id)
+    languageManager.unregisterLanguage(dummyHandlerA.language.id)
 
-    expect(languageManager.getLanguageHandler(dummyHandlerA.id)).toEqual(null)
+    expect(
+      languageManager.getLanguageHandler(dummyHandlerA.language.id),
+    ).toEqual(null)
   })
 })

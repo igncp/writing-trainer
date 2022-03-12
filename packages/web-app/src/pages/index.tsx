@@ -1,29 +1,31 @@
-import React from "react"
-import Panel from "writing-trainer-react-ui/dist/containers/Panel/Panel"
-import { useBodyOverflowSwitch } from "writing-trainer-react-ui/dist/utils/hooks"
-import { LanguageUIManager } from "writing-trainer-react-ui/dist/languages/languageUIManager"
-import { LanguageManager } from "writing-trainer-core/dist"
+import React from 'react'
+import { LanguageManager } from 'writing-trainer-core'
+import {
+  LanguageUIManager,
+  Panel,
+  useBodyOverflowSwitch,
+} from 'writing-trainer-react-ui'
 
 const languageManager = new LanguageManager()
 const languageUIManager = new LanguageUIManager(languageManager)
 languageUIManager.init()
 
 const shouldShowPanel = true
-const usedText = "foo bar"
+const usedText = 'foo bar'
 
-const getCurrentUrl = () => Promise.resolve("")
+const getCurrentUrl = () => Promise.resolve('')
 const storage = {
-  getValue: () => Promise.resolve(""),
-  setValue: () => {}
+  getValue: () => Promise.resolve(''),
+  setValue: () => {},
 }
 
 const panelServices = {
   getCurrentUrl,
-  storage
+  storage,
 }
 
 const PANEL_UI = {
-  noHideButton: true
+  noHideButton: true,
 }
 
 const IndexPage = () => {
@@ -32,7 +34,7 @@ const IndexPage = () => {
   return (
     <div>
       <h1>Writing Trainer</h1>
-      <div style={{ position: "relative" }}>
+      <div style={{ position: 'relative' }}>
         <Panel
           UI={PANEL_UI}
           services={panelServices}

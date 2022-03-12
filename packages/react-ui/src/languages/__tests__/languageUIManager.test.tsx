@@ -34,7 +34,7 @@ describe('init', () => {
 describe('getUIHandler', () => {
   it('throws when no handler is set', () => {
     expect(() => languageUIManager.getUIHandler()).toThrow(
-      'No language handler set'
+      'No language handler set',
     )
   })
 
@@ -42,7 +42,7 @@ describe('getUIHandler', () => {
     languageUIManager.init()
 
     expect(languageUIManager.getUIHandler().id).toEqual(
-      languageManager.getCurrentLanguageHandler().id
+      languageManager.getCurrentLanguageHandler()!.language.id,
     )
   })
 })
@@ -50,7 +50,7 @@ describe('getUIHandler', () => {
 describe('getDefaultLanguage', () => {
   it('returns the first id of the array', () => {
     expect(languageUIManager.getDefaultLanguage()).toEqual(
-      defaultLanguageUIHandlers[0].id
+      defaultLanguageUIHandlers[0].id,
     )
   })
 })

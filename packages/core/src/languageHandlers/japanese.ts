@@ -1,8 +1,5 @@
-import {
-  T_CharObj,
-  T_LanguageHandler,
-  T_convertToCharsObjs,
-} from '../languageManager'
+import { LanguageDefinition } from '../constants'
+import { CharObj, T_LanguageHandler } from '../languageManager'
 
 import {
   defaultFilterTextToPractice,
@@ -10,7 +7,7 @@ import {
   defaultGetSpecialChars,
 } from './_common'
 
-const convertToCharsObjs: T_convertToCharsObjs = ({
+const convertToCharsObjs: T_LanguageHandler['convertToCharsObjs'] = ({
   text,
   charsToRemove,
   langOpts = {},
@@ -25,8 +22,8 @@ const convertToCharsObjs: T_convertToCharsObjs = ({
     .replace(/ō/g, 'ou')
     .toLowerCase()
     .split(' ')
-    .filter((c) => !!c)
-    .map((segment) => {
+    .filter(c => !!c)
+    .map(segment => {
       const numRegResul = /([a-z]+)([0-9]+)/.exec(segment)
 
       if (!numRegResul || !numRegResul[1] || !numRegResul[2]) {
@@ -36,7 +33,7 @@ const convertToCharsObjs: T_convertToCharsObjs = ({
       return { num: Number(numRegResul[2]), text: numRegResul[1] }
     })
 
-  const charsObjs: T_CharObj[] = []
+  const charsObjs: CharObj[] = []
   let nextWord = ''
 
   const addWord = () => {
@@ -44,24 +41,26 @@ const convertToCharsObjs: T_convertToCharsObjs = ({
       return
     }
 
-    charsObjs.push({
+    const charObj = new CharObj({
       pronunciation: pronunciationInputArr.length
-        ? pronunciationInputArr.shift().text
+        ? pronunciationInputArr.shift()!.text
         : '?',
       word: nextWord,
     })
+    charsObjs.push(charObj)
 
     nextWord = ''
   }
 
-  text.split('').forEach((ch) => {
+  text.split('').forEach(ch => {
     if (allCharsToRemove.includes(ch)) {
       addWord()
 
-      charsObjs.push({
+      const charObj = new CharObj({
         pronunciation: '',
         word: ch,
       })
+      charsObjs.push(charObj)
 
       return
     }
@@ -81,13 +80,17 @@ const convertToCharsObjs: T_convertToCharsObjs = ({
   return charsObjs
 }
 
-const englishHandler: T_LanguageHandler = {
+const language = new LanguageDefinition({
+  id: 'japanese',
+  name: 'Japanese',
+})
+
+const japaneseHandler: T_LanguageHandler = {
   convertToCharsObjs,
   filterTextToPractice: defaultFilterTextToPractice,
   getCurrentCharObj: defaultGetCurrentCharObj,
   getSpecialChars: defaultGetSpecialChars,
-  id: 'japanese',
-  name: 'Japanese',
+  language,
 }
 
-export default englishHandler
+export { japaneseHandler }

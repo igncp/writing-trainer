@@ -1,7 +1,6 @@
-import { LanguageUIManager } from '../../languages/languageUIManager'
 import React, { useEffect, useState } from 'react'
 import {
-  constants,
+  LanguageDefinition,
   LanguageManager,
   records as coreRecords,
 } from 'writing-trainer-core'
@@ -10,18 +9,18 @@ import Button from '../../components/Button/Button'
 import CharactersDisplay from '../../components/CharactersDisplay/CharactersDisplay'
 import ChooseLanguage from '../../components/ChooseLanguage/ChooseLanguage'
 import TextArea from '../../components/TextArea/TextArea'
+import { LanguageUIManager } from '../../languages/languageUIManager'
 import {
-  T_LanguageId,
   T_LangOpts,
   T_getCurrentCharObjFromPractice,
 } from '../../languages/types'
 import { T_Services } from '../../typings/mainTypes'
-
 import RecordsSection, { RecordsScreen } from '../RecordsSection/RecordsSection'
 
 const STORAGE_LANGUAGE_KEY = 'selectedLanguage'
 
 const createInputSetterFn =
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (setValue: any) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value)
   }
@@ -43,11 +42,11 @@ type T_Panel = React.FC<{
   }
   languageManager: LanguageManager
   languageUIManager: LanguageUIManager
-  onHideRequest?(): void
+  onHideRequest?: () => void
   services: T_Services
   text: string
   _stories?: {
-    defaultLanguage?: T_LanguageId
+    defaultLanguage?: LanguageDefinition['id']
     defaultPractice?: string
     defaultPronunciation?: string
     langOpts?: T_LangOpts
@@ -55,13 +54,10 @@ type T_Panel = React.FC<{
 }>
 
 const getLanguageDefinitions = (languageManager: LanguageManager) => {
-  return languageManager.getAvailableLanguages().map((langId) => {
+  return languageManager.getAvailableLanguages().map(langId => {
     const languageHandler = languageManager.getLanguageHandler(langId)
 
-    return {
-      id: languageHandler.id,
-      name: languageHandler.name,
-    }
+    return languageHandler!.language
   })
 }
 
@@ -83,12 +79,12 @@ const Panel: T_Panel = ({
   >(null)
   const [originalTextValue, setOriginalText] = useState<string>(text)
   const [pronunciationValue, setPronunciation] = useState<string>(
-    _stories.defaultPronunciation || ''
+    _stories!.defaultPronunciation ?? '',
   )
   const [specialCharsValue, setSpecialChars] = useState<string>('')
   const [writingValue, setWriting] = useState<string>('')
   const [practiceValue, setPractice] = useState<string>(
-    _stories.defaultPractice || ''
+    _stories!.defaultPractice ?? '',
   )
   const [isShowingPronunciation, setShowingPronunciation] =
     useState<boolean>(true)
@@ -97,24 +93,24 @@ const Panel: T_Panel = ({
   const [lastThreeKeys, setLastThreeKeys] = useState<string[]>([])
   const [languageOptions, setLanguageOptions] = useState<T_LangOpts>({})
   const [selectedLanguage, setSelectedLanguage] =
-    useState<constants.T_LanguageDefinition['id']>(initialLanguageId)
+    useState<LanguageDefinition['id']>(initialLanguageId)
   const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false)
   const [currentDisplayCharIdx, setCurrentDisplayCharIdx] = useState<number>(0)
 
   const uiHandler = languageUIManager.getUIHandler()
   const langHandler = languageManager.getCurrentLanguageHandler()
 
-  const tryToUpdatePronunciation = (_: unknown) => {}
+  const tryToUpdatePronunciation = () => {}
 
   const { storage } = services
 
   const handleOriginalTextUpdate = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
     const val = e.target.value
 
     if (val) {
-      tryToUpdatePronunciation(val)
+      tryToUpdatePronunciation()
     }
 
     setOriginalText(val)
@@ -122,22 +118,22 @@ const Panel: T_Panel = ({
 
   useEffect(() => {
     if (originalTextValue) {
-      tryToUpdatePronunciation(originalTextValue)
+      tryToUpdatePronunciation()
     }
   }, [selectedLanguage])
 
-  const updateLanguage = (lang: T_LanguageId) => {
+  const updateLanguage = (lang: LanguageDefinition['id']) => {
     languageManager.setCurrentLanguageHandler(lang)
     setSelectedLanguage(lang)
   }
 
   useEffect(() => {
-    if (!_stories.defaultLanguage) {
+    if (!_stories!.defaultLanguage) {
       return
     }
 
-    updateLanguage(_stories.defaultLanguage)
-  }, [_stories.defaultLanguage])
+    updateLanguage(_stories!.defaultLanguage)
+  }, [_stories!.defaultLanguage])
 
   const updateLanguageWithStorage = async () => {
     const storageSelectedLanguage = await storage.getValue(STORAGE_LANGUAGE_KEY)
@@ -145,7 +141,7 @@ const Panel: T_Panel = ({
     if (
       storageSelectedLanguage &&
       storageSelectedLanguage !== selectedLanguage &&
-      !_stories.defaultLanguage
+      !_stories!.defaultLanguage
     ) {
       updateLanguage(storageSelectedLanguage)
     }
@@ -156,28 +152,31 @@ const Panel: T_Panel = ({
     updateLanguageWithStorage().catch(() => {})
   }, [])
 
-  const SPECIAL_CHARS = langHandler.getSpecialChars()
-  const langOpts = _stories.langOpts || uiHandler.getLangOpts()
+  const SPECIAL_CHARS = langHandler!.getSpecialChars()
+  const langOpts = _stories!.langOpts ?? uiHandler.getLangOpts()
   const langOptsObj = {
-    langOpts: { pronunciationInput: pronunciationValue, ...(langOpts || {}) },
+    langOpts: {
+      pronunciationInput: pronunciationValue,
+      ...((langOpts as unknown as object | undefined) ?? {}),
+    },
   }
 
-  const charsObjs = langHandler.convertToCharsObjs({
+  const charsObjs = langHandler!.convertToCharsObjs({
     ...langOptsObj,
     charsToRemove: specialCharsValue.split('').concat(SPECIAL_CHARS),
     text: originalTextValue,
   })
 
   const getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice = (
-    practiceText = practiceValue
+    practiceText = practiceValue,
   ) => {
-    const practiceCharsObjs = langHandler.convertToCharsObjs({
+    const practiceCharsObjs = langHandler!.convertToCharsObjs({
       ...langOptsObj,
       charsToRemove: specialCharsValue.split('').concat(SPECIAL_CHARS),
       text: practiceText,
     })
 
-    return langHandler.getCurrentCharObj({
+    return langHandler!.getCurrentCharObj({
       originalCharsObjs: charsObjs,
       practiceCharsObjs,
     })
@@ -223,7 +222,7 @@ const Panel: T_Panel = ({
       setSpecialChars,
       setWriting,
       setPractice,
-    ].forEach((fn) => {
+    ].forEach(fn => {
       fn('')
     })
     setShowingPronunciation(true)
@@ -237,7 +236,7 @@ const Panel: T_Panel = ({
   }
 
   const handleWritingKeyDown = (
-    e: React.KeyboardEvent<HTMLTextAreaElement>
+    e: React.KeyboardEvent<HTMLTextAreaElement>,
   ) => {
     // special key
     if (e.key === '`') {
@@ -331,7 +330,7 @@ const Panel: T_Panel = ({
       <Button
         onClick={createToggleFn(
           isShowingPronunciation,
-          setShowingPronunciation
+          setShowingPronunciation,
         )}
       >
         Toggle Pronunciation
@@ -354,7 +353,7 @@ const Panel: T_Panel = ({
         </Button>
       )}
       <Button
-        onClick={onHideRequest || null}
+        onClick={onHideRequest ?? undefined}
         style={{
           display: UI?.noHideButton ? 'none' : 'block',
           float: 'right',

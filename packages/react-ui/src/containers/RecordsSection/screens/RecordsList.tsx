@@ -8,14 +8,14 @@ const { filterRecords } = coreRecords
 
 type T_Record = coreRecords.T_Record
 
-type Cell = React.FC<{
+type CellProps = {
   bold?: boolean
   label?: string
   title?: string
   value: string
-}>
+}
 
-const Cell: Cell = ({ label, value, title, bold }) => {
+const Cell = ({ label, value, title, bold }: CellProps) => {
   return (
     <div
       style={{
@@ -47,19 +47,19 @@ const formatRecordDate = (d: number): string => {
   return `[${dateStr}]`
 }
 
-type RecordsList = React.FC<{
-  onRecordEdit(r: T_Record): void
-  onRecordLoad(r: T_Record): void
-  onRecordRemove(r: T_Record): void
+type RecordsListProps = {
+  onRecordEdit: (r: T_Record) => void
+  onRecordLoad: (r: T_Record) => void
+  onRecordRemove: (r: T_Record) => void
   records: T_Record[]
-}>
+}
 
-const RecordsList: RecordsList = ({
+const RecordsList = ({
   onRecordEdit,
   onRecordLoad,
   onRecordRemove,
   records,
-}) => {
+}: RecordsListProps) => {
   const [filterValue, setFilterValue] = useState<string>('')
   const filteredRecords = filterRecords({
     filterText: filterValue,
@@ -72,7 +72,7 @@ const RecordsList: RecordsList = ({
         <div style={{ padding: 10, position: 'relative' }}>
           <TextInput
             autoFocus
-            onChange={(e) => {
+            onChange={e => {
               setFilterValue(e.target.value)
             }}
             onEnterPress={() => {
@@ -86,7 +86,7 @@ const RecordsList: RecordsList = ({
         </div>
       )}
       <div style={{ maxHeight: 300, overflow: 'auto' }}>
-        {filteredRecords.map((record) => {
+        {filteredRecords.map(record => {
           const { id, name, createdOn, lastLoadedOn } = record
 
           return (

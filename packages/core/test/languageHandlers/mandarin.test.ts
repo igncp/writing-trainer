@@ -1,17 +1,16 @@
-import mandarin from '../mandarin'
-import { SPECIAL_SYMBOLS } from '../_commonChars'
+import { SPECIAL_SYMBOLS, mandarinHandler } from '../../src'
 
 describe('values', () => {
   it('has the correct values', () => {
-    expect(mandarin.id).toEqual('mandarin')
-    expect(mandarin.name).toEqual('Mandarin')
+    expect(mandarinHandler.language.id).toEqual('mandarin')
+    expect(mandarinHandler.language.name).toEqual('Mandarin')
   })
 })
 
 describe('getSpecialChars', () => {
   it('returns the expected array', () => {
-    expect(mandarin.getSpecialChars()).toEqual(SPECIAL_SYMBOLS)
-    expect(mandarin.getSpecialChars()).toEqual(SPECIAL_SYMBOLS)
+    expect(mandarinHandler.getSpecialChars()).toEqual(SPECIAL_SYMBOLS)
+    expect(mandarinHandler.getSpecialChars()).toEqual(SPECIAL_SYMBOLS)
   })
 })
 
@@ -57,7 +56,7 @@ describe('convertToCharsObjs', () => {
     }
 
     expect(
-      mandarin.convertToCharsObjs({
+      mandarinHandler.convertToCharsObjs({
         charsToRemove: [],
         langOpts: {
           dictionary: {
@@ -66,50 +65,50 @@ describe('convertToCharsObjs', () => {
           },
         },
         text: '你好嗎?我很好',
-      })
+      }),
     ).toEqual(
-      correctResult.map((c) =>
-        c.word === '很' ? { ...c, pronunciation: '?' } : c
-      )
+      correctResult.map(c =>
+        c.word === '很' ? { ...c, pronunciation: '?' } : c,
+      ),
     )
 
     expect(
-      mandarin.convertToCharsObjs({
+      mandarinHandler.convertToCharsObjs({
         charsToRemove: [],
         langOpts: {},
         text: '你好嗎?我很好',
-      })
+      }),
     ).toEqual(
-      correctResult.map((c) =>
-        c.pronunciation ? { ...c, pronunciation: '?' } : c
-      )
+      correctResult.map(c =>
+        c.pronunciation ? { ...c, pronunciation: '?' } : c,
+      ),
     )
 
     expect(
-      mandarin.convertToCharsObjs({
+      mandarinHandler.convertToCharsObjs({
         charsToRemove: [],
         text: '你好嗎?我很好',
-      })
+      }),
     ).toEqual(
-      correctResult.map((c) =>
-        c.pronunciation ? { ...c, pronunciation: '?' } : c
-      )
+      correctResult.map(c =>
+        c.pronunciation ? { ...c, pronunciation: '?' } : c,
+      ),
     )
 
     expect(
-      mandarin.convertToCharsObjs({
+      mandarinHandler.convertToCharsObjs({
         charsToRemove: [],
         langOpts: {
           dictionary: fullDictionary,
           pronunciationInput: 'foo bar',
         },
         text: '你好嗎?我很好',
-      })
+      }),
     ).toEqual(
       correctResult.map((c, cIdx) => ({
         ...c,
         pronunciation: ['foo', 'bar'][cIdx] || c.pronunciation,
-      }))
+      })),
     )
   })
 })
@@ -117,10 +116,10 @@ describe('convertToCharsObjs', () => {
 describe('filterTextToPractice', () => {
   it('returns the expected string', () => {
     expect(
-      mandarin.filterTextToPractice({
+      mandarinHandler.filterTextToPractice({
         charsToRemove: [],
         text: ' 你好嗎?我很好!',
-      })
+      }),
     ).toEqual('你好嗎我很好')
   })
 })
