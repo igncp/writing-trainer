@@ -3,14 +3,14 @@
   "anys": [
     {
       "file": "src/containers/Options/Options.tsx",
-      "line": 27,
+      "line": 28,
       "character": 38,
       "text": "error",
       "kind": 1
     },
     {
       "file": "src/containers/Options/Options.tsx",
-      "line": 28,
+      "line": 29,
       "character": 18,
       "text": "error",
       "kind": 1
@@ -114,57 +114,113 @@
       "kind": 1
     },
     {
+      "file": "src/components/PanelTrigger/__stories__/PanelTrigger.stories.tsx",
+      "line": 10,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/components/PanelTrigger/__stories__/PanelTrigger.stories.tsx",
+      "line": 17,
+      "character": 9,
+      "text": "Common",
+      "kind": 1
+    },
+    {
       "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
-      "line": 19,
+      "line": 20,
       "character": 10,
       "text": "panelEl",
       "kind": 1
     },
     {
       "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
-      "line": 21,
+      "line": 22,
       "character": 11,
       "text": "panelEl",
       "kind": 1
     },
     {
       "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
-      "line": 21,
+      "line": 22,
       "character": 19,
       "text": "style",
       "kind": 1
     },
     {
       "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
-      "line": 21,
+      "line": 22,
       "character": 25,
       "text": "background",
       "kind": 1
     },
     {
       "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
-      "line": 25,
+      "line": 26,
       "character": 11,
       "text": "panelEl",
       "kind": 1
     },
     {
       "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
-      "line": 25,
+      "line": 26,
       "character": 19,
       "text": "style",
       "kind": 1
     },
     {
       "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
-      "line": 25,
+      "line": 26,
       "character": 25,
       "text": "background",
+      "kind": 1
+    },
+    {
+      "file": "src/containers/Content/__stories__/Content.stories.tsx",
+      "line": 17,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/containers/Content/__stories__/Content.stories.tsx",
+      "line": 24,
+      "character": 9,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/containers/Options/__stories__/Options.stories.tsx",
+      "line": 10,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/containers/Options/__stories__/Options.stories.tsx",
+      "line": 17,
+      "character": 9,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/containers/Popup/__stories__/Popup.stories.tsx",
+      "line": 12,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/containers/Popup/__stories__/Popup.stories.tsx",
+      "line": 19,
+      "character": 9,
+      "text": "Common",
       "kind": 1
     }
   ],
-  "percentage": 97.27488151658768,
-  "total": 844,
-  "covered": 821,
-  "uncovered": 23
+  "percentage": 96.42032332563511,
+  "total": 866,
+  "covered": 835,
+  "uncovered": 31
 }

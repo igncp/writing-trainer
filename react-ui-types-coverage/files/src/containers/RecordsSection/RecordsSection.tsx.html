@@ -11,11 +11,8 @@
 <link href="../../../../assets/source-file.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/RecordsSection/RecordsSection.tsx</td><td class="">100.00%</td><td class="">95%</td><td class="">259</td><td class="">259</td><td class="">0</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useState } from &#x27;react&#x27;
-import {
-  LanguageDefinition,
-  records as coreRecords,
-} from &#x27;writing-trainer-core&#x27;
+    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/RecordsSection/RecordsSection.tsx</td><td class="">99.64%</td><td class="">95%</td><td class="">280</td><td class="">279</td><td class="">1</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useState } from &#x27;react&#x27;
+import { LanguageDefinition, Record } from &#x27;writing-trainer-core&#x27;
 
 import { T_Services } from &#x27;../../typings/mainTypes&#x27;
 
@@ -23,13 +20,15 @@ import RecordsWrapper from &#x27;./RecordsWrapper&#x27;
 import RecordSave, { RecordToSave } from &#x27;./screens/RecordSave&#x27;
 import RecordsList from &#x27;./screens/RecordsList&#x27;
 
-export type RecordsScreen = &#x27;Edit&#x27; | &#x27;List&#x27; | &#x27;Save&#x27;
-
-type T_Record = coreRecords.T_Record
+export enum RecordsScreen {
+  Edit = &#x27;edit&#x27;,
+  List = &#x27;list&#x27;,
+  Save = &#x27;save&#x27;,
+}
 
 const RECORDS_STORAGE = &#x27;records&#x27;
 
-const getMaxRecordId = (records: T_Record[]) =&gt; {
+const getMaxRecordId = (records: Record[]) =&gt; {
   return records.length ? Math.max(...records.map(r =&gt; r.id)) : 0
 }
 
@@ -37,8 +36,8 @@ const getInitialRecord = ({
   records,
   editingRecordId,
 }: {
-  editingRecordId: T_Record[&#x27;id&#x27;] | null
-  records: T_Record[]
+  editingRecordId: Record[&#x27;id&#x27;] | null
+  records: Record[]
 }) =&gt; {
   if (editingRecordId === null) {
     return null
@@ -58,7 +57,7 @@ const getInitialRecord = ({
 
 type IProps = {
   initScreen: RecordsScreen
-  onRecordLoad: (r: T_Record) =&gt; void
+  onRecordLoad: (r: Record) =&gt; void
   onRecordsClose: () =&gt; void
   pronunciation: string
   selectedLanguage: LanguageDefinition[&#x27;id&#x27;]
@@ -76,10 +75,10 @@ const RecordsSection = ({
   text,
 }: IProps) =&gt; {
   const [currentScreen, setCurrentScreen] = useState&lt;RecordsScreen&gt;(initScreen)
-  const [editingRecordId, setEditingRecordId] = useState&lt;T_Record[&#x27;id&#x27;] | null&gt;(
+  const [editingRecordId, setEditingRecordId] = useState&lt;Record[&#x27;id&#x27;] | null&gt;(
     null,
   )
-  const [records, setRecords] = useState&lt;T_Record[]&gt;([])
+  const [records, setRecords] = useState&lt;Record[]&gt;([])
   const [isLoading, setIsLoading] = useState&lt;boolean&gt;(false)
 
   const { storage } = services
@@ -90,7 +89,9 @@ const RecordsSection = ({
     const recordsStr = await storage.getValue(RECORDS_STORAGE)
 
     if (recordsStr) {
-      const parsedRecords: T_Record[] = JSON.parse(recordsStr)
+      const parsedRecords: Record[] = JSON.parse(recordsStr).map(
+        (recordObj: ReturnType&lt;Record[&#x27;toJson&#x27;]&gt;) =&gt; new Record(recordObj),
+      )
 
       setRecords(parsedRecords)
     }
@@ -102,13 +103,13 @@ const RecordsSection = ({
     retrieveRecords().catch(() =&gt; {})
   }, [])
 
-  const saveRecords = (newRecords: T_Record[]) =&gt; {
-    const recordsStr = JSON.stringify(newRecords)
+  const saveRecords = (newRecords: Record[]) =&gt; {
+    const recordsStr = JSON.stringify(newRecords.map(record =&gt; record.toJson()))
     storage.setValue(RECORDS_STORAGE, recordsStr)
     setRecords(newRecords)
   }
 
-  const handleRecordLoad = (record: T_Record) =&gt; {
+  const handleRecordLoad = (record: Record) =&gt; {
     const newRecords = [...records]
 
     newRecords.find(r =&gt; r.id === record.id)!.lastLoadedOn = Date.now()
@@ -117,49 +118,51 @@ const RecordsSection = ({
     onRecordLoad(record)
   }
 
-  const handleRecordEdit = (record: T_Record) =&gt; {
+  const handleRecordEdit = (record: Record) =&gt; {
     setEditingRecordId(record.id)
-    setCurrentScreen(&#x27;Edit&#x27;)
+    setCurrentScreen(RecordsScreen.Edit)
   }
 
   const handleRecordSave = (newRecord: RecordToSave) =&gt; {
-    const newRecords = records.concat({
-      createdOn: Date.now(),
-      id: getMaxRecordId(records) + 1,
-      language: selectedLanguage,
-      lastLoadedOn: Date.now(),
-      link: newRecord.link,
-      name: newRecord.name,
-      pronunciation,
-      text,
-    })
+    const newRecords = records.concat([
+      new Record({
+        createdOn: Date.now(),
+        id: getMaxRecordId(records) + 1,
+        language: selectedLanguage,
+        lastLoadedOn: Date.now(),
+        link: newRecord.link,
+        name: newRecord.name,
+        pronunciation,
+        text,
+      }),
+    ])
 
     saveRecords(newRecords)
-    setCurrentScreen(&#x27;List&#x27;)
+    setCurrentScreen(RecordsScreen.List)
   }
 
   const handleShowRecordsList = () =&gt; {
     setEditingRecordId(null)
-    setCurrentScreen(&#x27;List&#x27;)
+    setCurrentScreen(RecordsScreen.List)
   }
 
   const handleRecordEdited = (newRecord: RecordToSave) =&gt; {
     const newRecords = records.map(r =&gt;
       r.id === editingRecordId
-        ? {
-            ...r,
+        ? new Record({
+            ...r.toJson(),
             link: newRecord.link,
             name: newRecord.name,
-          }
+          })
         : r,
     )
 
     saveRecords(newRecords)
     setEditingRecordId(null)
-    setCurrentScreen(&#x27;List&#x27;)
+    setCurrentScreen(RecordsScreen.List)
   }
 
-  const handleRecordRemove = (record: T_Record) =&gt; {
+  const handleRecordRemove = (record: Record) =&gt; {
     const newRecords = records.filter(r =&gt; r.id !== record.id)
 
     saveRecords(newRecords)
@@ -178,7 +181,7 @@ const RecordsSection = ({
     services,
   }
 
-  if (currentScreen === &#x27;Save&#x27;) {
+  if (currentScreen === RecordsScreen.Save) {
     return (
       &lt;RecordsWrapper onRecordsClose={onRecordsClose}&gt;
         &lt;RecordSave
@@ -190,7 +193,7 @@ const RecordsSection = ({
     )
   }
 
-  if (currentScreen === &#x27;Edit&#x27;) {
+  if (currentScreen === RecordsScreen.Edit) {
     return (
       &lt;RecordsWrapper onRecordsClose={onRecordsClose}&gt;
         &lt;RecordSave
@@ -215,8 +218,8 @@ const RecordsSection = ({
 }
 
 export default RecordsSection
-</textarea><pre id="annotations" style="display:none">[]</pre></div>
-    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sat, 12 Mar 2022 20:06:59 GMT</p>
+</textarea><pre id="annotations" style="display:none">[{&quot;file&quot;:&quot;src/containers/RecordsSection/RecordsSection.tsx&quot;,&quot;line&quot;:78,&quot;character&quot;:61,&quot;text&quot;:&quot;map&quot;,&quot;kind&quot;:1}]</pre></div>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sun, 13 Mar 2022 16:44:48 GMT</p>
     </body>
   </html>
   

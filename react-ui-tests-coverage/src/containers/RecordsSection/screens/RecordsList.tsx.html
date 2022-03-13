@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">75.67% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>54/72</span>
+                <span class='fraction'>56/74</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">73.58% </span>
+                <span class="strong">72.13% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>39/53</span>
+                <span class='fraction'>44/61</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">74.5% </span>
+                <span class="strong">75.47% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>38/51</span>
+                <span class='fraction'>40/53</span>
             </div>
         
             
@@ -196,11 +196,7 @@
 <a name='L131'></a><a href='#L131'>131</a>
 <a name='L132'></a><a href='#L132'>132</a>
 <a name='L133'></a><a href='#L133'>133</a>
-<a name='L134'></a><a href='#L134'>134</a>
-<a name='L135'></a><a href='#L135'>135</a>
-<a name='L136'></a><a href='#L136'>136</a>
-<a name='L137'></a><a href='#L137'>137</a>
-<a name='L138'></a><a href='#L138'>138</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L134'></a><a href='#L134'>134</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -215,6 +211,10 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">28x</span>
 <span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -234,7 +234,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -294,13 +293,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -338,46 +330,42 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState } from 'react'
-import { records as coreRecords } from 'writing-trainer-core'
+import { Record } from 'writing-trainer-core'
 <span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" ></span></span>
 import B<span class="cstat-no" title="statement not covered" >utton from '../.<span class="cstat-no" title="statement not covered" >./</span>../co<span class="cstat-no" title="statement not covered" >mponents/Button/B</span>utton'</span>
 import TextI<span class="cstat-no" title="statement not covered" >nput from '../../.</span>./components/TextInput/TextInput'
 <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-const { filterRe<span class="cstat-no" title="statement not covered" >cords } = cor</span>eRecords
-&nbsp;
-type T_R<span class="cstat-no" title="statement not covered" >ecord = co</span>reRecords.T_Record
-&nbsp;
-type CellProps = {
+type CellProps =<span class="cstat-no" title="statement not covered" > {</span>
   bold?: boolean
-  label?: string
+  label?<span class="cstat-no" title="statement not covered" >: string</span>
   title?: string
   value: string
-}<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-cons<span class="cstat-no" title="statement not covered" >t Cell = ({ la</span>bel, value, title, bold }: CellProps) =&gt; {
+}
+&nbsp;
+cons<span class="missing-if-branch" title="else path not taken" >E</span>t Cell = ({ label, value, title, bold }: CellProps) =&gt; {
   return (
-    &lt;div
+    <span class="missing-if-branch" title="else path not taken" >E</span>&lt;div<span class="branch-1 cbranch-no" title="branch not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span>
       style={{
-<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" ></span>        display: 'inline-block',</span>
-<span class="cstat-no" title="statement not covered" >        marginRight: 3</span>0,
-        ...(bold ? { fontWeight: 700 } : {}),
-      }}
-    <span class="missing-if-branch" title="if path not taken" >I</span>  {...(title ? { title } : <span class="cstat-no" title="statement not covered" >{})}</span>
+        display: 'inline-block',
+        marginRight: 30,
+<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" ></span>        ...(bold ? { fontWeight: 700 } : {}),</span>
+<span class="cstat-no" title="statement not covered" >      }}<span class="cstat-no" title="statement not covered" ></span></span>
+<span class="cstat-no" title="statement not covered" >      {...(title ?</span> { title } : {})}
     &gt;
       {label &amp;&amp; (
         &lt;React.Fragment&gt;
-          &lt;b&gt;{label}&lt;/b&gt;:{' '}
-        &lt;/React.Fragment&gt;
+<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" ></span>          &lt;b&gt;{label}&lt;/b&gt;:{' '}</span>
+<span class="cstat-no" title="statement not covered" >        &lt;/React.Fragme</span>nt&gt;
       )}
-      {value}<span class="branch-1 cbranch-no" title="branch not covered" ></span>
-    &lt;/div&gt;
+      {value}
+    <span class="missing-if-branch" title="if path not taken" >I</span>&lt;/div&gt;<span class="cstat-no" title="statement not covered" ></span>
   )
-}
+}<span class="missing-if-branch" title="else path not taken" >E</span><span class="missing-if-branch" title="else path not taken" >E</span>
 &nbsp;
 const formatRecordDate = (d: number): string =&gt; {
   const date = new Date(d)
 &nbsp;
-  const dateStr = date.toLocaleDateString('en-US', {
+  const dateStr = date.toLocaleDateString('<span class="branch-1 cbranch-no" title="branch not covered" >en-US', {</span>
     hour: '2-digit',
     hour12: false,
     minute: '2-digit',
@@ -387,10 +375,10 @@ const formatRecordDate = (d: number): string =&gt; {
 }
 &nbsp;
 type RecordsListProps = {
-  onRecordEdit: (r: T_Record) =&gt; void
-  onRecordLoad: (r: T_Record) =&gt; void
-  onRecordRemove: (r: T_Record) =&gt; void
-  records: T_Record[]
+  onRecordEdit: (r: Record) =&gt; void
+  onRecordLoad: (r: Record) =&gt; void
+  onRecordRemove: (r: Record) =&gt; void
+  records: Record[]
 }
 &nbsp;
 const RecordsList = ({
@@ -400,40 +388,40 @@ const RecordsList = ({
   records,
 }: RecordsListProps) =&gt; {
   const [filterValue, setFilterValue] = useState&lt;string&gt;('')
-  const filteredRecords = filterRecords({
+  const filteredRecords = Record.filterByText({
     filterText: filterValue,
     records,
   })
 &nbsp;
   return (
-    &lt;div&gt;<span class="fstat-no" title="function not covered" ></span>
-      {records.lengt<span class="cstat-no" title="statement not covered" >h &gt; 0 &amp;&amp; (</span>
-        &lt;div style={{ pa<span class="cstat-no" title="statement not covered" >dding: 10, position: 'relative' }}</span>&gt;
+    &lt;div&gt;
+      {records.length &gt; 0 &amp;&amp; (
+        &lt;div style={{ padding: 10, position: 'relative' }}&gt;
           &lt;TextInput
             autoFocus
             onChange={e =&gt; {
               setFilterValue(e.target.value)
-            }}
-            onEnterPress={() =&gt; {
-              if (filteredRecords.length &gt; 0) {
+            }}<span class="fstat-no" title="function not covered" ></span>
+            onEnterP<span class="cstat-no" title="statement not covered" >ress={() =&gt; {</span>
+              if (filter<span class="cstat-no" title="statement not covered" >edRecords.length &gt; 0) {</span>
                 onRecordLoad(filteredRecords[0])
               }
             }}
-            placeholder="Filter by name and language"<span class="fstat-no" title="function not covered" ></span>
-            style={{ wid<span class="cstat-no" title="statement not covered" >th: '100%' }}</span>
+            placeholder="Filter by name and language"
+            style={{ width: '100%' }}
           /&gt;
-        &lt;/div&gt;<span class="fstat-no" title="function not covered" ></span>
-      )}<span class="cstat-no" title="statement not covered" ></span>
+        &lt;/div&gt;
+      )}
       &lt;div style={{ maxHeight: 300, overflow: 'auto' }}&gt;
-        {filteredRecords.map(record =&gt; {<span class="fstat-no" title="function not covered" ></span>
-          const { id, na<span class="cstat-no" title="statement not covered" >me, createdOn, lastLoade</span>dOn } = record
-&nbsp;
+        {filteredRecords.map(record =&gt; {
+          const { id, name, createdOn, lastLoadedOn } = record<span class="fstat-no" title="function not covered" ></span>
+<span class="cstat-no" title="statement not covered" ></span>
           return (
-            &lt;div key={id} style={{ padding: 10 }}&gt;
-              &lt;Cell label="Name" value={name} /&gt;
+            &lt;div key={id} style={{ padding: 10 }}&gt;<span class="fstat-no" title="function not covered" ></span>
+              &lt;Cell labe<span class="cstat-no" title="statement not covered" >l="Name" value={name} </span>/&gt;
               &lt;Cell title="Created" value={formatRecordDate(createdOn)} /&gt;
-              &lt;Cell title="Loaded" value={formatRecordDate(lastLoadedOn)} /&gt;
-              &lt;Cell bold title="Language" value={record.language} /&gt;
+              &lt;Cell title="Loaded" value={formatRecordDate(lastLoadedOn)} /<span class="fstat-no" title="function not covered" >&gt;</span>
+              &lt;Cell bold<span class="cstat-no" title="statement not covered" > title="Language" value=</span>{record.language} /&gt;
               {record.link &amp;&amp; (
                 &lt;a
                   href={record.link}
@@ -480,8 +468,8 @@ export default RecordsList
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank" rel="noopener">istanbul</a>
-                at Sat Mar 12 2022 20:06:52 GMT+0000 (Coordinated Universal Time)
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at Sun Mar 13 2022 16:44:43 GMT+0000 (Coordinated Universal Time)
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

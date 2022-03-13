@@ -11,11 +11,11 @@
 <link href="../../../../assets/source-file.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Panel/Panel.tsx</td><td class="">99.63%</td><td class="">95%</td><td class="">538</td><td class="">536</td><td class="">2</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useState } from &#x27;react&#x27;
+    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Panel/Panel.tsx</td><td class="">99.62%</td><td class="">95%</td><td class="">530</td><td class="">528</td><td class="">2</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useState } from &#x27;react&#x27;
 import {
   LanguageDefinition,
   LanguageManager,
-  records as coreRecords,
+  Record,
 } from &#x27;writing-trainer-core&#x27;
 
 import Button from &#x27;../../components/Button/Button&#x27;
@@ -49,7 +49,7 @@ const PRACTICE_TEXT_PLACEHOLDER = `Practice Text
 Toggle Editing: ${SHORTCUT_EDITING}
 Toggle Pronunciation: ${SHORTCUT_PRONUNCIATION}`
 
-type T_Panel = React.FC&lt;{
+type Props = {
   UI?: {
     noHideButton?: boolean
   }
@@ -64,7 +64,7 @@ type T_Panel = React.FC&lt;{
     defaultPronunciation?: string
     langOpts?: T_LangOpts
   }
-}&gt;
+}
 
 const getLanguageDefinitions = (languageManager: LanguageManager) =&gt; {
   return languageManager.getAvailableLanguages().map(langId =&gt; {
@@ -74,33 +74,30 @@ const getLanguageDefinitions = (languageManager: LanguageManager) =&gt; {
   })
 }
 
-const Panel: T_Panel = ({
-  _stories,
+const Panel = ({
+  UI,
+  _stories = {},
+  languageManager,
+  languageUIManager,
   onHideRequest,
   services,
   text,
-  UI,
-  languageManager,
-  languageUIManager,
-}) =&gt; {
+}: Props) =&gt; {
   const initialLanguageId = languageUIManager.getDefaultLanguage()
   const [showingRecordsInitScreen, setShowingRecordsInitScreen] = useState&lt;
     RecordsScreen | &#x27;&#x27;
   &gt;(&#x27;&#x27;)
-  const [currentRecord, setCurrentRecord] = useState&lt;
-    coreRecords.T_Record[&#x27;id&#x27;] | null
-  &gt;(null)
+  const [currentRecord, setCurrentRecord] = useState&lt;Record[&#x27;id&#x27;] | null&gt;(null)
   const [originalTextValue, setOriginalText] = useState&lt;string&gt;(text)
   const [pronunciationValue, setPronunciation] = useState&lt;string&gt;(
-    _stories!.defaultPronunciation ?? &#x27;&#x27;,
+    _stories.defaultPronunciation ?? &#x27;&#x27;,
   )
   const [specialCharsValue, setSpecialChars] = useState&lt;string&gt;(&#x27;&#x27;)
   const [writingValue, setWriting] = useState&lt;string&gt;(&#x27;&#x27;)
   const [practiceValue, setPractice] = useState&lt;string&gt;(
-    _stories!.defaultPractice ?? &#x27;&#x27;,
+    _stories.defaultPractice ?? &#x27;&#x27;,
   )
-  const [isShowingPronunciation, setShowingPronunciation] =
-    useState&lt;boolean&gt;(true)
+  const [isShowingPronunciation, setShowingPronunciation] = useState(true)
   const [isShowingEdition, setShowingEdition] = useState&lt;boolean&gt;(true)
   const [doesPracticeHaveError, setPracticeHasError] = useState&lt;boolean&gt;(false)
   const [lastThreeKeys, setLastThreeKeys] = useState&lt;string[]&gt;([])
@@ -141,12 +138,12 @@ const Panel: T_Panel = ({
   }
 
   useEffect(() =&gt; {
-    if (!_stories!.defaultLanguage) {
+    if (!_stories.defaultLanguage) {
       return
     }
 
-    updateLanguage(_stories!.defaultLanguage)
-  }, [_stories!.defaultLanguage])
+    updateLanguage(_stories.defaultLanguage)
+  }, [_stories.defaultLanguage])
 
   const updateLanguageWithStorage = async () =&gt; {
     const storageSelectedLanguage = await storage.getValue(STORAGE_LANGUAGE_KEY)
@@ -154,7 +151,7 @@ const Panel: T_Panel = ({
     if (
       storageSelectedLanguage &amp;&amp;
       storageSelectedLanguage !== selectedLanguage &amp;&amp;
-      !_stories!.defaultLanguage
+      !_stories.defaultLanguage
     ) {
       updateLanguage(storageSelectedLanguage)
     }
@@ -166,7 +163,7 @@ const Panel: T_Panel = ({
   }, [])
 
   const SPECIAL_CHARS = langHandler!.getSpecialChars()
-  const langOpts = _stories!.langOpts ?? uiHandler.getLangOpts()
+  const langOpts = _stories.langOpts ?? uiHandler.getLangOpts()
   const langOptsObj = {
     langOpts: {
       pronunciationInput: pronunciationValue,
@@ -293,11 +290,11 @@ const Panel: T_Panel = ({
   const handleDisplayedCharClick = uiHandler.getDisplayedCharHandler()
 
   const saveRecord = () =&gt; {
-    setShowingRecordsInitScreen(&#x27;Save&#x27;)
+    setShowingRecordsInitScreen(RecordsScreen.Save)
   }
 
   const listRecords = () =&gt; {
-    setShowingRecordsInitScreen(&#x27;List&#x27;)
+    setShowingRecordsInitScreen(RecordsScreen.List)
   }
 
   if (!hasLoadedStorage) {
@@ -308,7 +305,7 @@ const Panel: T_Panel = ({
     return (
       &lt;RecordsSection
         initScreen={showingRecordsInitScreen}
-        onRecordLoad={(record: coreRecords.T_Record) =&gt; {
+        onRecordLoad={(record: Record) =&gt; {
           clearValues()
 
           if (record.language !== selectedLanguage) {
@@ -334,7 +331,7 @@ const Panel: T_Panel = ({
   }
 
   return (
-    &lt;React.Fragment&gt;
+    &lt;&gt;
       &lt;Button onClick={clearValues}&gt;Clear&lt;/Button&gt;
       &lt;Button onClick={listRecords}&gt;Records&lt;/Button&gt;
       &lt;Button onClick={createToggleFn(isShowingEdition, setShowingEdition)}&gt;
@@ -374,7 +371,7 @@ const Panel: T_Panel = ({
       &gt;
         Hide
       &lt;/Button&gt;
-      &lt;div style={{ padding: &#x27;0 20px 20px 20px&#x27; }}&gt;
+      &lt;div style={{ padding: &#x27;0 0 20px&#x27; }}&gt;
         {isShowingEdition &amp;&amp; (
           &lt;div&gt;
             &lt;TextArea
@@ -436,17 +433,13 @@ const Panel: T_Panel = ({
         &lt;/div&gt;
       &lt;/div&gt;
       &lt;LinksBlock text={originalTextValue} /&gt;
-    &lt;/React.Fragment&gt;
+    &lt;/&gt;
   )
-}
-
-Panel.defaultProps = {
-  _stories: {},
 }
 
 export default Panel
 </textarea><pre id="annotations" style="display:none">[{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:23,&quot;character&quot;:3,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:24,&quot;character&quot;:4,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1}]</pre></div>
-    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sat, 12 Mar 2022 20:06:59 GMT</p>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sun, 13 Mar 2022 16:44:48 GMT</p>
     </body>
   </html>
   

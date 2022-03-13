@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">72.3% </span>
+                <span class="strong">73.52% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>47/65</span>
+                <span class='fraction'>50/68</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">63.79% </span>
+                <span class="strong">63.63% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>37/58</span>
+                <span class='fraction'>42/66</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">74% </span>
+                <span class="strong">75.47% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>37/50</span>
+                <span class='fraction'>40/53</span>
             </div>
         
             
@@ -188,6 +188,10 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">28x</span>
 <span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -279,10 +283,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useEffect, useRef } from 'react'
 import { CharObj } from 'writing-trainer-core'
 <span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" ></span></span>
@@ -296,25 +296,25 @@ type T_C<span class="cstat-no" title="statement not covered" >haractersD</span>i
   focusedIndex?: number
   onCharClick: T_CharsDisplayClickHandler
   shouldHaveDifferentWidths?: boolean
-  shouldHidePronunciation: boolean
+  sh<span class="missing-if-branch" title="else path not taken" >E</span>ouldHidePronunciation: boolean
 }&gt;
-<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" ></span></span>
-cons<span class="cstat-no" title="statement not covered" >t CharactersDisplay: T<span class="cstat-no" title="statement not covered" >_Charact</span></span>ersDisplay = ({
-  ch<span class="cstat-no" title="statement not covered" >arsObjs,</span>
+<span class="branch-1 cbranch-no" title="branch not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ><span class="missing-if-branch" title="else path not taken" >E</span></span></span>
+const CharactersDisplay: T_CharactersDisplay = ({
+  charsObjs,
   focusedIndex,
-  onCharClick,
-  shouldHaveDifferentWidths,
-  sho<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" >ul</span>dHidePronunciation,</span>
-}) =<span class="cstat-no" title="statement not covered" >&gt; {</span>
+  onCh<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" >ar</span>Click,</span>
+  sh<span class="cstat-no" title="statement not covered" >ouldHaveDifferentWidth<span class="cstat-no" title="statement not covered" >s,</span></span>
+  sh<span class="cstat-no" title="statement not covered" >ouldHidePronun</span>ciation,
+}) =&gt; {
   const wrapperRef = useRef&lt;HTMLDivElement | undefined&gt;()
 &nbsp;
-  us<span class="missing-if-branch" title="if path not taken" >I</span>eEffect(() =&gt; {<span class="cstat-no" title="statement not covered" ></span>
-    if (!wrapperRef.current || (!wrapperRef.current.childNodes as unknown)) {
+  use<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" >Ef</span>fect(() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    if (!wrapperRef.cu</span>rrent || (!wrapperRef.current.childNodes as unknown)) {
       return () =&gt; {}
     }
-&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span></span>
     const charEl = wrapperRef.current.childNodes[
-      focusedIndex as number
+    <span class="missing-if-branch" title="else path not taken" >E</span>  focusedIndex as number<span class="missing-if-branch" title="else path not taken" >E</span>
     ] as HTMLDivElement
 &nbsp;
     if (!(charEl as unknown)) {
@@ -322,47 +322,47 @@ cons<span class="cstat-no" title="statement not covered" >t CharactersDisplay: T
     }
 &nbsp;
     const { scrollTop } = wrapperRef.current
-    cons<span class="missing-if-branch" title="if path not taken" >I</span>t { offsetTop } = charEl
-    const { <span class="cstat-no" title="statement not covered" >height <span class="fstat-no" title="function not covered" >} </span>= charEl.getBou</span>ndingClientRect()
+    const { offsetTop } = charEl
+    const { height } = charEl.getBoundingClientRect()
 &nbsp;
     if (offsetTop + height &gt; scrollTop + MAX_HEIGHT) {
       wr<span class="missing-if-branch" title="if path not taken" >I</span>apperRef.current.scrollTop = offsetTop + height - MAX_HEIGHT
     } else i<span class="cstat-no" title="statement not covered" >f (offs<span class="fstat-no" title="function not covered" >et</span>Top &lt; scrollTop</span>) {
       wrapperRef.current.scrollTop = offsetTop
     }
-  }, [focusedIndex])
-&nbsp;
-  return<span class="missing-if-branch" title="if path not taken" >I</span> (
-    &lt;div<span class="cstat-no" title="statement not covered" ></span>
+  }, [fo<span class="missing-if-branch" title="if path not taken" >I</span>cusedIndex])
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+  return (
+    &lt;div
       ref={wrapperRef as React.MutableRefObject&lt;HTMLDivElement&gt;}
-      style={<span class="missing-if-branch" title="if path not taken" >I</span>{ maxHeight: MAX_HEIGHT, overflow: 'auto', position: 'relative' }}
-    &gt;<span class="cstat-no" title="statement not covered" ></span>
-      {charsObjs.map((charObj, index) =&gt; {
+      style={{ maxHeight: MAX_HEIGHT, overflow: 'auto', position: 'relative' }}
+    &gt;<span class="missing-if-branch" title="if path not taken" >I</span>
+      {chars<span class="cstat-no" title="statement not covered" >Objs.map((charObj, index) =&gt; {</span>
         const { word, pronunciation } = charObj
-&nbsp;
-        return (
+<span class="missing-if-branch" title="if path not taken" >I</span>
+        retu<span class="cstat-no" title="statement not covered" >rn (</span>
           &lt;div
             key={`${index}${charObj.word}`}
-            onCl<span class="missing-if-branch" title="if path not taken" >I</span>ick={e =&gt; {
-              e.stop<span class="cstat-no" title="statement not covered" >Propagat</span>ion()
+            onClick={e =&gt; {
+              e.stopPropagation()
 &nbsp;
               if (!onCharClick) {
-                return
-              }
+                <span class="missing-if-branch" title="if path not taken" >I</span>return
+              }<span class="cstat-no" title="statement not covered" ></span>
 &nbsp;
               onCharClick({
                 charObj,
-                charsObjs,<span class="branch-1 cbranch-no" title="branch not covered" ></span>
+                charsObjs,
                 index,
               })
-            }}<span class="branch-1 cbranch-no" title="branch not covered" ></span>
-            style={{
-              cursor: pronunciation &amp;&amp; onCharClick ? 'pointer' : 'default',<span class="branch-0 cbranch-no" title="branch not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span>
-              display: 'inline-block',<span class="branch-0 cbranch-no" title="branch not covered" ></span>
-              marginBottom: 10,
-              opacity: index === focusedIndex ? 1 : 0.5,
             }}
-          &gt;
+            style={{<span class="branch-1 cbranch-no" title="branch not covered" ></span>
+              cursor: pronunciation &amp;&amp; onCharClick ? 'pointer' : 'default',
+              display: 'inline-block',
+              marginBottom: 10,<span class="branch-1 cbranch-no" title="branch not covered" ></span>
+              opacity: index === focusedIndex ? 1 : 0.5,
+            }}<span class="branch-0 cbranch-no" title="branch not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span>
+          &gt;<span class="branch-0 cbranch-no" title="branch not covered" ></span>
             &lt;div
               style={{
                 fontSize: 13,
@@ -399,8 +399,8 @@ export default CharactersDisplay
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank" rel="noopener">istanbul</a>
-                at Sat Mar 12 2022 20:06:52 GMT+0000 (Coordinated Universal Time)
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at Sun Mar 13 2022 16:44:43 GMT+0000 (Coordinated Universal Time)
             </div>
         <script src="../../../prettify.js"></script>
         <script>

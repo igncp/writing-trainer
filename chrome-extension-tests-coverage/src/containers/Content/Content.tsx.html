@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/161</span>
+                <span class='fraction'>0/164</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/124</span>
+                <span class='fraction'>0/132</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/108</span>
+                <span class='fraction'>0/111</span>
             </div>
         
             
@@ -189,9 +189,15 @@
 <a name='L124'></a><a href='#L124'>124</a>
 <a name='L125'></a><a href='#L125'>125</a>
 <a name='L126'></a><a href='#L126'>126</a>
-<a name='L127'></a><a href='#L127'>127</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L127'></a><a href='#L127'>127</a>
+<a name='L128'></a><a href='#L128'>128</a>
+<a name='L129'></a><a href='#L129'>129</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -313,142 +319,142 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import PanelTrigger from '#/components/PanelTrigger/PanelTrigger'
-import getCurrentUrl f<span class="cstat-no" title="statement not covered" >rom '#/services/getCurrentUrl'<span class="fstat-no" title="function not covered" ></span></span>
-impo<span class="cstat-no" title="statement not covered" >rt listenToRuntimeMess<span class="cstat-no" title="statement not covered" >age from</span></span> '#/services/listenToRuntimeMessage'
-impo<span class="cstat-no" title="statement not covered" >rt log from '#/services/log'<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
-import<span class="fstat-no" title="function not covered" > s</span>torage from '#/services/storage'
+<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useEffect, useState } from 'react'
+import { LanguageManag<span class="cstat-no" title="statement not covered" >er } from 'writing-trainer-core'<span class="fstat-no" title="function not covered" ></span></span>
 impo<span class="cstat-no" title="statement not covered" >rt {<span class="cstat-no" title="statement not covered" ></span></span>
-  Me<span class="cstat-no" title="statement not covered" >ssage,</span>
-  MessageType,
-  STORAGE_ENABLED_PAGES_K<span class="cstat-no" title="statement not covered" >EY,<span class="fstat-no" title="function not covered" ></span></span>
-} fr<span class="cstat-no" title="statement not covered" >om '#/utils/constants'</span>
-impor<span class="fstat-no" title="function not covered" >t </span>React, { useEffect, useState } from 'react'
-impo<span class="cstat-no" title="statement not covered" >rt { LanguageManag</span>er } from 'writing-trainer-core'
-import {
-  LanguageUIManager<span class="cstat-no" title="statement not covered" >,<span class="fstat-no" title="function not covered" ></span></span>
-  Pa<span class="cstat-no" title="statement not covered" >nel,<span class="cstat-no" title="statement not covered" ></span></span>
-  PanelBase,<span class="cstat-no" title="statement not covered" ></span>
-  us<span class="cstat-no" title="statement not covered" >eBodyOverflowSwit<span class="cstat-no" title="statement not covered" >ch,<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
+  LanguageUIMan<span class="cstat-no" title="statement not covered" >ager,</span>
+  Pa<span class="cstat-no" title="statement not covered" >nel,</span>
+  Pane<span class="cstat-no" title="statement not covered" >lBase,<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
+  useBodyOverflowSwitch,
   us<span class="cstat-no" title="statement not covered" >eTextSelection,</span>
-} fr<span class="cstat-no" title="statement not covered" >om 'writing-tra</span>iner-react-ui'
-&nbsp;
-const languageMa<span class="cstat-no" title="statement not covered" >nager = new LanguageManager(<span class="fstat-no" title="function not covered" >)</span></span>
-const languag<span class="fstat-no" title="function not covered" >eUIMan</span>ager = ne<span class="cstat-no" title="statement not covered" >w LanguageUIManager(languageManager)<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
-lang<span class="cstat-no" title="statement not covered" >uageUIManager.init()<span class="fstat-no" title="function not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
-const panelServic<span class="fstat-no" title="function not covered" >es = { ge</span>tCurrentU<span class="cstat-no" title="statement not covered" >rl, st<span class="cstat-no" title="statement not covered" >orage }<span class="cstat-no" title="statement not covered" ></span></span></span>
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-const ge<span class="cstat-no" title="statement not covered" >tIsCurrentPageEnabled = (currentUrl: string, enabledPages: string) =&gt; {</span>
-  const pagesList = enabledPages
-    .split('\n')
-    .map(p =&gt; p.tr<span class="cstat-no" title="statement not covered" >im())<span class="fstat-no" title="function not covered" ></span></span>
-    .filter(<span class="cstat-no" title="statement not covered" >p =&gt; !!p)<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span></span>
-<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
-  return page<span class="fstat-no" title="function not covered" >sList</span>.some<span class="cstat-no" title="statement not covered" >(p =&gt; {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
-    const reg<span class="fstat-no" title="function not covered" > = ne</span>w RegExp(p)
+} from<span class="fstat-no" title="function not covered" > '</span>writing-trainer-react-ui'
 <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-    retu<span class="cstat-no" title="statement not covered" >rn reg.tes<span class="cstat-no" title="statement not covered" >t(currentUrl)</span></span>
+impo<span class="cstat-no" title="statement not covered" >rt PanelTrigge</span>r from '@/components/PanelTrigger/PanelTrigger'
+&nbsp;
+import getCurrentUrl from<span class="cstat-no" title="statement not covered" > '@/services/getCurrentUrl'<span class="fstat-no" title="function not covered" ></span></span>
+impo<span class="cstat-no" title="statement not covered" >rt listenToRuntimeMessage from '@/services/listenToRuntimeMessage'</span>
+impor<span class="fstat-no" title="function not covered" >t </span>log from '@/services/log'
+impo<span class="cstat-no" title="statement not covered" >rt storage from '@</span>/services/storage'
+import {
+  Message,<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+  Me<span class="cstat-no" title="statement not covered" >ssageType,<span class="cstat-no" title="statement not covered" ></span></span>
+  STORAGE_ENABLED<span class="cstat-no" title="statement not covered" >_PA</span>GES_KEY,
+} fr<span class="cstat-no" title="statement not covered" >om '@/utils/const<span class="cstat-no" title="statement not covered" >ants'<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
+<span class="cstat-no" title="statement not covered" ></span>
+cons<span class="cstat-no" title="statement not covered" >t languageManag</span>er = new LanguageManager()
+const languageUIManager = new LanguageUIManager(languageManager)
+languageUIManage<span class="cstat-no" title="statement not covered" >r.init()<span class="fstat-no" title="function not covered" ></span></span>
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
+cons<span class="cstat-no" title="statement not covered" >t panelServices = { getCurrentUr<span class="fstat-no" title="function not covered" >l,</span> storage }</span>
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
+const getIsCurren<span class="fstat-no" title="function not covered" >tPageEnab</span>led = (cu<span class="cstat-no" title="statement not covered" >rrentU<span class="cstat-no" title="statement not covered" >rl: string, enabledPages: string)</span> =&gt; {<span class="cstat-no" title="statement not covered" ></span></span>
+  const pagesList<span class="fstat-no" title="function not covered" > = en</span>abledPages<span class="cstat-no" title="statement not covered" ></span>
+    .spl<span class="cstat-no" title="statement not covered" >it('\n')</span>
+    .map(p =&gt; p.trim())
+    .filter(p =&gt; !!p)
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+  return pag<span class="cstat-no" title="statement not covered" >esList.some(p =&gt; {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span></span>
+<span class="cstat-no" title="statement not covered" >    const reg = new RegExp(p)<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
+    return re<span class="fstat-no" title="function not covered" >g.tes</span>t(currentUrl)
   })<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
 }<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" ></span>
-type ContentProps = {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-  onContentEnabledResult<span class="cstat-no" title="statement not covered" >?: (r: bool<span class="cstat-no" title="statement not covered" ></span>ean) =&gt; void</span>
-}<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
-<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-const Content = ({ onContentEnabledResult }: ContentProps) =&gt; {
-  const [hasLoadedSt<span class="cstat-no" title="statement not covered" >orage, setHasLoadedStorage] = useState&lt;boolean&gt;(false)<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-  const [isExtension<span class="cstat-no" title="statement not covered" >Enabled, setIsExtensionEnabled] = useState&lt;boolean&gt;(false)<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-  const [shouldShowP<span class="cstat-no" title="statement not covered" >anel, showPanel] = useState&lt;boolean&gt;(<span class="cstat-no" title="statement not covered" >false)<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
-  const [usedText, s<span class="cstat-no" title="statement not covered" >etUsedText] = useState&lt;stri<span class="cstat-no" title="statement not covered" >ng&gt;('')<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
 <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-  const updateLangua<span class="cstat-no" title="statement not covered" >geWithStorage <span class="cstat-no" title="statement not covered" ></span>= async ()</span> =&gt; {
-    const [enabledPages, currentUrl] = await Promise.all([
-      storag<span class="cstat-no" title="statement not covered" >e.getValue(STORAGE_ENABLED_P</span>AGES_KEY),
-      getCurrentUrl(),<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-    ])<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-    const isContentEnabled = getIsCurrentPageEnabled(currentUrl, enabledPages)
+type Content<span class="cstat-no" title="statement not covered" >Props = {<span class="cstat-no" title="statement not covered" ></span></span>
+  onContentE<span class="cstat-no" title="statement not covered" >nabledResult?: (r: boolean) =&gt; void</span>
+}<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
+const Content = ({ onCon<span class="cstat-no" title="statement not covered" >tentEnabled<span class="cstat-no" title="statement not covered" ></span>Result }: C<span class="cstat-no" title="statement not covered" ></span>ontentProp<span class="cstat-no" title="statement not covered" ></span>s) =&gt; {</span>
+  const [hasLoadedStorag<span class="cstat-no" title="statement not covered" >e, setHasLoadedSto<span class="cstat-no" title="statement not covered" ></span>rage] = useSta<span class="cstat-no" title="statement not covered" ></span>te&lt;boolean</span>&gt;(false)
+  const [isExtensionEnabled, setIsExtensionEnabled] = useState&lt;boolean&gt;(false)
+  const [shouldShowP<span class="cstat-no" title="statement not covered" >anel, showPanel] = useState&lt;boolean&gt;(false)<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+  const [usedText, s<span class="cstat-no" title="statement not covered" >etUsedText] = useState&lt;string&gt;('')<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
+  const updateLangua<span class="cstat-no" title="statement not covered" >geWithStorage = async () =&gt;<span class="cstat-no" title="statement not covered" > {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
+    const [enabledPa<span class="cstat-no" title="statement not covered" >ges, curre<span class="cstat-no" title="statement not covered" >ntUrl] = awai</span></span>t Promise.all([
+      storage.getVal<span class="cstat-no" title="statement not covered" >ue(STORAGE_ENA<span class="cstat-no" title="statement not covered" ></span>BLED_PAGES</span>_KEY),
+      getCurrentUrl(),
+    ])<span class="cstat-no" title="statement not covered" ></span>
+    const isContentEna<span class="cstat-no" title="statement not covered" >bled = getIsC<span class="cstat-no" title="statement not covered" ></span>urrentP</span>ageEnabled(c<span class="cstat-no" title="statement not covered" >urrentUrl, </span>enabledPages)
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+    setIsExtensionEnabled(isContentEnabled)
 &nbsp;
-    setIsExtensionEnab<span class="cstat-no" title="statement not covered" >led(isContentEnabled)<span class="fstat-no" title="function not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" ></span>
-    if (onContentEnabledResult) {
+    if (onContentEnabl<span class="cstat-no" title="statement not covered" >edResult) {<span class="fstat-no" title="function not covered" ></span></span>
 <span class="cstat-no" title="statement not covered" >      onContentEnabledResult(isContentEnabled)</span>
-    }<span class="cstat-no" title="statement not covered" ></span>
-    setHasLoadedStorag<span class="cstat-no" title="statement not covered" >e(true)</span>
+    }
+<span class="cstat-no" title="statement not covered" >    setHasLoadedStorage(true)</span>
   }<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" ></span>
-  useEffect(() =<span class="cstat-no" title="statement not covered" >&gt; {</span>
-    updateLanguage<span class="cstat-no" title="statement not covered" >WithStorage().catch((e: Error</span>) =&gt; {
-      log('ERR<span class="cstat-no" title="statement not covered" >OR', e)</span>
-    })<span class="cstat-no" title="statement not covered" ></span>
-  }, [])<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" ></span>
   useEffect(() =&gt; {<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    listenToRuntimeMessage</span>((message: Message) =&gt; {
-      if (message.ty<span class="cstat-no" title="statement not covered" >pe === MessageType.EnableOnce &amp;&amp; !isExtensionEnabled) {</span>
-        setIsExtensionEnabled(<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >tr</span>ue)</span>
-<span class="cstat-no" title="statement not covered" ></span>
-        return true
-      }<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" >      return false<span class="fstat-no" title="function not covered" ></span></span>
+    updateLanguageWit<span class="cstat-no" title="statement not covered" >hStorage().catch((e: Error) =&gt; {</span>
+      log('ERROR', e)<span class="cstat-no" title="statement not covered" ></span>
     })<span class="cstat-no" title="statement not covered" ></span>
   }, [])<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" ></span>
+  useEffect(() =&gt; <span class="cstat-no" title="statement not covered" >{</span>
+    listenToRuntimeMes<span class="cstat-no" title="statement not covered" >sage((message: Message) =&gt; {</span>
+      if (message.type =<span class="cstat-no" title="statement not covered" >== MessageType.EnableOnce &amp;&amp; !isExtensionEnabled) {</span>
+<span class="cstat-no" title="statement not covered" >        setIsExtensionEnab</span>led(true)
+<span class="cstat-no" title="statement not covered" ></span>
+        return true<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+      }<span class="cstat-no" title="statement not covered" ></span>
 &nbsp;
-  useBodyOverflowSwitch(shouldShowPanel)
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-  useTextSelection(isExtensionEna<span class="cstat-no" title="statement not covered" >bled, (textSelected: strin</span>g) =&gt; {
-    const par<span class="cstat-no" title="statement not covered" >sedText = textSelected.trim()<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+      return <span class="fstat-no" title="function not covered" >fa</span>lse<span class="cstat-no" title="statement not covered" ></span>
+    })<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+  },<span class="cstat-no" title="statement not covered" > [])<span class="fstat-no" title="function not covered" ></span></span>
+<span class="cstat-no" title="statement not covered" ></span>
+  useBod<span class="cstat-no" title="statement not covered" >yOverflowSwitch(shouldShowPan</span>el)
+&nbsp;
+  useTextSelection(isExtensionEnabled, (textSelected: string) =&gt; {
+    const pars<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >ed</span>Text = textSelected.trim()</span>
+<span class="cstat-no" title="statement not covered" ></span>
     if (parse<span class="cstat-no" title="statement not covered" >dText !== '' &amp;&amp; !shouldShowPa</span>nel) {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
       setUsed<span class="cstat-no" title="statement not covered" >Text(parsedText)<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-    }<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
-  })
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-  if (!hasLo<span class="cstat-no" title="statement not covered" >adedStorage || !isExtensionEnabled) {</span>
-    return null<span class="cstat-no" title="statement not covered" ></span>
-  }
-&nbsp;
+    }<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+  })<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
+  if (!hasLoadedStorage || !isExtensionEnabled) {
+    retu<span class="cstat-no" title="statement not covered" >rn null<span class="fstat-no" title="function not covered" ></span></span>
+  }<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" ></span>
   if (!shouldShowPanel &amp;&amp; usedText) {
     return (
-      &lt;PanelTrigger<span class="cstat-no" title="statement not covered" ></span>
-        onClick={() <span class="cstat-no" title="statement not covered" >=&gt; {</span>
+      &lt;PanelTrigger
+        onClick={() =&gt; {
           showPanel(<span class="cstat-no" title="statement not covered" >true)</span>
         }}<span class="cstat-no" title="statement not covered" ></span>
       /&gt;<span class="cstat-no" title="statement not covered" ></span>
-    )
-  } else if (!usedTe<span class="cstat-no" title="statement not covered" >xt) {</span>
-    return null<span class="cstat-no" title="statement not covered" ></span>
-  }
-&nbsp;
-  const hidePanel = () =&gt; {
-<span class="cstat-no" title="statement not covered" >    showPanel(false)<span class="fstat-no" title="function not covered" ></span></span>
-  }<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+    )<span class="cstat-no" title="statement not covered" ></span>
+  } else if (!usedText) <span class="cstat-no" title="statement not covered" >{</span>
+    return null
+  }<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" ></span>
-  return (
-    &lt;PanelBase onOverlayClick={hidePanel}&gt;
-<span class="cstat-no" title="statement not covered" >      &lt;Panel<span class="fstat-no" title="function not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" >        languageManager={languageManager}<span class="fstat-no" title="function not covered" ></span></span>
-        lang<span class="cstat-no" title="statement not covered" >uageUIManager={languageUIManager}</span>
-        onHideRe<span class="cstat-no" title="statement not covered" >quest={hidePanel}</span>
-        services<span class="cstat-no" title="statement not covered" >={panelServic</span>es}
-        text={usedText}
+  const hidePanel = () =&gt; {
+    showPanel(false)
+  }
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+  return<span class="cstat-no" title="statement not covered" > (<span class="fstat-no" title="function not covered" ></span></span>
+    &lt;PanelBa<span class="cstat-no" title="statement not covered" >se onOverlayClick={hidePanel}&gt;</span>
+      &lt;Panel
+        languageManager={languageManager}
+<span class="cstat-no" title="statement not covered" >        languageUIManager={<span class="fstat-no" title="function not covered" >la</span>nguageUIManager}</span>
+<span class="cstat-no" title="statement not covered" >        onHideRequest={hidePanel}<span class="fstat-no" title="function not covered" ></span></span>
+        serv<span class="cstat-no" title="statement not covered" >ices={panelServices}</span>
+        text={us<span class="cstat-no" title="statement not covered" >edText}</span>
       /&gt;<span class="cstat-no" title="statement not covered" ></span>
     &lt;/PanelBase&gt;
-  )
-}<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-export default Content<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" ></span></pre></td></tr></table></pre>
+  )<span class="cstat-no" title="statement not covered" ></span>
+}
+&nbsp;
+expo<span class="cstat-no" title="statement not covered" >rt default Content</span>
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank" rel="noopener">istanbul</a>
-                at Sat Mar 12 2022 20:08:09 GMT+0000 (Coordinated Universal Time)
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at Sun Mar 13 2022 16:45:53 GMT+0000 (Coordinated Universal Time)
             </div>
         <script src="../../../prettify.js"></script>
         <script>

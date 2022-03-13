@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/59</span>
+                <span class='fraction'>0/62</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/48</span>
+                <span class='fraction'>0/56</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/43</span>
+                <span class='fraction'>0/46</span>
             </div>
         
             
@@ -174,6 +174,10 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -253,10 +257,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -280,90 +280,90 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useEffect, useRef, useState } from 'react'
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
 impo<span class="cstat-no" title="statement not covered" >rt Button from '../../<span class="cstat-no" title="statement not covered" >../compo</span></span>nents/Button/Button'
-impo<span class="cstat-no" title="statement not covered" >rt TextInput from '../../../components/TextInput/TextI<span class="fstat-no" title="function not covered" >np</span>ut'<span class="cstat-no" title="statement not covered" ></span></span>
-import<span class="fstat-no" title="function not covered" > {</span> T_Services } from '../../../typings/mainTypes'
-<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-expo<span class="cstat-no" title="statement not covered" >rt interface R</span>ecordToSave {
-  name: string
-  link: string<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-}<span class="cstat-no" title="statement not covered" ></span>
-<span class="fstat-no" title="function not covered" ></span>
-type<span class="cstat-no" title="statement not covered" > RecordSaveProps =</span> {
-  initialRecord: RecordToSave | null
-  onRecordSave: (r:<span class="cstat-no" title="statement not covered" > RecordToSave) =&gt; void<span class="fstat-no" title="function not covered" ></span></span>
-  on<span class="cstat-no" title="statement not covered" >ShowRecordsList: () =&gt; void<span class="cstat-no" title="statement not covered" ></span></span>
-  services: T_Ser<span class="cstat-no" title="statement not covered" >vic</span>es
-}<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
+import TextInpu<span class="cstat-no" title="statement not covered" >t from '../../../components/TextInput/</span>TextInput'
+impo<span class="cstat-no" title="statement not covered" >rt { T_Services } from '../../../typings/mainTypes'</span>
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
+export interface RecordToSave {
+  na<span class="cstat-no" title="statement not covered" >me: string</span>
+  link<span class="fstat-no" title="function not covered" >: </span>string
+}<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
 <span class="cstat-no" title="statement not covered" ></span>
-cons<span class="cstat-no" title="statement not covered" >t RecordSave = </span>({
-  initialRecord,
-  onRecordSave,<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-  on<span class="cstat-no" title="statement not covered" >ShowRecordsList,</span>
-  services,
-<span class="cstat-no" title="statement not covered" >}: RecordSaveProps) =&gt; {</span>
-  const [recor<span class="cstat-no" title="statement not covered" >dName, setRecordName] = useStat</span>e&lt;string&gt;(
-    initialReco<span class="cstat-no" title="statement not covered" >rd ? initialRecord.name : '',</span>
-  )<span class="cstat-no" title="statement not covered" ></span>
-  const [recordLi<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >nk</span>, setRecordLink] = useState&lt;string&gt;(</span>
-    initialRecord ? init<span class="cstat-no" title="statement not covered" >ialRecord.link : </span>'',<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-  )<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-  const [curr<span class="cstat-no" title="statement not covered" >entUrl, setCurrentUrl] = useState&lt;string&gt;('')<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-  const linkI<span class="cstat-no" title="statement not covered" >nputRef = useRef&lt;HTMLInput</span>Element&gt;(null)<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" ></span>
-  us<span class="cstat-no" title="statement not covered" >eEffect(() =&gt; {<span class="fstat-no" title="function not covered" ></span></span>
-    serv<span class="cstat-no" title="statement not covered" >ices</span>
-      .getCurrentUrl()
-      .then(newCur<span class="fstat-no" title="function not covered" >re</span>ntUrl =&gt; {
-        setC<span class="cstat-no" title="statement not covered" >urrentUrl(newCurrentUrl)</span>
-        setR<span class="cstat-no" title="statement not covered" >ecordLink(newCurrentUrl)</span>
-      })
-      .catch((e: Er<span class="fstat-no" title="function not covered" >ro</span>r) =&gt; {
-        cons<span class="cstat-no" title="statement not covered" >ole.log(e)</span>
-      })
-  }, [])
-<span class="cstat-no" title="statement not covered" ></span>
-  if (!c<span class="cstat-no" title="statement not covered" >urrentUrl) {</span>
-    return null
-  }<span class="cstat-no" title="statement not covered" ></span>
+type RecordSaveProps = {
+  initialRecord: RecordTo<span class="cstat-no" title="statement not covered" >Save | null<span class="fstat-no" title="function not covered" ></span></span>
+  on<span class="cstat-no" title="statement not covered" >RecordSave: (r: RecordToSave) =&gt; void</span>
+  onS<span class="fstat-no" title="function not covered" >ho</span>wRecordsList: () =&gt; void
+  se<span class="cstat-no" title="statement not covered" >rvices: T_Services</span>
+}
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-  const <span class="cstat-no" title="statement not covered" >isSaveButtonDisabled = !recordName</span>
+cons<span class="cstat-no" title="statement not covered" >t RecordSave = ({<span class="cstat-no" title="statement not covered" ></span></span>
+  initialRecord,<span class="cstat-no" title="statement not covered" ></span>
+  on<span class="cstat-no" title="statement not covered" >RecordSave,<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
+  on<span class="cstat-no" title="statement not covered" >ShowRecordsList,</span>
+  se<span class="cstat-no" title="statement not covered" >rvices,</span>
+}: RecordSaveProps) =&gt; {
+  const [recordName, s<span class="cstat-no" title="statement not covered" >etRecordName] = useState&lt;string&gt;(<span class="fstat-no" title="function not covered" ></span></span>
+<span class="cstat-no" title="statement not covered" >    initialRecord ? initialRecord.name : '',</span>
+  )
+<span class="cstat-no" title="statement not covered" >  const [recordLink, setRecordLink] = useState&lt;string&gt;(</span>
+    initialRec<span class="cstat-no" title="statement not covered" >ord ? initialRecord.link : '',</span>
+  )<span class="cstat-no" title="statement not covered" ></span>
+  const [currentUr<span class="cstat-no" title="statement not covered" >l, setCurrentUrl] = useState&lt;string&gt;('')</span>
+  const linkInput<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >Re</span>f = useRef&lt;HTMLInputElement&gt;(null)</span>
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
+  useEffect((<span class="cstat-no" title="statement not covered" >) =&gt; {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+    services<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+      .getCur<span class="cstat-no" title="statement not covered" >rentUrl()<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+      .then(newCurrentU<span class="cstat-no" title="statement not covered" >rl =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        setCurrentUrl(newCu<span class="fstat-no" title="function not covered" >rr</span>entUrl)</span>
+<span class="cstat-no" title="statement not covered" >        setRecordLink(newCurrentUrl)</span>
+      })
+      .catch((e: E<span class="fstat-no" title="function not covered" >rr</span>or) =&gt; {
+        cons<span class="cstat-no" title="statement not covered" >ole.log(e)</span>
+      })<span class="cstat-no" title="statement not covered" ></span>
+  }, [])
+<span class="fstat-no" title="function not covered" ></span>
+  if (!curre<span class="cstat-no" title="statement not covered" >ntUrl) {</span>
+    return null
+  }
 <span class="cstat-no" title="statement not covered" ></span>
-  const handleRecordSave = () =&gt; {
-    if (!isSaveButtonDisabled) {
-      onRecordSave({
-        link: recordLink.trim(),
+  const <span class="cstat-no" title="statement not covered" >isSaveButtonD</span>isabled = !recordName
+&nbsp;
+  const handleRecordSave = () =<span class="cstat-no" title="statement not covered" >&gt; {</span>
+    if (!isSaveButtonDisabl<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >ed</span>) {</span>
+      on<span class="cstat-no" title="statement not covered" >RecordSave({</span>
+        link<span class="cstat-no" title="statement not covered" >: recordLink.trim(),</span>
         name: recordName,
-<span class="cstat-no" title="statement not covered" >      })</span>
+      })
     }
   }
 &nbsp;
-  return (
+  re<span class="cstat-no" title="statement not covered" >turn (</span>
     &lt;React.Fragment&gt;
       &lt;div&gt;
         &lt;Button onClick={onShowRecordsList}&gt;List&lt;/Button&gt;
-      &lt;/div&gt;<span class="fstat-no" title="function not covered" ></span>
-      &lt;div&gt;<span class="cstat-no" title="statement not covered" ></span>
-        &lt;div style={{ padding: 10 }}&gt;<span class="fstat-no" title="function not covered" ></span>
+      &lt;/div&gt;
+      &lt;div&gt;
+        &lt;div style={{ padding: 10 }}&gt;
           Name:{' '}
-          &lt;span style={{ mar<span class="cstat-no" title="statement not covered" >ginLeft: 10 }}&gt;</span>
+          &lt;span style={{ marginLeft: 10 }}&gt;<span class="fstat-no" title="function not covered" ></span>
             &lt;TextInput<span class="cstat-no" title="statement not covered" ></span>
-              autoFocus
+              autoFocus<span class="fstat-no" title="function not covered" ></span>
               onChange={e =&gt; {
-                setRecordName(e.target.value)
-              }}
+                setRecordNam<span class="cstat-no" title="statement not covered" >e(e.target.value)</span>
+              }}<span class="cstat-no" title="statement not covered" ></span>
               onEnterPress={() =&gt; {
                 if (recordName) {
-                  linkInputRef.current?.focus()<span class="fstat-no" title="function not covered" ></span>
-                }<span class="cstat-no" title="statement not covered" ></span>
+                  linkInputRef.current?.focus()
+                }
               }}
               value={recordName}
-            /&gt;
-          &lt;/span&gt;
-<span class="cstat-no" title="statement not covered" >        &lt;/div&gt;</span>
+            /&gt;<span class="fstat-no" title="function not covered" ></span>
+          &lt;/span&gt;<span class="cstat-no" title="statement not covered" ></span>
+        &lt;/div&gt;
         &lt;div style={{ padding: 10 }}&gt;
           Link:{' '}
           &lt;span style={{ marginLeft: 10 }}&gt;
-            &lt;TextInput
+<span class="cstat-no" title="statement not covered" >            &lt;TextInput</span>
               inputRef={linkInputRef}
               onChange={e =&gt; {
                 setRecordLink(e.target.value)
@@ -390,8 +390,8 @@ export default RecordSave
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank" rel="noopener">istanbul</a>
-                at Sat Mar 12 2022 20:06:52 GMT+0000 (Coordinated Universal Time)
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at Sun Mar 13 2022 16:44:43 GMT+0000 (Coordinated Universal Time)
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

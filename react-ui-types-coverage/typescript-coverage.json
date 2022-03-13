@@ -30,6 +30,13 @@
       "kind": 1
     },
     {
+      "file": "src/containers/RecordsSection/RecordsSection.tsx",
+      "line": 78,
+      "character": 61,
+      "text": "map",
+      "kind": 1
+    },
+    {
       "file": "src/containers/Panel/Panel.tsx",
       "line": 23,
       "character": 3,
@@ -94,35 +101,35 @@
     },
     {
       "file": "src/languages/__tests__/languageUIManager.test.tsx",
-      "line": 16,
+      "line": 15,
       "character": 34,
       "text": "mockRestore",
       "kind": 1
     },
     {
       "file": "src/languages/__tests__/languageUIManager.test.tsx",
-      "line": 21,
+      "line": 20,
       "character": 42,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/__tests__/languageUIManager.test.tsx",
-      "line": 21,
+      "line": 20,
       "character": 47,
       "text": "calls",
       "kind": 1
     },
     {
       "file": "src/languages/__tests__/languageUIManager.test.tsx",
-      "line": 27,
+      "line": 26,
       "character": 42,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/__tests__/languageUIManager.test.tsx",
-      "line": 27,
+      "line": 26,
       "character": 47,
       "text": "calls",
       "kind": 1
@@ -237,6 +244,76 @@
       "line": 33,
       "character": 48,
       "text": "calls",
+      "kind": 1
+    },
+    {
+      "file": "src/components/Button/__stories__/Button.stories.tsx",
+      "line": 10,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/components/Button/__stories__/Button.stories.tsx",
+      "line": 17,
+      "character": 9,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/components/ChooseLanguage/__stories__/ChooseLanguage.stories.tsx",
+      "line": 31,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/components/ChooseLanguage/__stories__/ChooseLanguage.stories.tsx",
+      "line": 38,
+      "character": 9,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/components/TextArea/__stories__/TextArea.stories.tsx",
+      "line": 10,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/components/TextArea/__stories__/TextArea.stories.tsx",
+      "line": 17,
+      "character": 9,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/components/TextInput/__stories__/TextInput.stories.tsx",
+      "line": 10,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/components/TextInput/__stories__/TextInput.stories.tsx",
+      "line": 17,
+      "character": 9,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/languages/english/__stories__/OptionsBlock.stories.tsx",
+      "line": 17,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/languages/english/__stories__/OptionsBlock.stories.tsx",
+      "line": 24,
+      "character": 9,
+      "text": "Common",
       "kind": 1
     },
     {
@@ -518,10 +595,108 @@
       "character": 33,
       "text": "calls",
       "kind": 1
+    },
+    {
+      "file": "src/containers/RecordsSection/screens/__stories__/RecordSave.stories.tsx",
+      "line": 21,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/containers/RecordsSection/screens/__stories__/RecordSave.stories.tsx",
+      "line": 28,
+      "character": 9,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/containers/RecordsSection/screens/__stories__/RecordsList.stories.tsx",
+      "line": 50,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/containers/RecordsSection/screens/__stories__/RecordsList.stories.tsx",
+      "line": 57,
+      "character": 9,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/languages/english/LinksBlock/__stories__/LinksBlock.stories.tsx",
+      "line": 10,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/languages/english/LinksBlock/__stories__/LinksBlock.stories.tsx",
+      "line": 17,
+      "character": 9,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/languages/japanese/LinksBlock/__stories__/LinksBlock.stories.tsx",
+      "line": 15,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/languages/japanese/LinksBlock/__stories__/LinksBlock.stories.tsx",
+      "line": 22,
+      "character": 9,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/languages/japanese/OptionsBlock/__stories__/OptionsBlock.stories.tsx",
+      "line": 18,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/languages/japanese/OptionsBlock/__stories__/OptionsBlock.stories.tsx",
+      "line": 25,
+      "character": 9,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/languages/mandarin/LinksBlock/__stories__/LinksBlock.stories.tsx",
+      "line": 10,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/languages/mandarin/LinksBlock/__stories__/LinksBlock.stories.tsx",
+      "line": 17,
+      "character": 9,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/languages/mandarin/OptionsBlock/__stories__/OptionsBlock.stories.tsx",
+      "line": 15,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/languages/mandarin/OptionsBlock/__stories__/OptionsBlock.stories.tsx",
+      "line": 22,
+      "character": 9,
+      "text": "Common",
+      "kind": 1
     }
   ],
-  "percentage": 97.98858385430823,
-  "total": 3679,
-  "covered": 3605,
-  "uncovered": 74
+  "percentage": 97.36842105263158,
+  "total": 3762,
+  "covered": 3663,
+  "uncovered": 99
 }
