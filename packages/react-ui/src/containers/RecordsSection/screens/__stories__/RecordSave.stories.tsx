@@ -1,21 +1,29 @@
-import * as React from 'react'
-
-import { action } from '@storybook/addon-actions'
-import { storiesOf } from '@storybook/react'
+import React from 'react'
 
 import { dummyServices } from '../../../../__stories__/storybookHelpers'
 import RecordSave from '../RecordSave'
 
-storiesOf('Containers|RecordSave', module).add('common', () => {
+const RecordSaveStories = () => {
   return (
-    <React.Fragment>
+    <>
       <p>The link will automatically default to the current URL</p>
       <RecordSave
         initialRecord={null}
-        onRecordSave={action('onRecordSave')}
-        onShowRecordsList={action('onShowRecordsList')}
+        onRecordSave={() => console.log('onRecordSave')}
+        onShowRecordsList={() => console.log('onShowRecordsList')}
         services={dummyServices}
       />
-    </React.Fragment>
+    </>
   )
-})
+}
+
+const Template = () => <RecordSaveStories />
+
+const Common = Template.bind({})
+
+export default {
+  component: RecordSaveStories,
+  title: 'Containers/RecordSave',
+}
+
+export { Common }

@@ -1,4 +1,4 @@
-import { MessageType } from '#/utils/constants'
+import { MessageType } from '@/utils/constants'
 
 type T_getCurrentUrl = () => Promise<string>
 

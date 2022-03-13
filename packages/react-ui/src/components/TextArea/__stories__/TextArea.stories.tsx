@@ -1,9 +1,18 @@
-import * as React from 'react'
-
-import { storiesOf } from '@storybook/react'
+import React from 'react'
 
 import TextArea from '../TextArea'
 
-storiesOf('Components|TextArea', module).add('common', () => {
+const TextAreaStories = () => {
   return <TextArea rows={1}>Content</TextArea>
-})
+}
+
+const Template = () => <TextAreaStories />
+
+const Common = Template.bind({})
+
+export default {
+  component: TextAreaStories,
+  title: 'Components/TextArea',
+}
+
+export { Common }

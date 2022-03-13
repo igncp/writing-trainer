@@ -1,17 +1,7 @@
 import { LanguageManager } from 'writing-trainer-core'
 
-import englishUIHandler from './english/english'
-import japaneseUIHandler from './japanese/japanese'
-import mandarinUIHandler from './mandarin/mandarin'
+import { uiHandlers as defaultUIHandlers } from './handlers'
 import { T_UIHandler } from './types'
-
-// @TODO: completely remove this default when not used.
-// Consumer apps should pass this instead of using a default.
-const defaultLanguageUIHandlers = [
-  englishUIHandler,
-  mandarinUIHandler,
-  japaneseUIHandler,
-]
 
 class LanguageUIManager {
   private readonly manager: LanguageManager
@@ -20,13 +10,13 @@ class LanguageUIManager {
 
   public constructor(manager: LanguageManager, handlers?: T_UIHandler[]) {
     this.manager = manager
-    this.handlers = handlers ?? defaultLanguageUIHandlers
+    this.handlers = handlers ?? defaultUIHandlers
 
     if (this.handlers.length === 0) {
       throw new Error('No UI handlers provided')
     }
 
-    this.idToLanguageUIHandlerMap = defaultLanguageUIHandlers.reduce<
+    this.idToLanguageUIHandlerMap = this.handlers.reduce<
       LanguageUIManager['idToLanguageUIHandlerMap']
     >((acc, uiHandler) => {
       acc[uiHandler.id] = uiHandler
@@ -71,17 +61,4 @@ class LanguageUIManager {
   }
 }
 
-let _test:
-  | {
-      defaultLanguageUIHandlers: T_UIHandler[]
-    }
-  | undefined
-
-// istanbuil ignore else
-if (__TEST__) {
-  _test = {
-    defaultLanguageUIHandlers,
-  }
-}
-
-export { _test, LanguageUIManager }
+export { LanguageUIManager }

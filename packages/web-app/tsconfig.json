@@ -13,9 +13,6 @@
     "strictNullChecks": true,
     "noUnusedLocals": true,
     "outDir": "dist",
-    "paths": {
-      "#/*": ["src/*"]
-    },
     "rootDir": "src",
     "sourceMap": false,
     "target": "es6",

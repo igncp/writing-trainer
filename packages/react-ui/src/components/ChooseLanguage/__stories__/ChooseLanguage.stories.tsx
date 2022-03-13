@@ -1,12 +1,9 @@
-import * as React from 'react'
+import React from 'react'
 import { LanguageDefinition } from 'writing-trainer-core'
-
-import { action } from '@storybook/addon-actions'
-import { storiesOf } from '@storybook/react'
 
 import ChooseLanguage from '../ChooseLanguage'
 
-const StoryComp = () => {
+const ChooseLanguageStories = () => {
   const [selectedLanguage, setSelectedLanguage] = React.useState('mandarin')
 
   return (
@@ -23,13 +20,20 @@ const StoryComp = () => {
       ]}
       onOptionsChange={id => {
         setSelectedLanguage(id)
-        action('options-change')(id)
+        console.log('options-change', id)
       }}
       selectedLanguage={selectedLanguage}
     />
   )
 }
 
-storiesOf('Components|ChooseLanguage', module).add('common', () => {
-  return <StoryComp />
-})
+const Template = () => <ChooseLanguageStories />
+
+const Common = Template.bind({})
+
+export default {
+  component: ChooseLanguageStories,
+  title: 'Components/ChooseLanguage',
+}
+
+export { Common }

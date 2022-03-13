@@ -1,5 +1,7 @@
 import React from 'react'
-import { fireEvent, render } from 'react-testing-library'
+import { Record } from 'writing-trainer-core'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import RecordsList from '../RecordsList'
 
@@ -8,7 +10,7 @@ const commonProps = {
   onRecordLoad: jest.fn(),
   onRecordRemove: jest.fn(),
   records: [
-    {
+    new Record({
       createdOn: Date.now(),
       id: 0,
       language: 'spanish',
@@ -17,7 +19,7 @@ const commonProps = {
       name: 'name value',
       pronunciation: 'pronunciation value',
       text: 'text value',
-    },
+    }),
   ],
 }
 

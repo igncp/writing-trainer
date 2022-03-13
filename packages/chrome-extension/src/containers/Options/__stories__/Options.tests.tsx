@@ -1,12 +1,13 @@
-import mockStorage from '#/services/storage'
-import { STORAGE_ENABLED_PAGES_KEY } from '#/utils/constants'
 import React from 'react'
 
 import { fireEvent, render, waitFor } from '@testing-library/react'
 
+import mockStorage from '@/services/storage'
+import { STORAGE_ENABLED_PAGES_KEY } from '@/utils/constants'
+
 import Options from '../Options'
 
-jest.mock('#/services/storage', () => ({
+jest.mock('@/services/storage', () => ({
   getValue: jest.fn(),
   setValue: jest.fn(),
 }))

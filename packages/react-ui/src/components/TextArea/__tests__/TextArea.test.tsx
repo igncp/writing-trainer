@@ -1,5 +1,6 @@
 import React from 'react'
-import { render, waitForElement } from 'react-testing-library'
+
+import { render, waitFor } from '@testing-library/react'
 
 import TextArea from '../TextArea'
 
@@ -17,7 +18,7 @@ describe('TextArea', () => {
       <TextArea onChange={() => {}} rows={1} value={'Test Content'} />,
     )
 
-    await waitForElement(() => getByText('Test Content'))
+    await waitFor(() => getByText('Test Content'))
 
     const textAreaEl = baseElement.querySelector('textarea')
 

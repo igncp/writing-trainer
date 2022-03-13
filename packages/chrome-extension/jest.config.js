@@ -20,7 +20,7 @@ module.exports = Object.assign(globalConfig, {
     __USE_CHROME_TABS_FEATURE__: true,
   },
   moduleNameMapper: {
-    '#/(.*)$': '<rootDir>/src/$1',
+    '@/(.*)$': '<rootDir>/src/$1',
     '^.+.csv$': '<rootDir>/helpers/test/mockCsv.js',
   },
   roots: ['<rootDir>/src'],

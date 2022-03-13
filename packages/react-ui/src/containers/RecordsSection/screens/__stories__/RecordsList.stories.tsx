@@ -1,8 +1,5 @@
-import * as React from 'react'
-import { records as coreRecords } from 'writing-trainer-core'
-
-import { action } from '@storybook/addon-actions'
-import { storiesOf } from '@storybook/react'
+import React from 'react'
+import { Record } from 'writing-trainer-core'
 
 import RecordsList from '../RecordsList'
 
@@ -19,32 +16,43 @@ const createRandomStr = () => {
   return result
 }
 
-type T_Record = coreRecords.T_Record
-
-const records: T_Record[] = []
+const records: Record[] = []
 
 const HOURS_10_IN_MS = 1000 * 60 * 60 * 10
 
 for (let x = 0; x <= 50; x++) {
-  records.push({
-    createdOn: Date.now() - HOURS_10_IN_MS,
-    id: x,
-    language: x % 2 ? 'mandarin' : 'cantonese',
-    lastLoadedOn: Date.now() - HOURS_10_IN_MS * Math.random(),
-    link: x % 2 ? 'https://google.com' : '',
-    name: `Name ${createRandomStr()} ${x}`,
-    pronunciation: `Bar ${x}`,
-    text: `Foo ${x}`,
-  })
+  records.push(
+    new Record({
+      createdOn: Date.now() - HOURS_10_IN_MS,
+      id: x,
+      language: x % 2 ? 'mandarin' : 'cantonese',
+      lastLoadedOn: Date.now() - HOURS_10_IN_MS * Math.random(),
+      link: x % 2 ? 'https://google.com' : '',
+      name: `Name ${createRandomStr()} ${x}`,
+      pronunciation: `Bar ${x}`,
+      text: `Foo ${x}`,
+    }),
+  )
 }
 
-storiesOf('Containers|RecordsList', module).add('common', () => {
+const RecordsListStories = () => {
   return (
     <RecordsList
-      onRecordEdit={action('onRecordEdit')}
-      onRecordLoad={action('onRecordLoad')}
-      onRecordRemove={action('onRecordRemove')}
+      onRecordEdit={() => console.log('onRecordEdit')}
+      onRecordLoad={() => console.log('onRecordLoad')}
+      onRecordRemove={() => console.log('onRecordRemove')}
       records={records}
     />
   )
-})
+}
+
+const Template = () => <RecordsListStories />
+
+const Common = Template.bind({})
+
+export default {
+  component: RecordsListStories,
+  title: 'Containers/RecordsList',
+}
+
+export { Common }

@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  LanguageDefinition,
-  records as coreRecords,
-} from 'writing-trainer-core'
+import { LanguageDefinition, Record } from 'writing-trainer-core'
 
 import { T_Services } from '../../typings/mainTypes'
 
@@ -10,13 +7,15 @@ import RecordsWrapper from './RecordsWrapper'
 import RecordSave, { RecordToSave } from './screens/RecordSave'
 import RecordsList from './screens/RecordsList'
 
-export type RecordsScreen = 'Edit' | 'List' | 'Save'
-
-type T_Record = coreRecords.T_Record
+export enum RecordsScreen {
+  Edit = 'edit',
+  List = 'list',
+  Save = 'save',
+}
 
 const RECORDS_STORAGE = 'records'
 
-const getMaxRecordId = (records: T_Record[]) => {
+const getMaxRecordId = (records: Record[]) => {
   return records.length ? Math.max(...records.map(r => r.id)) : 0
 }
 
@@ -24,8 +23,8 @@ const getInitialRecord = ({
   records,
   editingRecordId,
 }: {
-  editingRecordId: T_Record['id'] | null
-  records: T_Record[]
+  editingRecordId: Record['id'] | null
+  records: Record[]
 }) => {
   if (editingRecordId === null) {
     return null
@@ -45,7 +44,7 @@ const getInitialRecord = ({
 
 type IProps = {
   initScreen: RecordsScreen
-  onRecordLoad: (r: T_Record) => void
+  onRecordLoad: (r: Record) => void
   onRecordsClose: () => void
   pronunciation: string
   selectedLanguage: LanguageDefinition['id']
@@ -63,10 +62,10 @@ const RecordsSection = ({
   text,
 }: IProps) => {
   const [currentScreen, setCurrentScreen] = useState<RecordsScreen>(initScreen)
-  const [editingRecordId, setEditingRecordId] = useState<T_Record['id'] | null>(
+  const [editingRecordId, setEditingRecordId] = useState<Record['id'] | null>(
     null,
   )
-  const [records, setRecords] = useState<T_Record[]>([])
+  const [records, setRecords] = useState<Record[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const { storage } = services
@@ -77,7 +76,9 @@ const RecordsSection = ({
     const recordsStr = await storage.getValue(RECORDS_STORAGE)
 
     if (recordsStr) {
-      const parsedRecords: T_Record[] = JSON.parse(recordsStr)
+      const parsedRecords: Record[] = JSON.parse(recordsStr).map(
+        (recordObj: ReturnType<Record['toJson']>) => new Record(recordObj),
+      )
 
       setRecords(parsedRecords)
     }
@@ -89,13 +90,13 @@ const RecordsSection = ({
     retrieveRecords().catch(() => {})
   }, [])
 
-  const saveRecords = (newRecords: T_Record[]) => {
-    const recordsStr = JSON.stringify(newRecords)
+  const saveRecords = (newRecords: Record[]) => {
+    const recordsStr = JSON.stringify(newRecords.map(record => record.toJson()))
     storage.setValue(RECORDS_STORAGE, recordsStr)
     setRecords(newRecords)
   }
 
-  const handleRecordLoad = (record: T_Record) => {
+  const handleRecordLoad = (record: Record) => {
     const newRecords = [...records]
 
     newRecords.find(r => r.id === record.id)!.lastLoadedOn = Date.now()
@@ -104,49 +105,51 @@ const RecordsSection = ({
     onRecordLoad(record)
   }
 
-  const handleRecordEdit = (record: T_Record) => {
+  const handleRecordEdit = (record: Record) => {
     setEditingRecordId(record.id)
-    setCurrentScreen('Edit')
+    setCurrentScreen(RecordsScreen.Edit)
   }
 
   const handleRecordSave = (newRecord: RecordToSave) => {
-    const newRecords = records.concat({
-      createdOn: Date.now(),
-      id: getMaxRecordId(records) + 1,
-      language: selectedLanguage,
-      lastLoadedOn: Date.now(),
-      link: newRecord.link,
-      name: newRecord.name,
-      pronunciation,
-      text,
-    })
+    const newRecords = records.concat([
+      new Record({
+        createdOn: Date.now(),
+        id: getMaxRecordId(records) + 1,
+        language: selectedLanguage,
+        lastLoadedOn: Date.now(),
+        link: newRecord.link,
+        name: newRecord.name,
+        pronunciation,
+        text,
+      }),
+    ])
 
     saveRecords(newRecords)
-    setCurrentScreen('List')
+    setCurrentScreen(RecordsScreen.List)
   }
 
   const handleShowRecordsList = () => {
     setEditingRecordId(null)
-    setCurrentScreen('List')
+    setCurrentScreen(RecordsScreen.List)
   }
 
   const handleRecordEdited = (newRecord: RecordToSave) => {
     const newRecords = records.map(r =>
       r.id === editingRecordId
-        ? {
-            ...r,
+        ? new Record({
+            ...r.toJson(),
             link: newRecord.link,
             name: newRecord.name,
-          }
+          })
         : r,
     )
 
     saveRecords(newRecords)
     setEditingRecordId(null)
-    setCurrentScreen('List')
+    setCurrentScreen(RecordsScreen.List)
   }
 
-  const handleRecordRemove = (record: T_Record) => {
+  const handleRecordRemove = (record: Record) => {
     const newRecords = records.filter(r => r.id !== record.id)
 
     saveRecords(newRecords)
@@ -165,7 +168,7 @@ const RecordsSection = ({
     services,
   }
 
-  if (currentScreen === 'Save') {
+  if (currentScreen === RecordsScreen.Save) {
     return (
       <RecordsWrapper onRecordsClose={onRecordsClose}>
         <RecordSave
@@ -177,7 +180,7 @@ const RecordsSection = ({
     )
   }
 
-  if (currentScreen === 'Edit') {
+  if (currentScreen === RecordsScreen.Edit) {
     return (
       <RecordsWrapper onRecordsClose={onRecordsClose}>
         <RecordSave

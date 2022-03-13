@@ -1,7 +1,8 @@
-import Content from '#/containers/Content/Content'
-import log from '#/services/log'
 import React from 'react'
 import ReactDOM from 'react-dom'
+
+import Content from '@/containers/Content/Content'
+import log from '@/services/log'
 
 const main = () => {
   const div = document.createElement('div')

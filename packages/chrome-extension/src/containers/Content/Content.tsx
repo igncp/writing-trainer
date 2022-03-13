@@ -1,13 +1,3 @@
-import PanelTrigger from '#/components/PanelTrigger/PanelTrigger'
-import getCurrentUrl from '#/services/getCurrentUrl'
-import listenToRuntimeMessage from '#/services/listenToRuntimeMessage'
-import log from '#/services/log'
-import storage from '#/services/storage'
-import {
-  Message,
-  MessageType,
-  STORAGE_ENABLED_PAGES_KEY,
-} from '#/utils/constants'
 import React, { useEffect, useState } from 'react'
 import { LanguageManager } from 'writing-trainer-core'
 import {
@@ -17,6 +7,18 @@ import {
   useBodyOverflowSwitch,
   useTextSelection,
 } from 'writing-trainer-react-ui'
+
+import PanelTrigger from '@/components/PanelTrigger/PanelTrigger'
+
+import getCurrentUrl from '@/services/getCurrentUrl'
+import listenToRuntimeMessage from '@/services/listenToRuntimeMessage'
+import log from '@/services/log'
+import storage from '@/services/storage'
+import {
+  Message,
+  MessageType,
+  STORAGE_ENABLED_PAGES_KEY,
+} from '@/utils/constants'
 
 const languageManager = new LanguageManager()
 const languageUIManager = new LanguageUIManager(languageManager)

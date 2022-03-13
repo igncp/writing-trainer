@@ -1,18 +1,26 @@
-import * as React from 'react'
-
-import { action } from '@storybook/addon-actions'
-import { storiesOf } from '@storybook/react'
+import React from 'react'
 
 import OptionsBlock from '../OptionsBlock'
 
-storiesOf('Languages|Japanese/OptionsBlock', module).add('common', () => {
+const OptionsBlockStories = () => {
   return (
     <div>
       <p>The options block for Japanese is empty at the moment</p>
       <OptionsBlock
         languageOptions={{}}
-        onOptionsChange={action('options-change')}
+        onOptionsChange={() => console.log('onOptionsChange')}
       />
     </div>
   )
-})
+}
+
+const Template = () => <OptionsBlockStories />
+
+const Common = Template.bind({})
+
+export default {
+  component: OptionsBlockStories,
+  title: 'Languages/Japanese/OptionsBlock',
+}
+
+export { Common }

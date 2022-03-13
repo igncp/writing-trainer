@@ -1,5 +1,3 @@
-require('react-testing-library/cleanup-after-each')
-
 const origConsoleError = console.error.bind(console)
 
 console.error = (msg, ...rest) => {

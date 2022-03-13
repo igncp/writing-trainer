@@ -1,8 +1,9 @@
-import openOptionsPage from '#/services/openOptionsPage'
-import sendTabsMessage from '#/services/sendTabsMessage'
-import { MessageType } from '#/utils/constants'
 import React, { useState } from 'react'
 import { Button } from 'writing-trainer-react-ui'
+
+import openOptionsPage from '@/services/openOptionsPage'
+import sendTabsMessage from '@/services/sendTabsMessage'
+import { MessageType } from '@/utils/constants'
 
 type onEnableOnceClickOpts = {
   setButtonOneEnabled: (v: boolean) => void

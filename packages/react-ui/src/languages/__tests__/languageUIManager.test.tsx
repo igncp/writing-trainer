@@ -1,11 +1,10 @@
 import { LanguageManager } from 'writing-trainer-core'
 
-import { LanguageUIManager, _test } from '../languageUIManager'
-
-const { defaultLanguageUIHandlers } = _test!
+import { uiHandlers } from '../handlers'
+import { LanguageUIManager } from '../languageUIManager'
 
 const languageManager = new LanguageManager()
-const languageUIManager = new LanguageUIManager(languageManager)
+const languageUIManager = new LanguageUIManager(languageManager, uiHandlers)
 
 beforeEach(() => {
   languageManager.clear()
@@ -49,8 +48,6 @@ describe('getUIHandler', () => {
 
 describe('getDefaultLanguage', () => {
   it('returns the first id of the array', () => {
-    expect(languageUIManager.getDefaultLanguage()).toEqual(
-      defaultLanguageUIHandlers[0].id,
-    )
+    expect(languageUIManager.getDefaultLanguage()).toEqual(uiHandlers[0].id)
   })
 })

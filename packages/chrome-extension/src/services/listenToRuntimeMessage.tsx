@@ -1,4 +1,4 @@
-import { Message } from '#/utils/constants'
+import { Message } from '@/utils/constants'
 
 type T_sendResponse = (v: unknown) => void
 type T_Listener = (

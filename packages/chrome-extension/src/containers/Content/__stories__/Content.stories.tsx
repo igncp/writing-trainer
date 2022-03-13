@@ -1,15 +1,25 @@
 import * as React from 'react'
 
-import { action } from '@storybook/addon-actions'
-import { storiesOf } from '@storybook/react'
-
 import Content from '../Content'
 
-storiesOf('Containers|Content', module).add('common', () => {
+const onClick = () => {}
+
+const ContentStories = () => {
   return (
     <div>
       <p>Some text to select</p>
-      <Content onContentEnabledResult={action('Content Enabled Result')} />
+      <Content onContentEnabledResult={onClick} />
     </div>
   )
-})
+}
+
+const Template = () => <ContentStories />
+
+const Common = Template.bind({})
+
+export default {
+  component: ContentStories,
+  title: 'Containers/Content',
+}
+
+export { Common }

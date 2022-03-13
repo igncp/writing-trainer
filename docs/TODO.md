@@ -1,14 +1,14 @@
 ## Tasks
 
-- Replace T_Record with model
 - Pass manager via context
-- Review TODO document
 - Persist config in records (which subpanels are displayed)
 - Add Cantonese language with its own dictionary 
+- Support pronunciation with tones better
 - Generalize dictionary and inputvalue outside of langopts?
 - Add collections: Lists of records that can be exported and imported
 - Find parts of the extension that could be moved to the core
   - commonLanguageUtils
+- Code TODOs
 
 ## Ideas
 
@@ -22,13 +22,14 @@
 
 - Move some unit tests to e2e tests, especially in core
     - Focus in good tests specs
+- Add playwright
+- Upgrade gatsby when this is resolved: https://github.com/graphql-compose/graphql-compose/issues/374
+- Hoist typescript
+- Add back stories actions
 - Update core interfaces to hide as much as possible implementation details
-- Host static pages in github pages and add link in main README
 - Sort react props
 - TS prune
-- Import alias
 - Progressively add linter rules
-- GH actions to check, build and serve some subpackages
 - API docs generation
 
 ## Periodic

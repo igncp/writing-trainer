@@ -1,5 +1,6 @@
 import React from 'react'
-import { fireEvent, render } from 'react-testing-library'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import { DIM_COMP_OPACITY, HOVERED_COMP_OPACITY } from '../../../utils/ui'
 import Button from '../Button'

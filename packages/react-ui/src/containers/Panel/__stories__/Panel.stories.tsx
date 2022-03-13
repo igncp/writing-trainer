@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import {
   LanguageManager,
   englishHandler,
@@ -6,10 +6,8 @@ import {
   mandarinHandler,
 } from 'writing-trainer-core'
 
-import { action } from '@storybook/addon-actions'
-import { storiesOf, addDecorator } from '@storybook/react'
-
 import { dummyServices } from '../../../__stories__/storybookHelpers'
+import { uiHandlers } from '../../../languages/handlers'
 import { LanguageUIManager } from '../../../languages/languageUIManager'
 import Panel from '../Panel'
 
@@ -27,74 +25,87 @@ const mandarinLangOpts = {
 }
 
 const languageManager = new LanguageManager()
-const languageUIManager = new LanguageUIManager(languageManager)
+const languageUIManager = new LanguageUIManager(languageManager, uiHandlers)
 
-addDecorator(fn => {
-  languageUIManager.init()
+const Mandarin = () => {
+  return (
+    <Panel
+      _stories={{
+        defaultLanguage: mandarinHandler.language.id,
+        langOpts: mandarinLangOpts,
+      }}
+      languageManager={languageManager}
+      languageUIManager={languageUIManager}
+      onHideRequest={() => console.log('hide-request')}
+      services={dummyServices}
+      text="崩比筆,壁必畢.閉編"
+    />
+  )
+}
 
-  return <div>{fn()}</div>
-})
+const MandarinLongText = () => {
+  const text = Array.from({ length: 5 })
+    .map(() => '崩比筆,壁必畢.閉編')
+    .join('')
 
-storiesOf('Containers|Panel', module)
-  .add('mandarin', () => {
-    return (
-      <Panel
-        _stories={{
-          defaultLanguage: mandarinHandler.language.id,
-          langOpts: mandarinLangOpts,
-        }}
-        languageManager={languageManager}
-        languageUIManager={languageUIManager}
-        onHideRequest={action('hide-request')}
-        services={dummyServices}
-        text="崩比筆,壁必畢.閉編"
-      />
-    )
-  })
-  .add('mandarin, long text', () => {
-    const text = Array.from({ length: 5 })
-      .map(() => '崩比筆,壁必畢.閉編')
-      .join('')
+  return (
+    <Panel
+      _stories={{
+        defaultLanguage: mandarinHandler.language.id,
+        defaultPractice: text.slice(0, text.length - 5),
+        langOpts: mandarinLangOpts,
+      }}
+      languageManager={languageManager}
+      languageUIManager={languageUIManager}
+      onHideRequest={() => console.log('hide-request')}
+      services={dummyServices}
+      text={text}
+    />
+  )
+}
 
-    return (
-      <Panel
-        _stories={{
-          defaultLanguage: mandarinHandler.language.id,
-          defaultPractice: text.slice(0, text.length - 5),
-          langOpts: mandarinLangOpts,
-        }}
-        languageManager={languageManager}
-        languageUIManager={languageUIManager}
-        onHideRequest={action('hide-request')}
-        services={dummyServices}
-        text={text}
-      />
-    )
-  })
-  .add('japanese', () => {
-    return (
-      <Panel
-        _stories={{
-          defaultLanguage: japaneseHandler.language.id,
-          defaultPronunciation: 'a i u e o',
-        }}
-        languageManager={languageManager}
-        languageUIManager={languageUIManager}
-        onHideRequest={action('hide-request')}
-        services={dummyServices}
-        text="あいうえお"
-      />
-    )
-  })
-  .add('english', () => {
-    return (
-      <Panel
-        _stories={{ defaultLanguage: englishHandler.language.id }}
-        languageManager={languageManager}
-        languageUIManager={languageUIManager}
-        onHideRequest={action('hide-request')}
-        services={dummyServices}
-        text="Sample of English text"
-      />
-    )
-  })
+const Japanese = () => {
+  return (
+    <Panel
+      _stories={{
+        defaultLanguage: japaneseHandler.language.id,
+        defaultPronunciation: 'a i u e o',
+      }}
+      languageManager={languageManager}
+      languageUIManager={languageUIManager}
+      onHideRequest={() => console.log('hide-request')}
+      services={dummyServices}
+      text="あいうえお"
+    />
+  )
+}
+
+const English = () => {
+  return (
+    <Panel
+      _stories={{ defaultLanguage: englishHandler.language.id }}
+      languageManager={languageManager}
+      languageUIManager={languageUIManager}
+      onHideRequest={() => console.log('hide-request')}
+      services={dummyServices}
+      text="Sample of English text"
+    />
+  )
+}
+
+export default {
+  decorators: [
+    (Story: React.FC) => {
+      languageUIManager.init()
+
+      return (
+        <div>
+          <Story />
+        </div>
+      )
+    },
+  ],
+  title: 'Containers/Panel',
+}
+
+export { Mandarin, MandarinLongText, Japanese, English }

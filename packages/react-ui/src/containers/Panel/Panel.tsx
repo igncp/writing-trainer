@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {
   LanguageDefinition,
   LanguageManager,
-  records as coreRecords,
+  Record,
 } from 'writing-trainer-core'
 
 import Button from '../../components/Button/Button'
@@ -36,7 +36,7 @@ const PRACTICE_TEXT_PLACEHOLDER = `Practice Text
 Toggle Editing: ${SHORTCUT_EDITING}
 Toggle Pronunciation: ${SHORTCUT_PRONUNCIATION}`
 
-type T_Panel = React.FC<{
+type Props = {
   UI?: {
     noHideButton?: boolean
   }
@@ -51,7 +51,7 @@ type T_Panel = React.FC<{
     defaultPronunciation?: string
     langOpts?: T_LangOpts
   }
-}>
+}
 
 const getLanguageDefinitions = (languageManager: LanguageManager) => {
   return languageManager.getAvailableLanguages().map(langId => {
@@ -61,33 +61,30 @@ const getLanguageDefinitions = (languageManager: LanguageManager) => {
   })
 }
 
-const Panel: T_Panel = ({
-  _stories,
+const Panel = ({
+  UI,
+  _stories = {},
+  languageManager,
+  languageUIManager,
   onHideRequest,
   services,
   text,
-  UI,
-  languageManager,
-  languageUIManager,
-}) => {
+}: Props) => {
   const initialLanguageId = languageUIManager.getDefaultLanguage()
   const [showingRecordsInitScreen, setShowingRecordsInitScreen] = useState<
     RecordsScreen | ''
   >('')
-  const [currentRecord, setCurrentRecord] = useState<
-    coreRecords.T_Record['id'] | null
-  >(null)
+  const [currentRecord, setCurrentRecord] = useState<Record['id'] | null>(null)
   const [originalTextValue, setOriginalText] = useState<string>(text)
   const [pronunciationValue, setPronunciation] = useState<string>(
-    _stories!.defaultPronunciation ?? '',
+    _stories.defaultPronunciation ?? '',
   )
   const [specialCharsValue, setSpecialChars] = useState<string>('')
   const [writingValue, setWriting] = useState<string>('')
   const [practiceValue, setPractice] = useState<string>(
-    _stories!.defaultPractice ?? '',
+    _stories.defaultPractice ?? '',
   )
-  const [isShowingPronunciation, setShowingPronunciation] =
-    useState<boolean>(true)
+  const [isShowingPronunciation, setShowingPronunciation] = useState(true)
   const [isShowingEdition, setShowingEdition] = useState<boolean>(true)
   const [doesPracticeHaveError, setPracticeHasError] = useState<boolean>(false)
   const [lastThreeKeys, setLastThreeKeys] = useState<string[]>([])
@@ -128,12 +125,12 @@ const Panel: T_Panel = ({
   }
 
   useEffect(() => {
-    if (!_stories!.defaultLanguage) {
+    if (!_stories.defaultLanguage) {
       return
     }
 
-    updateLanguage(_stories!.defaultLanguage)
-  }, [_stories!.defaultLanguage])
+    updateLanguage(_stories.defaultLanguage)
+  }, [_stories.defaultLanguage])
 
   const updateLanguageWithStorage = async () => {
     const storageSelectedLanguage = await storage.getValue(STORAGE_LANGUAGE_KEY)
@@ -141,7 +138,7 @@ const Panel: T_Panel = ({
     if (
       storageSelectedLanguage &&
       storageSelectedLanguage !== selectedLanguage &&
-      !_stories!.defaultLanguage
+      !_stories.defaultLanguage
     ) {
       updateLanguage(storageSelectedLanguage)
     }
@@ -153,7 +150,7 @@ const Panel: T_Panel = ({
   }, [])
 
   const SPECIAL_CHARS = langHandler!.getSpecialChars()
-  const langOpts = _stories!.langOpts ?? uiHandler.getLangOpts()
+  const langOpts = _stories.langOpts ?? uiHandler.getLangOpts()
   const langOptsObj = {
     langOpts: {
       pronunciationInput: pronunciationValue,
@@ -280,11 +277,11 @@ const Panel: T_Panel = ({
   const handleDisplayedCharClick = uiHandler.getDisplayedCharHandler()
 
   const saveRecord = () => {
-    setShowingRecordsInitScreen('Save')
+    setShowingRecordsInitScreen(RecordsScreen.Save)
   }
 
   const listRecords = () => {
-    setShowingRecordsInitScreen('List')
+    setShowingRecordsInitScreen(RecordsScreen.List)
   }
 
   if (!hasLoadedStorage) {
@@ -295,7 +292,7 @@ const Panel: T_Panel = ({
     return (
       <RecordsSection
         initScreen={showingRecordsInitScreen}
-        onRecordLoad={(record: coreRecords.T_Record) => {
+        onRecordLoad={(record: Record) => {
           clearValues()
 
           if (record.language !== selectedLanguage) {
@@ -321,7 +318,7 @@ const Panel: T_Panel = ({
   }
 
   return (
-    <React.Fragment>
+    <>
       <Button onClick={clearValues}>Clear</Button>
       <Button onClick={listRecords}>Records</Button>
       <Button onClick={createToggleFn(isShowingEdition, setShowingEdition)}>
@@ -361,7 +358,7 @@ const Panel: T_Panel = ({
       >
         Hide
       </Button>
-      <div style={{ padding: '0 20px 20px 20px' }}>
+      <div style={{ padding: '0 0 20px' }}>
         {isShowingEdition && (
           <div>
             <TextArea
@@ -423,12 +420,8 @@ const Panel: T_Panel = ({
         </div>
       </div>
       <LinksBlock text={originalTextValue} />
-    </React.Fragment>
+    </>
   )
-}
-
-Panel.defaultProps = {
-  _stories: {},
 }
 
 export default Panel

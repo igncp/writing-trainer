@@ -1,4 +1,4 @@
-import { MessageType } from '#/utils/constants'
+import { MessageType } from '@/utils/constants'
 
 import { _test } from '../getCurrentUrl'
 

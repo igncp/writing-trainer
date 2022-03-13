@@ -14,7 +14,7 @@ module.exports = Object.assign(config, {
     'import/resolver': {
       alias: {
         extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
-        map: [['#', './src/']],
+        map: [['@', './src/']],
       },
     },
     react: {

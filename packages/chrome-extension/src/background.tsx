@@ -1,5 +1,5 @@
-import listenToRuntimeMessage from '#/services/listenToRuntimeMessage'
-import { Message, MessageType } from '#/utils/constants'
+import listenToRuntimeMessage from '@/services/listenToRuntimeMessage'
+import { Message, MessageType } from '@/utils/constants'
 
 listenToRuntimeMessage(
   (content: Message, _sender: unknown, sendResponse: (v: string) => void) => {

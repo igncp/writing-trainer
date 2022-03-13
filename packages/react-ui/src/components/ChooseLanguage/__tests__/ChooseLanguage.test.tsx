@@ -1,6 +1,7 @@
 import React from 'react'
-import { render } from 'react-testing-library'
 import { LanguageDefinition } from 'writing-trainer-core'
+
+import { render } from '@testing-library/react'
 
 import ChooseLanguage from '../ChooseLanguage'
 

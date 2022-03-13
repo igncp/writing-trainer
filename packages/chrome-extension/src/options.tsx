@@ -1,6 +1,7 @@
-import Options from '#/containers/Options/Options'
 import React from 'react'
 import ReactDOM from 'react-dom'
+
+import Options from '@/containers/Options/Options'
 
 const main = () => {
   const div = document.createElement('div')

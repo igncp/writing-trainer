@@ -1,8 +1,5 @@
-import * as React from 'react'
+import React from 'react'
 import { mandarinHandler, englishHandler } from 'writing-trainer-core'
-
-import { action } from '@storybook/addon-actions'
-import { storiesOf } from '@storybook/react'
 
 import CharactersDisplay from '../CharactersDisplay'
 
@@ -25,7 +22,7 @@ const charsObjsMandarin = mandarinHandler.convertToCharsObjs({
 
 const commonProps = {
   charsObjs: charsObjsMandarin,
-  onCharClick: action('on-click'),
+  onCharClick: () => console.log('on-click'),
 }
 
 const charObjsEnglish = englishHandler.convertToCharsObjs({
@@ -33,22 +30,27 @@ const charObjsEnglish = englishHandler.convertToCharsObjs({
   text: 'Sample of English text',
 })
 
-storiesOf('Components|CharactersDisplay', module)
-  .add('common', () => {
-    return (
-      <CharactersDisplay {...commonProps} shouldHidePronunciation={false} />
-    )
-  })
-  .add('without pronunciation', () => {
-    return <CharactersDisplay {...commonProps} shouldHidePronunciation />
-  })
-  .add('with different widths and no pronunciation', () => {
-    return (
-      <CharactersDisplay
-        {...commonProps}
-        charsObjs={charObjsEnglish}
-        shouldHaveDifferentWidths
-        shouldHidePronunciation
-      />
-    )
-  })
+const Common = () => {
+  return <CharactersDisplay {...commonProps} shouldHidePronunciation={false} />
+}
+
+const WithoutPronunciation = () => {
+  return <CharactersDisplay {...commonProps} shouldHidePronunciation />
+}
+
+const DifferentWidthsNoPronunciation = () => {
+  return (
+    <CharactersDisplay
+      {...commonProps}
+      charsObjs={charObjsEnglish}
+      shouldHaveDifferentWidths
+      shouldHidePronunciation
+    />
+  )
+}
+
+export default {
+  title: 'Components/CharactersDisplay',
+}
+
+export { Common, WithoutPronunciation, DifferentWidthsNoPronunciation }

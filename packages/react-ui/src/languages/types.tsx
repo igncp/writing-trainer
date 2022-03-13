@@ -8,6 +8,7 @@ import {
 
 export type T_LangOpts = { [k: string]: unknown }
 
+// @TODO: Review this interface
 export type T_LinksBlock = React.FC<{
   text: string
 }>

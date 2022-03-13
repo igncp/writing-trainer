@@ -5,7 +5,7 @@ import { englishHandler } from '../languageHandlers/english'
 import { japaneseHandler } from '../languageHandlers/japanese'
 import { mandarinHandler } from '../languageHandlers/mandarin'
 import { LanguageManager, CharObj, CurrentCharObj } from '../languageManager'
-import * as records from '../records'
+import { Record } from '../records'
 
 describe('interface', () => {
   it('contains the expected interface', () => {
@@ -14,11 +14,11 @@ describe('interface', () => {
       CurrentCharObj,
       LanguageDefinition,
       LanguageManager,
+      Record,
       SPECIAL_SYMBOLS,
       englishHandler,
       japaneseHandler,
       mandarinHandler,
-      records,
     })
   })
 })

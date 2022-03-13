@@ -1,10 +1,18 @@
-import * as React from 'react'
-
-import { action } from '@storybook/addon-actions'
-import { storiesOf } from '@storybook/react'
+import React from 'react'
 
 import PanelTrigger from '../PanelTrigger'
 
-storiesOf('Components|PanelTrigger', module).add('common', () => {
-  return <PanelTrigger onClick={action('panel-trigger')} />
-})
+const PanelTriggerStories = () => {
+  return <PanelTrigger onClick={() => {}} />
+}
+
+const Template = () => <PanelTriggerStories />
+
+const Common = Template.bind({})
+
+export default {
+  component: PanelTriggerStories,
+  title: 'Components/PanelTrigger',
+}
+
+export { Common }

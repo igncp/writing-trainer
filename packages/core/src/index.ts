@@ -10,18 +10,18 @@ import {
   LanguageManager,
   T_LanguageHandler,
 } from './languageManager'
-import * as records from './records'
+import { Record } from './records'
 
 export {
   CharObj,
   CurrentCharObj,
   LanguageDefinition,
   LanguageManager,
+  Record,
   SPECIAL_SYMBOLS,
   T_LanguageHandler,
   T_Storage,
   englishHandler,
   japaneseHandler,
   mandarinHandler,
-  records,
 }

@@ -1,44 +1,79 @@
 import { LanguageDefinition } from './constants'
 
-interface T_Record {
-  createdOn: number
-  id: number
-  language: LanguageDefinition['id']
-  lastLoadedOn: number
-  link: string
-  name: string
-  pronunciation: string
-  text: string
-}
+// @TODO: refactor to have a private `data` property
+class Record {
+  public createdOn: number
+  public id: number
+  public language: LanguageDefinition['id']
+  public lastLoadedOn: number
+  public link: string
+  public name: string
+  public pronunciation: string
+  public text: string
 
-type T_filterRecords = (opts: {
-  records: T_Record[]
-  filterText: string
-}) => T_Record[]
-
-const filterRecords: T_filterRecords = ({ records, filterText }) => {
-  if (!filterText.trim()) {
-    return records
+  public constructor(ops: {
+    createdOn: Record['createdOn']
+    id: Record['id']
+    language: Record['language']
+    lastLoadedOn: Record['lastLoadedOn']
+    link: Record['link']
+    name: Record['name']
+    pronunciation: Record['pronunciation']
+    text: Record['text']
+  }) {
+    this.createdOn = ops.createdOn
+    this.id = ops.id
+    this.language = ops.language
+    this.lastLoadedOn = ops.lastLoadedOn
+    this.link = ops.link
+    this.name = ops.name
+    this.pronunciation = ops.pronunciation
+    this.text = ops.text
   }
 
-  const lowercaseFilterValue = filterText.toLowerCase()
-  const filterValueSegments = lowercaseFilterValue
-    .split(' ')
-    .map(s => s.trim())
-    .filter(s => !!s)
+  public static filterByText({
+    records,
+    filterText,
+  }: {
+    records: Record[]
+    filterText: string
+  }) {
+    if (!filterText.trim()) {
+      return records
+    }
 
-  return records
-    .filter(r => {
-      const name = r.name.toLowerCase()
-      const language = r.language.toLowerCase()
+    const lowercaseFilterValue = filterText.toLowerCase()
+    const filterValueSegments = lowercaseFilterValue
+      .split(' ')
+      .map(s => s.trim())
+      .filter(s => !!s)
 
-      return filterValueSegments.every(segment => {
-        return name.includes(segment) || language.includes(segment)
+    return records
+      .filter(r => {
+        const name = r.name.toLowerCase()
+        const language = r.language.toLowerCase()
+
+        return filterValueSegments.every(segment => {
+          return name.includes(segment) || language.includes(segment)
+        })
       })
-    })
-    .sort((a: T_Record, b: T_Record) => {
-      return b.lastLoadedOn - a.lastLoadedOn
-    })
+      .sort((a: Record, b: Record) => {
+        return b.lastLoadedOn - a.lastLoadedOn
+      })
+  }
+
+  public toJson() {
+    return {
+      createdOn: this.createdOn,
+      id: this.id,
+      language: this.language,
+      lastLoadedOn: this.lastLoadedOn,
+      link: this.link,
+      name: this.name,
+      pronunciation: this.pronunciation,
+      text: this.text,
+    }
+  }
 }
 
-export { T_Record, filterRecords }
+export { Record }

@@ -12,7 +12,7 @@
     "noUnusedLocals": true,
     "outDir": "dist/js",
     "paths": {
-      "#/*": ["src/*"]
+      "@/*": ["src/*"]
     },
     "rootDir": ".",
     "sourceMap": false,

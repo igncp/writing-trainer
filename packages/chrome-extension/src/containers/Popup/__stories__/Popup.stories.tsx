@@ -1,15 +1,20 @@
-import * as React from 'react'
-
-import { action } from '@storybook/addon-actions'
-import { storiesOf } from '@storybook/react'
+import React from 'react'
 
 import Popup from '../Popup'
 
-storiesOf('Containers|Popup', module).add('common', () => {
-  return (
-    <Popup
-      onEnableOnceClick={action('onEnableOnceClick')}
-      onOptionsPageClick={action('onOptionsPageClick')}
-    />
-  )
-})
+const onClick = () => {}
+
+const PopupStories = () => {
+  return <Popup onEnableOnceClick={onClick} onOptionsPageClick={onClick} />
+}
+
+const Template = () => <PopupStories />
+
+const Common = Template.bind({})
+
+export default {
+  component: PopupStories,
+  title: 'Containers/Popup',
+}
+
+export { Common }

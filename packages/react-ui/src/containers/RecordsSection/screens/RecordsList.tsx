@@ -1,12 +1,8 @@
 import React, { useState } from 'react'
-import { records as coreRecords } from 'writing-trainer-core'
+import { Record } from 'writing-trainer-core'
 
 import Button from '../../../components/Button/Button'
 import TextInput from '../../../components/TextInput/TextInput'
-
-const { filterRecords } = coreRecords
-
-type T_Record = coreRecords.T_Record
 
 type CellProps = {
   bold?: boolean
@@ -48,10 +44,10 @@ const formatRecordDate = (d: number): string => {
 }
 
 type RecordsListProps = {
-  onRecordEdit: (r: T_Record) => void
-  onRecordLoad: (r: T_Record) => void
-  onRecordRemove: (r: T_Record) => void
-  records: T_Record[]
+  onRecordEdit: (r: Record) => void
+  onRecordLoad: (r: Record) => void
+  onRecordRemove: (r: Record) => void
+  records: Record[]
 }
 
 const RecordsList = ({
@@ -61,7 +57,7 @@ const RecordsList = ({
   records,
 }: RecordsListProps) => {
   const [filterValue, setFilterValue] = useState<string>('')
-  const filteredRecords = filterRecords({
+  const filteredRecords = Record.filterByText({
     filterText: filterValue,
     records,
   })

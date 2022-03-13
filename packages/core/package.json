@@ -33,5 +33,6 @@
   },
   "typeCoverage": {
     "atLeast": 95
-  }
+  },
+  "dependencies": {}
 }

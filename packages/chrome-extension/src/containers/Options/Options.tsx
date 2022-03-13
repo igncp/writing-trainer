@@ -1,7 +1,8 @@
-import storage from '#/services/storage'
-import { STORAGE_ENABLED_PAGES_KEY } from '#/utils/constants'
 import React, { useEffect, useState } from 'react'
 import { Button, TextArea } from 'writing-trainer-react-ui'
+
+import storage from '@/services/storage'
+import { STORAGE_ENABLED_PAGES_KEY } from '@/utils/constants'
 
 type T_Wrapper = React.FC<{ children: React.ReactNode }>
 

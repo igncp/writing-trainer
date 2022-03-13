@@ -1,4 +1,4 @@
-import { Message } from '#/utils/constants'
+import { Message } from '@/utils/constants'
 
 type T_sendTabsMessage = (msg: Message) => Promise<boolean>
 

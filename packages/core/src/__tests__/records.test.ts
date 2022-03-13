@@ -1,6 +1,6 @@
-import { filterRecords, T_Record } from '../records'
+import { Record } from '../records'
 
-const dummyRecords: T_Record[] = [
+const dummyRecords: Record[] = [
   {
     createdOn: 0,
     language: 'japanese',
@@ -11,31 +11,34 @@ const dummyRecords: T_Record[] = [
     language: 'english',
     lastLoadedOn: 1,
   },
-].map((semiRecord, semiRecordIdx) => ({
-  ...semiRecord,
-  createdOn: Date.now(),
-  id: semiRecordIdx,
-  link: `linkValue-${semiRecordIdx}`,
-  name: `nameValue-${semiRecordIdx}`,
-  pronunciation: `pronunciationValue-${semiRecordIdx}`,
-  text: `textValue-${semiRecordIdx}`,
-}))
+].map(
+  (semiRecord, semiRecordIdx) =>
+    new Record({
+      ...semiRecord,
+      createdOn: Date.now(),
+      id: semiRecordIdx,
+      link: `linkValue-${semiRecordIdx}`,
+      name: `nameValue-${semiRecordIdx}`,
+      pronunciation: `pronunciationValue-${semiRecordIdx}`,
+      text: `textValue-${semiRecordIdx}`,
+    }),
+)
 
-describe('filterRecords', () => {
+describe('Record.filterByText', () => {
   it('returns the original input when no text', () => {
-    expect(filterRecords({ filterText: '', records: dummyRecords })).toEqual(
-      dummyRecords,
-    )
-    expect(filterRecords({ filterText: '', records: [] })).toEqual([])
+    expect(
+      Record.filterByText({ filterText: '', records: dummyRecords }),
+    ).toEqual(dummyRecords)
+    expect(Record.filterByText({ filterText: '', records: [] })).toEqual([])
   })
 
   it('returns the expected lists', () => {
     expect(
-      filterRecords({ filterText: 'japanese', records: dummyRecords }),
+      Record.filterByText({ filterText: 'japanese', records: dummyRecords }),
     ).toEqual([dummyRecords[0]])
 
     expect(
-      filterRecords({ filterText: 'nameValue', records: dummyRecords }),
+      Record.filterByText({ filterText: 'nameValue', records: dummyRecords }),
     ).toEqual(dummyRecords.slice(0).reverse())
   })
 })
