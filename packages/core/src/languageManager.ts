@@ -1,4 +1,5 @@
 import { LanguageDefinition } from './constants'
+import { LanguageHandler } from './languageHandlers/_common'
 
 class CharObj {
   public readonly pronunciation: string
@@ -22,35 +23,8 @@ class CurrentCharObj {
   }
 }
 
-type T_convertToCharsObjs = (opts: {
-  text: string
-  charsToRemove: string[]
-  langOpts?: { [k: string]: unknown }
-}) => CharObj[]
-
-type T_filterTextToPractice = (opts: {
-  text: string
-  charsToRemove: string[]
-}) => string
-
-type T_getCurrentCharObj = (opts: {
-  originalCharsObjs: CharObj[]
-  practiceCharsObjs: CharObj[]
-}) => CurrentCharObj | null
-
-interface T_LanguageHandler {
-  convertToCharsObjs: T_convertToCharsObjs
-  /**
-   * Given a certain text from the user, filter characters out to match with the pronunciation
-   */
-  filterTextToPractice: T_filterTextToPractice
-  getCurrentCharObj: T_getCurrentCharObj
-  getSpecialChars: () => string[]
-  language: LanguageDefinition
-}
-
 class LanguageManager {
-  private languages: T_LanguageHandler[] = []
+  private languages: LanguageHandler[] = []
   private currentLanguageHandlerId: LanguageDefinition['id'] | null = null
 
   public clear() {
@@ -75,10 +49,10 @@ class LanguageManager {
   }
 
   public getLanguageHandler(id: string) {
-    return this.languages.find(l => l.language.id === id) ?? null
+    return this.languages.find(l => l.getId() === id) ?? null
   }
 
-  public registerLanguage(lang: T_LanguageHandler) {
+  public registerLanguage(lang: LanguageHandler) {
     this.languages.push(lang)
   }
 
@@ -87,12 +61,12 @@ class LanguageManager {
   }
 
   public unregisterLanguage(langId: string) {
-    this.languages = this.languages.filter(l => l.language.id !== langId)
+    this.languages = this.languages.filter(l => l.getId() !== langId)
   }
 
   private getLanguagesIds() {
-    return this.languages.map(l => l.language.id)
+    return this.languages.map(l => l.getId())
   }
 }
 
-export { CharObj, CurrentCharObj, LanguageManager, T_LanguageHandler }
+export { CharObj, CurrentCharObj, LanguageManager }

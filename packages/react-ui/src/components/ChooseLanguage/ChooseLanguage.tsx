@@ -9,7 +9,7 @@ import {
 } from '../../utils/ui'
 
 type T_ChooseLanguage = React.FC<{
-  languages: LanguageDefinition[]
+  languages: Array<{ id: LanguageDefinition['id']; name: string }>
   onOptionsChange: (id: string) => void
   selectedLanguage: LanguageDefinition['id']
 }>

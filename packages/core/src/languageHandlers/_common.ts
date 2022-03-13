@@ -1,15 +1,46 @@
-import { CurrentCharObj, T_LanguageHandler } from '../languageManager'
+import { LanguageDefinition } from '../constants'
+import { CharObj, CurrentCharObj } from '../languageManager'
 
 import { SPECIAL_SYMBOLS } from './_commonChars'
 
-const defaultGetSpecialChars = () => {
-  return SPECIAL_SYMBOLS
-}
+type T_convertToCharsObjs = (opts: {
+  text: string
+  charsToRemove: string[]
+  langOpts?: { [k: string]: unknown }
+}) => CharObj[]
 
-const defaultFilterTextToPractice: T_LanguageHandler['filterTextToPractice'] =
-  ({ text, charsToRemove }) => {
-    const defaultSpecialChars = defaultGetSpecialChars()
-    const allCharsToRemove = charsToRemove.concat(defaultSpecialChars)
+class LanguageHandler {
+  public readonly convertToCharsObjs: T_convertToCharsObjs
+  private readonly language: LanguageDefinition
+
+  public constructor({
+    convertToCharsObjs,
+    language,
+  }: {
+    convertToCharsObjs: LanguageHandler['convertToCharsObjs']
+    language: LanguageHandler['language']
+  }) {
+    this.convertToCharsObjs = convertToCharsObjs
+    this.language = language
+  }
+
+  public getId() {
+    return this.language.id
+  }
+
+  public getName() {
+    return this.language.name
+  }
+
+  public filterTextToPractice({
+    text,
+    charsToRemove,
+  }: {
+    text: string
+    charsToRemove: string[]
+  }) {
+    const specialCharts = this.getSpecialChars()
+    const allCharsToRemove = charsToRemove.concat(specialCharts)
 
     return text
       .split('')
@@ -18,55 +49,61 @@ const defaultFilterTextToPractice: T_LanguageHandler['filterTextToPractice'] =
       .join('')
   }
 
-const defaultGetCurrentCharObj: T_LanguageHandler['getCurrentCharObj'] = ({
-  originalCharsObjs,
-  practiceCharsObjs,
-}) => {
-  const originalCharsWithPronunciationObjs = originalCharsObjs
-    .map((ch, idx) => ({ ch, idx }))
-    .filter(c => !!c.ch.pronunciation)
-  const practiceCharsWithPronunciation = practiceCharsObjs.filter(
-    c => !!c.pronunciation,
-  )
+  public getCurrentCharObj({
+    originalCharsObjs,
+    practiceCharsObjs,
+  }: {
+    originalCharsObjs: CharObj[]
+    practiceCharsObjs: CharObj[]
+  }) {
+    const originalCharsWithPronunciationObjs = originalCharsObjs
+      .map((ch, idx) => ({ ch, idx }))
+      .filter(c => !!c.ch.pronunciation)
+    const practiceCharsWithPronunciation = practiceCharsObjs.filter(
+      c => !!c.pronunciation,
+    )
 
-  let originalCharIdx = 0
+    let originalCharIdx = 0
 
-  for (
-    let practiceIndex = 0;
-    practiceIndex < practiceCharsWithPronunciation.length;
-    practiceIndex += 1
-  ) {
-    originalCharIdx = practiceIndex % originalCharsWithPronunciationObjs.length
-
-    const expectedCharObj = originalCharsWithPronunciationObjs[originalCharIdx]
-
-    if (
-      expectedCharObj.ch.word !==
-      practiceCharsWithPronunciation[practiceIndex].word
+    for (
+      let practiceIndex = 0;
+      practiceIndex < practiceCharsWithPronunciation.length;
+      practiceIndex += 1
     ) {
-      return new CurrentCharObj({
-        ch: expectedCharObj.ch,
-        index: expectedCharObj.idx,
-      })
+      originalCharIdx =
+        practiceIndex % originalCharsWithPronunciationObjs.length
+
+      const expectedCharObj =
+        originalCharsWithPronunciationObjs[originalCharIdx]
+
+      if (
+        expectedCharObj.ch.word !==
+        practiceCharsWithPronunciation[practiceIndex].word
+      ) {
+        return new CurrentCharObj({
+          ch: expectedCharObj.ch,
+          index: expectedCharObj.idx,
+        })
+      }
     }
+
+    originalCharIdx =
+      practiceCharsWithPronunciation.length %
+      originalCharsWithPronunciationObjs.length
+
+    if (!originalCharsWithPronunciationObjs.length) {
+      return null
+    }
+
+    return new CurrentCharObj({
+      ch: originalCharsWithPronunciationObjs[originalCharIdx].ch,
+      index: originalCharsWithPronunciationObjs[originalCharIdx].idx,
+    })
   }
 
-  originalCharIdx =
-    practiceCharsWithPronunciation.length %
-    originalCharsWithPronunciationObjs.length
-
-  if (!originalCharsWithPronunciationObjs.length) {
-    return null
+  public getSpecialChars() {
+    return SPECIAL_SYMBOLS
   }
-
-  return new CurrentCharObj({
-    ch: originalCharsWithPronunciationObjs[originalCharIdx].ch,
-    index: originalCharsWithPronunciationObjs[originalCharIdx].idx,
-  })
 }
 
-export {
-  defaultFilterTextToPractice,
-  defaultGetSpecialChars,
-  defaultGetCurrentCharObj,
-}
+export { LanguageHandler }

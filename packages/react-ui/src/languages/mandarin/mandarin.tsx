@@ -1,4 +1,4 @@
-import { LanguageManager, mandarinHandler } from 'writing-trainer-core'
+import { mandarinHandler } from 'writing-trainer-core'
 
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
 import { T_UIHandler, T_LangOpts, T_CharsDisplayClickHandler } from '../types'
@@ -18,10 +18,6 @@ dictionary.forEach(([char, pronunciation]: [string, string]) => {
   charToPronunciationMap[char] = pronunciation
   pronunciationToCharMap[pronunciation] = char
 })
-
-const register = (languageManager: LanguageManager) => {
-  languageManager.registerLanguage(mandarinHandler)
-}
 
 const parsePronunciation = (text: string, opts: T_LangOpts) => {
   let parsedText = text.toLowerCase()
@@ -113,8 +109,7 @@ const uiHandler: T_UIHandler = {
   getLinksBlock: () => LinksBlock,
   getOptionsBlock: () => OptionsBlock,
   handleWritingKeyDown,
-  id: mandarinHandler.language.id,
-  register,
+  languageHandler: mandarinHandler,
   shouldAllCharsHaveSameWidth: false,
 }
 

@@ -1,5 +1,6 @@
 import * as writingTrainer from '..'
 import { LanguageDefinition } from '../constants'
+import { LanguageHandler } from '../languageHandlers/_common'
 import { SPECIAL_SYMBOLS } from '../languageHandlers/_commonChars'
 import { englishHandler } from '../languageHandlers/english'
 import { japaneseHandler } from '../languageHandlers/japanese'
@@ -13,6 +14,7 @@ describe('interface', () => {
       CharObj,
       CurrentCharObj,
       LanguageDefinition,
+      LanguageHandler,
       LanguageManager,
       Record,
       SPECIAL_SYMBOLS,

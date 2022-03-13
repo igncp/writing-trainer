@@ -19,14 +19,16 @@ class LanguageUIManager {
     this.idToLanguageUIHandlerMap = this.handlers.reduce<
       LanguageUIManager['idToLanguageUIHandlerMap']
     >((acc, uiHandler) => {
-      acc[uiHandler.id] = uiHandler
+      acc[uiHandler.languageHandler.getId()] = uiHandler
 
       return acc
     }, {})
+
+    this.init()
   }
 
   public getDefaultLanguage() {
-    return this.handlers[0]!.id
+    return this.handlers[0]!.languageHandler.getId()
   }
 
   public getUIHandler() {
@@ -36,12 +38,11 @@ class LanguageUIManager {
       throw new Error('No language handler set')
     }
 
-    const uiHandler =
-      this.idToLanguageUIHandlerMap[languageHandler!.language.id]
+    const uiHandler = this.idToLanguageUIHandlerMap[languageHandler!.getId()]
 
     if (!uiHandler as unknown) {
       throw new Error(
-        `No UI language handler for language: ${languageHandler!.language.id}`,
+        `No UI language handler for language: ${languageHandler!.getId()}`,
       )
     }
 
@@ -52,7 +53,7 @@ class LanguageUIManager {
     this.manager.clear()
 
     this.handlers.forEach(uiHandler => {
-      uiHandler.register(this.manager)
+      this.manager.registerLanguage(uiHandler.languageHandler)
     })
 
     const defaultLanguage = this.getDefaultLanguage()

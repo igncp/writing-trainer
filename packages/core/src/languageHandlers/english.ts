@@ -1,20 +1,14 @@
 import { LanguageDefinition } from '../constants'
-import { CharObj, T_LanguageHandler } from '../languageManager'
+import { CharObj } from '../languageManager'
 
-import {
-  defaultFilterTextToPractice,
-  defaultGetSpecialChars,
-  defaultGetCurrentCharObj,
-} from './_common'
+import { LanguageHandler } from './_common'
 
-const convertToCharsObjs: T_LanguageHandler['convertToCharsObjs'] = ({
+const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
   text,
   charsToRemove,
 }) => {
-  const defaultSpecialChars = defaultGetSpecialChars()
-  const allCharsToRemove = defaultSpecialChars
-    .concat(charsToRemove)
-    .concat([' '])
+  const specialChars = englishHandler.getSpecialChars() // eslint-disable-line @typescript-eslint/no-use-before-define
+  const allCharsToRemove = specialChars.concat(charsToRemove).concat([' '])
 
   const charsObjs: CharObj[] = []
   let nextWord = ''
@@ -56,12 +50,9 @@ const language = new LanguageDefinition({
   name: 'English',
 })
 
-const englishHandler: T_LanguageHandler = {
+const englishHandler = new LanguageHandler({
   convertToCharsObjs,
-  filterTextToPractice: defaultFilterTextToPractice,
-  getCurrentCharObj: defaultGetCurrentCharObj,
-  getSpecialChars: defaultGetSpecialChars,
   language,
-}
+})
 
 export { englishHandler }

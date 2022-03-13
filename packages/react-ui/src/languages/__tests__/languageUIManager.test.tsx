@@ -4,7 +4,6 @@ import { uiHandlers } from '../handlers'
 import { LanguageUIManager } from '../languageUIManager'
 
 const languageManager = new LanguageManager()
-const languageUIManager = new LanguageUIManager(languageManager, uiHandlers)
 
 beforeEach(() => {
   languageManager.clear()
@@ -16,13 +15,13 @@ afterEach(() => {
   ;(languageManager.clear as any).mockRestore()
 })
 
-describe('init', () => {
+describe('constructor', () => {
   it('populates the language manager', () => {
     expect((languageManager.clear as any).mock.calls).toEqual([])
     expect(languageManager.getAvailableLanguages()).toEqual([])
     expect(languageManager.getCurrentLanguageHandler()).toEqual(null)
 
-    languageUIManager.init()
+    new LanguageUIManager(languageManager, uiHandlers)
 
     expect((languageManager.clear as any).mock.calls).toEqual([[]])
     expect(languageManager.getAvailableLanguages()).not.toEqual([])
@@ -31,23 +30,21 @@ describe('init', () => {
 })
 
 describe('getUIHandler', () => {
-  it('throws when no handler is set', () => {
-    expect(() => languageUIManager.getUIHandler()).toThrow(
-      'No language handler set',
-    )
-  })
-
   it('returns the UI handler with same id as the current language handler', () => {
-    languageUIManager.init()
+    const languageUIManager = new LanguageUIManager(languageManager, uiHandlers)
 
-    expect(languageUIManager.getUIHandler().id).toEqual(
-      languageManager.getCurrentLanguageHandler()!.language.id,
+    expect(languageUIManager.getUIHandler().languageHandler.getId()).toEqual(
+      languageManager.getCurrentLanguageHandler()!.getId(),
     )
   })
 })
 
 describe('getDefaultLanguage', () => {
   it('returns the first id of the array', () => {
-    expect(languageUIManager.getDefaultLanguage()).toEqual(uiHandlers[0].id)
+    const languageUIManager = new LanguageUIManager(languageManager, uiHandlers)
+
+    expect(languageUIManager.getDefaultLanguage()).toEqual(
+      uiHandlers[0].languageHandler.getId(),
+    )
   })
 })

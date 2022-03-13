@@ -1,14 +1,10 @@
-import { LanguageManager, englishHandler } from 'writing-trainer-core'
+import { englishHandler } from 'writing-trainer-core'
 
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
 import { T_UIHandler, T_LangOpts } from '../types'
 
 import LinksBlock from './LinksBlock/LinksBlock'
 import OptionsBlock from './OptionsBlock'
-
-const register = (languageManager: LanguageManager) => {
-  languageManager.registerLanguage(englishHandler)
-}
 
 const handleWritingKeyDown: T_UIHandler['handleWritingKeyDown'] = params => {
   commonHandleWritingKeyDown(params, {})
@@ -22,8 +18,7 @@ const uiHandler: T_UIHandler = {
   getLinksBlock: () => LinksBlock,
   getOptionsBlock: () => OptionsBlock,
   handleWritingKeyDown,
-  id: englishHandler.language.id,
-  register,
+  languageHandler: englishHandler,
   shouldAllCharsHaveSameWidth: false,
 }
 

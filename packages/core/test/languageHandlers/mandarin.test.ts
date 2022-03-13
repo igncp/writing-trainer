@@ -2,8 +2,8 @@ import { SPECIAL_SYMBOLS, mandarinHandler } from '../../src'
 
 describe('values', () => {
   it('has the correct values', () => {
-    expect(mandarinHandler.language.id).toEqual('mandarin')
-    expect(mandarinHandler.language.name).toEqual('Mandarin')
+    expect(mandarinHandler.getId()).toEqual('mandarin')
+    expect(mandarinHandler.getName()).toEqual('Mandarin')
   })
 })
 

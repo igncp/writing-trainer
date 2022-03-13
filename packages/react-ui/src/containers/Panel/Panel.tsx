@@ -54,11 +54,22 @@ type Props = {
 }
 
 const getLanguageDefinitions = (languageManager: LanguageManager) => {
-  return languageManager.getAvailableLanguages().map(langId => {
-    const languageHandler = languageManager.getLanguageHandler(langId)
+  return languageManager
+    .getAvailableLanguages()
+    .map(langId => {
+      const languageHandler = languageManager.getLanguageHandler(langId)
 
-    return languageHandler!.language
-  })
+      if (!languageHandler) return null
+
+      return {
+        id: languageHandler.getId(),
+        name: languageHandler.getName(),
+      }
+    })
+    .filter(item => !!item) as Array<{
+    id: LanguageDefinition['id']
+    name: string
+  }>
 }
 
 const Panel = ({
@@ -97,8 +108,6 @@ const Panel = ({
   const uiHandler = languageUIManager.getUIHandler()
   const langHandler = languageManager.getCurrentLanguageHandler()
 
-  const tryToUpdatePronunciation = () => {}
-
   const { storage } = services
 
   const handleOriginalTextUpdate = (
@@ -106,18 +115,8 @@ const Panel = ({
   ) => {
     const val = e.target.value
 
-    if (val) {
-      tryToUpdatePronunciation()
-    }
-
     setOriginalText(val)
   }
-
-  useEffect(() => {
-    if (originalTextValue) {
-      tryToUpdatePronunciation()
-    }
-  }, [selectedLanguage])
 
   const updateLanguage = (lang: LanguageDefinition['id']) => {
     languageManager.setCurrentLanguageHandler(lang)

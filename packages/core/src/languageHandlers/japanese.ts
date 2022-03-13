@@ -1,18 +1,15 @@
 import { LanguageDefinition } from '../constants'
-import { CharObj, T_LanguageHandler } from '../languageManager'
+import { CharObj } from '../languageManager'
 
-import {
-  defaultFilterTextToPractice,
-  defaultGetCurrentCharObj,
-  defaultGetSpecialChars,
-} from './_common'
+import { LanguageHandler } from './_common'
 
-const convertToCharsObjs: T_LanguageHandler['convertToCharsObjs'] = ({
+const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
   text,
   charsToRemove,
   langOpts = {},
 }) => {
-  const defaultSpecialChars = defaultGetSpecialChars()
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  const defaultSpecialChars = japaneseHandler.getSpecialChars()
   const allCharsToRemove = defaultSpecialChars
     .concat(charsToRemove)
     .concat([' '])
@@ -85,12 +82,9 @@ const language = new LanguageDefinition({
   name: 'Japanese',
 })
 
-const japaneseHandler: T_LanguageHandler = {
+const japaneseHandler = new LanguageHandler({
   convertToCharsObjs,
-  filterTextToPractice: defaultFilterTextToPractice,
-  getCurrentCharObj: defaultGetCurrentCharObj,
-  getSpecialChars: defaultGetSpecialChars,
   language,
-}
+})
 
 export { japaneseHandler }

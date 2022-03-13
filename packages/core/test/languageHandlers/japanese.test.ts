@@ -2,8 +2,8 @@ import { japaneseHandler, SPECIAL_SYMBOLS } from '../../src'
 
 describe('values', () => {
   it('has the correct values', () => {
-    expect(japaneseHandler.language.id).toEqual('japanese')
-    expect(japaneseHandler.language.name).toEqual('Japanese')
+    expect(japaneseHandler.getId()).toEqual('japanese')
+    expect(japaneseHandler.getName()).toEqual('Japanese')
   })
 })
 

@@ -11,19 +11,6 @@ import { uiHandlers } from '../../../languages/handlers'
 import { LanguageUIManager } from '../../../languages/languageUIManager'
 import Panel from '../Panel'
 
-const mandarinLangOpts = {
-  dictionary: {
-    壁: 'bi4',
-    崩: 'beng1',
-    必: 'bi4',
-    比: 'bi3',
-    畢: 'bi4',
-    筆: 'bi3',
-    編: 'bian1',
-    閉: 'bi4',
-  },
-}
-
 const languageManager = new LanguageManager()
 const languageUIManager = new LanguageUIManager(languageManager, uiHandlers)
 
@@ -31,8 +18,7 @@ const Mandarin = () => {
   return (
     <Panel
       _stories={{
-        defaultLanguage: mandarinHandler.language.id,
-        langOpts: mandarinLangOpts,
+        defaultLanguage: mandarinHandler.getId(),
       }}
       languageManager={languageManager}
       languageUIManager={languageUIManager}
@@ -51,9 +37,8 @@ const MandarinLongText = () => {
   return (
     <Panel
       _stories={{
-        defaultLanguage: mandarinHandler.language.id,
+        defaultLanguage: mandarinHandler.getId(),
         defaultPractice: text.slice(0, text.length - 5),
-        langOpts: mandarinLangOpts,
       }}
       languageManager={languageManager}
       languageUIManager={languageUIManager}
@@ -68,7 +53,7 @@ const Japanese = () => {
   return (
     <Panel
       _stories={{
-        defaultLanguage: japaneseHandler.language.id,
+        defaultLanguage: japaneseHandler.getId(),
         defaultPronunciation: 'a i u e o',
       }}
       languageManager={languageManager}
@@ -83,7 +68,7 @@ const Japanese = () => {
 const English = () => {
   return (
     <Panel
-      _stories={{ defaultLanguage: englishHandler.language.id }}
+      _stories={{ defaultLanguage: englishHandler.getId() }}
       languageManager={languageManager}
       languageUIManager={languageUIManager}
       onHideRequest={() => console.log('hide-request')}

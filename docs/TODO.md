@@ -1,5 +1,7 @@
 ## Tasks
 
+- Allow typing when character is not found
+- Convert UI handler type to class
 - Pass manager via context
 - Persist config in records (which subpanels are displayed)
 - Add Cantonese language with its own dictionary 
@@ -22,6 +24,8 @@
 
 - Move some unit tests to e2e tests, especially in core
     - Focus in good tests specs
+- Avoid `acc[uiHandler.languageHandler.language.id] = uiHandler`)
+- Remove highlevel code (e.g. using the dictionary)
 - Add playwright
 - Upgrade gatsby when this is resolved: https://github.com/graphql-compose/graphql-compose/issues/374
 - Hoist typescript

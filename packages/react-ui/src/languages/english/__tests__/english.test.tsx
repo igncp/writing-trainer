@@ -1,8 +1,4 @@
-import {
-  CurrentCharObj,
-  LanguageManager,
-  englishHandler,
-} from 'writing-trainer-core'
+import { CurrentCharObj, LanguageManager } from 'writing-trainer-core'
 
 import LinksBlock from '../LinksBlock/LinksBlock'
 import OptionsBlock from '../OptionsBlock'
@@ -98,17 +94,5 @@ describe('getOptionsBlock', () => {
 describe('getLinksBlock', () => {
   it('returns the expected component', () => {
     expect(englishUIHandler.getLinksBlock()).toEqual(LinksBlock)
-  })
-})
-
-describe('register', () => {
-  it('adds the language to the language manager', () => {
-    expect(languageManager.getAvailableLanguages()).toEqual([])
-
-    englishUIHandler.register(languageManager)
-
-    expect(languageManager.getAvailableLanguages()).toEqual([
-      englishHandler.language.id,
-    ])
   })
 })

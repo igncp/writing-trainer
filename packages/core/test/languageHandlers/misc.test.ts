@@ -20,7 +20,7 @@ const DUMMY_CHAR_OBJS = [
 
 describe('getCurrentCharObj', () => {
   HANDLERS.forEach(handler => {
-    it(`gets the expected result for empty arrays - ${handler.language.id}`, () => {
+    it(`gets the expected result for empty arrays - ${handler.getId()}`, () => {
       const result = handler.getCurrentCharObj({
         originalCharsObjs: [],
         practiceCharsObjs: [],
@@ -29,7 +29,7 @@ describe('getCurrentCharObj', () => {
       expect(result).toEqual(null)
     })
 
-    it(`gets the expected result for exact sentence - ${handler.language.id}`, () => {
+    it(`gets the expected result for exact sentence - ${handler.getId()}`, () => {
       const result = handler.getCurrentCharObj({
         originalCharsObjs: DUMMY_CHAR_OBJS,
         practiceCharsObjs: DUMMY_CHAR_OBJS,
@@ -38,7 +38,7 @@ describe('getCurrentCharObj', () => {
       expect(result).toEqual({ ch: DUMMY_CHAR_OBJS[0], index: 0 })
     })
 
-    it(`gets the expected result for smaller pronunciation - ${handler.language.id}`, () => {
+    it(`gets the expected result for smaller pronunciation - ${handler.getId()}`, () => {
       const result = handler.getCurrentCharObj({
         originalCharsObjs: DUMMY_CHAR_OBJS,
         practiceCharsObjs: DUMMY_CHAR_OBJS.slice(0, 1),
@@ -47,7 +47,7 @@ describe('getCurrentCharObj', () => {
       expect(result).toEqual({ ch: DUMMY_CHAR_OBJS[1], index: 1 })
     })
 
-    it(`gets the expected result for bigger pronunciation - ${handler.language.id}`, () => {
+    it(`gets the expected result for bigger pronunciation - ${handler.getId()}`, () => {
       const result = handler.getCurrentCharObj({
         originalCharsObjs: DUMMY_CHAR_OBJS,
         practiceCharsObjs: DUMMY_CHAR_OBJS.concat(DUMMY_CHAR_OBJS.slice(0, 1)),
@@ -56,7 +56,7 @@ describe('getCurrentCharObj', () => {
       expect(result).toEqual({ ch: DUMMY_CHAR_OBJS[1], index: 1 })
     })
 
-    it(`gets the expected result for invalid pronunciation - ${handler.language.id}`, () => {
+    it(`gets the expected result for invalid pronunciation - ${handler.getId()}`, () => {
       const result = handler.getCurrentCharObj({
         originalCharsObjs: DUMMY_CHAR_OBJS,
         practiceCharsObjs: [

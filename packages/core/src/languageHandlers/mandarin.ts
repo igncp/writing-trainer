@@ -1,15 +1,11 @@
 import { LanguageDefinition } from '../constants'
-import { CharObj, T_LanguageHandler } from '../languageManager'
+import { CharObj } from '../languageManager'
 
-import {
-  defaultFilterTextToPractice,
-  defaultGetSpecialChars,
-  defaultGetCurrentCharObj,
-} from './_common'
+import { LanguageHandler } from './_common'
 
 type T_Dictionary = { [k: string]: string }
 
-const convertToCharsObjs: T_LanguageHandler['convertToCharsObjs'] = ({
+const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
   text,
   charsToRemove,
   langOpts = {},
@@ -19,7 +15,7 @@ const convertToCharsObjs: T_LanguageHandler['convertToCharsObjs'] = ({
     '') as string
   const pronunciationInputArr = pronunciationInput.split(' ').filter(c => !!c)
 
-  const defaultSpecialChars = defaultGetSpecialChars()
+  const defaultSpecialChars = mandarinHandler.getSpecialChars() // eslint-disable-line @typescript-eslint/no-use-before-define
   const allCharsToRemove = defaultSpecialChars
     .concat(charsToRemove)
     .concat([' '])
@@ -51,12 +47,9 @@ const language = new LanguageDefinition({
   name: 'Mandarin',
 })
 
-const mandarinHandler: T_LanguageHandler = {
+const mandarinHandler = new LanguageHandler({
   convertToCharsObjs,
-  filterTextToPractice: defaultFilterTextToPractice,
-  getCurrentCharObj: defaultGetCurrentCharObj,
-  getSpecialChars: defaultGetSpecialChars,
   language,
-}
+})
 
 export { mandarinHandler }

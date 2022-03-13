@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  CharObj,
-  LanguageManager,
-  CurrentCharObj,
-  LanguageDefinition,
-} from 'writing-trainer-core'
+import { CharObj, CurrentCharObj, LanguageHandler } from 'writing-trainer-core'
 
 export type T_LangOpts = { [k: string]: unknown }
 
@@ -53,7 +48,6 @@ export interface T_UIHandler {
   getLinksBlock: () => T_LinksBlock
   getOptionsBlock: () => T_OptionsBlock
   handleWritingKeyDown: T_handleWritingKeyDown
-  id: LanguageDefinition['id']
-  register: (manager: LanguageManager) => void
+  languageHandler: LanguageHandler
   shouldAllCharsHaveSameWidth: boolean
 }
