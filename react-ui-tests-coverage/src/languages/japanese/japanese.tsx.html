@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">72.22% </span>
+                <span class="strong">68.75% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/18</span>
+                <span class='fraction'>11/16</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">28.57% </span>
+                <span class="strong">16.66% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/7</span>
+                <span class='fraction'>1/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">72.22% </span>
+                <span class="strong">68.75% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/18</span>
+                <span class='fraction'>11/16</span>
             </div>
         
             
@@ -88,12 +88,7 @@
 <a name='L23'></a><a href='#L23'>23</a>
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a>
-<a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a>
-<a name='L29'></a><a href='#L29'>29</a>
-<a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L26'></a><a href='#L26'>26</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -103,9 +98,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -118,12 +110,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { LanguageManager, japaneseHandler } from 'writing-trainer-core'
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { japaneseHandler } from 'writing-trainer-core'
 &nbsp;
 import { commonHandleWritingKeyDown } from <span class="branch-1 cbranch-no" title="branch not covered" >'../common/commonLa</span>nguageUtils'
 import { T_UIHandler, T_LangOpts } from '../types'
@@ -131,24 +121,19 @@ import { T_UIHandler, T_LangOpts } from '../types'
 import LinksBlock from './LinksBlock/LinksBlock'
 import OptionsBlock from './OptionsBlock/OptionsBlock'
 &nbsp;
-const register = (languageManager: LanguageManager) =&gt; {
-  languageManager.registerLanguage(japaneseHandler)
-}
-&nbsp;
-const handleWritingKeyDown:<span class="fstat-no" title="function not covered" > T</span>_UIHandler['handleWritingKeyDown'] = params =&gt; {
-  co<span class="cstat-no" title="statement not covered" >mmonHandleWritingKeyDown(params, {})</span>
-}
+const handleWritingKeyDown: T_UIHandler['handleWritingKeyDown'] = params =&gt; {
+  commonHandleWritingKeyDow<span class="fstat-no" title="function not covered" >n(</span>params, {})
+}<span class="cstat-no" title="statement not covered" ></span>
 &nbsp;
 const langOpts: T_LangOpts = {}
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-const uiHandler: <span class="fstat-no" title="function not covered" >T_</span>UIHandler = <span class="cstat-no" title="statement not covered" >{</span>
-  getDisplayedCharH<span class="fstat-no" title="function not covered" >an</span>dler: () =&gt; <span class="cstat-no" title="statement not covered" >null,</span>
-  getLangOpts: () =&gt; <span class="fstat-no" title="function not covered" >la</span>ngOpts,<span class="cstat-no" title="statement not covered" ></span>
-  getLinksBlock: () =&gt; LinksBlock,
+&nbsp;
+const uiHandler: T_UIHandler <span class="fstat-no" title="function not covered" >= </span>{<span class="cstat-no" title="statement not covered" ></span>
+  getDisplayedCha<span class="fstat-no" title="function not covered" >rH</span>andler: () =<span class="cstat-no" title="statement not covered" >&gt; null,</span>
+  getLangOpts: () =<span class="fstat-no" title="function not covered" >&gt; </span>langOpts,<span class="cstat-no" title="statement not covered" ></span>
+  getLinksBlock: () =<span class="fstat-no" title="function not covered" >&gt; </span>LinksBlock,<span class="cstat-no" title="statement not covered" ></span>
   getOptionsBlock: () =&gt; OptionsBlock,
   handleWritingKeyDown,
-  id: japaneseHandler.language.id,
-  register,
+  languageHandler: japaneseHandler,
   shouldAllCharsHaveSameWidth: false,
 }
 &nbsp;
@@ -160,7 +145,7 @@ export default uiHandler
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sun Mar 13 2022 16:44:43 GMT+0000 (Coordinated Universal Time)
+                at Mon Mar 14 2022 00:00:05 GMT+0000 (Coordinated Universal Time)
             </div>
         <script src="../../../prettify.js"></script>
         <script>

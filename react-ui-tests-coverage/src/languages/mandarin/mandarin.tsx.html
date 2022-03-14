@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">36.48% </span>
+                <span class="strong">34.72% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>27/74</span>
+                <span class='fraction'>25/72</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">27.27% </span>
+                <span class="strong">20% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/11</span>
+                <span class='fraction'>2/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">36.61% </span>
+                <span class="strong">34.78% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>26/71</span>
+                <span class='fraction'>24/69</span>
             </div>
         
             
@@ -179,12 +179,7 @@
 <a name='L114'></a><a href='#L114'>114</a>
 <a name='L115'></a><a href='#L115'>115</a>
 <a name='L116'></a><a href='#L116'>116</a>
-<a name='L117'></a><a href='#L117'>117</a>
-<a name='L118'></a><a href='#L118'>118</a>
-<a name='L119'></a><a href='#L119'>119</a>
-<a name='L120'></a><a href='#L120'>120</a>
-<a name='L121'></a><a href='#L121'>121</a>
-<a name='L122'></a><a href='#L122'>122</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L117'></a><a href='#L117'>117</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -204,9 +199,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -278,7 +270,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -304,8 +295,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { LanguageManager, mandarinHandler } from 'writing-trainer-core'
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { mandarinHandler } from 'writing-trainer-core'
 &nbsp;
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
 import { T_UIHandler, T_LangOpts, T_CharsDisplayClickHandler } from '../types'
@@ -324,78 +314,74 @@ const CANTODICT_LINK =
 dictionary.forEach(([char, pronunciation]: [string, string]) =&gt; {
   charToPronunciationMap[char] = pronunciation
   pronunciationToCharMap[pronunciation] = char
-})
-&nbsp;
-const register = (languageManager: LanguageManager) =&gt; {
-  languageManager.registe<span class="fstat-no" title="function not covered" >rL</span>anguage(mandarinHandler)
-}<span class="cstat-no" title="statement not covered" ></span>
+})<span class="fstat-no" title="function not covered" ></span>
 <span class="cstat-no" title="statement not covered" ></span>
-const parsePronunciation = (text: string, opts: T_LangOpts) =&gt; {
-  let pa<span class="cstat-no" title="statement not covered" >rsedText = text.toLowerCase()</span>
-&nbsp;
-  if<span class="cstat-no" title="statement not covered" > (</span>
-    (opts.tonesValue as T_MandarinLanguageOptions['tonesValue']) ===
-    'without-tones'<span class="fstat-no" title="function not covered" ></span>
-  ) <span class="cstat-no" title="statement not covered" >{</span>
-    parsedText = parsedText.replace(/[0-9]/g, '')
+cons<span class="cstat-no" title="statement not covered" >t parsePronunciation = (text: string, opts: T_LangOpts) =&gt; {</span>
+  let parsedText = text.toLowerCase()
+<span class="cstat-no" title="statement not covered" ></span>
+  if (
+<span class="cstat-no" title="statement not covered" >    (opts.tonesValue as</span> T_MandarinLanguageOptions['tonesValue']) ===
+    'without-tones'
+  ) {<span class="fstat-no" title="function not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    parsedText = parsedText.replace(/[0-9]/g, '')</span>
   }
 &nbsp;
   return parsedText
 }
 &nbsp;
 const handleWritingKeyDown: T_UIHandler['handleWritingKeyDown'] = params =&gt; {
-  commonHandleWritingKeyDown(p<span class="fstat-no" title="function not covered" >ar</span>ams, {
-    parsePronunciat<span class="cstat-no" title="statement not covered" >ion,</span>
+  commonHandleWritingKeyDown(params, {
+    parsePronunciation,<span class="fstat-no" title="function not covered" ></span>
   })<span class="cstat-no" title="statement not covered" ></span>
 }<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" ></span>
 const la<span class="cstat-no" title="statement not covered" >ngOpts: T_LangOpts = {</span>
-  dictionary: cha<span class="cstat-no" title="statement not covered" >rToPronunciationMap,</span>
+  dictio<span class="cstat-no" title="statement not covered" >nary: charToPronunciationMap,</span>
 }<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" ></span>
 const privateFns <span class="cstat-no" title="statement not covered" >= {</span>
-  sendCa<span class="cstat-no" title="statement not covered" >ntodictFormForText: (text: string</span>, id: string): void =&gt; {
-    cons<span class="cstat-no" title="statement not covered" >t form = document.createElement(</span>'form')
+  sendCantodictFo<span class="cstat-no" title="statement not covered" >rmForText: (text: string, id: st</span>ring): void =&gt; {
+    cons<span class="cstat-no" title="statement not covered" >t form = document.createElement('</span>form')
 <span class="cstat-no" title="statement not covered" ></span>
     form<span class="cstat-no" title="statement not covered" >.setAttribute('method', 'POST')</span>
     form<span class="cstat-no" title="statement not covered" >.setAttribute('action', CANTODICT_LINK)</span>
-    form<span class="cstat-no" title="statement not covered" >.setAttribute('target', `formre</span>sult${text}${id}`)
+    form<span class="cstat-no" title="statement not covered" >.setAttribute('target', `formresult${text}${</span>id}`)
     form<span class="cstat-no" title="statement not covered" >.style.display = 'none'</span>
 <span class="cstat-no" title="statement not covered" ></span>
-    cons<span class="cstat-no" title="statement not covered" >t i1 = document.create</span>Element('input')
+    cons<span class="cstat-no" title="statement not covered" >t i1 = document.createElement('</span>input')
     cons<span class="cstat-no" title="statement not covered" >t i2 = document.create</span>Element('input')
     cons<span class="cstat-no" title="statement not covered" >t i3 = document.create</span>Element('input')
     cons<span class="cstat-no" title="statement not covered" >t i4 = document.create</span>Element('input')
 <span class="cstat-no" title="statement not covered" ></span>
-    i1.setAttribute('name', 'TEXT')
-    i1.s<span class="cstat-no" title="statement not covered" >etAttribute('value', text)</span>
-    i2.s<span class="cstat-no" title="statement not covered" >etAttribute('na</span>me', 'SEARCHTYPE')
-    i2.s<span class="cstat-no" title="statement not covered" >etAttribute('value', text.length </span>=== 1 ? '0' : '1')
-    i3.setAttribute('name', 'radicaldropdown')
+    i1.s<span class="cstat-no" title="statement not covered" >etAttribute('name', 'TEXT')</span>
+    i1.setAttribute('value', text)
+    i2.s<span class="cstat-no" title="statement not covered" >etAttribute('name', 'SEARCHTYPE')</span>
+    i2.s<span class="cstat-no" title="statement not covered" >etAttribute('va</span>lue', text.length === 1 ? '0' : '1')
+    i3.s<span class="cstat-no" title="statement not covered" >etAttribute('name', 'radicaldropd</span>own')
     i3.setAttribute('value', '0')
-    i4.setAttribute('name', 'se<span class="fstat-no" title="function not covered" >ar</span>chsubmit')
-    i4.setAttribut<span class="cstat-no" title="statement not covered" >e('value', </span>'1')<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
+    i4.setAttribute('name', 'searchsubmit')
+    i4.setAttribute('value', '1<span class="fstat-no" title="function not covered" >')</span>
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+<span class="cstat-no" title="statement not covered" >    form.appendChild(i1)</span>
+    form<span class="cstat-no" title="statement not covered" >.appendC</span>hild(i2)
+    form.appendChild(i3)
+    form.appe<span class="cstat-no" title="statement not covered" >ndChild(i4)</span>
+<span class="cstat-no" title="statement not covered" >    document.body.appendChild(form)</span>
 <span class="cstat-no" title="statement not covered" ></span>
-    form<span class="cstat-no" title="statement not covered" >.appendC</span>hild(i1)
-    form.appendChild(i2)
-    form.appe<span class="cstat-no" title="statement not covered" >ndChild(i3)</span>
-<span class="cstat-no" title="statement not covered" >    form.appendChild(i4)</span>
-    document.bo<span class="cstat-no" title="statement not covered" >dy.appendChild(form)</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    // creating the 'formresult' window with custom features prior to submitting the form</span>
-    wind<span class="cstat-no" title="statement not covered" >ow.open('', `formresult${text}${id}`)</span>
-    form.submit()
-<span class="cstat-no" title="statement not covered" >    document.body.removeChild(form)</span>
+    // creating<span class="cstat-no" title="statement not covered" > the 'formresult' win</span>dow with custom features prior to submitting the form
+<span class="cstat-no" title="statement not covered" >    window.open('', `formresult${text}${id}`)</span>
+    form<span class="cstat-no" title="statement not covered" >.submit()</span>
+    document.body.removeChild(form)
   },<span class="cstat-no" title="statement not covered" ></span>
-}
+}<span class="cstat-no" title="statement not covered" ></span>
 &nbsp;
 export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
   charObj,
-  charsObjs,<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+  charsObjs,
   index,<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
 }) =&gt; {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-  if (!(charObj as un<span class="fstat-no" title="function not covered" >kn</span>own) || !cha<span class="cstat-no" title="statement not covered" >rObj.pronunciation) {</span>
-    return
+  if (!(charObj as <span class="fstat-no" title="function not covered" >un</span>known) || !c<span class="cstat-no" title="statement not covered" >harObj.pronunciation) {</span>
+    return<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
   }
 &nbsp;
   const ch = charObj.word
@@ -420,8 +406,7 @@ const uiHandler: T_UIHandler = {
   getLinksBlock: () =&gt; LinksBlock,
   getOptionsBlock: () =&gt; OptionsBlock,
   handleWritingKeyDown,
-  id: mandarinHandler.language.id,
-  register,
+  languageHandler: mandarinHandler,
   shouldAllCharsHaveSameWidth: false,
 }
 &nbsp;
@@ -433,7 +418,7 @@ export default uiHandler
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sun Mar 13 2022 16:44:43 GMT+0000 (Coordinated Universal Time)
+                at Mon Mar 14 2022 00:00:05 GMT+0000 (Coordinated Universal Time)
             </div>
         <script src="../../../prettify.js"></script>
         <script>

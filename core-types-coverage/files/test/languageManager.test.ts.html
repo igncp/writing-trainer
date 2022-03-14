@@ -11,46 +11,31 @@
 <link href="../../assets/source-file.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">test/languageManager.test.ts</td><td class="">100.00%</td><td class="">95%</td><td class="">186</td><td class="">186</td><td class="">0</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import {
+    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">test/languageManager.test.ts</td><td class="">100.00%</td><td class="">95%</td><td class="">165</td><td class="">165</td><td class="">0</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import {
   CharObj,
   LanguageDefinition,
   LanguageManager,
-  T_LanguageHandler,
+  LanguageHandler,
 } from &#x27;../src&#x27;
 
 const languageManager = new LanguageManager()
 
 const createDummyLanguageHandler = (
   id: LanguageDefinition[&#x27;id&#x27;],
-): T_LanguageHandler =&gt; {
+): LanguageHandler =&gt; {
   const convertToCharsObjs = () =&gt; {
     const result: CharObj[] = []
 
     return result
   }
 
-  const filterTextToPractice = () =&gt; {
-    return &#x27;&#x27;
-  }
-
-  const getSpecialChars = () =&gt; {
-    const result: string[] = []
-
-    return result
-  }
-
-  const getCurrentCharObj = (): null =&gt; null
-
-  return {
+  return new LanguageHandler({
     convertToCharsObjs,
-    filterTextToPractice,
-    getCurrentCharObj,
-    getSpecialChars,
     language: new LanguageDefinition({
       id,
       name: &#x27;Some Name&#x27;,
     }),
-  }
+  })
 }
 
 const dummyHandlerA = createDummyLanguageHandler(&#x27;dummyA&#x27;)
@@ -67,7 +52,7 @@ describe(&#x27;registerLanguage&#x27;, () =&gt; {
     languageManager.registerLanguage(dummyHandlerA)
 
     expect(languageManager.getAvailableLanguages()).toEqual([
-      dummyHandlerA.language.id,
+      dummyHandlerA.getId(),
     ])
   })
 })
@@ -75,14 +60,14 @@ describe(&#x27;registerLanguage&#x27;, () =&gt; {
 describe(&#x27;clear&#x27;, () =&gt; {
   it(&#x27;can remove a registered language&#x27;, () =&gt; {
     languageManager.registerLanguage(dummyHandlerA)
-    languageManager.setCurrentLanguageHandler(dummyHandlerA.language.id)
+    languageManager.setCurrentLanguageHandler(dummyHandlerA.getId())
 
     expect(languageManager.getAvailableLanguages()).toEqual([
-      dummyHandlerA.language.id,
+      dummyHandlerA.getId(),
     ])
 
-    expect(languageManager.getCurrentLanguageHandler()!.language.id).toEqual(
-      dummyHandlerA.language.id,
+    expect(languageManager.getCurrentLanguageHandler()!.getId()).toEqual(
+      dummyHandlerA.getId(),
     )
 
     languageManager.clear()
@@ -108,7 +93,7 @@ describe(&#x27;getCurrentLanguageHandler&#x27;, () =&gt; {
 
     expect(languageManager.getCurrentLanguageHandler()).toEqual(null)
 
-    languageManager.setCurrentLanguageHandler(dummyHandlerA.language.id)
+    languageManager.setCurrentLanguageHandler(dummyHandlerA.getId())
 
     expect(languageManager.getCurrentLanguageHandler()).toEqual(dummyHandlerA)
   })
@@ -120,40 +105,40 @@ describe(&#x27;unregisterLanguage&#x27;, () =&gt; {
     languageManager.registerLanguage(dummyHandlerB)
 
     expect(languageManager.getAvailableLanguages()).toEqual([
-      dummyHandlerA.language.id,
-      dummyHandlerB.language.id,
+      dummyHandlerA.getId(),
+      dummyHandlerB.getId(),
     ])
 
-    languageManager.unregisterLanguage(dummyHandlerA.language.id)
+    languageManager.unregisterLanguage(dummyHandlerA.getId())
 
     expect(languageManager.getAvailableLanguages()).toEqual([
-      dummyHandlerB.language.id,
+      dummyHandlerB.getId(),
     ])
   })
 })
 
 describe(&#x27;getLanguageHandler&#x27;, () =&gt; {
   it(&#x27;returns the expected value&#x27;, () =&gt; {
-    expect(
-      languageManager.getLanguageHandler(dummyHandlerA.language.id),
-    ).toEqual(null)
+    expect(languageManager.getLanguageHandler(dummyHandlerA.getId())).toEqual(
+      null,
+    )
 
     languageManager.registerLanguage(dummyHandlerA)
 
-    expect(
-      languageManager.getLanguageHandler(dummyHandlerA.language.id),
-    ).toEqual(dummyHandlerA)
+    expect(languageManager.getLanguageHandler(dummyHandlerA.getId())).toEqual(
+      dummyHandlerA,
+    )
     expect(languageManager.getLanguageHandler(&#x27;foo&#x27;)).toEqual(null)
 
-    languageManager.unregisterLanguage(dummyHandlerA.language.id)
+    languageManager.unregisterLanguage(dummyHandlerA.getId())
 
-    expect(
-      languageManager.getLanguageHandler(dummyHandlerA.language.id),
-    ).toEqual(null)
+    expect(languageManager.getLanguageHandler(dummyHandlerA.getId())).toEqual(
+      null,
+    )
   })
 })
 </textarea><pre id="annotations" style="display:none">[]</pre></div>
-    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sun, 13 Mar 2022 16:44:10 GMT</p>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sun, 13 Mar 2022 23:59:27 GMT</p>
     </body>
   </html>
   

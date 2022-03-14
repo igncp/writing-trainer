@@ -101,35 +101,35 @@
     },
     {
       "file": "src/languages/__tests__/languageUIManager.test.tsx",
-      "line": 15,
+      "line": 14,
       "character": 34,
       "text": "mockRestore",
       "kind": 1
     },
     {
       "file": "src/languages/__tests__/languageUIManager.test.tsx",
-      "line": 20,
+      "line": 19,
       "character": 42,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/__tests__/languageUIManager.test.tsx",
-      "line": 20,
+      "line": 19,
       "character": 47,
       "text": "calls",
       "kind": 1
     },
     {
       "file": "src/languages/__tests__/languageUIManager.test.tsx",
-      "line": 26,
+      "line": 25,
       "character": 42,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/__tests__/languageUIManager.test.tsx",
-      "line": 26,
+      "line": 25,
       "character": 47,
       "text": "calls",
       "kind": 1
@@ -318,280 +318,280 @@
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 31,
+      "line": 27,
       "character": 8,
       "text": "commonOpts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 43,
+      "line": 39,
       "character": 10,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 44,
+      "line": 40,
       "character": 9,
       "text": "commonOpts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 56,
+      "line": 52,
       "character": 11,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 56,
+      "line": 52,
       "character": 16,
       "text": "setCurrentDisplayCharIdx",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 56,
+      "line": 52,
       "character": 41,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 56,
+      "line": 52,
       "character": 46,
       "text": "calls",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 57,
+      "line": 53,
       "character": 11,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 57,
+      "line": 53,
       "character": 16,
       "text": "setPractice",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 57,
+      "line": 53,
       "character": 28,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 57,
+      "line": 53,
       "character": 33,
       "text": "calls",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 58,
+      "line": 54,
       "character": 11,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 58,
+      "line": 54,
       "character": 16,
       "text": "setWriting",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 58,
+      "line": 54,
       "character": 27,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 58,
+      "line": 54,
       "character": 32,
       "text": "calls",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 62,
+      "line": 58,
       "character": 10,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 63,
+      "line": 59,
       "character": 9,
       "text": "commonOpts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 69,
+      "line": 65,
       "character": 11,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 69,
+      "line": 65,
       "character": 16,
       "text": "setPracticeHasError",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 69,
+      "line": 65,
       "character": 36,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 69,
+      "line": 65,
       "character": 41,
       "text": "calls",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 70,
+      "line": 66,
       "character": 11,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 70,
+      "line": 66,
       "character": 16,
       "text": "setWriting",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 70,
+      "line": 66,
       "character": 27,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 70,
+      "line": 66,
       "character": 32,
       "text": "calls",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 74,
+      "line": 70,
       "character": 10,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 75,
+      "line": 71,
       "character": 9,
       "text": "commonOpts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 85,
+      "line": 81,
       "character": 11,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 85,
+      "line": 81,
       "character": 16,
       "text": "keyEvent",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 85,
+      "line": 81,
       "character": 25,
       "text": "preventDefault",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 85,
+      "line": 81,
       "character": 40,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 85,
+      "line": 81,
       "character": 45,
       "text": "calls",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 86,
+      "line": 82,
       "character": 11,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 86,
+      "line": 82,
       "character": 16,
       "text": "setWriting",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 86,
+      "line": 82,
       "character": 27,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 86,
+      "line": 82,
       "character": 32,
       "text": "calls",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 87,
+      "line": 83,
       "character": 11,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 87,
+      "line": 83,
       "character": 16,
       "text": "setPractice",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 87,
+      "line": 83,
       "character": 28,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 87,
+      "line": 83,
       "character": 33,
       "text": "calls",
       "kind": 1
@@ -695,8 +695,8 @@
       "kind": 1
     }
   ],
-  "percentage": 97.36842105263158,
-  "total": 3762,
-  "covered": 3663,
+  "percentage": 97.32649203348636,
+  "total": 3703,
+  "covered": 3604,
   "uncovered": 99
 }
