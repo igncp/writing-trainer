@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.11% </span>
+                <span class="strong">75.71% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>51/67</span>
+                <span class='fraction'>53/70</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">67.14% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>47/70</span>
+                <span class='fraction'>48/72</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">78% </span>
+                <span class="strong">76.92% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>39/50</span>
+                <span class='fraction'>40/52</span>
             </div>
         
             
@@ -117,7 +117,13 @@
 <a name='L52'></a><a href='#L52'>52</a>
 <a name='L53'></a><a href='#L53'>53</a>
 <a name='L54'></a><a href='#L54'>54</a>
-<a name='L55'></a><a href='#L55'>55</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -171,58 +177,70 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span></td><td class="text"><pre class="prettyprint lang-js">import _get from 'lodash/get'
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import _get from 'lodash/get'
 import React, { useEffect, useRef } from 'react'
 <span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" ></span></span>
 type Tex<span class="cstat-no" title="statement not covered" >tAreaProps = Rea<span class="cstat-no" title="statement not covered" >ct</span>.Text<span class="cstat-no" title="statement not covered" >areaHTMLAttribute</span>s&lt;HTMLTextAreaElement&gt; &amp; {</span>
   withoutCur<span class="cstat-no" title="statement not covered" >sor?: boolean</span>
   autoScroll<span class="cstat-no" title="statement not covered" >?: boolean<span class="cstat-no" title="statement not covered" ></span></span>
-}<span class="cstat-no" title="statement not covered" ></span>
-&nbsp;
-const Te<span class="cstat-no" title="statement not covered" >xtArea = (</span>{
+  setRef?: (ref:<span class="cstat-no" title="statement not covered" > HTMLTextArea</span>Element | null) =&gt; void
+}
+<span class="cstat-no" title="statement not covered" ></span>
+const TextArea = ({
   style,
   withoutCursor,
   onChange,
-  autoScroll,
-  ..<span class="missing-if-branch" title="else path not taken" >E</span>.props
+  au<span class="missing-if-branch" title="else path not taken" >E</span>toScroll,
+  setRef,
+  ..<span class="missing-if-branch" title="else path not taken" >E</span>.props<span class="branch-1 cbranch-no" title="branch not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span>
 }: TextAreaProps) =&gt; {
-  co<span class="missing-if-branch" title="else path not taken" >E</span>nst ref = useRef&lt;HTMLTextAreaE<span class="branch-0 cbranch-no" title="branch not covered" >lement&gt;(null)<span class="branch-1 cbranch-no" title="branch not covered" ></span></span>
+  const ref = useRef&lt;HTMLTextAreaElement&gt;(null)
   const color = _get(style, 'color', 'black')
-  const cursorStyle = withoutCursor
-    ? {
-<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" ></span>        color: 'transparent',</span>
-<span class="cstat-no" title="statement not covered" >        textShadow: `0 0 0<span class="cstat-no" title="statement not covered" > ${color</span></span>}`,
-<span class="cstat-no" title="statement not covered" >      }</span>
+  cons<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" >t </span>cursorStyle = withoutCursor</span>
+<span class="cstat-no" title="statement not covered" >    ? {<span class="cstat-no" title="statement not covered" ></span></span>
+<span class="cstat-no" title="statement not covered" >        color: 'tr</span>ansparent',
+        textShadow: `0 0 0 ${color}`,
+      }
     : {}
-&nbsp;
+<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" ></span></span>
+  if<span class="cstat-no" title="statement not covered" > (setRef) {</span>
+    setRef(ref.current)
+  }
+<span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span></span>
   useEffect(() =&gt; {
-    i<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" >f </span>(autoScroll &amp;&amp; ref.current) {</span>
-<span class="cstat-no" title="statement not covered" >      ref.current.scro</span>llTop = ref.current.scrollHeight
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (autoScroll &amp;&amp; ref.current) {<span class="missing-if-branch" title="else path not taken" >E</span>
+      ref.current.scrollTop = ref.current.scrollHeight
     }
   })
-<span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span></span>
+&nbsp;
   return (
-    <span class="missing-if-branch" title="else path not taken" >E</span>&lt;textarea<span class="missing-if-branch" title="else path not taken" >E</span>
+    &lt;textarea
       data-gramm_editor={false}
-      onChange={onChange}
-      spellCheck={false}
-      style={{
+    <span class="missing-if-branch" title="else path not taken" >E</span>  onChange={onChange}
+      ref={ref}
+      spellC<span class="cstat-no" title="statement not covered" >heck={false}</span>
+      style={{<span class="cstat-no" title="statement not covered" ></span>
         outline: 0,
         resize: 'none',
         width: '100%',
-    <span class="missing-if-branch" title="else path not taken" >E</span>    ...cursorStyle,
-        ...style,
-      }}<span class="cstat-no" title="statement not covered" ></span>
-      {...props}<span class="cstat-no" title="statement not covered" ></span>
-      ref={ref}
+        ...cursorStyle,
+        ...style,<span class="branch-0 cbranch-no" title="branch not covered" ></span>
+      }}
+      {...props}
     /&gt;
   )
 }
-<span class="branch-0 cbranch-no" title="branch not covered" ></span>
+&nbsp;
 TextArea.defaultProps = {
   autoScroll: false,
   color: 'black',
-}
+}<span class="branch-0 cbranch-no" title="branch not covered" ></span>
 &nbsp;
 export default TextArea
 &nbsp;</pre></td></tr></table></pre>
@@ -232,7 +250,7 @@ export default TextArea
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Mon Mar 14 2022 00:00:05 GMT+0000 (Coordinated Universal Time)
+                at Mon Mar 14 2022 23:35:38 GMT+0000 (Coordinated Universal Time)
             </div>
         <script src="../../../prettify.js"></script>
         <script>

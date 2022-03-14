@@ -11,7 +11,7 @@
 <link href="../../../../assets/source-file.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Panel/Panel.tsx</td><td class="">99.63%</td><td class="">95%</td><td class="">535</td><td class="">533</td><td class="">2</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useState } from &#x27;react&#x27;
+    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Panel/Panel.tsx</td><td class="">99.65%</td><td class="">95%</td><td class="">572</td><td class="">570</td><td class="">2</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useRef, useState } from &#x27;react&#x27;
 import {
   LanguageDefinition,
   LanguageManager,
@@ -44,10 +44,12 @@ const createToggleFn = (val: boolean, fn: (i: boolean) =&gt; void) =&gt; () =&gt
 
 const SHORTCUT_EDITING = &#x27;control+control+shift&#x27;
 const SHORTCUT_PRONUNCIATION = &#x27;shift+shift+control&#x27;
+const SHORTCUT_WRITING = &#x27;w&#x27;
 
 const PRACTICE_TEXT_PLACEHOLDER = `Practice Text
 Toggle Editing: ${SHORTCUT_EDITING}
-Toggle Pronunciation: ${SHORTCUT_PRONUNCIATION}`
+Toggle Pronunciation: ${SHORTCUT_PRONUNCIATION}
+Focus Writing (if no input has focus): ${SHORTCUT_WRITING}`
 
 type Props = {
   UI?: {
@@ -117,8 +119,11 @@ const Panel = ({
     useState&lt;LanguageDefinition[&#x27;id&#x27;]&gt;(initialLanguageId)
   const [hasLoadedStorage, setHasLoadedStorage] = useState&lt;boolean&gt;(false)
   const [currentDisplayCharIdx, setCurrentDisplayCharIdx] = useState&lt;number&gt;(0)
+  const [writingBorder, setWritingBorder] = useState&lt;&#x27;bold&#x27; | &#x27;normal&#x27;&gt;(&#x27;bold&#x27;)
+  const writingArea = useRef&lt;HTMLTextAreaElement | null&gt;(null)
 
   const uiHandler = languageUIManager.getUIHandler()
+
   const langHandler = languageManager.getCurrentLanguageHandler()
 
   const { storage } = services
@@ -194,11 +199,9 @@ const Panel = ({
   useEffect(() =&gt; {
     const practiceCharObj = getCurrentCharObjFromPractice()
 
-    if (practiceCharObj?.ch) {
+    if (practiceCharObj?.ch &amp;&amp; practiceCharObj.ch.pronunciation !== &#x27;?&#x27;) {
       setCurrentDisplayCharIdx(practiceCharObj.index)
     }
-
-    return () =&gt; {}
   }, [practiceValue, pronunciationValue])
 
   useEffect(() =&gt; {
@@ -211,8 +214,13 @@ const Panel = ({
         setShowingPronunciation(!isShowingPronunciation)
       } else if (currentResult === SHORTCUT_EDITING) {
         setShowingEdition(!isShowingEdition)
+      } else if (
+        value === SHORTCUT_WRITING &amp;&amp;
+        (!document.activeElement || document.activeElement === document.body)
+      ) {
+        e.preventDefault()
+        writingArea.current?.focus()
       }
-
       setLastThreeKeys(newArr)
     }
 
@@ -409,11 +417,15 @@ const Panel = ({
           &lt;/div&gt;
           &lt;TextArea
             autoFocus
+            onBlur={() =&gt; setWritingBorder(&#x27;normal&#x27;)}
             onChange={createInputSetterFn(setWriting)}
             onClick={handleWritingAreaClick}
+            onFocus={() =&gt; setWritingBorder(&#x27;bold&#x27;)}
             onKeyDown={handleWritingKeyDown}
             placeholder={practiceValue ? &#x27;&#x27; : &#x27;Writing area&#x27;}
             rows={1}
+            setRef={ref =&gt; (writingArea.current = ref)}
+            style={{ borderWidth: writingBorder === &#x27;bold&#x27; ? 2 : 1 }}
             value={writingValue}
             withoutCursor
           /&gt;
@@ -424,8 +436,8 @@ const Panel = ({
             rows={3}
             style={{
               border: `1px solid ${doesPracticeHaveError ? &#x27;red&#x27; : &#x27;white&#x27;}`,
-              fontSize: 46,
-              lineHeight: &#x27;46px&#x27;,
+              fontSize: 30,
+              lineHeight: &#x27;40px&#x27;,
             }}
             value={practiceValue}
           /&gt;
@@ -438,7 +450,7 @@ const Panel = ({
 
 export default Panel
 </textarea><pre id="annotations" style="display:none">[{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:23,&quot;character&quot;:3,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:24,&quot;character&quot;:4,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1}]</pre></div>
-    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Mon, 14 Mar 2022 00:00:12 GMT</p>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Mon, 14 Mar 2022 23:35:45 GMT</p>
     </body>
   </html>
   

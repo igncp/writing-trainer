@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">86.79% </span>
+                <span class="strong">87.27% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>46/53</span>
+                <span class='fraction'>48/55</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">68.75% </span>
+                <span class="strong">67.64% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>22/32</span>
+                <span class='fraction'>23/34</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">82.92% </span>
+                <span class="strong">83.72% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>34/41</span>
+                <span class='fraction'>36/43</span>
             </div>
         
             
@@ -168,7 +168,16 @@
 <a name='L103'></a><a href='#L103'>103</a>
 <a name='L104'></a><a href='#L104'>104</a>
 <a name='L105'></a><a href='#L105'>105</a>
-<a name='L106'></a><a href='#L106'>106</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -206,21 +215,23 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -273,7 +284,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { T_UIHandler, T_LangOpts } from '../types'
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { unknownPronunciation } from 'writing-trainer-core'
+&nbsp;
+import { T_UIHandler, T_LangOpts } from '../types'
 &nbsp;
 type T_ParsePronunciation = (text: string, langOpts?: T_LangOpts) =&gt; string
 type T_OnPracticeBackspaceFormat = (practiceValue: string) =&gt; string
@@ -286,49 +304,49 @@ type T_CommonHandleWritingKeyDown = (
   },
 ) =&gt; ReturnType&lt;T_UIHandler['handleWritingKeyDown']&gt;
 &nbsp;
-const parsePronunciationDefault: T_ParsePronunciation = p =&gt; p.toLowerCase()
-<span class="branch-1 cbranch-no" title="branch not covered" ><span class="branch-1 cbranch-no" title="branch not covered" ></span></span>
+const parsePronunciationDefault: T_ParsePronunciation = p =&gt; p.toLowerCase()<span class="branch-1 cbranch-no" title="branch not covered" ><span class="branch-1 cbranch-no" title="branch not covered" ></span></span>
+&nbsp;
 const onPracticeBackspaceFormatDefault: T_OnPracticeBackspaceFormat = p =&gt; {
   return p
     .split(' ')
-    .filter((ch, idx, arr) =&gt; idx !== arr.length - 1 || ch.trim() !== '')
-    .fil<span class="missing-if-branch" title="else path not taken" >E</span>ter((_, idx, arr) =&gt; idx !== arr.length - 1)<span class="branch-0 cbranch-no" title="branch not covered" ></span>
+    .fil<span class="missing-if-branch" title="else path not taken" >E</span>ter((ch, idx, arr) =&gt; idx !== arr.length - 1 <span class="branch-0 cbranch-no" title="branch not covered" >|| ch.t</span>rim() !== '')
+    .filter((_, idx, arr) =&gt; idx !== arr.length - 1)
     .concat([''])
     .join(' ')
 }
 &nbsp;
-export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
-  {<span class="branch-0 cbranch-no" title="branch not covered" ></span>
+export const commonHandleWritingKeyDown: T_CommonHandleWritingKey<span class="branch-0 cbranch-no" title="branch not covered" >Down = </span>(
+  {
     getCurrentCharObjFromPractice,
     keyEvent,
     languageOptions,
     practiceValue,
     setCurrentDisplayCharIdx,
-    setPractice,
-    <span class="missing-if-branch" title="if path not taken" >I</span>setPracticeHasError,
+    <span class="missing-if-branch" title="if path not taken" >I</span>setPractice,
+    setP<span class="cstat-no" title="statement not covered" >racticeHasError,</span>
     setW<span class="cstat-no" title="statement not covered" >riting,</span>
-    writ<span class="cstat-no" title="statement not covered" >ingValue,</span>
-  },<span class="cstat-no" title="statement not covered" ></span>
+    writ<span class="cstat-no" title="statement not covered" >ingValue</span>,
+  },
   {
     <span class="missing-if-branch" title="if path not taken" >I</span>onPracticeBackspaceFormat = onPra<span class="branch-1 cbranch-no" title="branch not covered" >cticeBackspaceFormatDefault,</span>
-    pars<span class="cstat-no" title="statement not covered" >ePronunciation = parsePronu</span>nciationDefault,
-  },<span class="cstat-no" title="statement not covered" ></span>
+    pars<span class="cstat-no" title="statement not covered" >ePronunc</span>iation = parsePronunciationDefault,
+  },
 ) =&gt; {
   if (keyEvent.key === 'Backspace' &amp;&amp; writingValue.length === 0) {
-    const newPracticeText = onPracticeBackspaceFormat(practiceValue)
+    const <span class="branch-0 cbranch-no" title="branch not covered" >newPracticeText = onPracticeBackspaceFormat(pra</span>cticeValue)
 &nbsp;
-    setPra<span class="branch-0 cbranch-no" title="branch not covered" >ctice(newPracticeText)</span>
-    const langObj = getCurrentCharObjFromPractice(newPracticeText)
-<span class="missing-if-branch" title="else path not taken" >E</span>
-    if (langObj?.ch) {
+    setPractice(newPracticeText)
+    <span class="missing-if-branch" title="else path not taken" >E</span>const langObj = getCurrentCharObjFromPractice(newPracticeText)
+&nbsp;
+    if (<span class="branch-1 cbranch-no" title="branch not covered" >langObj?.ch) {</span>
       setCurrentDisplayCharIdx(langObj.index)
     }
 &nbsp;
     return
   }
 <span class="cstat-no" title="statement not covered" ></span>
-  co<span class="cstat-no" title="statement not covered" >nst currentLangObj = getCurrentCharObjFromPractice()</span>
-&nbsp;
+  const currentLang<span class="cstat-no" title="statement not covered" >Obj = getCurrentCharObjFromPractice()</span>
+<span class="cstat-no" title="statement not covered" ></span>
   if (!currentLangObj?.ch) {
     setPracticeHasError(false)
 &nbsp;
@@ -348,13 +366,11 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     return
   }
 &nbsp;
-  if (keyEvent.key.length !== 1 &amp;&amp; keyEvent.key !== 'Backspace') {
-    keyEvent.preventDefault()
+  keyEvent.preventDefault()
 &nbsp;
+  if (keyEvent.key.length !== 1 &amp;&amp; keyEvent.key !== 'Backspace') {
     return
   }
-&nbsp;
-  keyEvent.preventDefault()
 &nbsp;
   const { pronunciation: correctPronunciation } = currentCharObj
 &nbsp;
@@ -363,9 +379,15 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
       ? writingValue.slice(0, writingValue.length - 1)
       : writingValue + keyEvent.key
 &nbsp;
+  const correctPronunciationParsed = parsePronunciation(
+    correctPronunciation,
+    languageOptions,
+  )
+&nbsp;
   if (
-    parsePronunciation(correctPronunciation, languageOptions) ===
-    parsePronunciation(newWritingValue, languageOptions)
+    correctPronunciationParsed ===
+      parsePronunciation(newWritingValue, languageOptions) ||
+    correctPronunciationParsed === unknownPronunciation
   ) {
     setWriting('')
     setPracticeHasError(false)
@@ -376,7 +398,9 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
 &nbsp;
   setWriting(newWritingValue)
 &nbsp;
-  setPracticeHasError(!correctPronunciation.startsWith(newWritingValue))
+  const hasError = !correctPronunciation.startsWith(newWritingValue)
+&nbsp;
+  setPracticeHasError(hasError)
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -385,7 +409,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Mon Mar 14 2022 00:00:05 GMT+0000 (Coordinated Universal Time)
+                at Mon Mar 14 2022 23:35:38 GMT+0000 (Coordinated Universal Time)
             </div>
         <script src="../../../prettify.js"></script>
         <script>
