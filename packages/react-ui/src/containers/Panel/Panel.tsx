@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   LanguageDefinition,
   LanguageManager,
@@ -31,10 +31,12 @@ const createToggleFn = (val: boolean, fn: (i: boolean) => void) => () => {
 
 const SHORTCUT_EDITING = 'control+control+shift'
 const SHORTCUT_PRONUNCIATION = 'shift+shift+control'
+const SHORTCUT_WRITING = 'w'
 
 const PRACTICE_TEXT_PLACEHOLDER = `Practice Text
 Toggle Editing: ${SHORTCUT_EDITING}
-Toggle Pronunciation: ${SHORTCUT_PRONUNCIATION}`
+Toggle Pronunciation: ${SHORTCUT_PRONUNCIATION}
+Focus Writing (if no input has focus): ${SHORTCUT_WRITING}`
 
 type Props = {
   UI?: {
@@ -104,8 +106,11 @@ const Panel = ({
     useState<LanguageDefinition['id']>(initialLanguageId)
   const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false)
   const [currentDisplayCharIdx, setCurrentDisplayCharIdx] = useState<number>(0)
+  const [writingBorder, setWritingBorder] = useState<'bold' | 'normal'>('bold')
+  const writingArea = useRef<HTMLTextAreaElement | null>(null)
 
   const uiHandler = languageUIManager.getUIHandler()
+
   const langHandler = languageManager.getCurrentLanguageHandler()
 
   const { storage } = services
@@ -181,11 +186,9 @@ const Panel = ({
   useEffect(() => {
     const practiceCharObj = getCurrentCharObjFromPractice()
 
-    if (practiceCharObj?.ch) {
+    if (practiceCharObj?.ch && practiceCharObj.ch.pronunciation !== '?') {
       setCurrentDisplayCharIdx(practiceCharObj.index)
     }
-
-    return () => {}
   }, [practiceValue, pronunciationValue])
 
   useEffect(() => {
@@ -198,8 +201,13 @@ const Panel = ({
         setShowingPronunciation(!isShowingPronunciation)
       } else if (currentResult === SHORTCUT_EDITING) {
         setShowingEdition(!isShowingEdition)
+      } else if (
+        value === SHORTCUT_WRITING &&
+        (!document.activeElement || document.activeElement === document.body)
+      ) {
+        e.preventDefault()
+        writingArea.current?.focus()
       }
-
       setLastThreeKeys(newArr)
     }
 
@@ -396,11 +404,15 @@ const Panel = ({
           </div>
           <TextArea
             autoFocus
+            onBlur={() => setWritingBorder('normal')}
             onChange={createInputSetterFn(setWriting)}
             onClick={handleWritingAreaClick}
+            onFocus={() => setWritingBorder('bold')}
             onKeyDown={handleWritingKeyDown}
             placeholder={practiceValue ? '' : 'Writing area'}
             rows={1}
+            setRef={ref => (writingArea.current = ref)}
+            style={{ borderWidth: writingBorder === 'bold' ? 2 : 1 }}
             value={writingValue}
             withoutCursor
           />
@@ -411,8 +423,8 @@ const Panel = ({
             rows={3}
             style={{
               border: `1px solid ${doesPracticeHaveError ? 'red' : 'white'}`,
-              fontSize: 46,
-              lineHeight: '46px',
+              fontSize: 30,
+              lineHeight: '40px',
             }}
             value={practiceValue}
           />

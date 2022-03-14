@@ -1,6 +1,5 @@
 ## Tasks
 
-- Allow typing when character is not found
 - Convert UI handler type to class
 - Pass manager via context
 - Persist config in records (which subpanels are displayed)
@@ -8,6 +7,9 @@
 - Support pronunciation with tones better
 - Generalize dictionary and inputvalue outside of langopts?
 - Add collections: Lists of records that can be exported and imported
+- Gamification with points, levels, or numbers of completions
+- Shortcuts refactor
+- Extract UI parts from Panel
 - Find parts of the extension that could be moved to the core
   - commonLanguageUtils
 - Code TODOs

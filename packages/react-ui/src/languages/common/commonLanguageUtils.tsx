@@ -1,3 +1,5 @@
+import { unknownPronunciation } from 'writing-trainer-core'
+
 import { T_UIHandler, T_LangOpts } from '../types'
 
 type T_ParsePronunciation = (text: string, langOpts?: T_LangOpts) => string
@@ -73,13 +75,11 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     return
   }
 
-  if (keyEvent.key.length !== 1 && keyEvent.key !== 'Backspace') {
-    keyEvent.preventDefault()
+  keyEvent.preventDefault()
 
+  if (keyEvent.key.length !== 1 && keyEvent.key !== 'Backspace') {
     return
   }
-
-  keyEvent.preventDefault()
 
   const { pronunciation: correctPronunciation } = currentCharObj
 
@@ -88,9 +88,15 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
       ? writingValue.slice(0, writingValue.length - 1)
       : writingValue + keyEvent.key
 
+  const correctPronunciationParsed = parsePronunciation(
+    correctPronunciation,
+    languageOptions,
+  )
+
   if (
-    parsePronunciation(correctPronunciation, languageOptions) ===
-    parsePronunciation(newWritingValue, languageOptions)
+    correctPronunciationParsed ===
+      parsePronunciation(newWritingValue, languageOptions) ||
+    correctPronunciationParsed === unknownPronunciation
   ) {
     setWriting('')
     setPracticeHasError(false)
@@ -101,5 +107,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
 
   setWriting(newWritingValue)
 
-  setPracticeHasError(!correctPronunciation.startsWith(newWritingValue))
+  const hasError = !correctPronunciation.startsWith(newWritingValue)
+
+  setPracticeHasError(hasError)
 }

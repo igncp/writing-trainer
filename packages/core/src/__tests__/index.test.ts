@@ -1,5 +1,5 @@
 import * as writingTrainer from '..'
-import { LanguageDefinition } from '../constants'
+import { LanguageDefinition, unknownPronunciation } from '../constants'
 import { LanguageHandler } from '../languageHandlers/_common'
 import { SPECIAL_SYMBOLS } from '../languageHandlers/_commonChars'
 import { englishHandler } from '../languageHandlers/english'
@@ -21,6 +21,7 @@ describe('interface', () => {
       englishHandler,
       japaneseHandler,
       mandarinHandler,
+      unknownPronunciation,
     })
   })
 })

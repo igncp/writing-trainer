@@ -14,6 +14,8 @@ import Panel from '../Panel'
 const languageManager = new LanguageManager()
 const languageUIManager = new LanguageUIManager(languageManager, uiHandlers)
 
+const initialText = '崩比筆,壁必畢.閉編'
+
 const Mandarin = () => {
   return (
     <Panel
@@ -24,7 +26,7 @@ const Mandarin = () => {
       languageUIManager={languageUIManager}
       onHideRequest={() => console.log('hide-request')}
       services={dummyServices}
-      text="崩比筆,壁必畢.閉編"
+      text={initialText}
     />
   )
 }

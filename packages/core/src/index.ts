@@ -1,5 +1,9 @@
 /* istanbul ignore file */
-import { LanguageDefinition, T_Storage } from './constants'
+import {
+  LanguageDefinition,
+  T_Storage,
+  unknownPronunciation,
+} from './constants'
 import { LanguageHandler } from './languageHandlers/_common'
 import { SPECIAL_SYMBOLS } from './languageHandlers/_commonChars'
 import { englishHandler } from './languageHandlers/english'
@@ -20,4 +24,5 @@ export {
   englishHandler,
   japaneseHandler,
   mandarinHandler,
+  unknownPronunciation,
 }

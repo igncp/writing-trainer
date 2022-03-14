@@ -1,3 +1,5 @@
+export const unknownPronunciation = '?'
+
 export class LanguageDefinition {
   public id: string
   public name: string

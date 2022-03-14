@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react'
 type TextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
   withoutCursor?: boolean
   autoScroll?: boolean
+  setRef?: (ref: HTMLTextAreaElement | null) => void
 }
 
 const TextArea = ({
@@ -11,6 +12,7 @@ const TextArea = ({
   withoutCursor,
   onChange,
   autoScroll,
+  setRef,
   ...props
 }: TextAreaProps) => {
   const ref = useRef<HTMLTextAreaElement>(null)
@@ -22,6 +24,10 @@ const TextArea = ({
       }
     : {}
 
+  if (setRef) {
+    setRef(ref.current)
+  }
+
   useEffect(() => {
     if (autoScroll && ref.current) {
       ref.current.scrollTop = ref.current.scrollHeight
@@ -32,6 +38,7 @@ const TextArea = ({
     <textarea
       data-gramm_editor={false}
       onChange={onChange}
+      ref={ref}
       spellCheck={false}
       style={{
         outline: 0,
@@ -41,7 +48,6 @@ const TextArea = ({
         ...style,
       }}
       {...props}
-      ref={ref}
     />
   )
 }

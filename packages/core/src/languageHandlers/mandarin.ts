@@ -1,4 +1,4 @@
-import { LanguageDefinition } from '../constants'
+import { LanguageDefinition, unknownPronunciation } from '../constants'
 import { CharObj } from '../languageManager'
 
 import { LanguageHandler } from './_common'
@@ -32,7 +32,10 @@ const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
       charsObjs.push(charObj)
     } else {
       const charObj = new CharObj({
-        pronunciation: pronunciationInputArr[chIdx] || dictionary[ch] || '?',
+        pronunciation:
+          pronunciationInputArr[chIdx] ||
+          dictionary[ch] ||
+          unknownPronunciation,
         word: ch,
       })
       charsObjs.push(charObj)
