@@ -2,12 +2,12 @@ import React from 'react'
 
 import Button from '../../../components/Button/Button'
 
-type T_GoogleTranslateButton = React.FC<{
+type Props = {
   language: string
   text: string
-}>
+}
 
-const GoogleTranslateButton: T_GoogleTranslateButton = ({ text, language }) => {
+const GoogleTranslateButton = ({ text, language }: Props) => {
   const hrefText = text
     .split('')
     .map(c => c.trim())

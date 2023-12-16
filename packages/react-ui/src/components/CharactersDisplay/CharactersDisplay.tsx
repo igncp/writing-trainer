@@ -3,25 +3,29 @@ import { CharObj } from 'writing-trainer-core'
 
 import { T_CharsDisplayClickHandler } from '../../languages/types'
 
-const CHAR_WIDTH = 55
+const CHAR_WIDTH = 25
 const MAX_HEIGHT = 160
 
-type T_CharactersDisplay = React.FC<{
+type Props = {
   charsObjs: CharObj[]
   focusedIndex?: number
+  fontSize?: number
   onCharClick: T_CharsDisplayClickHandler
   shouldHaveDifferentWidths?: boolean
   shouldHidePronunciation: boolean
-}>
+}
 
-const CharactersDisplay: T_CharactersDisplay = ({
+const CharactersDisplay = ({
   charsObjs,
   focusedIndex,
+  fontSize,
   onCharClick,
   shouldHaveDifferentWidths,
   shouldHidePronunciation,
-}) => {
+}: Props) => {
+  const usedFontSize = fontSize ?? 30
   const wrapperRef = useRef<HTMLDivElement | undefined>()
+  const charWidth = CHAR_WIDTH + usedFontSize
 
   useEffect(() => {
     if (!wrapperRef.current || (!wrapperRef.current.childNodes as unknown)) {
@@ -75,7 +79,7 @@ const CharactersDisplay: T_CharactersDisplay = ({
               cursor: pronunciation && onCharClick ? 'pointer' : 'default',
               display: 'inline-block',
               marginBottom: 10,
-              opacity: index === focusedIndex ? 1 : 0.5,
+              opacity: index === focusedIndex ? 1 : 0.3,
             }}
           >
             <div
@@ -84,18 +88,18 @@ const CharactersDisplay: T_CharactersDisplay = ({
                 height: 10,
                 marginBottom: 1,
                 textAlign: 'center',
-                ...(shouldHaveDifferentWidths ? {} : { width: CHAR_WIDTH }),
+                ...(shouldHaveDifferentWidths ? {} : { width: charWidth }),
               }}
             >
               {shouldHidePronunciation ? '' : pronunciation}
             </div>
             <div
               style={{
-                fontSize: 40,
+                fontSize: usedFontSize + 10,
                 minWidth: 10,
                 paddingTop: 15,
                 textAlign: 'center',
-                ...(shouldHaveDifferentWidths ? {} : { width: CHAR_WIDTH }),
+                ...(shouldHaveDifferentWidths ? {} : { width: charWidth }),
               }}
             >
               {word}

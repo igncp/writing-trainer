@@ -23,7 +23,7 @@ const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
     .map(segment => {
       const numRegResul = /([a-z]+)([0-9]+)/.exec(segment)
 
-      if (!numRegResul || !numRegResul[1] || !numRegResul[2]) {
+      if (!numRegResul?.[1] || !numRegResul[2]) {
         return { num: 1, text: segment }
       }
 

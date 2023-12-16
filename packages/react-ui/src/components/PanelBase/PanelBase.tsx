@@ -1,11 +1,11 @@
 import React from 'react'
 
-type T_PanelBase = React.FC<{
+type Props = {
   children: React.ReactNode
   onOverlayClick: () => void
-}>
+}
 
-const PanelBase: T_PanelBase = ({ children, onOverlayClick }) => {
+const PanelBase = ({ children, onOverlayClick }: Props) => {
   return (
     <div
       style={{

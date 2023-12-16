@@ -95,6 +95,7 @@ const SPECIAL_SYMBOLS = [
   '｜',
   '～',
   '�️',
+  '＊',
 ]
 
 export { SPECIAL_SYMBOLS }

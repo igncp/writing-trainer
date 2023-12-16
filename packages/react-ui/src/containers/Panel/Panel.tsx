@@ -31,9 +31,12 @@ const createToggleFn = (val: boolean, fn: (i: boolean) => void) => () => {
 
 const SHORTCUT_EDITING = 'control+control+shift'
 const SHORTCUT_PRONUNCIATION = 'shift+shift+control'
+const SHORTCUT_NEXT_FRAGMENT = 'Tab'
 const SHORTCUT_WRITING = 'w'
+const defaultFontSize = 30
 
 const PRACTICE_TEXT_PLACEHOLDER = `Practice Text
+Next fragment: ${SHORTCUT_NEXT_FRAGMENT}
 Toggle Editing: ${SHORTCUT_EDITING}
 Toggle Pronunciation: ${SHORTCUT_PRONUNCIATION}
 Focus Writing (if no input has focus): ${SHORTCUT_WRITING}`
@@ -84,11 +87,19 @@ const Panel = ({
   text,
 }: Props) => {
   const initialLanguageId = languageUIManager.getDefaultLanguage()
+
+  const [fragments, setFragments] = useState<{ index: number; list: string[] }>(
+    {
+      index: 0,
+      list: [text],
+    },
+  )
+
   const [showingRecordsInitScreen, setShowingRecordsInitScreen] = useState<
     RecordsScreen | ''
   >('')
   const [currentRecord, setCurrentRecord] = useState<Record['id'] | null>(null)
-  const [originalTextValue, setOriginalText] = useState<string>(text)
+  const originalTextValue = fragments.list[fragments.index]
   const [pronunciationValue, setPronunciation] = useState<string>(
     _stories.defaultPronunciation ?? '',
   )
@@ -97,6 +108,7 @@ const Panel = ({
   const [practiceValue, setPractice] = useState<string>(
     _stories.defaultPractice ?? '',
   )
+  const [fontSize, setFontSize] = useState<number>(defaultFontSize)
   const [isShowingPronunciation, setShowingPronunciation] = useState(true)
   const [isShowingEdition, setShowingEdition] = useState<boolean>(true)
   const [doesPracticeHaveError, setPracticeHasError] = useState<boolean>(false)
@@ -120,13 +132,42 @@ const Panel = ({
   ) => {
     const val = e.target.value
 
-    setOriginalText(val)
+    setFragments({
+      index: 0,
+      list: val
+        .split('\n')
+        .map(s => s.trim())
+        .filter(Boolean),
+    })
   }
 
   const updateLanguage = (lang: LanguageDefinition['id']) => {
     languageManager.setCurrentLanguageHandler(lang)
     setSelectedLanguage(lang)
   }
+
+  useEffect(() => {
+    // eslint-disable-next-line
+    ;(async () => {
+      const savedFontSize = await storage.getValue('fontSize')
+
+      if (savedFontSize) {
+        const parsedFontSize = Number(savedFontSize)
+
+        if (parsedFontSize) {
+          setFontSize(parsedFontSize)
+        }
+      }
+    })()
+  }, [])
+
+  useEffect(() => {
+    if (fontSize !== defaultFontSize) {
+      storage.setValue('fontSize', fontSize.toString())
+    } else {
+      storage.setValue('fontSize', '')
+    }
+  }, [fontSize])
 
   useEffect(() => {
     if (!_stories.defaultLanguage) {
@@ -197,6 +238,17 @@ const Panel = ({
       const newArr = lastThreeKeys.slice(-2).concat([value])
       const currentResult = newArr.join('+').toLowerCase()
 
+      if (value === SHORTCUT_NEXT_FRAGMENT) {
+        e.preventDefault()
+
+        setPractice('')
+
+        setFragments({
+          ...fragments,
+          index: (fragments.index + 1) % fragments.list.length,
+        })
+      }
+
       if (currentResult === SHORTCUT_PRONUNCIATION) {
         setShowingPronunciation(!isShowingPronunciation)
       } else if (currentResult === SHORTCUT_EDITING) {
@@ -219,16 +271,13 @@ const Panel = ({
   }, [lastThreeKeys, isShowingEdition, isShowingPronunciation])
 
   const clearValues = () => {
-    // eslint-disable-next-line padding-line-between-statements,@typescript-eslint/no-extra-semi
-    ;[
-      setOriginalText,
-      setPronunciation,
-      setSpecialChars,
-      setWriting,
-      setPractice,
-    ].forEach(fn => {
-      fn('')
-    })
+    // eslint-disable-next-line no-extra-semi,padding-line-between-statements
+    ;[setPronunciation, setSpecialChars, setWriting, setPractice].forEach(
+      fn => {
+        fn('')
+      },
+    )
+    setFragments({ index: 0, list: [''] })
     setShowingPronunciation(true)
     setShowingEdition(true)
     setCurrentRecord(null)
@@ -309,7 +358,7 @@ const Panel = ({
           setShowingRecordsInitScreen('')
           setShowingEdition(false)
           setShowingPronunciation(false)
-          setOriginalText(record.text)
+          setFragments({ index: 0, list: record.text.split('\n') })
           setCurrentRecord(record.id)
           setPronunciation(record.pronunciation)
         }}
@@ -347,6 +396,18 @@ const Panel = ({
       <Button onClick={saveRecord}>
         {currentRecord === null ? 'Save' : 'Update'}
       </Button>
+      <Button
+        onClick={() => {
+          setPractice('')
+
+          setFragments({
+            ...fragments,
+            index: (fragments.index + 1) % fragments.list.length,
+          })
+        }}
+      >
+        Current Fragment: {fragments.index + 1} / {fragments.list.length}
+      </Button>
       {currentRecord !== null && (
         <Button
           onClick={() => {
@@ -367,12 +428,18 @@ const Panel = ({
       </Button>
       <div style={{ padding: '0 0 20px' }}>
         {isShowingEdition && (
-          <div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 10,
+            }}
+          >
             <TextArea
               onChange={handleOriginalTextUpdate}
               placeholder="Original text"
               rows={3}
-              value={originalTextValue}
+              value={fragments.list.join('\n')}
             />
             <TextArea
               onChange={createInputSetterFn(setPronunciation)}
@@ -390,6 +457,16 @@ const Panel = ({
               languageOptions={languageOptions}
               onOptionsChange={handleLanguageOptionsChange}
             />
+            <div style={{ fontSize: '12px' }}>
+              Font size:{' '}
+              <input
+                onChange={event => {
+                  setFontSize(Number(event.target.value))
+                }}
+                type="number"
+                value={fontSize}
+              />
+            </div>
           </div>
         )}{' '}
         <div>
@@ -397,6 +474,7 @@ const Panel = ({
             <CharactersDisplay
               charsObjs={charsObjs}
               focusedIndex={currentDisplayCharIdx}
+              fontSize={fontSize}
               onCharClick={handleDisplayedCharClick}
               shouldHaveDifferentWidths={!uiHandler.shouldAllCharsHaveSameWidth}
               shouldHidePronunciation={!isShowingPronunciation}
@@ -419,12 +497,19 @@ const Panel = ({
           <TextArea
             autoScroll
             onChange={createInputSetterFn(setPractice)}
+            onFocus={() => {
+              writingArea.current?.focus()
+            }}
             placeholder={PRACTICE_TEXT_PLACEHOLDER}
             rows={3}
             style={{
-              border: `1px solid ${doesPracticeHaveError ? 'red' : 'white'}`,
-              fontSize: 30,
-              lineHeight: '40px',
+              border: `4px solid ${
+                doesPracticeHaveError
+                  ? 'red'
+                  : 'var(--color-background, "white")'
+              }`,
+              fontSize,
+              lineHeight: `${fontSize + 10}px`,
             }}
             value={practiceValue}
           />

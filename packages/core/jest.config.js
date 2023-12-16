@@ -22,7 +22,6 @@ module.exports = Object.assign(globalConfig, {
   },
   moduleNameMapper: {
     '#/(.*)$': '<rootDir>/src/$1',
-    '^.+.csv$': '<rootDir>/helpers/test/mockCsv.js',
   },
   roots: ['<rootDir>/src', '<rootDir>/test'],
   setupFilesAfterEnv: ['<rootDir>/helpers/test/testSetup.js'],

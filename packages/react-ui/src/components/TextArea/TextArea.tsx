@@ -16,7 +16,7 @@ const TextArea = ({
   ...props
 }: TextAreaProps) => {
   const ref = useRef<HTMLTextAreaElement>(null)
-  const color = _get(style, 'color', 'black')
+  const color = _get(style, 'color', 'var(--color-text, "black")')
   const cursorStyle = withoutCursor
     ? {
         color: 'transparent',
@@ -41,9 +41,11 @@ const TextArea = ({
       ref={ref}
       spellCheck={false}
       style={{
+        border: '1px solid #ddd',
         outline: 0,
         resize: 'none',
         width: '100%',
+
         ...cursorStyle,
         ...style,
       }}
@@ -54,7 +56,6 @@ const TextArea = ({
 
 TextArea.defaultProps = {
   autoScroll: false,
-  color: 'black',
 }
 
 export default TextArea

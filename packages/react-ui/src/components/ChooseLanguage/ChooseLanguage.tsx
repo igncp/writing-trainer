@@ -8,17 +8,17 @@ import {
   HOVERED_COMP_OPACITY,
 } from '../../utils/ui'
 
-type T_ChooseLanguage = React.FC<{
+type Props = {
   languages: Array<{ id: LanguageDefinition['id']; name: string }>
   onOptionsChange: (id: string) => void
   selectedLanguage: LanguageDefinition['id']
-}>
+}
 
-const ChooseLanguage: T_ChooseLanguage = ({
+const ChooseLanguage = ({
   languages,
   onOptionsChange,
   selectedLanguage,
-}) => {
+}: Props) => {
   const { hovered, bind } = useHover()
 
   const handleOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

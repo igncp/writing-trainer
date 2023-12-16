@@ -1,0 +1,23 @@
+@import 'src/styles/sass.scss';
+
+.title {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  align-items: center;
+
+  .mobile {
+    display: none;
+    @include laptop-down {
+      display: flex;
+    }
+  }
+
+  .desktop {
+    display: none;
+    @include laptop-up {
+      display: flex;
+    }
+  }
+}

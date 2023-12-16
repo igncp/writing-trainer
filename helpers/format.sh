@@ -2,6 +2,10 @@
 
 set -e
 
-(sh helpers/prettier.sh --write || true)
+if [ -f helpers/prettier.sh ]; then
+  (bash helpers/prettier.sh --write || true)
+elif [ -f ../../helpers/prettier.sh ]; then
+  (bash ../../helpers/prettier.sh --write || true)
+fi
 
 (npm run eslint -- --fix || true)

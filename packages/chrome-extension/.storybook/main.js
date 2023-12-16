@@ -1,15 +1,37 @@
-const webpack = require('webpack')
+import { join, dirname } from 'path'
+import webpack from 'webpack'
+
 const webpackConf = require('../webpack.prod.js')
 
-module.exports = {
-  core: {
-    builder: 'webpack5',
+/**
+ * This function is used to resolve the absolute path of a package.
+ * It is needed in projects that use Yarn PnP or are set up within a monorepo.
+ */
+function getAbsolutePath(value) {
+  return dirname(require.resolve(join(value, 'package.json')))
+}
+
+/** @type { import('@storybook/react-webpack5').StorybookConfig } */
+const configStorybook = {
+  'addons': [
+    getAbsolutePath('@storybook/addon-links'),
+    getAbsolutePath('@storybook/addon-essentials'),
+    getAbsolutePath('@storybook/addon-onboarding'),
+    getAbsolutePath('@storybook/addon-interactions'),
+  ],
+  'docs': {
+    'autodocs': 'tag',
   },
-  features: {
-    postcss: false,
+  'framework': {
+    'name': getAbsolutePath('@storybook/react-webpack5'),
+    'options': {
+      'builder': {
+        'useSWC': true,
+      },
+    },
   },
-  stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
-  webpackFinal: config => {
+  'stories': ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+  webpackFinal: async config => {
     Object.assign(config.resolve.alias, webpackConf.resolve.alias)
 
     config.resolve.extensions = config.resolve.extensions
@@ -30,6 +52,10 @@ module.exports = {
         },
         test: /\.csv$/,
       },
+      {
+        loader: 'yaml-loader',
+        test: /\.ya?ml$/,
+      },
     )
 
     config.plugins.push(
@@ -43,3 +69,4 @@ module.exports = {
     return config
   },
 }
+export default configStorybook

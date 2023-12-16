@@ -9,7 +9,6 @@ const tsRules = {
   '@typescript-eslint/member-ordering': 2,
   '@typescript-eslint/method-signature-style': 2,
   '@typescript-eslint/no-confusing-non-null-assertion': 2,
-  '@typescript-eslint/no-duplicate-imports': 2,
   '@typescript-eslint/no-explicit-any': 2,
   '@typescript-eslint/no-redeclare': 2,
   '@typescript-eslint/no-shadow': 2,
@@ -40,7 +39,6 @@ const tsRules = {
   '@typescript-eslint/prefer-reduce-type-parameter': 2,
   '@typescript-eslint/prefer-return-this-type': 2,
   '@typescript-eslint/prefer-ts-expect-error': 2,
-  '@typescript-eslint/sort-type-union-intersection-members': 2,
   '@typescript-eslint/switch-exhaustiveness-check': 2,
   '@typescript-eslint/unified-signatures': 2,
 }
@@ -53,7 +51,6 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:jest/recommended',
-    'plugin:eslint-comments/recommended',
     'plugin:@typescript-eslint/recommended',
   ],
   globals: {
@@ -101,6 +98,7 @@ module.exports = {
     eqeqeq: 2,
     'newline-before-return': 2,
     'no-console': 2,
+    'no-extra-semi': 0,
     'no-useless-return': 2,
     'padding-line-between-statements': [
       'error',

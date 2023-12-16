@@ -5,7 +5,7 @@ import { T_UIHandler, T_LangOpts, T_CharsDisplayClickHandler } from '../types'
 
 import LinksBlock from './LinksBlock/LinksBlock'
 import OptionsBlock from './OptionsBlock/OptionsBlock'
-import dictionary from './converted-list-ma.csv'
+import dictionary from './converted-list-ma.yml'
 import { T_MandarinLanguageOptions } from './mandarinTypes'
 
 const charToPronunciationMap: { [key: string]: string } = {}
@@ -14,9 +14,33 @@ const pronunciationToCharMap: { [key: string]: string } = {}
 const CANTODICT_LINK =
   'http://www.cantonese.sheik.co.uk/scripts/wordsearch.php?level=0'
 
-dictionary.forEach(([char, pronunciation]: [string, string]) => {
-  charToPronunciationMap[char] = pronunciation
-  pronunciationToCharMap[pronunciation] = char
+const dictionaryParsed = (
+  dictionary as { dict: Array<undefined | string> }
+).dict.reduce<Record<string, [string, number] | undefined>>((acc, item) => {
+  const [char, pronunciation, perc] = item?.split('\t') ?? []
+
+  if (!char || !pronunciation) {
+    return acc
+  }
+
+  const finalPerc = perc ? parseFloat(perc.replace('%', '')) : 0
+  const existing = acc[char]
+
+  if (existing && existing[1] > finalPerc) {
+    return acc
+  }
+
+  acc[char] = [pronunciation, finalPerc]
+
+  return acc
+}, {})
+
+Object.keys(dictionaryParsed).forEach(char => {
+  const item = dictionaryParsed[char]
+
+  if (!item) return
+  charToPronunciationMap[char] = item[0]
+  pronunciationToCharMap[item[0]] = char
 })
 
 const parsePronunciation = (text: string, opts: T_LangOpts) => {

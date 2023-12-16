@@ -1,4 +1,0 @@
-language: node_js
-node_js:
-  - "10.13.0"
-script: sh helpers/ci/travis.sh

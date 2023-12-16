@@ -2,11 +2,11 @@
 
 set -e
 
-sh helpers/prettier.sh -c
+bash ../../helpers/prettier.sh -c
 
 npm run eslint
 
-npm test -- --coverage
+npm test -- --no-coverage
 
 npm run type-coverage
 

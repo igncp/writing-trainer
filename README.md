@@ -1,8 +1,6 @@
 # Writing Trainer
 
-[![Build Status](https://travis-ci.org/igncp/writing-trainer.svg?branch=master)](https://travis-ci.org/igncp/writing-trainer)
-
-Project under construction. For more info:
+Applications I use to practice language learning. For more info:
 
 - [chrome-extension](./packages/chrome-extension)
 - [core](./packages/core)
@@ -12,7 +10,6 @@ Project under construction. For more info:
 ## Hosted Pages
 
 - [chrome-extension-storybook](https://igncp.github.io/writing-trainer/chrome-extension-storybook)
-- [chrome-extension-tests-coverage](https://igncp.github.io/writing-trainer/chrome-extension-tests-coverage)
 - [chrome-extension-types-coverage](https://igncp.github.io/writing-trainer/chrome-extension-types-coverage)
 - [core-tests-coverage](https://igncp.github.io/writing-trainer/core-tests-coverage)
 - [core-types-coverage](https://igncp.github.io/writing-trainer/core-types-coverage)

@@ -1,21 +1,21 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 
 import Content from '@/containers/Content/Content'
 import log from '@/services/log'
 
 const main = () => {
   const div = document.createElement('div')
+  const root = createRoot(div)
 
   document.body.prepend(div)
 
-  ReactDOM.render(
+  root.render(
     <Content
       onContentEnabledResult={result => {
         log('ENABLED', result)
       }}
     />,
-    div,
   )
 }
 

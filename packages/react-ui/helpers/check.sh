@@ -2,7 +2,7 @@
 
 set -e
 
-sh helpers/prettier.sh --list-different
+bash ../../helpers/prettier.sh --list-different
 
 npm run eslint
 

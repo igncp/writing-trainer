@@ -39,6 +39,10 @@ const config = {
         },
         test: /\.csv$/,
       },
+      {
+        loader: 'yaml-loader',
+        test: /\.ya?ml$/,
+      },
     ],
   },
   output: {

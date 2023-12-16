@@ -12,16 +12,20 @@ type T_convertToCharsObjs = (opts: {
 class LanguageHandler {
   public readonly convertToCharsObjs: T_convertToCharsObjs
   private readonly language: LanguageDefinition
+  private readonly extraSpecialChars: string[]
 
   public constructor({
     convertToCharsObjs,
+    extraSpecialChars,
     language,
   }: {
     convertToCharsObjs: LanguageHandler['convertToCharsObjs']
     language: LanguageHandler['language']
+    extraSpecialChars?: string[]
   }) {
     this.convertToCharsObjs = convertToCharsObjs
     this.language = language
+    this.extraSpecialChars = extraSpecialChars ?? []
   }
 
   public getId() {
@@ -39,8 +43,8 @@ class LanguageHandler {
     text: string
     charsToRemove: string[]
   }) {
-    const specialCharts = this.getSpecialChars()
-    const allCharsToRemove = charsToRemove.concat(specialCharts)
+    const specialChars = this.getSpecialChars()
+    const allCharsToRemove = charsToRemove.concat(specialChars)
 
     return text
       .split('')
@@ -102,7 +106,7 @@ class LanguageHandler {
   }
 
   public getSpecialChars() {
-    return SPECIAL_SYMBOLS
+    return SPECIAL_SYMBOLS.concat(this.extraSpecialChars)
   }
 }
 

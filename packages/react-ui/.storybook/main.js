@@ -1,17 +1,36 @@
-const webpack = require('webpack')
+import { join, dirname } from 'path'
+import webpack from 'webpack'
 
-module.exports = {
-  core: {
-    builder: 'webpack5',
+/**
+ * This function is used to resolve the absolute path of a package.
+ * It is needed in projects that use Yarn PnP or are set up within a monorepo.
+ */
+function getAbsolutePath(value) {
+  return dirname(require.resolve(join(value, 'package.json')))
+}
+
+/** @type { import('@storybook/react-webpack5').StorybookConfig } */
+const configStorybook = {
+  'addons': [
+    getAbsolutePath('@storybook/addon-links'),
+    getAbsolutePath('@storybook/addon-essentials'),
+    getAbsolutePath('@storybook/addon-onboarding'),
+    getAbsolutePath('@storybook/addon-interactions'),
+  ],
+  'docs': {
+    'autodocs': 'tag',
   },
-  features: {
-    postcss: false,
+  'framework': {
+    'name': getAbsolutePath('@storybook/react-webpack5'),
+    'options': {
+      'builder': {
+        'useSWC': true,
+      },
+    },
   },
-  stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
-  webpackFinal: config => {
-    config.resolve.extensions = config.resolve.extensions
-      .concat(['.csv'])
-      .filter((item, index, arr) => arr.indexOf(item) === index)
+  'stories': ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+  webpackFinal: async config => {
+    Object.assign(config.resolve.alias)
 
     config.module.rules.push(
       {
@@ -27,10 +46,15 @@ module.exports = {
         },
         test: /\.csv$/,
       },
+      {
+        loader: 'yaml-loader',
+        test: /\.ya?ml$/,
+      },
     )
 
     config.plugins.push(
       new webpack.DefinePlugin({
+        __STORAGE_TYPE__: JSON.stringify('localStorage'),
         __TEST__: false,
         __USE_CHROME_TABS_FEATURE__: false,
       }),
@@ -39,3 +63,4 @@ module.exports = {
     return config
   },
 }
+export default configStorybook

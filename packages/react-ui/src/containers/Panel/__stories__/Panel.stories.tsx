@@ -1,6 +1,7 @@
 import React from 'react'
 import {
   LanguageManager,
+  cantoneseHandler,
   englishHandler,
   japaneseHandler,
   mandarinHandler,
@@ -67,6 +68,22 @@ const Japanese = () => {
   )
 }
 
+const Cantonese = () => {
+  return (
+    <Panel
+      _stories={{
+        defaultLanguage: cantoneseHandler.getId(),
+        defaultPronunciation: '',
+      }}
+      languageManager={languageManager}
+      languageUIManager={languageUIManager}
+      onHideRequest={() => console.log('hide-request')}
+      services={dummyServices}
+      text={initialText}
+    />
+  )
+}
+
 const English = () => {
   return (
     <Panel
@@ -95,4 +112,4 @@ export default {
   title: 'Containers/Panel',
 }
 
-export { Mandarin, MandarinLongText, Japanese, English }
+export { Mandarin, MandarinLongText, Japanese, English, Cantonese }

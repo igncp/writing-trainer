@@ -1,4 +1,3 @@
-import { useStaticQuery, graphql } from 'gatsby'
 import React from 'react'
 import { Helmet } from 'react-helmet'
 
@@ -10,21 +9,7 @@ type IProps = {
 }
 
 function SEO({ description, lang, meta, title }: IProps) {
-  const { site } = useStaticQuery(
-    graphql`
-      query {
-        site {
-          siteMetadata {
-            title
-            description
-            author
-          }
-        }
-      }
-    `,
-  )
-
-  const metaDescription = description || site.siteMetadata.description
+  const metaDescription = description || ''
 
   return (
     <Helmet
@@ -53,10 +38,6 @@ function SEO({ description, lang, meta, title }: IProps) {
           name: `twitter:card`,
         },
         {
-          content: site.siteMetadata.author,
-          name: `twitter:creator`,
-        },
-        {
           content: title,
           name: `twitter:title`,
         },
@@ -66,7 +47,7 @@ function SEO({ description, lang, meta, title }: IProps) {
         },
       ].concat(meta)}
       title={title}
-      titleTemplate={`%s | ${site.siteMetadata.title}`}
+      titleTemplate={`%s | Writing Trainer`}
     />
   )
 }

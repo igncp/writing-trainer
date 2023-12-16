@@ -3,3 +3,5 @@ dist
 coverage
 coverage-ts
 public
+.next
+out

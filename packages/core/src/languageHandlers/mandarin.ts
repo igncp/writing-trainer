@@ -52,6 +52,8 @@ const language = new LanguageDefinition({
 
 const mandarinHandler = new LanguageHandler({
   convertToCharsObjs,
+  extraSpecialChars:
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(''),
   language,
 })
 

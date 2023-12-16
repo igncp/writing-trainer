@@ -2,6 +2,5 @@
 dist
 coverage
 .scannerwork
-sonar-token.txt
 node_modules
 coverage-ts

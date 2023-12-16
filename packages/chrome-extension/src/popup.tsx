@@ -1,14 +1,15 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 
 import Popup from '@/containers/Popup/Popup'
 
 const main = () => {
   const div = document.createElement('div')
+  const root = createRoot(div)
 
   document.body.prepend(div)
 
-  ReactDOM.render(<Popup />, div)
+  root.render(<Popup />)
 }
 
 setTimeout(main, 100)

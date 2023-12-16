@@ -11,6 +11,7 @@ const noop = () => {}
 
 type T_ButtonProps = {
   children: React.ReactNode
+  className?: string
   disabled?: boolean
   href?: string
   onClick?: () => void
@@ -18,20 +19,19 @@ type T_ButtonProps = {
   style?: React.CSSProperties
 }
 
-type T_Button = React.FC<T_ButtonProps>
-
-const Button: T_Button = ({
+const Button = ({
   children,
+  className,
   disabled,
   href,
   onClick,
   shouldUseLink,
   style,
-}) => {
+}: T_ButtonProps) => {
   const { hovered, bind } = useHover()
   const finalStyle = {
-    color: 'black',
-    cursor: disabled ? 'default' : 'pointer',
+    color: 'var(--color-text, "black")',
+    cursor: disabled ?? !onClick ? 'default' : 'pointer',
     display: 'inline-block',
     fontSize: 20,
     opacity: hovered && !disabled ? HOVERED_COMP_OPACITY : DIM_COMP_OPACITY,
@@ -45,6 +45,7 @@ const Button: T_Button = ({
   if (shouldUseLink) {
     return (
       <a
+        className={className}
         href={href}
         rel="noopener noreferrer"
         style={finalStyle}

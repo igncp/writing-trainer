@@ -4,15 +4,16 @@ import { CharObj, CurrentCharObj, LanguageHandler } from 'writing-trainer-core'
 export type T_LangOpts = { [k: string]: unknown }
 
 // @TODO: Review this interface
-export type T_LinksBlock = React.FC<{
+export type T_LinksBlock = (opts: {
   text: string
-}>
+  children?: React.ReactNode
+}) => React.ReactNode
 
-export type T_OptionsBlock = React.FC<{
+export type T_OptionsBlock = (props: {
   languageOptions: T_LangOpts
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onOptionsChange: (...args: any[]) => void
-}>
+}) => React.ReactNode
 
 export type T_getPronunciationOfText = (opts: {
   text: string

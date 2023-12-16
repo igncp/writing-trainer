@@ -15,10 +15,11 @@
       "#/*": ["src/*"]
     },
     "rootDir": "src",
+    "skipLibCheck": true,
     "sourceMap": false,
     "strictNullChecks": true,
     "target": "es5",
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["../../node_modules/@types"]
   },
   "include": ["**/*.js", "**/*.ts", "**/*.tsx", ".eslintrc.js"]
 }

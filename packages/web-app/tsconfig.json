@@ -2,25 +2,32 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
-    "esModuleInterop": true,
     "declaration": true,
-    "jsx": "react",
+    "esModuleInterop": true,
+    "jsx": "preserve",
     "lib": ["es7", "dom"],
     "module": "CommonJS",
     "moduleResolution": "node",
     "noEmitOnError": true,
     "noImplicitAny": true,
-    "strictNullChecks": true,
     "noUnusedLocals": true,
     "outDir": "dist",
     "rootDir": "src",
+    "skipLibCheck": true,
     "sourceMap": false,
+    "strictNullChecks": true,
     "target": "es6",
     "typeRoots": [
       "node_modules/@types",
-      "src/typings",
+      "src/types.d.ts",
       "../../node_modules/@types"
-    ]
+    ],
+    "allowJs": true,
+    "strict": true,
+    "noEmit": true,
+    "incremental": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
   },
   "include": [
     "**/*.js",
@@ -28,5 +35,6 @@
     "**/*.tsx",
     ".storybook/**/*.js",
     ".eslintrc.js"
-  ]
+  ],
+  "exclude": ["node_modules"]
 }

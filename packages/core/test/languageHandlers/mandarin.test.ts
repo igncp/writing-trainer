@@ -9,8 +9,21 @@ describe('values', () => {
 
 describe('getSpecialChars', () => {
   it('returns the expected array', () => {
-    expect(mandarinHandler.getSpecialChars()).toEqual(SPECIAL_SYMBOLS)
-    expect(mandarinHandler.getSpecialChars()).toEqual(SPECIAL_SYMBOLS)
+    expect(mandarinHandler.getSpecialChars()).toEqual(
+      SPECIAL_SYMBOLS.concat(
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(
+          '',
+        ),
+      ),
+    )
+
+    expect(mandarinHandler.getSpecialChars()).toEqual(
+      SPECIAL_SYMBOLS.concat(
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(
+          '',
+        ),
+      ),
+    )
   })
 })
 

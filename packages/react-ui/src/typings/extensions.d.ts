@@ -4,6 +4,12 @@ declare module '*.csv' {
   export default list
 }
 
+declare module '*.yml' {
+  const list: unknown
+
+  export default list
+}
+
 declare module '*.txt' {
   const value: string
 
