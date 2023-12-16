@@ -11,7 +11,7 @@
 <link href="../../../../assets/source-file.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Panel/Panel.tsx</td><td class="">99.65%</td><td class="">95%</td><td class="">572</td><td class="">570</td><td class="">2</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useRef, useState } from &#x27;react&#x27;
+    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Panel/Panel.tsx</td><td class="">99.71%</td><td class="">95%</td><td class="">680</td><td class="">678</td><td class="">2</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useRef, useState } from &#x27;react&#x27;
 import {
   LanguageDefinition,
   LanguageManager,
@@ -44,9 +44,12 @@ const createToggleFn = (val: boolean, fn: (i: boolean) =&gt; void) =&gt; () =&gt
 
 const SHORTCUT_EDITING = &#x27;control+control+shift&#x27;
 const SHORTCUT_PRONUNCIATION = &#x27;shift+shift+control&#x27;
+const SHORTCUT_NEXT_FRAGMENT = &#x27;Tab&#x27;
 const SHORTCUT_WRITING = &#x27;w&#x27;
+const defaultFontSize = 30
 
 const PRACTICE_TEXT_PLACEHOLDER = `Practice Text
+Next fragment: ${SHORTCUT_NEXT_FRAGMENT}
 Toggle Editing: ${SHORTCUT_EDITING}
 Toggle Pronunciation: ${SHORTCUT_PRONUNCIATION}
 Focus Writing (if no input has focus): ${SHORTCUT_WRITING}`
@@ -97,11 +100,19 @@ const Panel = ({
   text,
 }: Props) =&gt; {
   const initialLanguageId = languageUIManager.getDefaultLanguage()
+
+  const [fragments, setFragments] = useState&lt;{ index: number; list: string[] }&gt;(
+    {
+      index: 0,
+      list: [text],
+    },
+  )
+
   const [showingRecordsInitScreen, setShowingRecordsInitScreen] = useState&lt;
     RecordsScreen | &#x27;&#x27;
   &gt;(&#x27;&#x27;)
   const [currentRecord, setCurrentRecord] = useState&lt;Record[&#x27;id&#x27;] | null&gt;(null)
-  const [originalTextValue, setOriginalText] = useState&lt;string&gt;(text)
+  const originalTextValue = fragments.list[fragments.index]
   const [pronunciationValue, setPronunciation] = useState&lt;string&gt;(
     _stories.defaultPronunciation ?? &#x27;&#x27;,
   )
@@ -110,6 +121,7 @@ const Panel = ({
   const [practiceValue, setPractice] = useState&lt;string&gt;(
     _stories.defaultPractice ?? &#x27;&#x27;,
   )
+  const [fontSize, setFontSize] = useState&lt;number&gt;(defaultFontSize)
   const [isShowingPronunciation, setShowingPronunciation] = useState(true)
   const [isShowingEdition, setShowingEdition] = useState&lt;boolean&gt;(true)
   const [doesPracticeHaveError, setPracticeHasError] = useState&lt;boolean&gt;(false)
@@ -133,13 +145,42 @@ const Panel = ({
   ) =&gt; {
     const val = e.target.value
 
-    setOriginalText(val)
+    setFragments({
+      index: 0,
+      list: val
+        .split(&#x27;\n&#x27;)
+        .map(s =&gt; s.trim())
+        .filter(Boolean),
+    })
   }
 
   const updateLanguage = (lang: LanguageDefinition[&#x27;id&#x27;]) =&gt; {
     languageManager.setCurrentLanguageHandler(lang)
     setSelectedLanguage(lang)
   }
+
+  useEffect(() =&gt; {
+    // eslint-disable-next-line
+    ;(async () =&gt; {
+      const savedFontSize = await storage.getValue(&#x27;fontSize&#x27;)
+
+      if (savedFontSize) {
+        const parsedFontSize = Number(savedFontSize)
+
+        if (parsedFontSize) {
+          setFontSize(parsedFontSize)
+        }
+      }
+    })()
+  }, [])
+
+  useEffect(() =&gt; {
+    if (fontSize !== defaultFontSize) {
+      storage.setValue(&#x27;fontSize&#x27;, fontSize.toString())
+    } else {
+      storage.setValue(&#x27;fontSize&#x27;, &#x27;&#x27;)
+    }
+  }, [fontSize])
 
   useEffect(() =&gt; {
     if (!_stories.defaultLanguage) {
@@ -210,6 +251,17 @@ const Panel = ({
       const newArr = lastThreeKeys.slice(-2).concat([value])
       const currentResult = newArr.join(&#x27;+&#x27;).toLowerCase()
 
+      if (value === SHORTCUT_NEXT_FRAGMENT) {
+        e.preventDefault()
+
+        setPractice(&#x27;&#x27;)
+
+        setFragments({
+          ...fragments,
+          index: (fragments.index + 1) % fragments.list.length,
+        })
+      }
+
       if (currentResult === SHORTCUT_PRONUNCIATION) {
         setShowingPronunciation(!isShowingPronunciation)
       } else if (currentResult === SHORTCUT_EDITING) {
@@ -232,16 +284,13 @@ const Panel = ({
   }, [lastThreeKeys, isShowingEdition, isShowingPronunciation])
 
   const clearValues = () =&gt; {
-    // eslint-disable-next-line padding-line-between-statements,@typescript-eslint/no-extra-semi
-    ;[
-      setOriginalText,
-      setPronunciation,
-      setSpecialChars,
-      setWriting,
-      setPractice,
-    ].forEach(fn =&gt; {
-      fn(&#x27;&#x27;)
-    })
+    // eslint-disable-next-line no-extra-semi,padding-line-between-statements
+    ;[setPronunciation, setSpecialChars, setWriting, setPractice].forEach(
+      fn =&gt; {
+        fn(&#x27;&#x27;)
+      },
+    )
+    setFragments({ index: 0, list: [&#x27;&#x27;] })
     setShowingPronunciation(true)
     setShowingEdition(true)
     setCurrentRecord(null)
@@ -322,7 +371,7 @@ const Panel = ({
           setShowingRecordsInitScreen(&#x27;&#x27;)
           setShowingEdition(false)
           setShowingPronunciation(false)
-          setOriginalText(record.text)
+          setFragments({ index: 0, list: record.text.split(&#x27;\n&#x27;) })
           setCurrentRecord(record.id)
           setPronunciation(record.pronunciation)
         }}
@@ -360,6 +409,18 @@ const Panel = ({
       &lt;Button onClick={saveRecord}&gt;
         {currentRecord === null ? &#x27;Save&#x27; : &#x27;Update&#x27;}
       &lt;/Button&gt;
+      &lt;Button
+        onClick={() =&gt; {
+          setPractice(&#x27;&#x27;)
+
+          setFragments({
+            ...fragments,
+            index: (fragments.index + 1) % fragments.list.length,
+          })
+        }}
+      &gt;
+        Current Fragment: {fragments.index + 1} / {fragments.list.length}
+      &lt;/Button&gt;
       {currentRecord !== null &amp;&amp; (
         &lt;Button
           onClick={() =&gt; {
@@ -380,12 +441,18 @@ const Panel = ({
       &lt;/Button&gt;
       &lt;div style={{ padding: &#x27;0 0 20px&#x27; }}&gt;
         {isShowingEdition &amp;&amp; (
-          &lt;div&gt;
+          &lt;div
+            style={{
+              display: &#x27;flex&#x27;,
+              flexDirection: &#x27;column&#x27;,
+              gap: 10,
+            }}
+          &gt;
             &lt;TextArea
               onChange={handleOriginalTextUpdate}
               placeholder=&quot;Original text&quot;
               rows={3}
-              value={originalTextValue}
+              value={fragments.list.join(&#x27;\n&#x27;)}
             /&gt;
             &lt;TextArea
               onChange={createInputSetterFn(setPronunciation)}
@@ -403,6 +470,16 @@ const Panel = ({
               languageOptions={languageOptions}
               onOptionsChange={handleLanguageOptionsChange}
             /&gt;
+            &lt;div style={{ fontSize: &#x27;12px&#x27; }}&gt;
+              Font size:{&#x27; &#x27;}
+              &lt;input
+                onChange={event =&gt; {
+                  setFontSize(Number(event.target.value))
+                }}
+                type=&quot;number&quot;
+                value={fontSize}
+              /&gt;
+            &lt;/div&gt;
           &lt;/div&gt;
         )}{&#x27; &#x27;}
         &lt;div&gt;
@@ -410,6 +487,7 @@ const Panel = ({
             &lt;CharactersDisplay
               charsObjs={charsObjs}
               focusedIndex={currentDisplayCharIdx}
+              fontSize={fontSize}
               onCharClick={handleDisplayedCharClick}
               shouldHaveDifferentWidths={!uiHandler.shouldAllCharsHaveSameWidth}
               shouldHidePronunciation={!isShowingPronunciation}
@@ -432,12 +510,19 @@ const Panel = ({
           &lt;TextArea
             autoScroll
             onChange={createInputSetterFn(setPractice)}
+            onFocus={() =&gt; {
+              writingArea.current?.focus()
+            }}
             placeholder={PRACTICE_TEXT_PLACEHOLDER}
             rows={3}
             style={{
-              border: `1px solid ${doesPracticeHaveError ? &#x27;red&#x27; : &#x27;white&#x27;}`,
-              fontSize: 30,
-              lineHeight: &#x27;40px&#x27;,
+              border: `4px solid ${
+                doesPracticeHaveError
+                  ? &#x27;red&#x27;
+                  : &#x27;var(--color-background, &quot;white&quot;)&#x27;
+              }`,
+              fontSize,
+              lineHeight: `${fontSize + 10}px`,
             }}
             value={practiceValue}
           /&gt;
@@ -450,7 +535,7 @@ const Panel = ({
 
 export default Panel
 </textarea><pre id="annotations" style="display:none">[{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:23,&quot;character&quot;:3,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:24,&quot;character&quot;:4,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1}]</pre></div>
-    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Mon, 14 Mar 2022 23:35:45 GMT</p>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sat, 16 Dec 2023 15:26:50 GMT</p>
     </body>
   </html>
   

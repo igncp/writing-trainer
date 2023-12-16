@@ -16,6 +16,20 @@
       "kind": 1
     },
     {
+      "file": "src/languages/cantonese/OptionsBlock/OptionsBlock.tsx",
+      "line": 10,
+      "character": 31,
+      "text": "newValues",
+      "kind": 1
+    },
+    {
+      "file": "src/languages/cantonese/OptionsBlock/OptionsBlock.tsx",
+      "line": 13,
+      "character": 9,
+      "text": "newValues",
+      "kind": 1
+    },
+    {
       "file": "src/languages/mandarin/OptionsBlock/OptionsBlock.tsx",
       "line": 10,
       "character": 31,
@@ -94,7 +108,7 @@
     },
     {
       "file": "src/typings/extensions.d.ts",
-      "line": 16,
+      "line": 22,
       "character": 14,
       "text": "chrome",
       "kind": 1
@@ -625,6 +639,34 @@
       "kind": 1
     },
     {
+      "file": "src/languages/cantonese/LinksBlock/__stories__/LinksBlock.stories.tsx",
+      "line": 10,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/languages/cantonese/LinksBlock/__stories__/LinksBlock.stories.tsx",
+      "line": 17,
+      "character": 9,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/languages/cantonese/OptionsBlock/__stories__/OptionsBlock.stories.tsx",
+      "line": 15,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/languages/cantonese/OptionsBlock/__stories__/OptionsBlock.stories.tsx",
+      "line": 22,
+      "character": 9,
+      "text": "Common",
+      "kind": 1
+    },
+    {
       "file": "src/languages/english/LinksBlock/__stories__/LinksBlock.stories.tsx",
       "line": 10,
       "character": 6,
@@ -695,8 +737,8 @@
       "kind": 1
     }
   ],
-  "percentage": 97.3635153129161,
-  "total": 3755,
-  "covered": 3656,
-  "uncovered": 99
+  "percentage": 97.57337647330714,
+  "total": 4327,
+  "covered": 4222,
+  "uncovered": 105
 }

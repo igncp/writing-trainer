@@ -128,55 +128,6 @@
       "kind": 1
     },
     {
-      "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
-      "line": 20,
-      "character": 10,
-      "text": "panelEl",
-      "kind": 1
-    },
-    {
-      "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
-      "line": 22,
-      "character": 11,
-      "text": "panelEl",
-      "kind": 1
-    },
-    {
-      "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
-      "line": 22,
-      "character": 19,
-      "text": "style",
-      "kind": 1
-    },
-    {
-      "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
-      "line": 22,
-      "character": 25,
-      "text": "background",
-      "kind": 1
-    },
-    {
-      "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
-      "line": 26,
-      "character": 11,
-      "text": "panelEl",
-      "kind": 1
-    },
-    {
-      "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
-      "line": 26,
-      "character": 19,
-      "text": "style",
-      "kind": 1
-    },
-    {
-      "file": "src/components/PanelTrigger/__tests__/PanelTrigger.test.tsx",
-      "line": 26,
-      "character": 25,
-      "text": "background",
-      "kind": 1
-    },
-    {
       "file": "src/containers/Content/__stories__/Content.stories.tsx",
       "line": 17,
       "character": 6,
@@ -219,8 +170,8 @@
       "kind": 1
     }
   ],
-  "percentage": 96.42032332563511,
-  "total": 866,
-  "covered": 835,
-  "uncovered": 31
+  "percentage": 97.12230215827338,
+  "total": 834,
+  "covered": 810,
+  "uncovered": 24
 }
