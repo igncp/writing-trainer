@@ -8,6 +8,8 @@ WEBAPP_PATH_PREFIX="/writing-trainer/web-app" \
 rm -rf gh_pages
 mkdir gh_pages
 
+touch gh_pages/.nojekyll
+
 cp -r packages/core/coverage/lcov-report gh_pages/core-tests-coverage
 cp -r packages/core/coverage-ts gh_pages/core-types-coverage
 
