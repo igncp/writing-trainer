@@ -2,8 +2,7 @@
 
 set -e
 
-PREFIX_PATHS=true \
-  WEBAPP_PATH_PREFIX="/writing-trainer/web-app" \
+WEBAPP_PATH_PREFIX="/writing-trainer/web-app" \
   bash helpers/ci/local.sh
 
 rm -rf gh_pages

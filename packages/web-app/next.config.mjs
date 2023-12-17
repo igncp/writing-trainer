@@ -33,4 +33,7 @@ export default {
 
     return config
   },
+  ...(process.env.WEBAPP_PATH_PREFIX && ({
+    basePath: process.env.WEBAPP_PATH_PREFIX,
+  }))
 }
