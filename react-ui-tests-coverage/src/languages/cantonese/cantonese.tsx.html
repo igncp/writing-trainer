@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">32.55% </span>
+                <span class="strong">31.81% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>28/86</span>
+                <span class='fraction'>28/88</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">37.2% </span>
+                <span class="strong">34.04% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>16/43</span>
+                <span class='fraction'>16/47</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">30.86% </span>
+                <span class="strong">30.12% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>25/81</span>
+                <span class='fraction'>25/83</span>
             </div>
         
             
@@ -203,7 +203,12 @@
 <a name='L138'></a><a href='#L138'>138</a>
 <a name='L139'></a><a href='#L139'>139</a>
 <a name='L140'></a><a href='#L140'>140</a>
-<a name='L141'></a><a href='#L141'>141</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L141'></a><a href='#L141'>141</a>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a>
+<a name='L145'></a><a href='#L145'>145</a>
+<a name='L146'></a><a href='#L146'>146</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -289,6 +294,10 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -311,6 +320,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -429,30 +439,35 @@ const pr<span class="cstat-no" title="statement not covered" >ivateFns = {</span
 <span class="cstat-no" title="statement not covered" >    i1.setAttribute('value', text)</span>
     i2.s<span class="cstat-no" title="statement not covered" >etAttrib</span>ute('name', 'SEARCHTYPE')
     i2.setAttribute('value', text.length === 1 ? '0' : '1')
-    i3.setAtt<span class="cstat-no" title="statement not covered" >ribute('name'</span>, 'radicaldropdown')
+    i3.setAttribute('name', 'radicaldropdown')
 <span class="cstat-no" title="statement not covered" >    i3.setAttribute('value', '0')</span>
-    i4.setAttri<span class="cstat-no" title="statement not covered" >bute('name', 'searchs</span>ubmit')
-    i4.setAttri<span class="cstat-no" title="statement not covered" >bute('value', '1')</span>
+    i4.s<span class="cstat-no" title="statement not covered" >etAttrib</span>ute('name', 'searchsubmit')
+    i4.setAttribute('value', '1')
 <span class="cstat-no" title="statement not covered" ></span>
-    form<span class="cstat-no" title="statement not covered" >.appendChild(i1)</span>
-    form.appendChild(i2)
-<span class="cstat-no" title="statement not covered" >    form.appendChild(i3)</span>
-    form<span class="cstat-no" title="statement not covered" >.appendChild(i4)</span>
-    document.body.appendChild(form)
+<span class="cstat-no" title="statement not covered" >    form.appendChild(i1)</span>
+    form.append<span class="cstat-no" title="statement not covered" >Child(i2)</span>
+    form.append<span class="cstat-no" title="statement not covered" >Child(i3)</span>
+<span class="cstat-no" title="statement not covered" >    form.appendChild(i4)</span>
+    docu<span class="cstat-no" title="statement not covered" >ment.body.appendChild(form)</span>
 &nbsp;
-    // creating the 'formresult' window with custom features prior to submitting the form
-    window.open('', `formresult${text}${id}`)
-    form.submit()<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-    document.body<span class="fstat-no" title="function not covered" >.r</span>emoveChild(f<span class="cstat-no" title="statement not covered" >orm)</span>
-  },<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-}<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-&nbsp;
-export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
-  charObj,
-  charsObjs,
+<span class="cstat-no" title="statement not covered" >    // creating the 'formresult' window with custom features prior to submitting the form</span>
+    wind<span class="cstat-no" title="statement not covered" >ow.open('', `formresult${text}${id}`)</span>
+    form.submit()
+    document.body.removeChild(form)
+  },
+}
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+export const hand<span class="fstat-no" title="function not covered" >le</span>DisplayedCha<span class="cstat-no" title="statement not covered" >rClick: T_CharsDi</span>splayClickHandler = ({
+  charObj,<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+  charsObjs,<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
   index,
 }) =&gt; {
   if (!(charObj as unknown) || !charObj.pronunciation) {
+    return
+  }
+&nbsp;
+  // Don't open cantodict on mobile whick requires opening multiple tabs
+  if (typeof window !== 'undefined' &amp;&amp; window.innerWidth &lt;= 800) {
     return
   }
 &nbsp;
@@ -490,7 +505,7 @@ export default uiHandler
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-12-17T04:58:55.451Z
+                at 2023-12-17T13:00:23.558Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

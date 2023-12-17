@@ -11,7 +11,7 @@
 <link href="../../../../assets/source-file.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Panel/Panel.tsx</td><td class="">99.71%</td><td class="">95%</td><td class="">680</td><td class="">678</td><td class="">2</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useRef, useState } from &#x27;react&#x27;
+    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Panel/Panel.tsx</td><td class="">99.73%</td><td class="">95%</td><td class="">737</td><td class="">735</td><td class="">2</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useRef, useState } from &#x27;react&#x27;
 import {
   LanguageDefinition,
   LanguageManager,
@@ -144,14 +144,18 @@ const Panel = ({
     e: React.ChangeEvent&lt;HTMLTextAreaElement&gt;,
   ) =&gt; {
     const val = e.target.value
+    const list = val
+      .split(&#x27;\n&#x27;)
+      .map(s =&gt; s.trim())
+      .filter(Boolean)
 
-    setFragments({
+    const newFragments = {
       index: 0,
-      list: val
-        .split(&#x27;\n&#x27;)
-        .map(s =&gt; s.trim())
-        .filter(Boolean),
-    })
+      list: list.length ? list : [&#x27;&#x27;],
+    }
+    setFragments(newFragments)
+
+    storage.setValue(&#x27;fragments&#x27;, JSON.stringify(newFragments))
   }
 
   const updateLanguage = (lang: LanguageDefinition[&#x27;id&#x27;]) =&gt; {
@@ -205,6 +209,17 @@ const Panel = ({
 
   useEffect(() =&gt; {
     updateLanguageWithStorage().catch(() =&gt; {})
+  }, [])
+
+  useEffect(() =&gt; {
+    // eslint-disable-next-line
+    ;(async () =&gt; {
+      const lastFragments = await storage.getValue(&#x27;fragments&#x27;)
+
+      if (lastFragments) {
+        setFragments(JSON.parse(lastFragments))
+      }
+    })()
   }, [])
 
   const SPECIAL_CHARS = langHandler!.getSpecialChars()
@@ -290,7 +305,9 @@ const Panel = ({
         fn(&#x27;&#x27;)
       },
     )
-    setFragments({ index: 0, list: [&#x27;&#x27;] })
+    const newFragments = { index: 0, list: [&#x27;&#x27;] }
+    setFragments(newFragments)
+    storage.setValue(&#x27;fragments&#x27;, JSON.stringify(newFragments))
     setShowingPronunciation(true)
     setShowingEdition(true)
     setCurrentRecord(null)
@@ -413,10 +430,12 @@ const Panel = ({
         onClick={() =&gt; {
           setPractice(&#x27;&#x27;)
 
-          setFragments({
+          const newFragments = {
             ...fragments,
             index: (fragments.index + 1) % fragments.list.length,
-          })
+          }
+          setFragments(newFragments)
+          storage.setValue(&#x27;fragments&#x27;, JSON.stringify(newFragments))
         }}
       &gt;
         Current Fragment: {fragments.index + 1} / {fragments.list.length}
@@ -496,7 +515,21 @@ const Panel = ({
           &lt;TextArea
             autoFocus
             onBlur={() =&gt; setWritingBorder(&#x27;normal&#x27;)}
-            onChange={createInputSetterFn(setWriting)}
+            onChange={e =&gt; {
+              const diff = e.target.value.length - writingValue.length
+
+              setWriting(e.target.value)
+
+              // Simulate the keydown event again to support mobile web
+              if (diff === 1) {
+                const mockEvent = {
+                  key: e.target.value.slice(-1),
+                  preventDefault: () =&gt; {},
+                } as unknown as React.KeyboardEvent&lt;HTMLTextAreaElement&gt;
+
+                handleWritingKeyDown(mockEvent)
+              }
+            }}
             onClick={handleWritingAreaClick}
             onFocus={() =&gt; setWritingBorder(&#x27;bold&#x27;)}
             onKeyDown={handleWritingKeyDown}
@@ -535,7 +568,7 @@ const Panel = ({
 
 export default Panel
 </textarea><pre id="annotations" style="display:none">[{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:23,&quot;character&quot;:3,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:24,&quot;character&quot;:4,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1}]</pre></div>
-    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sun, 17 Dec 2023 04:59:00 GMT</p>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sun, 17 Dec 2023 13:00:28 GMT</p>
     </body>
   </html>
   
