@@ -131,14 +131,18 @@ const Panel = ({
     e: React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
     const val = e.target.value
+    const list = val
+      .split('\n')
+      .map(s => s.trim())
+      .filter(Boolean)
 
-    setFragments({
+    const newFragments = {
       index: 0,
-      list: val
-        .split('\n')
-        .map(s => s.trim())
-        .filter(Boolean),
-    })
+      list: list.length ? list : [''],
+    }
+    setFragments(newFragments)
+
+    storage.setValue('fragments', JSON.stringify(newFragments))
   }
 
   const updateLanguage = (lang: LanguageDefinition['id']) => {
@@ -192,6 +196,17 @@ const Panel = ({
 
   useEffect(() => {
     updateLanguageWithStorage().catch(() => {})
+  }, [])
+
+  useEffect(() => {
+    // eslint-disable-next-line
+    ;(async () => {
+      const lastFragments = await storage.getValue('fragments')
+
+      if (lastFragments) {
+        setFragments(JSON.parse(lastFragments))
+      }
+    })()
   }, [])
 
   const SPECIAL_CHARS = langHandler!.getSpecialChars()
@@ -277,7 +292,9 @@ const Panel = ({
         fn('')
       },
     )
-    setFragments({ index: 0, list: [''] })
+    const newFragments = { index: 0, list: [''] }
+    setFragments(newFragments)
+    storage.setValue('fragments', JSON.stringify(newFragments))
     setShowingPronunciation(true)
     setShowingEdition(true)
     setCurrentRecord(null)
@@ -400,10 +417,12 @@ const Panel = ({
         onClick={() => {
           setPractice('')
 
-          setFragments({
+          const newFragments = {
             ...fragments,
             index: (fragments.index + 1) % fragments.list.length,
-          })
+          }
+          setFragments(newFragments)
+          storage.setValue('fragments', JSON.stringify(newFragments))
         }}
       >
         Current Fragment: {fragments.index + 1} / {fragments.list.length}
@@ -483,7 +502,21 @@ const Panel = ({
           <TextArea
             autoFocus
             onBlur={() => setWritingBorder('normal')}
-            onChange={createInputSetterFn(setWriting)}
+            onChange={e => {
+              const diff = e.target.value.length - writingValue.length
+
+              setWriting(e.target.value)
+
+              // Simulate the keydown event again to support mobile web
+              if (diff === 1) {
+                const mockEvent = {
+                  key: e.target.value.slice(-1),
+                  preventDefault: () => {},
+                } as unknown as React.KeyboardEvent<HTMLTextAreaElement>
+
+                handleWritingKeyDown(mockEvent)
+              }
+            }}
             onClick={handleWritingAreaClick}
             onFocus={() => setWritingBorder('bold')}
             onKeyDown={handleWritingKeyDown}

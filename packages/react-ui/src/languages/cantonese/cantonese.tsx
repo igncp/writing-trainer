@@ -111,6 +111,11 @@ export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
     return
   }
 
+  // Don't open cantodict on mobile whick requires opening multiple tabs
+  if (typeof window !== 'undefined' && window.innerWidth <= 800) {
+    return
+  }
+
   const ch = charObj.word
 
   privateFns.sendCantodictFormForText(ch, 'single')

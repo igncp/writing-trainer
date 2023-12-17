@@ -66,16 +66,14 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
 
   const { ch: currentCharObj } = currentLangObj
 
+  keyEvent.preventDefault()
+
   // including capital letters so it doesn't write when shortcut
   if (!/[a-z0-9A-Z]/.test(keyEvent.key)) {
-    keyEvent.preventDefault()
-
     setPractice(practiceValue + keyEvent.key)
 
     return
   }
-
-  keyEvent.preventDefault()
 
   if (keyEvent.key.length !== 1 && keyEvent.key !== 'Backspace') {
     return
