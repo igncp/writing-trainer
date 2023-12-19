@@ -11,7 +11,7 @@
 <link href="../../../../assets/source-file.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Panel/Panel.tsx</td><td class="">99.73%</td><td class="">95%</td><td class="">737</td><td class="">735</td><td class="">2</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useRef, useState } from &#x27;react&#x27;
+    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Panel/Panel.tsx</td><td class="">99.73%</td><td class="">95%</td><td class="">750</td><td class="">748</td><td class="">2</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useRef, useState } from &#x27;react&#x27;
 import {
   LanguageDefinition,
   LanguageManager,
@@ -132,6 +132,7 @@ const Panel = ({
   const [hasLoadedStorage, setHasLoadedStorage] = useState&lt;boolean&gt;(false)
   const [currentDisplayCharIdx, setCurrentDisplayCharIdx] = useState&lt;number&gt;(0)
   const [writingBorder, setWritingBorder] = useState&lt;&#x27;bold&#x27; | &#x27;normal&#x27;&gt;(&#x27;bold&#x27;)
+  const [hasExtraControls, setHasExtraControls] = useState(false)
   const writingArea = useRef&lt;HTMLTextAreaElement | null&gt;(null)
 
   const uiHandler = languageUIManager.getUIHandler()
@@ -406,7 +407,8 @@ const Panel = ({
   return (
     &lt;&gt;
       &lt;Button onClick={clearValues}&gt;Clear&lt;/Button&gt;
-      &lt;Button onClick={listRecords}&gt;Records&lt;/Button&gt;
+      &lt;Button onClick={() =&gt; setHasExtraControls(true)}&gt;X&lt;/Button&gt;
+      {hasExtraControls &amp;&amp; &lt;Button onClick={listRecords}&gt;Records&lt;/Button&gt;}
       &lt;Button onClick={createToggleFn(isShowingEdition, setShowingEdition)}&gt;
         Toggle Edition
       &lt;/Button&gt;
@@ -418,28 +420,34 @@ const Panel = ({
       &gt;
         Toggle Pronunciation
       &lt;/Button&gt;
-      &lt;ChooseLanguage
-        languages={getLanguageDefinitions(languageManager)}
-        onOptionsChange={handleLanguageChange}
-        selectedLanguage={selectedLanguage}
-      /&gt;
-      &lt;Button onClick={saveRecord}&gt;
-        {currentRecord === null ? &#x27;Save&#x27; : &#x27;Update&#x27;}
-      &lt;/Button&gt;
-      &lt;Button
-        onClick={() =&gt; {
-          setPractice(&#x27;&#x27;)
+      {hasExtraControls &amp;&amp; (
+        &lt;&gt;
+          &lt;ChooseLanguage
+            languages={getLanguageDefinitions(languageManager)}
+            onOptionsChange={handleLanguageChange}
+            selectedLanguage={selectedLanguage}
+          /&gt;
+          &lt;Button onClick={saveRecord}&gt;
+            {currentRecord === null ? &#x27;Save&#x27; : &#x27;Update&#x27;}
+          &lt;/Button&gt;
+        &lt;/&gt;
+      )}
+      {fragments.list.length &gt; 1 &amp;&amp; (
+        &lt;Button
+          onClick={() =&gt; {
+            setPractice(&#x27;&#x27;)
 
-          const newFragments = {
-            ...fragments,
-            index: (fragments.index + 1) % fragments.list.length,
-          }
-          setFragments(newFragments)
-          storage.setValue(&#x27;fragments&#x27;, JSON.stringify(newFragments))
-        }}
-      &gt;
-        Current Fragment: {fragments.index + 1} / {fragments.list.length}
-      &lt;/Button&gt;
+            const newFragments = {
+              ...fragments,
+              index: (fragments.index + 1) % fragments.list.length,
+            }
+            setFragments(newFragments)
+            storage.setValue(&#x27;fragments&#x27;, JSON.stringify(newFragments))
+          }}
+        &gt;
+          Current Fragment: {fragments.index + 1} / {fragments.list.length}
+        &lt;/Button&gt;
+      )}
       {currentRecord !== null &amp;&amp; (
         &lt;Button
           onClick={() =&gt; {
@@ -473,32 +481,36 @@ const Panel = ({
               rows={3}
               value={fragments.list.join(&#x27;\n&#x27;)}
             /&gt;
-            &lt;TextArea
-              onChange={createInputSetterFn(setPronunciation)}
-              placeholder=&quot;Pronunciation&quot;
-              rows={2}
-              value={pronunciationValue}
-            /&gt;
-            &lt;TextArea
-              onChange={createInputSetterFn(setSpecialChars)}
-              placeholder=&quot;Special characters&quot;
-              rows={1}
-              value={specialCharsValue}
-            /&gt;
-            &lt;OptionsBlock
-              languageOptions={languageOptions}
-              onOptionsChange={handleLanguageOptionsChange}
-            /&gt;
-            &lt;div style={{ fontSize: &#x27;12px&#x27; }}&gt;
-              Font size:{&#x27; &#x27;}
-              &lt;input
-                onChange={event =&gt; {
-                  setFontSize(Number(event.target.value))
-                }}
-                type=&quot;number&quot;
-                value={fontSize}
-              /&gt;
-            &lt;/div&gt;
+            {hasExtraControls &amp;&amp; (
+              &lt;&gt;
+                &lt;TextArea
+                  onChange={createInputSetterFn(setPronunciation)}
+                  placeholder=&quot;Pronunciation&quot;
+                  rows={2}
+                  value={pronunciationValue}
+                /&gt;
+                &lt;TextArea
+                  onChange={createInputSetterFn(setSpecialChars)}
+                  placeholder=&quot;Special characters&quot;
+                  rows={1}
+                  value={specialCharsValue}
+                /&gt;
+                &lt;OptionsBlock
+                  languageOptions={languageOptions}
+                  onOptionsChange={handleLanguageOptionsChange}
+                /&gt;
+                &lt;div style={{ fontSize: &#x27;12px&#x27; }}&gt;
+                  Font size:{&#x27; &#x27;}
+                  &lt;input
+                    onChange={event =&gt; {
+                      setFontSize(Number(event.target.value))
+                    }}
+                    type=&quot;number&quot;
+                    value={fontSize}
+                  /&gt;
+                &lt;/div&gt;
+              &lt;/&gt;
+            )}
           &lt;/div&gt;
         )}{&#x27; &#x27;}
         &lt;div&gt;
@@ -568,7 +580,7 @@ const Panel = ({
 
 export default Panel
 </textarea><pre id="annotations" style="display:none">[{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:23,&quot;character&quot;:3,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:24,&quot;character&quot;:4,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1}]</pre></div>
-    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sun, 17 Dec 2023 13:00:28 GMT</p>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Tue, 19 Dec 2023 16:04:50 GMT</p>
     </body>
   </html>
   

@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/344</span>
+                <span class='fraction'>0/348</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/227</span>
+                <span class='fraction'>0/235</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/72</span>
+                <span class='fraction'>0/73</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/250</span>
+                <span class='fraction'>0/252</span>
             </div>
         
             
@@ -619,7 +619,19 @@
 <a name='L554'></a><a href='#L554'>554</a>
 <a name='L555'></a><a href='#L555'>555</a>
 <a name='L556'></a><a href='#L556'>556</a>
-<a name='L557'></a><a href='#L557'>557</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L557'></a><a href='#L557'>557</a>
+<a name='L558'></a><a href='#L558'>558</a>
+<a name='L559'></a><a href='#L559'>559</a>
+<a name='L560'></a><a href='#L560'>560</a>
+<a name='L561'></a><a href='#L561'>561</a>
+<a name='L562'></a><a href='#L562'>562</a>
+<a name='L563'></a><a href='#L563'>563</a>
+<a name='L564'></a><a href='#L564'>564</a>
+<a name='L565'></a><a href='#L565'>565</a>
+<a name='L566'></a><a href='#L566'>566</a>
+<a name='L567'></a><a href='#L567'>567</a>
+<a name='L568'></a><a href='#L568'>568</a>
+<a name='L569'></a><a href='#L569'>569</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -761,6 +773,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -973,6 +986,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1012,6 +1027,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1043,6 +1059,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1296,16 +1320,17 @@ const Panel = ({<span class="cstat-no" title="statement not covered" ></span>
   const [hasL<span class="cstat-no" title="statement not covered" >oadedStorage, setHasLoaded</span>Storage] = useState&lt;boolean&gt;<span class="cstat-no" title="statement not covered" >(false</span>)<span class="cstat-no" title="statement not covered" ></span>
   const [curr<span class="cstat-no" title="statement not covered" >entDisplayCharIdx, setCurren</span>tDisplayCharIdx] <span class="cstat-no" title="statement not covered" >= useS</span>tate&lt;number&gt;(0)<span class="cstat-no" title="statement not covered" ></span>
   const [writingBorder, setW<span class="cstat-no" title="statement not covered" >ritingBorder] = useState&lt;'bold' </span>| 'normal'&gt;('bold')
-  const writi<span class="cstat-no" title="statement not covered" >ngArea = useRef&lt;HTMLTextAreaElement | null&gt;(null)<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+  const [hasE<span class="cstat-no" title="statement not covered" >xtraControls, setHasExtraControls] = useState(false)<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+  const writi<span class="cstat-no" title="statement not covered" >ngArea = useRef&lt;HTMLTextAr</span>eaElement | null&gt;(nul<span class="cstat-no" title="statement not covered" >l)<span class="cstat-no" title="statement not covered" ></span></span>
 <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-  const uiHan<span class="cstat-no" title="statement not covered" >dler = languageUIManager.g</span>etUIHandler()<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
+  const uiHan<span class="cstat-no" title="statement not covered" >dler = languageUIManager.getUIHandler()<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
 <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-  const langH<span class="cstat-no" title="statement not covered" >andler = languageManager.getCurrentLang</span>uageHandler(<span class="cstat-no" title="statement not covered" >)<span class="cstat-no" title="statement not covered" ></span></span>
+  const langH<span class="cstat-no" title="statement not covered" >andler = languageManager.get</span>CurrentLanguageHandler()<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
 <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
   const { sto<span class="cstat-no" title="statement not covered" >rage } = services<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
 <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
   const handl<span class="cstat-no" title="statement not covered" >eOriginalTextUpdate = (<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-    e: React.<span class="cstat-no" title="statement not covered" >ChangeEvent&lt;HTMLTextAreaEl</span>ement&gt;,<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
+    e: React.<span class="cstat-no" title="statement not covered" >ChangeEvent&lt;HTMLTextAreaElement&gt;,<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
   ) =&gt; {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
     const val<span class="cstat-no" title="statement not covered" > = e.target.value<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
     const lis<span class="cstat-no" title="statement not covered" >t = val<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
@@ -1532,25 +1557,25 @@ const Panel = ({<span class="cstat-no" title="statement not covered" ></span>
 &nbsp;
   co<span class="cstat-no" title="statement not covered" >nst listRecords = () =&gt; {</span>
     setShowingRecordsInitScreen(RecordsScreen.List)
-  }
+  }<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
 &nbsp;
   if (!hasLoadedStorage) {
     return null
   }
-<span class="fstat-no" title="function not covered" ></span>
-  if (showingRec<span class="cstat-no" title="statement not covered" >ordsInitScreen) {</span>
-    return (<span class="cstat-no" title="statement not covered" ></span>
+&nbsp;
+  if (showingRecordsInitScreen) {
+    return (<span class="fstat-no" title="function not covered" ></span>
       &lt;RecordsSe<span class="cstat-no" title="statement not covered" >ction</span>
-        initScre<span class="cstat-no" title="statement not covered" >en={showingRecordsInitScreen}</span>
-        onRecordLoad={(record: Record) =&gt; {
-          clearValues()
+        initScreen={showingRecordsI<span class="cstat-no" title="statement not covered" >nitScreen}</span>
+        onRecord<span class="cstat-no" title="statement not covered" >Load={(record: Record) =&gt; {</span>
+          clearV<span class="cstat-no" title="statement not covered" >alues()</span>
 &nbsp;
           if (record.language !== selectedLanguage) {
             handleLanguageChange(record.language)
-          }<span class="fstat-no" title="function not covered" ></span>
-<span class="cstat-no" title="statement not covered" ></span>
-          setShowingRecordsInitScreen('')
-          setShowingEdition(false)
+          }
+&nbsp;
+          setShowingRecordsInitScreen('')<span class="fstat-no" title="function not covered" ></span>
+          setSho<span class="cstat-no" title="statement not covered" >wingEdition(false)</span>
           setShowingPronunciation(false)
           setFragments({ index: 0, list: record.text.split('\n') })
           setCurrentRecord(record.id)
@@ -1567,43 +1592,50 @@ const Panel = ({<span class="cstat-no" title="statement not covered" ></span>
     )
   }
 &nbsp;
-  return (<span class="fstat-no" title="function not covered" ></span>
-    &lt;&gt;<span class="cstat-no" title="statement not covered" ></span>
+  return (
+    &lt;&gt;
       &lt;Button onClick={clearValues}&gt;Clear&lt;/Button&gt;
-      &lt;Button onClick={listRecords}&gt;Records&lt;/Button&gt;
+      &lt;Button onClick={() =&gt; setHasExtraControls(true)}&gt;X&lt;/Button&gt;<span class="fstat-no" title="function not covered" ></span>
+      {hasExtraControls &amp;&amp; &lt;Butt<span class="cstat-no" title="statement not covered" >on onClick={listRecords}&gt;Records&lt;/Button&gt;</span>}
       &lt;Button onClick={createToggleFn(isShowingEdition, setShowingEdition)}&gt;
         Toggle Edition
       &lt;/Button&gt;
-      &lt;Button<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
-        onClick={createToggleFn(<span class="cstat-no" title="statement not covered" ></span>
-          isShowingPronu<span class="cstat-no" title="statement not covered" >nciation,</span>
-          setShowingPronunciation,
-        )}<span class="cstat-no" title="statement not covered" ></span>
-      &gt;<span class="cstat-no" title="statement not covered" ></span>
-        Toggle Pronunciation
-      &lt;/Button&gt;<span class="fstat-no" title="function not covered" ></span>
-      &lt;ChooseLanguage
-        languages={getLangua<span class="cstat-no" title="statement not covered" >geDefinitions(languageManager)}</span>
-        onOptionsChange={handleLanguageChange}
-        selectedLanguage={selectedLanguage}<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
-      /&gt;<span class="fstat-no" title="function not covered" ></span>
-      &lt;Button onClick={saveRecord}&gt;
-        {currentRecord =<span class="cstat-no" title="statement not covered" >== null ? 'Save' : 'Update'}</span>
-      &lt;/Button&gt;
       &lt;Button
-        onClick={() =&gt; {
-          setPractice('')
-&nbsp;
-          const newFragments = {
-            ...fragments,
-            index: (fragments.index + 1) % fragments.list.length,
-          }
-<span class="cstat-no" title="statement not covered" >          setFragments(ne</span>wFragments)
-          storage.setValue('fragments', JSON.stringify(newFragments))
-        }}
+        onClick={createToggleFn(
+          isShowingPronunciation,<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
+          setShowingPronunciation,<span class="cstat-no" title="statement not covered" ></span>
+        )}<span class="cstat-no" title="statement not covered" ></span>
       &gt;
-        Current Fragment: {fragments.index + 1} / {fragments.list.length}
-      &lt;/Button&gt;
+        Toggle Pronuncia<span class="cstat-no" title="statement not covered" >tion</span>
+      &lt;/Button&gt;<span class="cstat-no" title="statement not covered" ></span>
+      {hasExtraControls &amp;&amp; (
+        &lt;&gt;<span class="fstat-no" title="function not covered" ></span>
+          &lt;ChooseLanguage
+            languages={getLa<span class="cstat-no" title="statement not covered" >nguageDefinitions(languageManager</span>)}
+            onOptionsChange={handleLanguageChange}
+            selectedLanguage={selectedLanguage}<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
+          /&gt;<span class="fstat-no" title="function not covered" ></span>
+          &lt;Button onClick={saveRecord}&gt;
+            {currentReco<span class="cstat-no" title="statement not covered" >rd === null ? 'Save' : 'Update'}</span>
+          &lt;/Button&gt;
+        &lt;/&gt;
+      )}
+      {fragments.list.length &gt; 1 &amp;&amp; (
+        &lt;Button
+          onClick={() =&gt; {
+            setPractice('')
+&nbsp;
+            const newFragments = {
+<span class="cstat-no" title="statement not covered" >              ...fragment</span>s,
+              index: (fragments.index + 1) % fragments.list.length,
+            }
+            setFragments(newFragments)
+            storage.setValue('fragments', JSON.stringify(newFragments))
+          }}
+        &gt;
+          Current Fragment: {fragments.index + 1} / {fragments.list.length}
+        &lt;/Button&gt;
+      )}
       {currentRecord !== null &amp;&amp; (
         &lt;Button
           onClick={() =&gt; {
@@ -1637,32 +1669,36 @@ const Panel = ({<span class="cstat-no" title="statement not covered" ></span>
               rows={3}
               value={fragments.list.join('\n')}
             /&gt;
-            &lt;TextArea
-              onChange={createInputSetterFn(setPronunciation)}
-              placeholder="Pronunciation"
-              rows={2}
-              value={pronunciationValue}
-            /&gt;
-            &lt;TextArea
-              onChange={createInputSetterFn(setSpecialChars)}
-              placeholder="Special characters"
-              rows={1}
-              value={specialCharsValue}
-            /&gt;
-            &lt;OptionsBlock
-              languageOptions={languageOptions}
-              onOptionsChange={handleLanguageOptionsChange}
-            /&gt;
-            &lt;div style={{ fontSize: '12px' }}&gt;
-              Font size:{' '}
-              &lt;input
-                onChange={event =&gt; {
-                  setFontSize(Number(event.target.value))
-                }}
-                type="number"
-                value={fontSize}
-              /&gt;
-            &lt;/div&gt;
+            {hasExtraControls &amp;&amp; (
+              &lt;&gt;
+                &lt;TextArea
+                  onChange={createInputSetterFn(setPronunciation)}
+                  placeholder="Pronunciation"
+                  rows={2}
+                  value={pronunciationValue}
+                /&gt;
+                &lt;TextArea
+                  onChange={createInputSetterFn(setSpecialChars)}
+                  placeholder="Special characters"
+                  rows={1}
+                  value={specialCharsValue}
+                /&gt;
+                &lt;OptionsBlock
+                  languageOptions={languageOptions}
+                  onOptionsChange={handleLanguageOptionsChange}
+                /&gt;
+                &lt;div style={{ fontSize: '12px' }}&gt;
+                  Font size:{' '}
+                  &lt;input
+                    onChange={event =&gt; {
+                      setFontSize(Number(event.target.value))
+                    }}
+                    type="number"
+                    value={fontSize}
+                  /&gt;
+                &lt;/div&gt;
+              &lt;/&gt;
+            )}
           &lt;/div&gt;
         )}{' '}
         &lt;div&gt;
@@ -1738,7 +1774,7 @@ export default Panel
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-12-17T13:00:23.558Z
+                at 2023-12-19T16:04:45.678Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
