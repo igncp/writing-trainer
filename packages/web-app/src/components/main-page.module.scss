@@ -20,4 +20,9 @@
       display: flex;
     }
   }
+
+  @include laptop-down {
+    font-size: 14px;
+    margin: 0;
+  }
 }

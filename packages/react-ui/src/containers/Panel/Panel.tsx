@@ -119,6 +119,7 @@ const Panel = ({
   const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false)
   const [currentDisplayCharIdx, setCurrentDisplayCharIdx] = useState<number>(0)
   const [writingBorder, setWritingBorder] = useState<'bold' | 'normal'>('bold')
+  const [hasExtraControls, setHasExtraControls] = useState(false)
   const writingArea = useRef<HTMLTextAreaElement | null>(null)
 
   const uiHandler = languageUIManager.getUIHandler()
@@ -393,7 +394,8 @@ const Panel = ({
   return (
     <>
       <Button onClick={clearValues}>Clear</Button>
-      <Button onClick={listRecords}>Records</Button>
+      <Button onClick={() => setHasExtraControls(true)}>X</Button>
+      {hasExtraControls && <Button onClick={listRecords}>Records</Button>}
       <Button onClick={createToggleFn(isShowingEdition, setShowingEdition)}>
         Toggle Edition
       </Button>
@@ -405,28 +407,34 @@ const Panel = ({
       >
         Toggle Pronunciation
       </Button>
-      <ChooseLanguage
-        languages={getLanguageDefinitions(languageManager)}
-        onOptionsChange={handleLanguageChange}
-        selectedLanguage={selectedLanguage}
-      />
-      <Button onClick={saveRecord}>
-        {currentRecord === null ? 'Save' : 'Update'}
-      </Button>
-      <Button
-        onClick={() => {
-          setPractice('')
+      {hasExtraControls && (
+        <>
+          <ChooseLanguage
+            languages={getLanguageDefinitions(languageManager)}
+            onOptionsChange={handleLanguageChange}
+            selectedLanguage={selectedLanguage}
+          />
+          <Button onClick={saveRecord}>
+            {currentRecord === null ? 'Save' : 'Update'}
+          </Button>
+        </>
+      )}
+      {fragments.list.length > 1 && (
+        <Button
+          onClick={() => {
+            setPractice('')
 
-          const newFragments = {
-            ...fragments,
-            index: (fragments.index + 1) % fragments.list.length,
-          }
-          setFragments(newFragments)
-          storage.setValue('fragments', JSON.stringify(newFragments))
-        }}
-      >
-        Current Fragment: {fragments.index + 1} / {fragments.list.length}
-      </Button>
+            const newFragments = {
+              ...fragments,
+              index: (fragments.index + 1) % fragments.list.length,
+            }
+            setFragments(newFragments)
+            storage.setValue('fragments', JSON.stringify(newFragments))
+          }}
+        >
+          Current Fragment: {fragments.index + 1} / {fragments.list.length}
+        </Button>
+      )}
       {currentRecord !== null && (
         <Button
           onClick={() => {
@@ -460,32 +468,36 @@ const Panel = ({
               rows={3}
               value={fragments.list.join('\n')}
             />
-            <TextArea
-              onChange={createInputSetterFn(setPronunciation)}
-              placeholder="Pronunciation"
-              rows={2}
-              value={pronunciationValue}
-            />
-            <TextArea
-              onChange={createInputSetterFn(setSpecialChars)}
-              placeholder="Special characters"
-              rows={1}
-              value={specialCharsValue}
-            />
-            <OptionsBlock
-              languageOptions={languageOptions}
-              onOptionsChange={handleLanguageOptionsChange}
-            />
-            <div style={{ fontSize: '12px' }}>
-              Font size:{' '}
-              <input
-                onChange={event => {
-                  setFontSize(Number(event.target.value))
-                }}
-                type="number"
-                value={fontSize}
-              />
-            </div>
+            {hasExtraControls && (
+              <>
+                <TextArea
+                  onChange={createInputSetterFn(setPronunciation)}
+                  placeholder="Pronunciation"
+                  rows={2}
+                  value={pronunciationValue}
+                />
+                <TextArea
+                  onChange={createInputSetterFn(setSpecialChars)}
+                  placeholder="Special characters"
+                  rows={1}
+                  value={specialCharsValue}
+                />
+                <OptionsBlock
+                  languageOptions={languageOptions}
+                  onOptionsChange={handleLanguageOptionsChange}
+                />
+                <div style={{ fontSize: '12px' }}>
+                  Font size:{' '}
+                  <input
+                    onChange={event => {
+                      setFontSize(Number(event.target.value))
+                    }}
+                    type="number"
+                    value={fontSize}
+                  />
+                </div>
+              </>
+            )}
           </div>
         )}{' '}
         <div>
