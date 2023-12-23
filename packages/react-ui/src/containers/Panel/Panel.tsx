@@ -396,7 +396,12 @@ const Panel = ({
       <Button onClick={clearValues}>Clear</Button>
       <Button onClick={() => setHasExtraControls(true)}>X</Button>
       {hasExtraControls && <Button onClick={listRecords}>Records</Button>}
-      <Button onClick={createToggleFn(isShowingEdition, setShowingEdition)}>
+      <Button
+        onClick={() => {
+          setShowingEdition(!isShowingEdition)
+          writingArea.current?.focus()
+        }}
+      >
         Toggle Edition
       </Button>
       <Button
