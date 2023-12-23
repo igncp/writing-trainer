@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/348</span>
+                <span class='fraction'>0/350</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/235</span>
+                <span class='fraction'>0/239</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/73</span>
+                <span class='fraction'>0/74</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/252</span>
+                <span class='fraction'>0/254</span>
             </div>
         
             
@@ -631,7 +631,12 @@
 <a name='L566'></a><a href='#L566'>566</a>
 <a name='L567'></a><a href='#L567'>567</a>
 <a name='L568'></a><a href='#L568'>568</a>
-<a name='L569'></a><a href='#L569'>569</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L569'></a><a href='#L569'>569</a>
+<a name='L570'></a><a href='#L570'>570</a>
+<a name='L571'></a><a href='#L571'>571</a>
+<a name='L572'></a><a href='#L572'>572</a>
+<a name='L573'></a><a href='#L573'>573</a>
+<a name='L574'></a><a href='#L574'>574</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -993,10 +998,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1059,6 +1068,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1559,27 +1569,27 @@ const Panel = ({<span class="cstat-no" title="statement not covered" ></span>
     setShowingRecordsInitScreen(RecordsScreen.List)
   }<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
 &nbsp;
-  if (!hasLoadedStorage) {
+  if (!hasLoadedStorage) {<span class="fstat-no" title="function not covered" ></span>
     return null
-  }
-&nbsp;
+  }<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" ></span>
   if (showingRecordsInitScreen) {
-    return (<span class="fstat-no" title="function not covered" ></span>
-      &lt;RecordsSe<span class="cstat-no" title="statement not covered" >ction</span>
-        initScreen={showingRecordsI<span class="cstat-no" title="statement not covered" >nitScreen}</span>
-        onRecord<span class="cstat-no" title="statement not covered" >Load={(record: Record) =&gt; {</span>
-          clearV<span class="cstat-no" title="statement not covered" >alues()</span>
+    return (
+      &lt;RecordsSection
+        initScreen={showingRecordsInitScreen}
+        onRecordLoad={(record: Record) =&gt; {
+          clearValues()<span class="fstat-no" title="function not covered" ></span>
+<span class="cstat-no" title="statement not covered" ></span>
+          if (record.language !== s<span class="cstat-no" title="statement not covered" >electedLanguage) {</span>
+            hand<span class="cstat-no" title="statement not covered" >leLanguageChange(record.lang</span>uage)
+          }<span class="cstat-no" title="statement not covered" ></span>
 &nbsp;
-          if (record.language !== selectedLanguage) {
-            handleLanguageChange(record.language)
-          }
-&nbsp;
-          setShowingRecordsInitScreen('')<span class="fstat-no" title="function not covered" ></span>
-          setSho<span class="cstat-no" title="statement not covered" >wingEdition(false)</span>
+          setShowingRecordsInitScreen('')
+          setShowingEdition(false)
           setShowingPronunciation(false)
           setFragments({ index: 0, list: record.text.split('\n') })
-          setCurrentRecord(record.id)
-          setPronunciation(record.pronunciation)
+          setCurrentRecord(record.id)<span class="fstat-no" title="function not covered" ></span>
+          setPro<span class="cstat-no" title="statement not covered" >nunciation(record.pronun</span>ciation)
         }}
         onRecordsClose={() =&gt; {
           setShowingRecordsInitScreen('')
@@ -1595,28 +1605,33 @@ const Panel = ({<span class="cstat-no" title="statement not covered" ></span>
   return (
     &lt;&gt;
       &lt;Button onClick={clearValues}&gt;Clear&lt;/Button&gt;
-      &lt;Button onClick={() =&gt; setHasExtraControls(true)}&gt;X&lt;/Button&gt;<span class="fstat-no" title="function not covered" ></span>
-      {hasExtraControls &amp;&amp; &lt;Butt<span class="cstat-no" title="statement not covered" >on onClick={listRecords}&gt;Records&lt;/Button&gt;</span>}
-      &lt;Button onClick={createToggleFn(isShowingEdition, setShowingEdition)}&gt;
+      &lt;Button onClick={() =&gt; setHasExtraControls(true)}&gt;X&lt;/Button&gt;
+      {hasExtraControls &amp;&amp; &lt;Button onClick={listRecords}&gt;Records&lt;/Button&gt;}
+      &lt;Button
+        onClick={() =&gt; {
+          setShowingEdition(!isShowingEdition)<span class="fstat-no" title="function not covered" ></span>
+          writingArea.current?.f<span class="cstat-no" title="statement not covered" >ocus()</span>
+        }}
+      &gt;
         Toggle Edition
       &lt;/Button&gt;
       &lt;Button
-        onClick={createToggleFn(
-          isShowingPronunciation,<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
-          setShowingPronunciation,<span class="cstat-no" title="statement not covered" ></span>
-        )}<span class="cstat-no" title="statement not covered" ></span>
-      &gt;
-        Toggle Pronuncia<span class="cstat-no" title="statement not covered" >tion</span>
-      &lt;/Button&gt;<span class="cstat-no" title="statement not covered" ></span>
-      {hasExtraControls &amp;&amp; (
-        &lt;&gt;<span class="fstat-no" title="function not covered" ></span>
-          &lt;ChooseLanguage
-            languages={getLa<span class="cstat-no" title="statement not covered" >nguageDefinitions(languageManager</span>)}
-            onOptionsChange={handleLanguageChange}
-            selectedLanguage={selectedLanguage}<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
-          /&gt;<span class="fstat-no" title="function not covered" ></span>
-          &lt;Button onClick={saveRecord}&gt;
-            {currentReco<span class="cstat-no" title="statement not covered" >rd === null ? 'Save' : 'Update'}</span>
+        onClick={createToggleFn(<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
+          isShowingPronunciation,<span class="cstat-no" title="statement not covered" ></span>
+          setShowingPron<span class="cstat-no" title="statement not covered" >unciation,</span>
+        )}
+      &gt;<span class="cstat-no" title="statement not covered" ></span>
+        Toggle Pronunciation<span class="cstat-no" title="statement not covered" ></span>
+      &lt;/Button&gt;
+      {hasExtraControls &amp;&amp; (<span class="fstat-no" title="function not covered" ></span>
+        &lt;&gt;
+          &lt;ChooseLanguage<span class="cstat-no" title="statement not covered" ></span>
+            languages={getLanguageDefinitions(languageManager)}
+            onOptionsChange={handleLanguageChange}<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
+            selectedLanguage={selectedLanguage}<span class="fstat-no" title="function not covered" ></span>
+          /&gt;
+          &lt;Button onClic<span class="cstat-no" title="statement not covered" >k={saveRecord}&gt;</span>
+            {currentRecord === null ? 'Save' : 'Update'}
           &lt;/Button&gt;
         &lt;/&gt;
       )}
@@ -1625,8 +1640,8 @@ const Panel = ({<span class="cstat-no" title="statement not covered" ></span>
           onClick={() =&gt; {
             setPractice('')
 &nbsp;
-            const newFragments = {
-<span class="cstat-no" title="statement not covered" >              ...fragment</span>s,
+<span class="cstat-no" title="statement not covered" >            const newFrag</span>ments = {
+              ...fragments,
               index: (fragments.index + 1) % fragments.list.length,
             }
             setFragments(newFragments)
@@ -1774,7 +1789,7 @@ export default Panel
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-12-19T16:04:45.678Z
+                at 2023-12-23T03:14:18.732Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
