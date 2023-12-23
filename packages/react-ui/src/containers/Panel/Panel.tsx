@@ -25,10 +25,6 @@ const createInputSetterFn =
     setValue(e.target.value)
   }
 
-const createToggleFn = (val: boolean, fn: (i: boolean) => void) => () => {
-  fn(!val)
-}
-
 const SHORTCUT_EDITING = 'control+control+shift'
 const SHORTCUT_PRONUNCIATION = 'shift+shift+control'
 const SHORTCUT_NEXT_FRAGMENT = 'Tab'
@@ -405,10 +401,10 @@ const Panel = ({
         Toggle Edition
       </Button>
       <Button
-        onClick={createToggleFn(
-          isShowingPronunciation,
-          setShowingPronunciation,
-        )}
+        onClick={() => {
+          setShowingPronunciation(!isShowingPronunciation)
+          writingArea.current?.focus()
+        }}
       >
         Toggle Pronunciation
       </Button>

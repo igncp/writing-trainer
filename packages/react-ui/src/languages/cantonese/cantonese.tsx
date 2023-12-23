@@ -47,8 +47,9 @@ const parsePronunciation = (text: string, opts: T_LangOpts) => {
   let parsedText = text.toLowerCase()
 
   if (
+    !opts.tonesValue ||
     (opts.tonesValue as T_CantoneseLanguageOptions['tonesValue']) ===
-    'without-tones'
+      'without-tones'
   ) {
     parsedText = parsedText.replace(/[0-9]/g, '')
   }
