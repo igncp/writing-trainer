@@ -1,10 +1,10 @@
 import { mandarinHandler } from 'writing-trainer-core'
 
-import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
+import OptionsBlock from '../common/CharsOptions/OptionsBlock'
+import { commonHandleWritingKeyDown } from '../common/commonHandleWritingKeyDown'
 import { T_UIHandler, T_LangOpts, T_CharsDisplayClickHandler } from '../types'
 
 import LinksBlock from './LinksBlock/LinksBlock'
-import OptionsBlock from './OptionsBlock/OptionsBlock'
 import dictionary from './converted-list-ma.yml'
 import { T_MandarinLanguageOptions } from './mandarinTypes'
 

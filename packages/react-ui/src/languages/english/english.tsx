@@ -1,6 +1,6 @@
 import { englishHandler } from 'writing-trainer-core'
 
-import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
+import { commonHandleWritingKeyDown } from '../common/commonHandleWritingKeyDown'
 import { T_UIHandler, T_LangOpts } from '../types'
 
 import LinksBlock from './LinksBlock/LinksBlock'

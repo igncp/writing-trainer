@@ -17,7 +17,7 @@ const Common = Template.bind({})
 
 export default {
   component: OptionsBlockStories,
-  title: 'Languages/Mandarin/OptionsBlock',
+  title: 'Languages/CharsOptions/OptionsBlock',
 }
 
 export { Common }

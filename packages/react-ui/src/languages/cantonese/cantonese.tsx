@@ -1,10 +1,10 @@
 import { cantoneseHandler } from 'writing-trainer-core'
 
+import OptionsBlock from '../common/CharsOptions/OptionsBlock'
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
 import { T_UIHandler, T_LangOpts, T_CharsDisplayClickHandler } from '../types'
 
 import LinksBlock from './LinksBlock/LinksBlock'
-import OptionsBlock from './OptionsBlock/OptionsBlock'
 import { T_CantoneseLanguageOptions } from './cantoneseTypes'
 import dictionary from './converted-list-jy.yml'
 

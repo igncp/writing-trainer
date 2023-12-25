@@ -215,9 +215,11 @@ const Panel = ({
     },
   }
 
+  const charsToRemove = specialCharsValue.split('').concat(SPECIAL_CHARS)
+
   const charsObjs = langHandler!.convertToCharsObjs({
     ...langOptsObj,
-    charsToRemove: specialCharsValue.split('').concat(SPECIAL_CHARS),
+    charsToRemove,
     text: originalTextValue,
   })
 
@@ -226,7 +228,7 @@ const Panel = ({
   ) => {
     const practiceCharsObjs = langHandler!.convertToCharsObjs({
       ...langOptsObj,
-      charsToRemove: specialCharsValue.split('').concat(SPECIAL_CHARS),
+      charsToRemove,
       text: practiceText,
     })
 
@@ -329,7 +331,7 @@ const Panel = ({
       setPractice,
       setPracticeHasError,
       setWriting,
-      specialCharsValue,
+      specialCharsValue: charsToRemove.join(''),
       writingValue,
     })
   }
@@ -477,15 +479,15 @@ const Panel = ({
                   rows={2}
                   value={pronunciationValue}
                 />
+                <OptionsBlock
+                  languageOptions={languageOptions}
+                  onOptionsChange={handleLanguageOptionsChange}
+                />
                 <TextArea
                   onChange={createInputSetterFn(setSpecialChars)}
                   placeholder="Special characters"
                   rows={1}
                   value={specialCharsValue}
-                />
-                <OptionsBlock
-                  languageOptions={languageOptions}
-                  onOptionsChange={handleLanguageOptionsChange}
                 />
                 <div style={{ fontSize: '12px' }}>
                   Font size:{' '}
@@ -499,6 +501,13 @@ const Panel = ({
                 </div>
               </>
             )}
+            {/* This is necessary because the options block initialises some values*/}
+            <div style={{ display: 'none' }}>
+              <OptionsBlock
+                languageOptions={languageOptions}
+                onOptionsChange={handleLanguageOptionsChange}
+              />
+            </div>
           </div>
         )}{' '}
         <div>

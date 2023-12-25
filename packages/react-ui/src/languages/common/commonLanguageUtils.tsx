@@ -29,11 +29,13 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     getCurrentCharObjFromPractice,
     keyEvent,
     languageOptions,
+    originalTextValue,
     practiceValue,
     setCurrentDisplayCharIdx,
     setPractice,
     setPracticeHasError,
     setWriting,
+    specialCharsValue,
     writingValue,
   },
   {
@@ -96,9 +98,29 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
       parsePronunciation(newWritingValue, languageOptions) ||
     correctPronunciationParsed === unknownPronunciation
   ) {
+    const newPractice = practiceValue + currentCharObj.word
+
     setWriting('')
     setPracticeHasError(false)
-    setPractice(`${practiceValue + currentCharObj.word} `)
+    setPractice(`${newPractice} `)
+
+    if (languageOptions.playmodeValue === 'reductive') {
+      const newPracticeText = newPractice
+        .split('')
+        .filter(c => !specialCharsValue.includes(c))
+        .join('')
+      const originalText = originalTextValue
+        .split('')
+        .filter(c => !specialCharsValue.includes(c))
+        .join('')
+
+      console.log(
+        'debug: commonLanguageUtils.tsx: newPractice',
+        newPracticeText,
+        originalText,
+        newPracticeText === originalText,
+      )
+    }
 
     return
   }
