@@ -32,6 +32,7 @@ type T_handleWritingKeyDown = (opts: {
   originalTextValue: string
   practiceValue: string
   setCurrentDisplayCharIdx: (idx: number) => void
+  setCurrentText: (text: string) => void
   setPractice: (o: string) => void
   setPracticeHasError: (o: boolean) => void
   setWriting: (o: string) => void

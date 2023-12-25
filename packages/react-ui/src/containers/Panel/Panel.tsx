@@ -95,7 +95,8 @@ const Panel = ({
     RecordsScreen | ''
   >('')
   const [currentRecord, setCurrentRecord] = useState<Record['id'] | null>(null)
-  const originalTextValue = fragments.list[fragments.index]
+  const [currentText, setCurrentText] = useState<string>('')
+  const originalTextValue = currentText || fragments.list[fragments.index]
   const [pronunciationValue, setPronunciation] = useState<string>(
     _stories.defaultPronunciation ?? '',
   )
@@ -124,6 +125,11 @@ const Panel = ({
 
   const { storage } = services
 
+  const onPracticeSourceChange = () => {
+    setCurrentText('')
+    languageOptions.wrongCharacters = []
+  }
+
   const handleOriginalTextUpdate = (
     e: React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
@@ -137,6 +143,8 @@ const Panel = ({
       index: 0,
       list: list.length ? list : [''],
     }
+
+    onPracticeSourceChange()
     setFragments(newFragments)
 
     storage.setValue('fragments', JSON.stringify(newFragments))
@@ -256,6 +264,7 @@ const Panel = ({
         e.preventDefault()
 
         setPractice('')
+        onPracticeSourceChange()
 
         setFragments({
           ...fragments,
@@ -297,6 +306,7 @@ const Panel = ({
     setShowingPronunciation(true)
     setShowingEdition(true)
     setCurrentRecord(null)
+    onPracticeSourceChange()
   }
 
   const handleLanguageChange = (newSelectedLanguage: string) => {
@@ -328,6 +338,7 @@ const Panel = ({
       originalTextValue,
       practiceValue,
       setCurrentDisplayCharIdx,
+      setCurrentText,
       setPractice,
       setPracticeHasError,
       setWriting,
@@ -375,6 +386,7 @@ const Panel = ({
           setShowingEdition(false)
           setShowingPronunciation(false)
           setFragments({ index: 0, list: record.text.split('\n') })
+          onPracticeSourceChange()
           setCurrentRecord(record.id)
           setPronunciation(record.pronunciation)
         }}
@@ -432,6 +444,7 @@ const Panel = ({
               index: (fragments.index + 1) % fragments.list.length,
             }
             setFragments(newFragments)
+            onPracticeSourceChange()
             storage.setValue('fragments', JSON.stringify(newFragments))
           }}
         >

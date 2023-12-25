@@ -28,6 +28,7 @@ describe('handleWritingKeyDown', () => {
   const commonOpts: any = {
     getCurrentCharObjFromPractice: jest.fn(),
     keyEvent: { key: 'eventKeyValue' },
+    languageOptions: {},
     practiceValue: 'foo bar baz ',
     setCurrentDisplayCharIdx: jest.fn(),
     setPractice: jest.fn(),

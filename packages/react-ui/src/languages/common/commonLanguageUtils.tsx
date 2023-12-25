@@ -32,6 +32,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     originalTextValue,
     practiceValue,
     setCurrentDisplayCharIdx,
+    setCurrentText,
     setPractice,
     setPracticeHasError,
     setWriting,
@@ -109,17 +110,33 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
         .split('')
         .filter(c => !specialCharsValue.includes(c))
         .join('')
+
       const originalText = originalTextValue
         .split('')
         .filter(c => !specialCharsValue.includes(c))
         .join('')
 
-      console.log(
-        'debug: commonLanguageUtils.tsx: newPractice',
-        newPracticeText,
-        originalText,
-        newPracticeText === originalText,
-      )
+      if (newPracticeText === originalText) {
+        const wrongCharacters = languageOptions.wrongCharacters as
+          | string[]
+          | undefined
+
+        if ((wrongCharacters ?? []).length) {
+          const chars = Array.from(new Set(wrongCharacters))
+          const fullChars = Array.from({ length: 3 })
+            .map(() => {
+              return chars.join('')
+            })
+            .join('')
+
+          setCurrentText(fullChars)
+          languageOptions.wrongCharacters = []
+        } else {
+          setCurrentText('')
+        }
+
+        setPractice('')
+      }
     }
 
     return
@@ -128,6 +145,11 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
   setWriting(newWritingValue)
 
   const hasError = !correctPronunciation.startsWith(newWritingValue)
+
+  if (hasError) {
+    languageOptions.wrongCharacters = languageOptions.wrongCharacters || []
+    ;(languageOptions.wrongCharacters as string[]).push(currentCharObj.word)
+  }
 
   setPracticeHasError(hasError)
 }

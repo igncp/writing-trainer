@@ -1,6 +1,6 @@
 import { japaneseHandler } from 'writing-trainer-core'
 
-import { commonHandleWritingKeyDown } from '../common/commonHandleWritingKeyDown'
+import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
 import { T_UIHandler, T_LangOpts } from '../types'
 
 import LinksBlock from './LinksBlock/LinksBlock'
