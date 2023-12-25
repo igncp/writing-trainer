@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/languages/cantonese/OptionsBlock/OptionsBlock.tsx</title>
+    <title>Code coverage report for src/languages/common/CharsOptions/OptionsBlock.tsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../../prettify.css" />
     <link rel="stylesheet" href="../../../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">src/languages/cantonese/OptionsBlock</a> OptionsBlock.tsx</h1>
+        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">src/languages/common/CharsOptions</a> OptionsBlock.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">71.15% </span>
+                <span class="strong">70.68% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>37/52</span>
+                <span class='fraction'>41/58</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">68.18% </span>
+                <span class="strong">69.56% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>30/44</span>
+                <span class='fraction'>32/46</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">61.53% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>8/12</span>
+                <span class='fraction'>8/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">74.35% </span>
+                <span class="strong">72.09% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>29/39</span>
+                <span class='fraction'>31/43</span>
             </div>
         
             
@@ -103,7 +103,24 @@
 <a name='L38'></a><a href='#L38'>38</a>
 <a name='L39'></a><a href='#L39'>39</a>
 <a name='L40'></a><a href='#L40'>40</a>
-<a name='L41'></a><a href='#L41'>41</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -143,7 +160,24 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useEffect, useState } from 'react'
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useEffect, useState } from 'react'
 &nbsp;
 import { T_OptionsBlock } from '<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" >..</span>/../types'</span>
 <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
@@ -151,35 +185,52 @@ const Option<span class="cstat-no" title="statement not covered" >sBlock: T_Opti
   const [ton<span class="cstat-no" title="statement not covered" >esValue, setTones<span class="cstat-no" title="statement not covered" >Value] = useState(</span></span>
     (languageOpt<span class="cstat-no" title="statement not covered" >ions.tonesVal</span>ue as string) || 'without-tones',
   )
-<span class="cstat-no" title="statement not covered" ></span>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleOptionsChange = (newValues: any) =&gt; {
-    onOptionsChange({
-      tonesValue,
-    <span class="missing-if-branch" title="else path not taken" >E</span>  ...newValues,
-    })
-  }<span class="branch-1 cbranch-no" title="branch not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ><span class="missing-if-branch" title="else path not taken" >E</span></span></span>
+  const <span class="cstat-no" title="statement not covered" >[playmodeV</span>alue, setPlaymodeValue] = useState(
+    (languageOptions.playmodeValue as string) || 'reductive',
+  )
 &nbsp;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  co<span class="missing-if-branch" title="else path not taken" >E</span>nst handleOptionsChange = (newValues: any) =&gt; {
+    onOptionsChange({
+    <span class="missing-if-branch" title="else path not taken" >E</span>  playmodeValue,<span class="branch-1 cbranch-no" title="branch not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span>
+      tonesValue,
+&nbsp;
+      ...newValues,
+    })<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" ></span></span>
+  }<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
+<span class="cstat-no" title="statement not covered" ></span>
   const handleTonesChange = (e: React.ChangeEvent&lt;HTMLSelectElement&gt;) =&gt; {
     setTonesValue(e.target.value)
-<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" >    handleOptionsChange({<span class="cstat-no" title="statement not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" >      tonesValue: </span>e.target.value,
+&nbsp;
+    h<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" >an</span>dleOptionsChange({</span>
+<span class="cstat-no" title="statement not covered" >      tonesValue: e.ta</span>rget.value,
+    })
+  }
+<span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span></span>
+  const handlePlaymodeChange = (e: React.ChangeEvent&lt;HTMLSelectElement&gt;) =&gt; {
+    <span class="missing-if-branch" title="else path not taken" >E</span>setPlaymodeValue(e.target.value)<span class="missing-if-branch" title="else path not taken" >E</span>
+&nbsp;
+    handleOptionsChange({
+      playmodeValue: e.target.value,
     })
   }
 &nbsp;
-  use<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" >Ef</span>fect(() =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    handleOptionsChang</span>e({})
+  useEffect(() =&gt; {
+    handleOptionsChange({})
   }, [])
 &nbsp;
-  re<span class="missing-if-branch" title="if path not taken" >I</span>turn (<span class="cstat-no" title="statement not covered" ></span>
+  return (
     &lt;div&gt;
-    <span class="missing-if-branch" title="else path not taken" >E</span>  &lt;select onChange={handleTonesChang<span class="missing-if-branch" title="else path not taken" >E</span>e} value={tonesValue}&gt;
-        &lt;option value="without-tones"&gt;Without Tones&lt;/option&gt;
-        &lt;option value="with-tones"&gt;With Tones&lt;/option&gt;
-      &lt;/select&gt;
-    &lt;/div&gt;
-  )
+      &lt;select onChange={handleTonesChange} value={tonesValue}&gt;
+        &lt;option value="witho<span class="fstat-no" title="function not covered" >ut</span>-tones"&gt;Without Tones&lt;/option&gt;
+<span class="cstat-no" title="statement not covered" >        &lt;option value="with-tones"&gt;With</span> Tones&lt;/option&gt;
+      &lt;/<span class="cstat-no" title="statement not covered" >select&gt;</span>
+      &lt;select onChange={handlePlaymodeChange} value={playmodeValue}&gt;
+        &lt;option value="reductive"&gt;Reductive&lt;/option&gt;
+        &lt;option value="repetitive"&gt;Repetitive&lt;/option&gt;
+      &lt;/select&gt;<span class="fstat-no" title="function not covered" ></span>
+    &lt;/di<span class="cstat-no" title="statement not covered" >v&gt;</span>
+  )<span class="cstat-no" title="statement not covered" ></span>
 }
 &nbsp;
 export default OptionsBlock
@@ -190,7 +241,7 @@ export default OptionsBlock
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-12-23T06:39:11.731Z
+                at 2023-12-25T09:19:52.467Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

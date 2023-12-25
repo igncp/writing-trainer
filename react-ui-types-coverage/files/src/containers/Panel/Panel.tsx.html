@@ -11,7 +11,7 @@
 <link href="../../../../assets/source-file.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Panel/Panel.tsx</td><td class="">99.73%</td><td class="">95%</td><td class="">748</td><td class="">746</td><td class="">2</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useRef, useState } from &#x27;react&#x27;
+    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Panel/Panel.tsx</td><td class="">99.74%</td><td class="">95%</td><td class="">770</td><td class="">768</td><td class="">2</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useRef, useState } from &#x27;react&#x27;
 import {
   LanguageDefinition,
   LanguageManager,
@@ -108,7 +108,8 @@ const Panel = ({
     RecordsScreen | &#x27;&#x27;
   &gt;(&#x27;&#x27;)
   const [currentRecord, setCurrentRecord] = useState&lt;Record[&#x27;id&#x27;] | null&gt;(null)
-  const originalTextValue = fragments.list[fragments.index]
+  const [currentText, setCurrentText] = useState&lt;string&gt;(&#x27;&#x27;)
+  const originalTextValue = currentText || fragments.list[fragments.index]
   const [pronunciationValue, setPronunciation] = useState&lt;string&gt;(
     _stories.defaultPronunciation ?? &#x27;&#x27;,
   )
@@ -137,6 +138,11 @@ const Panel = ({
 
   const { storage } = services
 
+  const onPracticeSourceChange = () =&gt; {
+    setCurrentText(&#x27;&#x27;)
+    languageOptions.wrongCharacters = []
+  }
+
   const handleOriginalTextUpdate = (
     e: React.ChangeEvent&lt;HTMLTextAreaElement&gt;,
   ) =&gt; {
@@ -150,6 +156,8 @@ const Panel = ({
       index: 0,
       list: list.length ? list : [&#x27;&#x27;],
     }
+
+    onPracticeSourceChange()
     setFragments(newFragments)
 
     storage.setValue(&#x27;fragments&#x27;, JSON.stringify(newFragments))
@@ -228,9 +236,11 @@ const Panel = ({
     },
   }
 
+  const charsToRemove = specialCharsValue.split(&#x27;&#x27;).concat(SPECIAL_CHARS)
+
   const charsObjs = langHandler!.convertToCharsObjs({
     ...langOptsObj,
-    charsToRemove: specialCharsValue.split(&#x27;&#x27;).concat(SPECIAL_CHARS),
+    charsToRemove,
     text: originalTextValue,
   })
 
@@ -239,7 +249,7 @@ const Panel = ({
   ) =&gt; {
     const practiceCharsObjs = langHandler!.convertToCharsObjs({
       ...langOptsObj,
-      charsToRemove: specialCharsValue.split(&#x27;&#x27;).concat(SPECIAL_CHARS),
+      charsToRemove,
       text: practiceText,
     })
 
@@ -267,6 +277,7 @@ const Panel = ({
         e.preventDefault()
 
         setPractice(&#x27;&#x27;)
+        onPracticeSourceChange()
 
         setFragments({
           ...fragments,
@@ -308,6 +319,7 @@ const Panel = ({
     setShowingPronunciation(true)
     setShowingEdition(true)
     setCurrentRecord(null)
+    onPracticeSourceChange()
   }
 
   const handleLanguageChange = (newSelectedLanguage: string) =&gt; {
@@ -339,10 +351,11 @@ const Panel = ({
       originalTextValue,
       practiceValue,
       setCurrentDisplayCharIdx,
+      setCurrentText,
       setPractice,
       setPracticeHasError,
       setWriting,
-      specialCharsValue,
+      specialCharsValue: charsToRemove.join(&#x27;&#x27;),
       writingValue,
     })
   }
@@ -386,6 +399,7 @@ const Panel = ({
           setShowingEdition(false)
           setShowingPronunciation(false)
           setFragments({ index: 0, list: record.text.split(&#x27;\n&#x27;) })
+          onPracticeSourceChange()
           setCurrentRecord(record.id)
           setPronunciation(record.pronunciation)
         }}
@@ -443,6 +457,7 @@ const Panel = ({
               index: (fragments.index + 1) % fragments.list.length,
             }
             setFragments(newFragments)
+            onPracticeSourceChange()
             storage.setValue(&#x27;fragments&#x27;, JSON.stringify(newFragments))
           }}
         &gt;
@@ -490,15 +505,15 @@ const Panel = ({
                   rows={2}
                   value={pronunciationValue}
                 /&gt;
+                &lt;OptionsBlock
+                  languageOptions={languageOptions}
+                  onOptionsChange={handleLanguageOptionsChange}
+                /&gt;
                 &lt;TextArea
                   onChange={createInputSetterFn(setSpecialChars)}
                   placeholder=&quot;Special characters&quot;
                   rows={1}
                   value={specialCharsValue}
-                /&gt;
-                &lt;OptionsBlock
-                  languageOptions={languageOptions}
-                  onOptionsChange={handleLanguageOptionsChange}
                 /&gt;
                 &lt;div style={{ fontSize: &#x27;12px&#x27; }}&gt;
                   Font size:{&#x27; &#x27;}
@@ -512,6 +527,13 @@ const Panel = ({
                 &lt;/div&gt;
               &lt;/&gt;
             )}
+            {/* This is necessary because the options block initialises some values*/}
+            &lt;div style={{ display: &#x27;none&#x27; }}&gt;
+              &lt;OptionsBlock
+                languageOptions={languageOptions}
+                onOptionsChange={handleLanguageOptionsChange}
+              /&gt;
+            &lt;/div&gt;
           &lt;/div&gt;
         )}{&#x27; &#x27;}
         &lt;div&gt;
@@ -581,7 +603,7 @@ const Panel = ({
 
 export default Panel
 </textarea><pre id="annotations" style="display:none">[{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:23,&quot;character&quot;:3,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:24,&quot;character&quot;:4,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1}]</pre></div>
-    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sat, 23 Dec 2023 06:39:16 GMT</p>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Mon, 25 Dec 2023 09:19:56 GMT</p>
     </body>
   </html>
   

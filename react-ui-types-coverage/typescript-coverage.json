@@ -16,29 +16,15 @@
       "kind": 1
     },
     {
-      "file": "src/languages/cantonese/OptionsBlock/OptionsBlock.tsx",
-      "line": 10,
+      "file": "src/languages/common/CharsOptions/OptionsBlock.tsx",
+      "line": 13,
       "character": 31,
       "text": "newValues",
       "kind": 1
     },
     {
-      "file": "src/languages/cantonese/OptionsBlock/OptionsBlock.tsx",
-      "line": 13,
-      "character": 9,
-      "text": "newValues",
-      "kind": 1
-    },
-    {
-      "file": "src/languages/mandarin/OptionsBlock/OptionsBlock.tsx",
-      "line": 10,
-      "character": 31,
-      "text": "newValues",
-      "kind": 1
-    },
-    {
-      "file": "src/languages/mandarin/OptionsBlock/OptionsBlock.tsx",
-      "line": 13,
+      "file": "src/languages/common/CharsOptions/OptionsBlock.tsx",
+      "line": 18,
       "character": 9,
       "text": "newValues",
       "kind": 1
@@ -339,273 +325,273 @@
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 39,
+      "line": 40,
       "character": 10,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 40,
+      "line": 41,
       "character": 9,
       "text": "commonOpts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 52,
+      "line": 53,
       "character": 11,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 52,
+      "line": 53,
       "character": 16,
       "text": "setCurrentDisplayCharIdx",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 52,
+      "line": 53,
       "character": 41,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 52,
+      "line": 53,
       "character": 46,
       "text": "calls",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 53,
+      "line": 54,
       "character": 11,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 53,
+      "line": 54,
       "character": 16,
       "text": "setPractice",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 53,
+      "line": 54,
       "character": 28,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 53,
+      "line": 54,
       "character": 33,
       "text": "calls",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 54,
+      "line": 55,
       "character": 11,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 54,
+      "line": 55,
       "character": 16,
       "text": "setWriting",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 54,
+      "line": 55,
       "character": 27,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 54,
+      "line": 55,
       "character": 32,
       "text": "calls",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 58,
+      "line": 59,
       "character": 10,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 59,
+      "line": 60,
       "character": 9,
       "text": "commonOpts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 65,
+      "line": 66,
       "character": 11,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 65,
+      "line": 66,
       "character": 16,
       "text": "setPracticeHasError",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 65,
+      "line": 66,
       "character": 36,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 65,
+      "line": 66,
       "character": 41,
       "text": "calls",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 66,
+      "line": 67,
       "character": 11,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 66,
+      "line": 67,
       "character": 16,
       "text": "setWriting",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 66,
+      "line": 67,
       "character": 27,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 66,
+      "line": 67,
       "character": 32,
       "text": "calls",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 70,
+      "line": 71,
       "character": 10,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 71,
+      "line": 72,
       "character": 9,
       "text": "commonOpts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 81,
+      "line": 82,
       "character": 11,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 81,
+      "line": 82,
       "character": 16,
       "text": "keyEvent",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 81,
+      "line": 82,
       "character": 25,
       "text": "preventDefault",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 81,
+      "line": 82,
       "character": 40,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 81,
+      "line": 82,
       "character": 45,
       "text": "calls",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 82,
+      "line": 83,
       "character": 11,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 82,
+      "line": 83,
       "character": 16,
       "text": "setWriting",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 82,
+      "line": 83,
       "character": 27,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 82,
+      "line": 83,
       "character": 32,
       "text": "calls",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 83,
+      "line": 84,
       "character": 11,
       "text": "opts",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 83,
+      "line": 84,
       "character": 16,
       "text": "setPractice",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 83,
+      "line": 84,
       "character": 28,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
-      "line": 83,
+      "line": 84,
       "character": 33,
       "text": "calls",
       "kind": 1
@@ -653,14 +639,14 @@
       "kind": 1
     },
     {
-      "file": "src/languages/cantonese/OptionsBlock/__stories__/OptionsBlock.stories.tsx",
+      "file": "src/languages/common/CharsOptions/__stories__/OptionsBlock.stories.tsx",
       "line": 15,
       "character": 6,
       "text": "Common",
       "kind": 1
     },
     {
-      "file": "src/languages/cantonese/OptionsBlock/__stories__/OptionsBlock.stories.tsx",
+      "file": "src/languages/common/CharsOptions/__stories__/OptionsBlock.stories.tsx",
       "line": 22,
       "character": 9,
       "text": "Common",
@@ -721,24 +707,10 @@
       "character": 9,
       "text": "Common",
       "kind": 1
-    },
-    {
-      "file": "src/languages/mandarin/OptionsBlock/__stories__/OptionsBlock.stories.tsx",
-      "line": 15,
-      "character": 6,
-      "text": "Common",
-      "kind": 1
-    },
-    {
-      "file": "src/languages/mandarin/OptionsBlock/__stories__/OptionsBlock.stories.tsx",
-      "line": 22,
-      "character": 9,
-      "text": "Common",
-      "kind": 1
     }
   ],
-  "percentage": 97.61363636363636,
-  "total": 4400,
-  "covered": 4295,
-  "uncovered": 105
+  "percentage": 97.721119133574,
+  "total": 4432,
+  "covered": 4331,
+  "uncovered": 101
 }
