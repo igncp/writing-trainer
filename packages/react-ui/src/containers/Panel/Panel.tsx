@@ -483,6 +483,7 @@ const Panel = ({
             <TextArea
               onBlur={() => {
                 setShowingEdition(false)
+                setShowingPronunciation(false)
                 writingArea.current?.focus()
               }}
               onChange={handleOriginalTextUpdate}
