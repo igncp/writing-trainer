@@ -13,6 +13,7 @@ type Props = {
   onCharClick: T_CharsDisplayClickHandler
   shouldHaveDifferentWidths?: boolean
   shouldHidePronunciation: boolean
+  showCurrentCharPronunciation?: boolean
 }
 
 const CharactersDisplay = ({
@@ -22,6 +23,7 @@ const CharactersDisplay = ({
   onCharClick,
   shouldHaveDifferentWidths,
   shouldHidePronunciation,
+  showCurrentCharPronunciation,
 }: Props) => {
   const usedFontSize = fontSize ?? 30
   const wrapperRef = useRef<HTMLDivElement | undefined>()
@@ -91,7 +93,12 @@ const CharactersDisplay = ({
                 ...(shouldHaveDifferentWidths ? {} : { width: charWidth }),
               }}
             >
-              {shouldHidePronunciation ? '' : pronunciation}
+              {(() => {
+                if (showCurrentCharPronunciation && index === focusedIndex)
+                  return pronunciation
+
+                return shouldHidePronunciation ? '' : pronunciation
+              })()}
             </div>
             <div
               style={{
