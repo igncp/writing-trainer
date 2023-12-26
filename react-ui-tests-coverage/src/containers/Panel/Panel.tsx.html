@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/361</span>
+                <span class='fraction'>0/363</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/247</span>
+                <span class='fraction'>0/251</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/74</span>
+                <span class='fraction'>0/75</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/264</span>
+                <span class='fraction'>0/266</span>
             </div>
         
             
@@ -660,7 +660,11 @@
 <a name='L595'></a><a href='#L595'>595</a>
 <a name='L596'></a><a href='#L596'>596</a>
 <a name='L597'></a><a href='#L597'>597</a>
-<a name='L598'></a><a href='#L598'>598</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L598'></a><a href='#L598'>598</a>
+<a name='L599'></a><a href='#L599'>599</a>
+<a name='L600'></a><a href='#L600'>600</a>
+<a name='L601'></a><a href='#L601'>601</a>
+<a name='L602'></a><a href='#L602'>602</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1065,6 +1069,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1662,53 +1670,53 @@ const Panel = <span class="cstat-no" title="statement not covered" >({</span>
 &nbsp;
   return (
     &lt;&gt;
-      &lt;Button onClick={clearValues} style={{ paddingLeft: 0 }}&gt;
+      &lt;Button onClick={clearValues} style={{ paddingLeft: 0 }}&gt;<span class="fstat-no" title="function not covered" ></span>
         Clear
-      &lt;/Button&gt;
-      &lt;Button onClick={() =&gt; setHasExtraControls(true)}&gt;X&lt;/Button&gt;
+      &lt;/Button&gt;<span class="cstat-no" title="statement not covered" ></span>
+      &lt;Button onClick={(<span class="cstat-no" title="statement not covered" >) =&gt; setHasExtraControls(true)}&gt;X&lt;/Button&gt;</span>
       {hasExtraControls &amp;&amp; &lt;Button onClick={listRecords}&gt;Records&lt;/Button&gt;}
       &lt;Button
         onClick={() =&gt; {
           setShowingEdition(!isShowingEdition)
-          writingArea.current?.focus()<span class="fstat-no" title="function not covered" ></span>
-        }}<span class="cstat-no" title="statement not covered" ></span>
+          writingArea.current?.focus()
+        }}
       &gt;
         Toggle Edition
-      &lt;/Button&gt;
-      &lt;Button
+      &lt;/Button&gt;<span class="fstat-no" title="function not covered" ></span>
+      &lt;Button<span class="cstat-no" title="statement not covered" ></span>
         onClick={() =&gt; {
           setShowingPronunciation(!isShowingPronunciation)
           writingArea.current?.focus()
         }}
-      &gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
-        Toggle Pronunciation<span class="cstat-no" title="statement not covered" ></span>
-      &lt;/Button&gt;<span class="cstat-no" title="statement not covered" ></span>
+      &gt;
+        Toggle Pronunciation
+      &lt;/Button&gt;
       {hasExtraControls &amp;&amp; (
-        &lt;&gt;<span class="cstat-no" title="statement not covered" ></span>
+        &lt;&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
           &lt;ChooseLanguage<span class="cstat-no" title="statement not covered" ></span>
-            languages={getLanguageDefinitions(languageManager)}
-            onOptionsChange={handleLanguageChang<span class="fstat-no" title="function not covered" >e}</span>
-            selectedLanguage={selectedLanguage}
+            languages={g<span class="cstat-no" title="statement not covered" >etLanguageDefinitions(langua</span>geManager)}
+            onOptionsChange={handleLanguageChange}
+            selectedLang<span class="cstat-no" title="statement not covered" >uage={selectedLanguage}</span>
           /&gt;<span class="cstat-no" title="statement not covered" ></span>
           &lt;Button onClick={saveRecord}&gt;
-            {currentRecord === null ? 'Save' : 'Update'}<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
-          &lt;/Button&gt;<span class="fstat-no" title="function not covered" ></span>
-        &lt;/&gt;
-      )}<span class="cstat-no" title="statement not covered" ></span>
-      {fragments.list.length &gt; 1 &amp;&amp; (
-        &lt;Button
+            {currentRecord === null ? 'Save' : '<span class="fstat-no" title="function not covered" >Up</span>date'}
+          &lt;/Button&gt;
+        &lt;/&gt;<span class="cstat-no" title="statement not covered" ></span>
+      )}
+      {fragments.list.length &gt; 1 &amp;&amp; (<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
+        &lt;Button<span class="fstat-no" title="function not covered" ></span>
           onClick={() =&gt; {
-            setPractice('')
+            setPractice(<span class="cstat-no" title="statement not covered" >'')</span>
 &nbsp;
             const newFragments = {
               ...fragments,
               index: (fragments.index + 1) % fragments.list.length,
             }
-<span class="cstat-no" title="statement not covered" >            setFragments(</span>newFragments)
+            setFragments(newFragments)
             onPracticeSourceChange()
             storage.setValue('fragments', JSON.stringify(newFragments))
           }}
-        &gt;
+<span class="cstat-no" title="statement not covered" >        &gt;</span>
           Current Fragment: {fragments.index + 1} / {fragments.list.length}
         &lt;/Button&gt;
       )}
@@ -1740,6 +1748,10 @@ const Panel = <span class="cstat-no" title="statement not covered" >({</span>
             }}
           &gt;
             &lt;TextArea
+              onBlur={() =&gt; {
+                setShowingEdition(false)
+                writingArea.current?.focus()
+              }}
               onChange={handleOriginalTextUpdate}
               placeholder="Original text"
               rows={3}
@@ -1861,7 +1873,7 @@ export default Panel
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-12-26T11:31:38.112Z
+                at 2023-12-26T13:11:45.352Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
