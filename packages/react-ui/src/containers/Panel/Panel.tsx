@@ -17,6 +17,12 @@ import {
 import { T_Services } from '../../typings/mainTypes'
 import RecordsSection, { RecordsScreen } from '../RecordsSection/RecordsSection'
 
+declare global {
+  interface Window {
+    autoHidePronunciation: number | null
+  }
+}
+
 const STORAGE_LANGUAGE_KEY = 'selectedLanguage'
 
 const createInputSetterFn =
@@ -418,6 +424,10 @@ const Panel = ({
         onClick={() => {
           setShowingPronunciation(!isShowingPronunciation)
           writingArea.current?.focus()
+
+          setTimeout(() => {
+            setShowingPronunciation(!isShowingPronunciation)
+          }, 2000)
         }}
       >
         Toggle Pronunciation
@@ -479,7 +489,24 @@ const Panel = ({
             }}
           >
             <TextArea
+              onBlur={() => {
+                if (window.autoHidePronunciation) {
+                  clearTimeout(window.autoHidePronunciation)
+                }
+
+                window.autoHidePronunciation = window.setTimeout(() => {
+                  window.autoHidePronunciation = null
+                  setShowingPronunciation(!isShowingPronunciation)
+                  writingArea.current?.focus()
+                }, 2000)
+              }}
               onChange={handleOriginalTextUpdate}
+              onFocus={() => {
+                if (window.autoHidePronunciation) {
+                  window.clearTimeout(window.autoHidePronunciation)
+                }
+                window.autoHidePronunciation = null
+              }}
               placeholder="Original text"
               rows={3}
               value={fragments.list.join('\n')}
