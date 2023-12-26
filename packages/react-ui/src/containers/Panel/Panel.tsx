@@ -481,6 +481,10 @@ const Panel = ({
             }}
           >
             <TextArea
+              onBlur={() => {
+                setShowingEdition(false)
+                writingArea.current?.focus()
+              }}
               onChange={handleOriginalTextUpdate}
               placeholder="Original text"
               rows={3}
