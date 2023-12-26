@@ -38,14 +38,14 @@
     },
     {
       "file": "src/containers/Panel/Panel.tsx",
-      "line": 29,
+      "line": 23,
       "character": 3,
       "text": "setValue",
       "kind": 1
     },
     {
       "file": "src/containers/Panel/Panel.tsx",
-      "line": 30,
+      "line": 24,
       "character": 4,
       "text": "setValue",
       "kind": 1
@@ -709,8 +709,8 @@
       "kind": 1
     }
   ],
-  "percentage": 97.73745519713262,
-  "total": 4464,
-  "covered": 4363,
+  "percentage": 97.72624943719046,
+  "total": 4442,
+  "covered": 4341,
   "uncovered": 101
 }
