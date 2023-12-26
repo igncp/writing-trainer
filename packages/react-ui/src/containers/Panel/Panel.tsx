@@ -403,7 +403,9 @@ const Panel = ({
 
   return (
     <>
-      <Button onClick={clearValues}>Clear</Button>
+      <Button onClick={clearValues} style={{ paddingLeft: 0 }}>
+        Clear
+      </Button>
       <Button onClick={() => setHasExtraControls(true)}>X</Button>
       {hasExtraControls && <Button onClick={listRecords}>Records</Button>}
       <Button

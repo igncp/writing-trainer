@@ -21,7 +21,7 @@ const LinksBlock: T_LinksBlock = ({ text }) => {
 
   return (
     <div style={{ width: '100%' }}>
-      <GTButton language="zh-HK" text={text} />
+      <GTButton language="zh-HK" style={{ paddingLeft: 0 }} text={text} />
       <Button
         onClick={() => {
           copyTextToClipboard(hrefText)

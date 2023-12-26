@@ -22,6 +22,7 @@ module.exports = Object.assign(globalConfig, {
   moduleNameMapper: {
     '@/(.*)$': '<rootDir>/src/$1',
     '^.+.csv$': '<rootDir>/helpers/test/mockCsv.js',
+    '^.+.txt$': '<rootDir>/helpers/test/mockTxt.js',
     '^.+.yml$': '<rootDir>/helpers/test/mockYml.js',
   },
   roots: ['<rootDir>/src'],

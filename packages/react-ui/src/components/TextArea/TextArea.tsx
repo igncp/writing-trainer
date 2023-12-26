@@ -41,7 +41,7 @@ const TextArea = ({
       ref={ref}
       spellCheck={false}
       style={{
-        border: '1px solid #ddd',
+        border: '1px solid var(--color-background)',
         outline: 0,
         resize: 'none',
         width: '100%',

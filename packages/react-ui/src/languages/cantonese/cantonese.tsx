@@ -2,6 +2,7 @@ import { cantoneseHandler } from 'writing-trainer-core'
 
 import OptionsBlock from '../common/CharsOptions/OptionsBlock'
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
+import { tradToSimplifiedItems } from '../common/conversion'
 import { T_UIHandler, T_LangOpts, T_CharsDisplayClickHandler } from '../types'
 
 import LinksBlock from './LinksBlock/LinksBlock'
@@ -28,6 +29,12 @@ const dictionaryParsed = (
 
   if (existing && existing[1] > finalPerc) {
     return acc
+  }
+
+  if (tradToSimplifiedItems[char]) {
+    tradToSimplifiedItems[char]?.forEach(simplified => {
+      acc[simplified] = [pronunciation, finalPerc]
+    })
   }
 
   acc[char] = [pronunciation, finalPerc]

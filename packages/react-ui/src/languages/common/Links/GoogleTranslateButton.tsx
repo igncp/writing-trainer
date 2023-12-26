@@ -1,13 +1,13 @@
 import React from 'react'
 
-import Button from '../../../components/Button/Button'
+import Button, { T_ButtonProps } from '../../../components/Button/Button'
 
 type Props = {
   language: string
   text: string
-}
+} & Omit<T_ButtonProps, 'children'>
 
-const GoogleTranslateButton = ({ text, language }: Props) => {
+const GoogleTranslateButton = ({ text, language, ...rest }: Props) => {
   const hrefText = text
     .split('')
     .map(c => c.trim())
@@ -18,6 +18,7 @@ const GoogleTranslateButton = ({ text, language }: Props) => {
     <Button
       href={`https://translate.google.com/#${language}/en/${hrefText}`}
       shouldUseLink
+      {...rest}
     >
       Google Translate
     </Button>

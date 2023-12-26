@@ -3,10 +3,9 @@ import { CharObj, CurrentCharObj, LanguageHandler } from 'writing-trainer-core'
 
 export type T_LangOpts = { [k: string]: unknown }
 
-// @TODO: Review this interface
 export type T_LinksBlock = (opts: {
-  text: string
   children?: React.ReactNode
+  text: string
 }) => React.ReactNode
 
 export type T_OptionsBlock = (props: {

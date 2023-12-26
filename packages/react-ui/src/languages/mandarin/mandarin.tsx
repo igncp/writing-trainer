@@ -2,6 +2,7 @@ import { mandarinHandler } from 'writing-trainer-core'
 
 import OptionsBlock from '../common/CharsOptions/OptionsBlock'
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
+import { tradToSimplifiedItems } from '../common/conversion'
 import { T_UIHandler, T_LangOpts, T_CharsDisplayClickHandler } from '../types'
 
 import LinksBlock from './LinksBlock/LinksBlock'
@@ -31,6 +32,12 @@ const dictionaryParsed = (
   }
 
   acc[char] = [pronunciation, finalPerc]
+
+  if (tradToSimplifiedItems[char]) {
+    tradToSimplifiedItems[char]?.forEach(simplified => {
+      acc[simplified] = [pronunciation, finalPerc]
+    })
+  }
 
   return acc
 }, {})

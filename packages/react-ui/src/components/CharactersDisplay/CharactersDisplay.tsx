@@ -104,7 +104,7 @@ const CharactersDisplay = ({
               style={{
                 fontSize: usedFontSize + 10,
                 minWidth: 10,
-                paddingTop: 15,
+                paddingTop: 5,
                 textAlign: 'center',
                 ...(shouldHaveDifferentWidths ? {} : { width: charWidth }),
               }}

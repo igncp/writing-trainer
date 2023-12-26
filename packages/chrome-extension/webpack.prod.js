@@ -43,6 +43,10 @@ const config = {
         loader: 'yaml-loader',
         test: /\.ya?ml$/,
       },
+      {
+        loader: 'text-loader',
+        test: /\.txt$/,
+      },
     ],
   },
   output: {

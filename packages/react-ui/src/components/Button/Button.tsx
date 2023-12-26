@@ -9,7 +9,7 @@ import {
 
 const noop = () => {}
 
-type T_ButtonProps = {
+export type T_ButtonProps = {
   children: React.ReactNode
   className?: string
   disabled?: boolean
