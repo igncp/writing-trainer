@@ -1,4 +1,7 @@
 const SPECIAL_SYMBOLS = [
+  `
+`,
+
   "'",
   "'",
   ' ',
@@ -54,8 +57,6 @@ const SPECIAL_SYMBOLS = [
   '☺',
   '⚠',
   '✔',
-  `
-`,
   '　',
   '、',
   '。',
@@ -72,6 +73,7 @@ const SPECIAL_SYMBOLS = [
   '〔',
   '〕',
   '且',
+  '丨',
   '丰',
   '︰',
   '﹐',
@@ -81,6 +83,7 @@ const SPECIAL_SYMBOLS = [
   '％',
   '（',
   '）',
+  '＊',
   '＋',
   '，',
   '－',
@@ -95,7 +98,6 @@ const SPECIAL_SYMBOLS = [
   '｜',
   '～',
   '�️',
-  '＊',
 ]
 
 export { SPECIAL_SYMBOLS }
