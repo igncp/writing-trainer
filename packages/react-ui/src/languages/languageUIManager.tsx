@@ -4,9 +4,9 @@ import { uiHandlers as defaultUIHandlers } from './handlers'
 import { T_UIHandler } from './types'
 
 class LanguageUIManager {
-  private readonly manager: LanguageManager
   private readonly handlers: T_UIHandler[]
   private readonly idToLanguageUIHandlerMap: { [k: string]: T_UIHandler } = {}
+  private readonly manager: LanguageManager
 
   public constructor(manager: LanguageManager, handlers?: T_UIHandler[]) {
     this.manager = manager

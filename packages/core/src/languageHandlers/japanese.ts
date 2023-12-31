@@ -4,9 +4,9 @@ import { CharObj } from '../languageManager'
 import { LanguageHandler } from './_common'
 
 const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
-  text,
   charsToRemove,
   langOpts = {},
+  text,
 }) => {
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const defaultSpecialChars = japaneseHandler.getSpecialChars()

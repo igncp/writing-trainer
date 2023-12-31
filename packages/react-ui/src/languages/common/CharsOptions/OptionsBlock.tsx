@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { T_OptionsBlock } from '../../types'
 
-const OptionsBlock: T_OptionsBlock = ({ onOptionsChange, languageOptions }) => {
+const OptionsBlock: T_OptionsBlock = ({ languageOptions, onOptionsChange }) => {
   const [tonesValue, setTonesValue] = useState(
     (languageOptions.tonesValue as string) || 'without-tones',
   )

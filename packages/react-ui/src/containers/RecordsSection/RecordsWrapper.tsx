@@ -3,11 +3,11 @@ import React from 'react'
 import Button from '../../components/Button/Button'
 
 type IProps = {
-  onRecordsClose: () => void
   children: React.ReactNode
+  onRecordsClose: () => void
 }
 
-const RecordsWrapper = ({ onRecordsClose, children }: IProps) => {
+const RecordsWrapper = ({ children, onRecordsClose }: IProps) => {
   return (
     <div>
       <Button onClick={onRecordsClose}>Close</Button>

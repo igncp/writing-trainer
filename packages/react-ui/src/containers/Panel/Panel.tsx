@@ -38,19 +38,19 @@ Toggle Pronunciation: ${SHORTCUT_PRONUNCIATION}
 Focus Writing (if no input has focus): ${SHORTCUT_WRITING}`
 
 type Props = {
-  UI?: {
-    noHideButton?: boolean
+  _stories?: {
+    defaultLanguage?: LanguageDefinition['id']
+    defaultPractice?: string
+    defaultPronunciation?: string
+    langOpts?: T_LangOpts
   }
   languageManager: LanguageManager
   languageUIManager: LanguageUIManager
   onHideRequest?: () => void
   services: T_Services
   text: string
-  _stories?: {
-    defaultLanguage?: LanguageDefinition['id']
-    defaultPractice?: string
-    defaultPronunciation?: string
-    langOpts?: T_LangOpts
+  UI?: {
+    noHideButton?: boolean
   }
 }
 
@@ -74,13 +74,13 @@ const getLanguageDefinitions = (languageManager: LanguageManager) => {
 }
 
 const Panel = ({
-  UI,
   _stories = {},
   languageManager,
   languageUIManager,
   onHideRequest,
   services,
   text,
+  UI,
 }: Props) => {
   const initialLanguageId = languageUIManager.getDefaultLanguage()
 

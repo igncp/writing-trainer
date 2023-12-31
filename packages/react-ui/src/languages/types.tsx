@@ -15,8 +15,8 @@ export type T_OptionsBlock = (props: {
 }) => React.ReactNode
 
 export type T_getPronunciationOfText = (opts: {
-  text: string
   charsToRemove: string
+  text: string
 }) => string
 
 export type T_getCurrentCharObjFromPractice = (

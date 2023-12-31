@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet'
 type IProps = {
   description: string
   lang: string
-  meta: Array<{ name: string; content: string }>
+  meta: Array<{ content: string; name: string }>
   title: string
 }
 

@@ -6,7 +6,6 @@ const tsRules = {
     'always',
     { exceptAfterSingleLine: true },
   ],
-  '@typescript-eslint/member-ordering': 2,
   '@typescript-eslint/method-signature-style': 2,
   '@typescript-eslint/no-confusing-non-null-assertion': 2,
   '@typescript-eslint/no-explicit-any': 2,
@@ -46,6 +45,7 @@ const tsRules = {
 module.exports = {
   env: {
     node: true,
+    es6: true,
   },
   extends: [
     'eslint:recommended',
@@ -91,7 +91,7 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json',
   },
-  plugins: ['@typescript-eslint', 'prettier'],
+  plugins: ['@typescript-eslint', 'prettier', 'perfectionist'],
   rules: {
     ...tsRules,
 
@@ -120,6 +120,14 @@ module.exports = {
     ],
     'prefer-template': 2,
     'prettier/prettier': 'error',
-    'sort-keys': 2,
+
+    'perfectionist/sort-array-includes': 2,
+    'perfectionist/sort-classes': 2,
+    'perfectionist/sort-enums': 2,
+    'perfectionist/sort-exports': 2,
+    'perfectionist/sort-interfaces': 2,
+    'perfectionist/sort-named-exports': 2,
+    'perfectionist/sort-object-types': 2,
+    'perfectionist/sort-objects': 2,
   },
 }

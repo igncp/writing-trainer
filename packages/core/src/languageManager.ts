@@ -24,8 +24,8 @@ class CurrentCharObj {
 }
 
 class LanguageManager {
-  private languages: LanguageHandler[] = []
   private currentLanguageHandlerId: LanguageDefinition['id'] | null = null
+  private languages: LanguageHandler[] = []
 
   public clear() {
     this.languages.length = 0
@@ -52,6 +52,10 @@ class LanguageManager {
     return this.languages.find(l => l.getId() === id) ?? null
   }
 
+  private getLanguagesIds() {
+    return this.languages.map(l => l.getId())
+  }
+
   public registerLanguage(lang: LanguageHandler) {
     this.languages.push(lang)
   }
@@ -62,10 +66,6 @@ class LanguageManager {
 
   public unregisterLanguage(langId: string) {
     this.languages = this.languages.filter(l => l.getId() !== langId)
-  }
-
-  private getLanguagesIds() {
-    return this.languages.map(l => l.getId())
   }
 }
 

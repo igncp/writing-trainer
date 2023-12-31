@@ -14,17 +14,17 @@ import { CharObj, CurrentCharObj, LanguageManager } from './languageManager'
 import { Record } from './records'
 
 export {
+  cantoneseHandler,
   CharObj,
   CurrentCharObj,
+  englishHandler,
+  japaneseHandler,
   LanguageDefinition,
   LanguageHandler,
   LanguageManager,
+  mandarinHandler,
   Record,
   SPECIAL_SYMBOLS,
   T_Storage,
-  cantoneseHandler,
-  englishHandler,
-  japaneseHandler,
-  mandarinHandler,
   unknownPronunciation,
 }

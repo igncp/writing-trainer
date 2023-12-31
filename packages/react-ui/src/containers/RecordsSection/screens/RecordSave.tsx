@@ -5,8 +5,8 @@ import TextInput from '../../../components/TextInput/TextInput'
 import { T_Services } from '../../../typings/mainTypes'
 
 export interface RecordToSave {
-  name: string
   link: string
+  name: string
 }
 
 type RecordSaveProps = {

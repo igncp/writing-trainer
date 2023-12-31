@@ -11,7 +11,7 @@ type CellProps = {
   value: string
 }
 
-const Cell = ({ label, value, title, bold }: CellProps) => {
+const Cell = ({ bold, label, title, value }: CellProps) => {
   return (
     <div
       style={{
@@ -83,7 +83,7 @@ const RecordsList = ({
       )}
       <div style={{ maxHeight: 300, overflow: 'auto' }}>
         {filteredRecords.map(record => {
-          const { id, name, createdOn, lastLoadedOn } = record
+          const { createdOn, id, lastLoadedOn, name } = record
 
           return (
             <div key={id} style={{ padding: 10 }}>

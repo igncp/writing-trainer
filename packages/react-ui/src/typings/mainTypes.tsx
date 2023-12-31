@@ -7,4 +7,4 @@ interface T_Services {
   storage: T_Storage
 }
 
-export { T_Services, T_getCurrentUrl }
+export { T_getCurrentUrl, T_Services }

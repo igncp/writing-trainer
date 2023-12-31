@@ -2,17 +2,17 @@ import _get from 'lodash/get'
 import React, { useEffect, useRef } from 'react'
 
 type TextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
-  withoutCursor?: boolean
   autoScroll?: boolean
   setRef?: (ref: HTMLTextAreaElement | null) => void
+  withoutCursor?: boolean
 }
 
 const TextArea = ({
+  autoScroll,
+  onChange,
+  setRef,
   style,
   withoutCursor,
-  onChange,
-  autoScroll,
-  setRef,
   ...props
 }: TextAreaProps) => {
   const ref = useRef<HTMLTextAreaElement>(null)

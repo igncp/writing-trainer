@@ -53,4 +53,4 @@ export default {
   title: 'Components/CharactersDisplay',
 }
 
-export { Common, WithoutPronunciation, DifferentWidthsNoPronunciation }
+export { Common, DifferentWidthsNoPronunciation, WithoutPronunciation }

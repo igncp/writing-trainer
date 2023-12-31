@@ -6,9 +6,9 @@ import { LanguageHandler } from './_common'
 type T_Dictionary = { [k: string]: string }
 
 const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
-  text,
   charsToRemove,
   langOpts = {},
+  text,
 }) => {
   const dictionary: T_Dictionary = (langOpts.dictionary || {}) as T_Dictionary
   const pronunciationInput: string = (langOpts.pronunciationInput ||

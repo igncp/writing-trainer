@@ -4,8 +4,8 @@ import { CharObj } from '../languageManager'
 import { LanguageHandler } from './_common'
 
 const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
-  text,
   charsToRemove,
+  text,
 }) => {
   const specialChars = englishHandler.getSpecialChars() // eslint-disable-line @typescript-eslint/no-use-before-define
   const allCharsToRemove = specialChars.concat(charsToRemove).concat([' '])

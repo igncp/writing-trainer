@@ -7,7 +7,7 @@ type Props = {
   text: string
 } & Omit<T_ButtonProps, 'children'>
 
-const GoogleTranslateButton = ({ text, language, ...rest }: Props) => {
+const GoogleTranslateButton = ({ language, text, ...rest }: Props) => {
   const hrefText = text
     .split('')
     .map(c => c.trim())

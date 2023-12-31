@@ -6,7 +6,7 @@ type T_PanelTrigger = React.FC<{
 }>
 
 const PanelTrigger: T_PanelTrigger = ({ onClick }) => {
-  const { hovered, bind } = useHover()
+  const { bind, hovered } = useHover()
 
   return (
     <div

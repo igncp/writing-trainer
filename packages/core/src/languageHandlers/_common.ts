@@ -4,15 +4,15 @@ import { CharObj, CurrentCharObj } from '../languageManager'
 import { SPECIAL_SYMBOLS } from './_commonChars'
 
 type T_convertToCharsObjs = (opts: {
-  text: string
   charsToRemove: string[]
   langOpts?: { [k: string]: unknown }
+  text: string
 }) => CharObj[]
 
 class LanguageHandler {
   public readonly convertToCharsObjs: T_convertToCharsObjs
-  private readonly language: LanguageDefinition
   private readonly extraSpecialChars: string[]
+  private readonly language: LanguageDefinition
 
   public constructor({
     convertToCharsObjs,
@@ -20,28 +20,20 @@ class LanguageHandler {
     language,
   }: {
     convertToCharsObjs: LanguageHandler['convertToCharsObjs']
-    language: LanguageHandler['language']
     extraSpecialChars?: string[]
+    language: LanguageHandler['language']
   }) {
     this.convertToCharsObjs = convertToCharsObjs
     this.language = language
     this.extraSpecialChars = extraSpecialChars ?? []
   }
 
-  public getId() {
-    return this.language.id
-  }
-
-  public getName() {
-    return this.language.name
-  }
-
   public filterTextToPractice({
-    text,
     charsToRemove,
+    text,
   }: {
-    text: string
     charsToRemove: string[]
+    text: string
   }) {
     const specialChars = this.getSpecialChars()
     const allCharsToRemove = charsToRemove.concat(specialChars)
@@ -103,6 +95,14 @@ class LanguageHandler {
       ch: originalCharsWithPronunciationObjs[originalCharIdx].ch,
       index: originalCharsWithPronunciationObjs[originalCharIdx].idx,
     })
+  }
+
+  public getId() {
+    return this.language.id
+  }
+
+  public getName() {
+    return this.language.name
   }
 
   public getSpecialChars() {

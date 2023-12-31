@@ -1,16 +1,16 @@
 import React from 'react'
 
 type IProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  onEnterPress: () => void
   inputRef?: React.RefObject<HTMLInputElement>
+  onEnterPress: () => void
 }
 
 const TextInput = ({
-  onEnterPress,
-  onChange,
-  value,
-  style,
   inputRef,
+  onChange,
+  onEnterPress,
+  style,
+  value,
   ...props
 }: IProps) => {
   return (

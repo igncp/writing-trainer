@@ -28,7 +28,7 @@ const Button = ({
   shouldUseLink,
   style,
 }: T_ButtonProps) => {
-  const { hovered, bind } = useHover()
+  const { bind, hovered } = useHover()
   const finalStyle = {
     color: 'var(--color-text, "black")',
     cursor: disabled ?? !onClick ? 'default' : 'pointer',

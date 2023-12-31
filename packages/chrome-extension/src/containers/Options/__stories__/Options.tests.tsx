@@ -16,7 +16,7 @@ const commonProps = {}
 
 describe('Options', () => {
   it('renders the content', async () => {
-    const { getByText, container } = render(<Options {...commonProps} />)
+    const { container, getByText } = render(<Options {...commonProps} />)
 
     await waitFor(() =>
       getByText((txt: string) => txt.includes('Pages where it is enabled')),

@@ -59,7 +59,7 @@ const CharactersDisplay = ({
       style={{ maxHeight: MAX_HEIGHT, overflow: 'auto', position: 'relative' }}
     >
       {charsObjs.map((charObj, index) => {
-        const { word, pronunciation } = charObj
+        const { pronunciation, word } = charObj
 
         return (
           <div

@@ -1,6 +1,6 @@
 module.exports = {
-  collectCoverage: true,
   coverageReporters: ['json', 'lcov', 'text', 'cobertura'],
+  collectCoverage: true,
   preset: 'ts-jest',
   resetMocks: true,
 }

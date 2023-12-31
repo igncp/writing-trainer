@@ -12,17 +12,17 @@ import { Record } from '../records'
 describe('interface', () => {
   it('contains the expected interface', () => {
     expect(writingTrainer).toEqual({
+      cantoneseHandler,
       CharObj,
       CurrentCharObj,
+      englishHandler,
+      japaneseHandler,
       LanguageDefinition,
       LanguageHandler,
       LanguageManager,
+      mandarinHandler,
       Record,
       SPECIAL_SYMBOLS,
-      cantoneseHandler,
-      englishHandler,
-      japaneseHandler,
-      mandarinHandler,
       unknownPronunciation,
     })
   })

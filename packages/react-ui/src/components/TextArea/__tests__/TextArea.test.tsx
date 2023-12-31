@@ -14,7 +14,7 @@ describe('TextArea', () => {
   })
 
   it('disables grammarly', async () => {
-    const { getByText, baseElement } = render(
+    const { baseElement, getByText } = render(
       <TextArea onChange={() => {}} rows={1} value={'Test Content'} />,
     )
 

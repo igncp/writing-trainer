@@ -112,4 +112,4 @@ export default {
   title: 'Containers/Panel',
 }
 
-export { Mandarin, MandarinLongText, Japanese, English, Cantonese }
+export { Cantonese, English, Japanese, Mandarin, MandarinLongText }

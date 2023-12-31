@@ -2,7 +2,7 @@ import { MessageType } from '@/utils/constants'
 
 import { _test } from '../getCurrentUrl'
 
-const { getWithChrome, getFromHref } = _test!
+const { getFromHref, getWithChrome } = _test!
 
 const chrome: any = {
   runtime: {

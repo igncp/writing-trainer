@@ -20,8 +20,8 @@ const getMaxRecordId = (records: Record[]) => {
 }
 
 const getInitialRecord = ({
-  records,
   editingRecordId,
+  records,
 }: {
   editingRecordId: Record['id'] | null
   records: Record[]

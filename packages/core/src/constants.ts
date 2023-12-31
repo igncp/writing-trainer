@@ -14,6 +14,6 @@ export class LanguageDefinition {
 }
 
 export interface T_Storage {
-  setValue: (key: string, value: string) => void
   getValue: (key: string) => Promise<string>
+  setValue: (key: string, value: string) => void
 }

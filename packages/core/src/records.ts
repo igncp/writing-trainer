@@ -32,11 +32,11 @@ class Record {
   }
 
   public static filterByText({
-    records,
     filterText,
+    records,
   }: {
-    records: Record[]
     filterText: string
+    records: Record[]
   }) {
     if (!filterText.trim()) {
       return records
