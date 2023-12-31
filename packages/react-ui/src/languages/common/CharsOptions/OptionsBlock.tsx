@@ -50,6 +50,22 @@ const OptionsBlock: T_OptionsBlock = ({ onOptionsChange, languageOptions }) => {
         <option value="reductive">Reductive</option>
         <option value="repetitive">Repetitive</option>
       </select>
+      <span style={{ marginLeft: 10 }}>
+        <label htmlFor="autoSplitLines">
+          Auto split lines:
+          <input
+            checked={languageOptions.autoSplitLines === false ? false : true}
+            id="autoSplitLines"
+            onChange={() => {
+              handleOptionsChange({
+                autoSplitLines:
+                  languageOptions.autoSplitLines === false ? true : false,
+              })
+            }}
+            type="checkbox"
+          />
+        </label>
+      </span>
     </div>
   )
 }

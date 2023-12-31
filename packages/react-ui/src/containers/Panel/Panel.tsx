@@ -482,6 +482,24 @@ const Panel = ({
           >
             <TextArea
               onBlur={() => {
+                if (uiHandler.onBlur) {
+                  const { newFragmentsList } = uiHandler.onBlur({
+                    fragmentsList: fragments.list,
+                    languageOptions,
+                  })
+
+                  if (newFragmentsList) {
+                    const newFragments = {
+                      ...fragments,
+                      list: newFragmentsList,
+                    }
+
+                    setFragments(newFragments)
+                    onPracticeSourceChange()
+                    storage.setValue('fragments', JSON.stringify(newFragments))
+                  }
+                }
+
                 setShowingEdition(false)
                 setShowingPronunciation(false)
                 writingArea.current?.focus()

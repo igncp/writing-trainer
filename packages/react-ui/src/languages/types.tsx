@@ -43,6 +43,15 @@ export type T_CharsDisplayClickHandler =
   | ((opts: { charObj: CharObj; charsObjs: CharObj[]; index: number }) => void)
   | null
 
+type T_BlurHandlerOpts = {
+  fragmentsList: string[]
+  languageOptions: T_LangOpts
+}
+
+type T_BlurHandler = (opts: T_BlurHandlerOpts) => {
+  newFragmentsList: string[] | undefined
+}
+
 export interface T_UIHandler {
   getDisplayedCharHandler: () => T_CharsDisplayClickHandler
   getLangOpts: () => T_LangOpts
@@ -50,5 +59,6 @@ export interface T_UIHandler {
   getOptionsBlock: () => T_OptionsBlock
   handleWritingKeyDown: T_handleWritingKeyDown
   languageHandler: LanguageHandler
+  onBlur?: T_BlurHandler
   shouldAllCharsHaveSameWidth: boolean
 }

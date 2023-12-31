@@ -1,6 +1,7 @@
 import { cantoneseHandler } from 'writing-trainer-core'
 
 import OptionsBlock from '../common/CharsOptions/OptionsBlock'
+import { chineseBlurHandler } from '../common/chineseBlurHandler'
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
 import { tradToSimplifiedItems } from '../common/conversion'
 import { T_UIHandler, T_LangOpts, T_CharsDisplayClickHandler } from '../types'
@@ -147,6 +148,7 @@ const uiHandler: T_UIHandler = {
   getOptionsBlock: () => OptionsBlock,
   handleWritingKeyDown,
   languageHandler: cantoneseHandler,
+  onBlur: chineseBlurHandler,
   shouldAllCharsHaveSameWidth: false,
 }
 
