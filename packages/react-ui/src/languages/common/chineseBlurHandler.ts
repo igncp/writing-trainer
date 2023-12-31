@@ -34,9 +34,15 @@ export const chineseBlurHandler: T_UIHandler['onBlur'] = ({
           currentCharNum++
         }
 
+        if (currentLine.length > 0) {
+          lines.push(currentLine)
+        }
+
         return lines
       })
       .flat()
+      .map(l => l.trim())
+      .filter(Boolean)
 
     return { newFragmentsList: newList }
   }
