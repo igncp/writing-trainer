@@ -4,7 +4,7 @@ export const chineseBlurHandler: T_UIHandler['onBlur'] = ({
   fragmentsList,
   languageOptions,
 }) => {
-  if (languageOptions.autoSplitLines !== false) {
+  if (languageOptions.autoSplitLines) {
     const splitChars = new Set(['。', '？', '！', '；', '，'])
     const splitLength = 20
     const newList = fragmentsList

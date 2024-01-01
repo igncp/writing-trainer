@@ -54,12 +54,11 @@ const OptionsBlock: T_OptionsBlock = ({ languageOptions, onOptionsChange }) => {
         <label htmlFor="autoSplitLines">
           Auto split lines:
           <input
-            checked={languageOptions.autoSplitLines === false ? false : true}
+            checked={!!languageOptions.autoSplitLines}
             id="autoSplitLines"
             onChange={() => {
               handleOptionsChange({
-                autoSplitLines:
-                  languageOptions.autoSplitLines === false ? true : false,
+                autoSplitLines: !languageOptions.autoSplitLines,
               })
             }}
             type="checkbox"
