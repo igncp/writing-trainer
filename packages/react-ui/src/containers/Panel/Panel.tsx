@@ -117,6 +117,7 @@ const Panel = ({
   const [currentDisplayCharIdx, setCurrentDisplayCharIdx] = useState<number>(0)
   const [writingBorder, setWritingBorder] = useState<'bold' | 'normal'>('bold')
   const [hasExtraControls, setHasExtraControls] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const writingArea = useRef<HTMLTextAreaElement | null>(null)
 
   const uiHandler = languageUIManager.getUIHandler()
@@ -127,6 +128,7 @@ const Panel = ({
 
   const onPracticeSourceChange = () => {
     setCurrentText('')
+    setPractice('')
     languageOptions.wrongCharacters = []
   }
 
@@ -154,6 +156,20 @@ const Panel = ({
     languageManager.setCurrentLanguageHandler(lang)
     setSelectedLanguage(lang)
   }
+
+  useEffect(() => {
+    const listener = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    listener()
+
+    window.addEventListener('resize', listener)
+
+    return () => {
+      window.removeEventListener('resize', listener)
+    }
+  }, [])
 
   useEffect(() => {
     // eslint-disable-next-line
@@ -263,7 +279,6 @@ const Panel = ({
       if (value === SHORTCUT_NEXT_FRAGMENT) {
         e.preventDefault()
 
-        setPractice('')
         onPracticeSourceChange()
 
         setFragments({
@@ -418,12 +433,21 @@ const Panel = ({
       </Button>
       <Button
         onClick={() => {
-          setShowingPronunciation(!isShowingPronunciation)
-          writingArea.current?.focus()
+          navigator.clipboard.writeText(originalTextValue)
         }}
       >
-        Toggle Pronunciation
+        Copy
       </Button>
+      {isShowingEdition && (
+        <Button
+          onClick={() => {
+            setShowingPronunciation(!isShowingPronunciation)
+            writingArea.current?.focus()
+          }}
+        >
+          Toggle Pronunciation
+        </Button>
+      )}
       {hasExtraControls && (
         <>
           <ChooseLanguage
@@ -439,8 +463,6 @@ const Panel = ({
       {fragments.list.length > 1 && (
         <Button
           onClick={() => {
-            setPractice('')
-
             const newFragments = {
               ...fragments,
               index: (fragments.index + 1) % fragments.list.length,
@@ -597,7 +619,7 @@ const Panel = ({
             onFocus={() => {
               writingArea.current?.focus()
             }}
-            placeholder={PRACTICE_TEXT_PLACEHOLDER}
+            placeholder={isMobile ? '...' : PRACTICE_TEXT_PLACEHOLDER}
             rows={3}
             style={{
               border: `4px solid ${
