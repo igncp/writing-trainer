@@ -9,13 +9,21 @@ import RecordsList from './screens/RecordsList'
 
 const songs = [
   {
-    artist: 'Kay Tse',
-    lang: 'cantonese',
     load: () => import('../../languages/cantonese/songs/kay-tse-saan-lam-dou'),
     name: '山林道',
     video: 'https://www.youtube.com/watch?v=W4q4XHhDM-c',
   },
-]
+  {
+    load: () =>
+      import('../../languages/cantonese/songs/kay-tse-nei-mun-dik-hang-fuk'),
+    name: '你們的幸福',
+    video: 'https://www.youtube.com/watch?v=oYgMRIIVX3w',
+  },
+].map(song => ({
+  ...song,
+  artist: 'Kay Tse',
+  lang: 'cantonese',
+}))
 
 export enum RecordsScreen {
   Edit = 'edit',
