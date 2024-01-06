@@ -31,7 +31,7 @@
     },
     {
       "file": "src/containers/RecordsSection/RecordsSection.tsx",
-      "line": 78,
+      "line": 90,
       "character": 61,
       "text": "map",
       "kind": 1
@@ -612,14 +612,14 @@
     },
     {
       "file": "src/containers/RecordsSection/screens/__stories__/RecordsList.stories.tsx",
-      "line": 50,
+      "line": 52,
       "character": 6,
       "text": "Common",
       "kind": 1
     },
     {
       "file": "src/containers/RecordsSection/screens/__stories__/RecordsList.stories.tsx",
-      "line": 57,
+      "line": 59,
       "character": 9,
       "text": "Common",
       "kind": 1
@@ -709,8 +709,8 @@
       "kind": 1
     }
   ],
-  "percentage": 97.82842399483982,
-  "total": 4651,
-  "covered": 4550,
+  "percentage": 97.87323647083596,
+  "total": 4749,
+  "covered": 4648,
   "uncovered": 101
 }
