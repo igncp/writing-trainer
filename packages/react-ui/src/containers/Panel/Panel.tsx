@@ -408,6 +408,18 @@ const Panel = ({
         onRecordsClose={() => {
           setShowingRecordsInitScreen('')
         }}
+        onSongLoad={lyrics => {
+          onPracticeSourceChange()
+          const newFragments = {
+            index: 0,
+            list: lyrics,
+          }
+
+          setFragments(newFragments)
+
+          storage.setValue('fragments', JSON.stringify(newFragments))
+          setShowingRecordsInitScreen('')
+        }}
         pronunciation={pronunciationValue}
         selectedLanguage={selectedLanguage}
         services={services}

@@ -7,6 +7,16 @@ import RecordsWrapper from './RecordsWrapper'
 import RecordSave, { RecordToSave } from './screens/RecordSave'
 import RecordsList from './screens/RecordsList'
 
+const songs = [
+  {
+    artist: 'Kay Tse',
+    lang: 'cantonese',
+    load: () => import('../../languages/cantonese/songs/kay-tse-saan-lam-dou'),
+    name: '山林道',
+    video: 'https://www.youtube.com/watch?v=W4q4XHhDM-c',
+  },
+]
+
 export enum RecordsScreen {
   Edit = 'edit',
   List = 'list',
@@ -46,6 +56,7 @@ type IProps = {
   initScreen: RecordsScreen
   onRecordLoad: (r: Record) => void
   onRecordsClose: () => void
+  onSongLoad: (s: string[]) => void
   pronunciation: string
   selectedLanguage: LanguageDefinition['id']
   services: T_Services
@@ -56,6 +67,7 @@ const RecordsSection = ({
   initScreen,
   onRecordLoad,
   onRecordsClose,
+  onSongLoad,
   pronunciation,
   selectedLanguage,
   services,
@@ -198,7 +210,9 @@ const RecordsSection = ({
         onRecordEdit={handleRecordEdit}
         onRecordLoad={handleRecordLoad}
         onRecordRemove={handleRecordRemove}
+        onSongLoad={onSongLoad}
         records={records}
+        songs={songs}
       />
     </RecordsWrapper>
   )

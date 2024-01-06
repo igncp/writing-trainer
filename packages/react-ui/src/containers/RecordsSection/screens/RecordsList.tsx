@@ -43,18 +43,30 @@ const formatRecordDate = (d: number): string => {
   return `[${dateStr}]`
 }
 
+type Song = {
+  artist: string
+  lang: string
+  load: () => Promise<{ lyrics: string[] }>
+  name: string
+  video: string
+}
+
 type RecordsListProps = {
   onRecordEdit: (r: Record) => void
   onRecordLoad: (r: Record) => void
   onRecordRemove: (r: Record) => void
+  onSongLoad: (s: string[]) => void
   records: Record[]
+  songs: Song[]
 }
 
 const RecordsList = ({
   onRecordEdit,
   onRecordLoad,
   onRecordRemove,
+  onSongLoad,
   records,
+  songs,
 }: RecordsListProps) => {
   const [filterValue, setFilterValue] = useState<string>('')
   const filteredRecords = Record.filterByText({
@@ -121,6 +133,36 @@ const RecordsList = ({
                 }}
               >
                 Remove
+              </Button>
+            </div>
+          )
+        })}
+        {songs.map(song => {
+          const { artist, lang, load, name, video } = song
+
+          return (
+            <div key={name + artist} style={{ padding: 10 }}>
+              <Cell label="Name" value={name} />
+              <Cell title="Artist" value={artist} />
+              <Cell bold title="Language" value={lang} />
+              {video && (
+                <a
+                  href={video}
+                  style={{ marginRight: 15 }}
+                  target="_blank"
+                  title={video}
+                >
+                  Video
+                </a>
+              )}
+              <Button
+                onClick={() => {
+                  load().then(({ lyrics }) => {
+                    onSongLoad(lyrics)
+                  })
+                }}
+              >
+                Load
               </Button>
             </div>
           )
