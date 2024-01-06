@@ -9,6 +9,7 @@ const commonProps = {
   onRecordEdit: jest.fn(),
   onRecordLoad: jest.fn(),
   onRecordRemove: jest.fn(),
+  onSongLoad: jest.fn(),
   records: [
     new Record({
       createdOn: Date.now(),
@@ -21,6 +22,7 @@ const commonProps = {
       text: 'text value',
     }),
   ],
+  songs: [],
 }
 
 describe('RecordsList', () => {

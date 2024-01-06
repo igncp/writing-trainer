@@ -41,7 +41,9 @@ const RecordsListStories = () => {
       onRecordEdit={() => console.log('onRecordEdit')}
       onRecordLoad={() => console.log('onRecordLoad')}
       onRecordRemove={() => console.log('onRecordRemove')}
+      onSongLoad={() => console.log('onSongLoad')}
       records={records}
+      songs={[]}
     />
   )
 }
