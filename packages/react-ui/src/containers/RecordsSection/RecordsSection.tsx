@@ -19,6 +19,11 @@ const songs = [
     name: '你們的幸福',
     video: 'https://www.youtube.com/watch?v=oYgMRIIVX3w',
   },
+  {
+    load: () => import('../../languages/cantonese/songs/kay-tse-nin-dou-zi-go'),
+    name: '年度之歌',
+    video: 'https://www.youtube.com/watch?v=XAobAFsWTy8',
+  },
 ].map(song => ({
   ...song,
   artist: 'Kay Tse',
