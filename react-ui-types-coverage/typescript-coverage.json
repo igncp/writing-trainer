@@ -31,7 +31,7 @@
     },
     {
       "file": "src/containers/RecordsSection/RecordsSection.tsx",
-      "line": 98,
+      "line": 103,
       "character": 61,
       "text": "map",
       "kind": 1
@@ -709,8 +709,8 @@
       "kind": 1
     }
   ],
-  "percentage": 97.87636669470143,
-  "total": 4756,
-  "covered": 4655,
+  "percentage": 97.8781512605042,
+  "total": 4760,
+  "covered": 4659,
   "uncovered": 101
 }
