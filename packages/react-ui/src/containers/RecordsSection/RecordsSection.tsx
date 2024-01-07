@@ -1,34 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { LanguageDefinition, Record } from 'writing-trainer-core'
 
+import { songs as cantoneseSongs } from '../../languages/cantonese/songs'
 import { T_Services } from '../../typings/mainTypes'
 
 import RecordsWrapper from './RecordsWrapper'
 import RecordSave, { RecordToSave } from './screens/RecordSave'
 import RecordsList from './screens/RecordsList'
-
-const songs = [
-  {
-    load: () => import('../../languages/cantonese/songs/kay-tse-saan-lam-dou'),
-    name: '山林道',
-    video: 'https://www.youtube.com/watch?v=W4q4XHhDM-c',
-  },
-  {
-    load: () =>
-      import('../../languages/cantonese/songs/kay-tse-nei-mun-dik-hang-fuk'),
-    name: '你們的幸福',
-    video: 'https://www.youtube.com/watch?v=oYgMRIIVX3w',
-  },
-  {
-    load: () => import('../../languages/cantonese/songs/kay-tse-nin-dou-zi-go'),
-    name: '年度之歌',
-    video: 'https://www.youtube.com/watch?v=XAobAFsWTy8',
-  },
-].map(song => ({
-  ...song,
-  artist: 'Kay Tse',
-  lang: 'cantonese',
-}))
 
 export enum RecordsScreen {
   Edit = 'edit',
@@ -225,7 +203,7 @@ const RecordsSection = ({
         onRecordRemove={handleRecordRemove}
         onSongLoad={onSongLoad}
         records={records}
-        songs={songs}
+        songs={cantoneseSongs}
       />
     </RecordsWrapper>
   )
