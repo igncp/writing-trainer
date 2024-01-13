@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/401</span>
+                <span class='fraction'>0/403</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/276</span>
+                <span class='fraction'>0/280</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/86</span>
+                <span class='fraction'>0/87</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/301</span>
+                <span class='fraction'>0/303</span>
             </div>
         
             
@@ -763,7 +763,23 @@
 <a name='L698'></a><a href='#L698'>698</a>
 <a name='L699'></a><a href='#L699'>699</a>
 <a name='L700'></a><a href='#L700'>700</a>
-<a name='L701'></a><a href='#L701'>701</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L701'></a><a href='#L701'>701</a>
+<a name='L702'></a><a href='#L702'>702</a>
+<a name='L703'></a><a href='#L703'>703</a>
+<a name='L704'></a><a href='#L704'>704</a>
+<a name='L705'></a><a href='#L705'>705</a>
+<a name='L706'></a><a href='#L706'>706</a>
+<a name='L707'></a><a href='#L707'>707</a>
+<a name='L708'></a><a href='#L708'>708</a>
+<a name='L709'></a><a href='#L709'>709</a>
+<a name='L710'></a><a href='#L710'>710</a>
+<a name='L711'></a><a href='#L711'>711</a>
+<a name='L712'></a><a href='#L712'>712</a>
+<a name='L713'></a><a href='#L713'>713</a>
+<a name='L714'></a><a href='#L714'>714</a>
+<a name='L715'></a><a href='#L715'>715</a>
+<a name='L716'></a><a href='#L716'>716</a>
+<a name='L717'></a><a href='#L717'>717</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1222,6 +1238,10 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1233,6 +1253,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1289,6 +1311,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1919,85 +1951,101 @@ const Panel = <span class="cstat-no" title="statement not covered" >({</span>
         &lt;&gt;
           &lt;label htmlFor="file-input" style={{ cursor: 'pointer' }}&gt;
             &lt;Button&gt;Upload&lt;/Button&gt;<span class="fstat-no" title="function not covered" ></span>
-            &lt;inp<span class="cstat-no" title="statement not covered" >ut</span>
+            &lt;input<span class="cstat-no" title="statement not covered" ></span>
               id="file-input"
               onChange={() =&gt; {
-                const fileEl = document.getElementById(
+<span class="cstat-no" title="statement not covered" >                const fileEl = document.getElementById</span>(
                   'file-input',
-                ) as HTMLInputElement | null
-&nbsp;
+                ) as HTMLInputElement | null<span class="fstat-no" title="function not covered" ></span>
+<span class="cstat-no" title="statement not covered" ></span>
                 if (!fileEl) return
 &nbsp;
                 const file = fileEl.files?.[0]
 &nbsp;
                 if (!file) {
-                  return<span class="fstat-no" title="function not covered" ></span>
+                  return
                 }
-<span class="cstat-no" title="statement not covered" ></span>
-                // eslint-disable-next-line<span class="cstat-no" title="statement not covered" ></span>
+&nbsp;
+                // eslint-disable-next-line
                 ;(async () =&gt; {
                   let fileContent = await file.text()
-&nbsp;
-                  if (file.n<span class="cstat-no" title="statement not covered" >ame.includes('.srt')) {</span>
-                    fileContent = fileContent<span class="cstat-no" title="statement not covered" ></span>
-                      .split('\n<span class="cstat-no" title="statement not covered" >')</span>
+<span class="fstat-no" title="function not covered" ></span>
+                  if (file.name.includes('.srt')) {
+                    file<span class="cstat-no" title="statement not covered" >Content = fileContent</span>
+                      .split('\n')<span class="cstat-no" title="statement not covered" ></span>
                       .map(line =&gt; line.trim())
                       .filter(
-<span class="cstat-no" title="statement not covered" >                        line =&gt;</span>
-<span class="cstat-no" title="statement not covered" >                          !!line &amp;&amp;</span>
-<span class="cstat-no" title="statement not covered" >                          !line.includes('--&gt;') &amp;&amp;</span>
-                          !/^[0-9]*$/.test(line),
+                        line =&gt;
+                          !!<span class="cstat-no" title="statement not covered" >line &amp;&amp;</span>
+                          !line.includes('--&gt;') &amp;&amp;<span class="cstat-no" title="statement not covered" ></span>
+                          !/^[0-<span class="cstat-no" title="statement not covered" >9]*$/.test(line),</span>
                       )
                       .join('\n')
-                  }
-&nbsp;
-                  const newFragments = {
+                  }<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" ></span>
+                  const <span class="cstat-no" title="statement not covered" >newFragments = {</span>
                     index: 0,
                     list: fileContent.split('\n'),
-                  }<span class="fstat-no" title="function not covered" ></span>
-<span class="cstat-no" title="statement not covered" ></span>
+                  }
+&nbsp;
                   onPracticeSourceChange(newFragments)
                   setShowingEdition(false)
                   setShowingPronunciation(false)
                 })()
-              }}
-              style={{ display: 'none' }}
+              }}<span class="fstat-no" title="function not covered" ></span>
+              style={{ display: <span class="cstat-no" title="statement not covered" >'none' }}</span>
               type="file"
             /&gt;
-          &lt;/label&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
-          &lt;Button<span class="cstat-no" title="statement not covered" ></span>
-            onClick={() <span class="cstat-no" title="statement not covered" >=&gt; {</span>
+          &lt;/label&gt;
+          &lt;Button
+            onClick={() =&gt; {
               setShowingPronunciation(!isShowingPronunciation)
-              writingAre<span class="cstat-no" title="statement not covered" >a.current?.focus()</span>
-            }}<span class="cstat-no" title="statement not covered" ></span>
-          &gt;
-            Toggle Pronunciation<span class="fstat-no" title="function not covered" ></span>
-          &lt;/Button&gt;
-        &lt;/&gt;<span class="cstat-no" title="statement not covered" ></span>
-      )}
-      {hasExtraControls &amp;&amp; (<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
-        &lt;&gt;<span class="fstat-no" title="function not covered" ></span>
-          &lt;ChooseLanguage
-            languages={g<span class="cstat-no" title="statement not covered" >etLanguageDefinitions(languageManager)}</span>
-            onOptionsChange={handleLanguageChange}
+              writingArea.current?.focus()
+            }}
+          &gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
+            Toggle Pronunciation<span class="cstat-no" title="statement not covered" ></span>
+          &lt;/Button&gt;<span class="cstat-no" title="statement not covered" ></span>
+        &lt;/&gt;
+      )}<span class="cstat-no" title="statement not covered" ></span>
+      {hasExtraControls &amp;&amp; (<span class="cstat-no" title="statement not covered" ></span>
+        &lt;&gt;
+          &lt;ChooseLanguage<span class="fstat-no" title="function not covered" ></span>
+            languages={getLanguageDefinitions(languageManager)}
+            onOptionsChange=<span class="cstat-no" title="statement not covered" >{handleLanguageChange}</span>
             selectedLanguage={selectedLanguage}
-          /&gt;
-          &lt;Button onClick={saveRecord}&gt;
+          /&gt;<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
+          &lt;Button onClick={saveRecord}&gt;<span class="fstat-no" title="function not covered" ></span>
             {currentRecord === null ? 'Save' : 'Update'}
-          &lt;/Button&gt;
+          &lt;/Button&gt;<span class="cstat-no" title="statement not covered" ></span>
         &lt;/&gt;
       )}
       {fragments.list.length &gt; 1 &amp;&amp; (
-<span class="cstat-no" title="statement not covered" >        &lt;Button</span>
+        &lt;Button
           onClick={() =&gt; {
             const newFragments = {
               ...fragments,
               index: (fragments.index + 1) % fragments.list.length,
             }
-            onPracticeSourceChange(newFragments)
+<span class="cstat-no" title="statement not covered" >            onPracticeSou</span>rceChange(newFragments)
           }}
         &gt;
           Current Fragment: {fragments.index + 1} / {fragments.list.length}
+        &lt;/Button&gt;
+      )}
+      {fragments.list.length &gt; 5 &amp;&amp; (
+        &lt;Button
+          onClick={() =&gt; {
+            const newFragments = {
+              ...fragments,
+              index:
+                fragments.index &lt;= 0
+                  ? fragments.list.length - 1
+                  : fragments.index - 1,
+            }
+            onPracticeSourceChange(newFragments)
+          }}
+        &gt;
+          Prev Fragment
         &lt;/Button&gt;
       )}
       {currentRecord !== null &amp;&amp; (
@@ -2170,7 +2218,7 @@ export default Panel
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-01-13T16:23:50.586Z
+                at 2024-01-13T16:47:42.966Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
