@@ -535,6 +535,22 @@ const Panel = ({
           Current Fragment: {fragments.index + 1} / {fragments.list.length}
         </Button>
       )}
+      {fragments.list.length > 5 && (
+        <Button
+          onClick={() => {
+            const newFragments = {
+              ...fragments,
+              index:
+                fragments.index <= 0
+                  ? fragments.list.length - 1
+                  : fragments.index - 1,
+            }
+            onPracticeSourceChange(newFragments)
+          }}
+        >
+          Prev Fragment
+        </Button>
+      )}
       {currentRecord !== null && (
         <Button
           onClick={() => {

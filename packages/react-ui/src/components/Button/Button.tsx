@@ -39,8 +39,9 @@ const Button = ({
     textDecoration: 'none',
     textShadow: disabled ? '1px 1px 5px blue' : '',
     transition: COMP_TRANSITION,
+    userSelect: 'none',
     ...style,
-  }
+  } as const
 
   if (shouldUseLink) {
     return (
@@ -58,7 +59,12 @@ const Button = ({
   }
 
   return (
-    <div {...bind} onClick={disabled ? noop : onClick} style={finalStyle}>
+    <div
+      {...bind}
+      onClick={disabled ? noop : onClick}
+      role="button"
+      style={finalStyle}
+    >
       {children}
     </div>
   )
