@@ -20,4 +20,3 @@ cp -r packages/react-ui/coverage-ts gh_pages/react-ui-types-coverage
 cp -r packages/web-app/out gh_pages/web-app
 
 cp -r packages/chrome-extension/coverage-ts gh_pages/chrome-extension-types-coverage
-cp -r packages/chrome-extension/storybook-static gh_pages/chrome-extension-storybook
