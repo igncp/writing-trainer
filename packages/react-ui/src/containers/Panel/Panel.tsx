@@ -126,10 +126,18 @@ const Panel = ({
 
   const { storage } = services
 
-  const onPracticeSourceChange = () => {
+  const onPracticeSourceChange = (newFragments?: {
+    index: number
+    list: string[]
+  }) => {
     setCurrentText('')
     setPractice('')
     languageOptions.wrongCharacters = []
+
+    if (newFragments) {
+      setFragments(newFragments)
+      storage.setValue('fragments', JSON.stringify(newFragments))
+    }
   }
 
   const handleOriginalTextUpdate = (
@@ -146,10 +154,7 @@ const Panel = ({
       list: list.length ? list : [''],
     }
 
-    onPracticeSourceChange()
-    setFragments(newFragments)
-
-    storage.setValue('fragments', JSON.stringify(newFragments))
+    onPracticeSourceChange(newFragments)
   }
 
   const updateLanguage = (lang: LanguageDefinition['id']) => {
@@ -279,12 +284,12 @@ const Panel = ({
       if (value === SHORTCUT_NEXT_FRAGMENT) {
         e.preventDefault()
 
-        onPracticeSourceChange()
-
-        setFragments({
+        const newFragments = {
           ...fragments,
           index: (fragments.index + 1) % fragments.list.length,
-        })
+        }
+
+        onPracticeSourceChange(newFragments)
       }
 
       if (currentResult === SHORTCUT_PRONUNCIATION) {
@@ -316,12 +321,11 @@ const Panel = ({
       },
     )
     const newFragments = { index: 0, list: [''] }
-    setFragments(newFragments)
     storage.setValue('fragments', JSON.stringify(newFragments))
     setShowingPronunciation(true)
     setShowingEdition(true)
     setCurrentRecord(null)
-    onPracticeSourceChange()
+    onPracticeSourceChange(newFragments)
   }
 
   const handleLanguageChange = (newSelectedLanguage: string) => {
@@ -400,8 +404,8 @@ const Panel = ({
           setShowingRecordsInitScreen('')
           setShowingEdition(false)
           setShowingPronunciation(false)
-          setFragments({ index: 0, list: record.text.split('\n') })
-          onPracticeSourceChange()
+          const newFragments = { index: 0, list: record.text.split('\n') }
+          onPracticeSourceChange(newFragments)
           setCurrentRecord(record.id)
           setPronunciation(record.pronunciation)
         }}
@@ -409,15 +413,11 @@ const Panel = ({
           setShowingRecordsInitScreen('')
         }}
         onSongLoad={lyrics => {
-          onPracticeSourceChange()
           const newFragments = {
             index: 0,
             list: lyrics,
           }
-
-          setFragments(newFragments)
-
-          storage.setValue('fragments', JSON.stringify(newFragments))
+          onPracticeSourceChange(newFragments)
           setShowingRecordsInitScreen('')
         }}
         pronunciation={pronunciationValue}
@@ -451,14 +451,64 @@ const Panel = ({
         Copy
       </Button>
       {isShowingEdition && (
-        <Button
-          onClick={() => {
-            setShowingPronunciation(!isShowingPronunciation)
-            writingArea.current?.focus()
-          }}
-        >
-          Toggle Pronunciation
-        </Button>
+        <>
+          <label htmlFor="file-input" style={{ cursor: 'pointer' }}>
+            <Button>Upload</Button>
+            <input
+              id="file-input"
+              onChange={() => {
+                const fileEl = document.getElementById(
+                  'file-input',
+                ) as HTMLInputElement | null
+
+                if (!fileEl) return
+
+                const file = fileEl.files?.[0]
+
+                if (!file) {
+                  return
+                }
+
+                // eslint-disable-next-line
+                ;(async () => {
+                  let fileContent = await file.text()
+
+                  if (file.name.includes('.srt')) {
+                    fileContent = fileContent
+                      .split('\n')
+                      .map(line => line.trim())
+                      .filter(
+                        line =>
+                          !!line &&
+                          !line.includes('-->') &&
+                          !/^[0-9]*$/.test(line),
+                      )
+                      .join('\n')
+                  }
+
+                  const newFragments = {
+                    index: 0,
+                    list: fileContent.split('\n'),
+                  }
+
+                  onPracticeSourceChange(newFragments)
+                  setShowingEdition(false)
+                  setShowingPronunciation(false)
+                })()
+              }}
+              style={{ display: 'none' }}
+              type="file"
+            />
+          </label>
+          <Button
+            onClick={() => {
+              setShowingPronunciation(!isShowingPronunciation)
+              writingArea.current?.focus()
+            }}
+          >
+            Toggle Pronunciation
+          </Button>
+        </>
       )}
       {hasExtraControls && (
         <>
@@ -479,9 +529,7 @@ const Panel = ({
               ...fragments,
               index: (fragments.index + 1) % fragments.list.length,
             }
-            setFragments(newFragments)
-            onPracticeSourceChange()
-            storage.setValue('fragments', JSON.stringify(newFragments))
+            onPracticeSourceChange(newFragments)
           }}
         >
           Current Fragment: {fragments.index + 1} / {fragments.list.length}
@@ -528,9 +576,7 @@ const Panel = ({
                       list: newFragmentsList,
                     }
 
-                    setFragments(newFragments)
-                    onPracticeSourceChange()
-                    storage.setValue('fragments', JSON.stringify(newFragments))
+                    onPracticeSourceChange(newFragments)
                   }
                 }
 
