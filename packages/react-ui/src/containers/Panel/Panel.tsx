@@ -473,7 +473,7 @@ const Panel = ({
                 ;(async () => {
                   let fileContent = await file.text()
 
-                  if (file.name.includes('.srt')) {
+                  if (['.srt', '.vtt'].find(ext => file.name.endsWith(ext))) {
                     fileContent = fileContent
                       .split('\n')
                       .map(line => line.trim())

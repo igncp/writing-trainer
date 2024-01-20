@@ -150,7 +150,11 @@ const RecordsList = ({
                   href={video}
                   style={{ marginRight: 15 }}
                   target="_blank"
-                  title={video}
+                  title={
+                    video.startsWith('https://')
+                      ? video
+                      : `https://www.youtube.com/watch?v=${video}`
+                  }
                 >
                   Video
                 </a>
