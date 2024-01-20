@@ -21,7 +21,7 @@ export const songs = [
   },
   {
     load: () => import('./kay-tse-lei-bat-hoi'),
-    name: '載我走',
+    name: '離不開',
     video: 'pNDI9oBG7po',
   },
 ].map(song => ({
