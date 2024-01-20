@@ -26,6 +26,12 @@ const myLittleAirportSongs = [
     '那陣時不知道',
     '5xi49OreS3k',
   ],
+  [
+    () =>
+      import('./my-little-airport-nin-hing-dik-caa-cang-ting-lou-baan-loeng'),
+    '年輕的茶餐廳老闆娘',
+    'dh4eydYk6EA',
+  ],
 ].map(handleSongTreble('My Little Airport', 'cantonese'))
 
 export const songs = kayTseSongs.concat(myLittleAirportSongs)
