@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">68.23% </span>
+                <span class="strong">67.44% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>58/85</span>
+                <span class='fraction'>58/86</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">68.96% </span>
+                <span class="strong">67.79% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>40/58</span>
+                <span class='fraction'>40/59</span>
             </div>
         
             
@@ -241,8 +241,7 @@
 <a name='L176'></a><a href='#L176'>176</a>
 <a name='L177'></a><a href='#L177'>177</a>
 <a name='L178'></a><a href='#L178'>178</a>
-<a name='L179'></a><a href='#L179'>179</a>
-<a name='L180'></a><a href='#L180'>180</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L179'></a><a href='#L179'>179</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -343,6 +342,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -356,8 +356,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -466,7 +464,7 @@ const formatRecordDate = (d: number): string =&gt; {
   return `[${dateStr}]`
 }
 &nbsp;
-type Song = {
+type 歌曲類型 = {
   artist: string
   lang: string
   load: () =&gt; Promise&lt;{ lyrics: string[] }&gt;
@@ -474,13 +472,13 @@ type Song = {
   video: string
 }
 &nbsp;
-type RecordsListProps = {
+type 條目清單屬性 = {
   onRecordEdit: (r: Record) =&gt; void
   onRecordLoad: (r: Record) =&gt; void
   onRecordRemove: (r: Record) =&gt; void
   onSongLoad: (s: string[]) =&gt; void
   records: Record[]
-  songs: Song[]
+  songs: 歌曲類型[]
 }
 &nbsp;
 const RecordsList = ({
@@ -490,10 +488,10 @@ const RecordsList = ({
   onSongLoad,
   records,
   songs,
-}: RecordsListProps) =&gt; {
-  const [filterValue, setFilterValue] = useState&lt;string&gt;('')
-  const filteredRecords = Record.filterByText({
-    filterText: filterValue,<span class="fstat-no" title="function not covered" ></span>
+}: 條目清單屬性) =&gt; {
+  const [過濾內容, 更新過濾內容] = useState&lt;string&gt;('')
+  const 過濾條目列表 = Record.filterByText({
+    filterText: 過濾內容,<span class="fstat-no" title="function not covered" ></span>
     records,<span class="cstat-no" title="statement not covered" ></span>
   })<span class="cstat-no" title="statement not covered" ></span>
 &nbsp;
@@ -504,55 +502,55 @@ const RecordsList = ({
           &lt;TextInput
             autoFocus
             onChange={e =&gt; {
-              setFilterValue(e.target.value)
+              更新過濾內容(e.target.value)
             }}
             onEnterPress={() =&gt; {
-              if (filteredRecords.length &gt; 0) {<span class="fstat-no" title="function not covered" ></span>
-                onRecordLoad<span class="cstat-no" title="statement not covered" >(filteredRecords[0])</span>
+              if (過濾條目列表.length &gt; 0) {<span class="fstat-no" title="function not covered" ></span>
+                onRecordLoad<span class="cstat-no" title="statement not covered" >(過濾條目列表[0])</span>
               }
             }}<span class="fstat-no" title="function not covered" ></span>
-            placeholder="Fil<span class="cstat-no" title="statement not covered" >ter by name and langua</span>ge"
+            placeholder="Fil<span class="cstat-no" title="statement not covered" >ter by name and lang</span>uage"
             style={{ width: '100%' }}
           /&gt;<span class="fstat-no" title="function not covered" ></span>
         &lt;/div&gt;<span class="cstat-no" title="statement not covered" ></span>
       )}
       &lt;div style={{ maxHeight: 300, overflow: 'auto' }}&gt;
-        {filteredRecor<span class="fstat-no" title="function not covered" >ds</span>.map(record =&gt; {
-          const { createdOn, <span class="cstat-no" title="statement not covered" >id, lastLoad</span>edOn, na<span class="cstat-no" title="statement not covered" >me } = rec</span>ord<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+        {過濾條目列表.map(過濾<span class="fstat-no" title="function not covered" >條目</span> =&gt; {
+          const { createdOn, <span class="cstat-no" title="statement not covered" >id, lastLo</span>adedOn, <span class="cstat-no" title="statement not covered" >name } =</span> 過濾條目<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
 <span class="cstat-no" title="statement not covered" ></span>
           return (
             &lt;div key={id} style={{ padding: 10 }}&gt;
-              &lt;Cell label="Name" value={name} /&gt;
+              &lt;C<span class="cstat-no" title="statement not covered" >ell label="Name" value={name} /&gt;</span>
               &lt;Cell title="Created" value={formatRecordDate(createdOn)} /&gt;
               &lt;Cell title="Loaded" value={formatRecordDate(lastLoadedOn)} /&gt;
-              &lt;Cell bold title="Language" value={record.language} /&gt;
-              {record.link &amp;&amp; (<span class="fstat-no" title="function not covered" ></span>
-                &lt;a<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-                  href={record.link}<span class="cstat-no" title="statement not covered" ></span>
-                  style={{ margi<span class="cstat-no" title="statement not covered" >nRight: 15 }}</span>
-                  target="_blank"
-                  title={record.link}
+              &lt;Cell bold title="Language" value={過濾條目.language} /&gt;
+              {過濾條目.link &amp;&amp; (
+                &lt;a<span class="fstat-no" title="function not covered" ></span>
+                  href={過濾條目<span class="cstat-no" title="statement not covered" >.link}<span class="fstat-no" title="function not covered" ></span></span>
+                  style={{ marginRight: 15 }}<span class="cstat-no" title="statement not covered" ></span>
+                  target="_blank<span class="cstat-no" title="statement not covered" >"</span>
+                  title={過濾條目.link}
                 &gt;
                   Website
                 &lt;/a&gt;
               )}
               &lt;Button
                 onClick={() =&gt; {
-                  onRecordLoad(record)
+                  onRecordLoad(過濾條目)
                 }}
               &gt;
                 Load
               &lt;/Button&gt;
               &lt;Button
                 onClick={() =&gt; {
-                  onRecordEdit(record)
+                  onRecordEdit(過濾條目)
                 }}
               &gt;
                 Edit
               &lt;/Button&gt;
               &lt;Button
                 onClick={() =&gt; {
-                  onRecordRemove(record)
+                  onRecordRemove(過濾條目)
                 }}
               &gt;
                 Remove
@@ -560,8 +558,11 @@ const RecordsList = ({
             &lt;/div&gt;
           )
         })}
-        {songs.map(song =&gt; {
-          const { artist, lang, load, name, video } = song
+        {songs.map(歌曲 =&gt; {
+          const { artist, lang, load, name, video } = 歌曲
+          const 影片連結網址 = video.startsWith('https://')
+            ? video
+            : `https://www.youtube.com/watch?v=${video}`
 &nbsp;
           return (
             &lt;div key={name + artist} style={{ padding: 10 }}&gt;
@@ -570,14 +571,10 @@ const RecordsList = ({
               &lt;Cell bold title="Language" value={lang} /&gt;
               {video &amp;&amp; (
                 &lt;a
-                  href={video}
+                  href={影片連結網址}
                   style={{ marginRight: 15 }}
                   target="_blank"
-                  title={
-                    video.startsWith('https://')
-                      ? video
-                      : `https://www.youtube.com/watch?v=${video}`
-                  }
+                  title={影片連結網址}
                 &gt;
                   Video
                 &lt;/a&gt;
@@ -607,7 +604,7 @@ export default RecordsList
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-01-20T15:10:40.643Z
+                at 2024-01-20T15:34:38.625Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

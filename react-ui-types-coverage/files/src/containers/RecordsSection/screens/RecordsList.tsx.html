@@ -11,7 +11,7 @@
 <link href="../../../../../assets/source-file.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/RecordsSection/screens/RecordsList.tsx</td><td class="">100.00%</td><td class="">95%</td><td class="">230</td><td class="">230</td><td class="">0</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useState } from &#x27;react&#x27;
+    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/RecordsSection/screens/RecordsList.tsx</td><td class="">100.00%</td><td class="">95%</td><td class="">232</td><td class="">232</td><td class="">0</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useState } from &#x27;react&#x27;
 import { Record } from &#x27;writing-trainer-core&#x27;
 
 import Button from &#x27;../../../components/Button/Button&#x27;
@@ -56,7 +56,7 @@ const formatRecordDate = (d: number): string =&gt; {
   return `[${dateStr}]`
 }
 
-type Song = {
+type 歌曲類型 = {
   artist: string
   lang: string
   load: () =&gt; Promise&lt;{ lyrics: string[] }&gt;
@@ -64,13 +64,13 @@ type Song = {
   video: string
 }
 
-type RecordsListProps = {
+type 條目清單屬性 = {
   onRecordEdit: (r: Record) =&gt; void
   onRecordLoad: (r: Record) =&gt; void
   onRecordRemove: (r: Record) =&gt; void
   onSongLoad: (s: string[]) =&gt; void
   records: Record[]
-  songs: Song[]
+  songs: 歌曲類型[]
 }
 
 const RecordsList = ({
@@ -80,10 +80,10 @@ const RecordsList = ({
   onSongLoad,
   records,
   songs,
-}: RecordsListProps) =&gt; {
-  const [filterValue, setFilterValue] = useState&lt;string&gt;(&#x27;&#x27;)
-  const filteredRecords = Record.filterByText({
-    filterText: filterValue,
+}: 條目清單屬性) =&gt; {
+  const [過濾內容, 更新過濾內容] = useState&lt;string&gt;(&#x27;&#x27;)
+  const 過濾條目列表 = Record.filterByText({
+    filterText: 過濾內容,
     records,
   })
 
@@ -94,11 +94,11 @@ const RecordsList = ({
           &lt;TextInput
             autoFocus
             onChange={e =&gt; {
-              setFilterValue(e.target.value)
+              更新過濾內容(e.target.value)
             }}
             onEnterPress={() =&gt; {
-              if (filteredRecords.length &gt; 0) {
-                onRecordLoad(filteredRecords[0])
+              if (過濾條目列表.length &gt; 0) {
+                onRecordLoad(過濾條目列表[0])
               }
             }}
             placeholder=&quot;Filter by name and language&quot;
@@ -107,42 +107,42 @@ const RecordsList = ({
         &lt;/div&gt;
       )}
       &lt;div style={{ maxHeight: 300, overflow: &#x27;auto&#x27; }}&gt;
-        {filteredRecords.map(record =&gt; {
-          const { createdOn, id, lastLoadedOn, name } = record
+        {過濾條目列表.map(過濾條目 =&gt; {
+          const { createdOn, id, lastLoadedOn, name } = 過濾條目
 
           return (
             &lt;div key={id} style={{ padding: 10 }}&gt;
               &lt;Cell label=&quot;Name&quot; value={name} /&gt;
               &lt;Cell title=&quot;Created&quot; value={formatRecordDate(createdOn)} /&gt;
               &lt;Cell title=&quot;Loaded&quot; value={formatRecordDate(lastLoadedOn)} /&gt;
-              &lt;Cell bold title=&quot;Language&quot; value={record.language} /&gt;
-              {record.link &amp;&amp; (
+              &lt;Cell bold title=&quot;Language&quot; value={過濾條目.language} /&gt;
+              {過濾條目.link &amp;&amp; (
                 &lt;a
-                  href={record.link}
+                  href={過濾條目.link}
                   style={{ marginRight: 15 }}
                   target=&quot;_blank&quot;
-                  title={record.link}
+                  title={過濾條目.link}
                 &gt;
                   Website
                 &lt;/a&gt;
               )}
               &lt;Button
                 onClick={() =&gt; {
-                  onRecordLoad(record)
+                  onRecordLoad(過濾條目)
                 }}
               &gt;
                 Load
               &lt;/Button&gt;
               &lt;Button
                 onClick={() =&gt; {
-                  onRecordEdit(record)
+                  onRecordEdit(過濾條目)
                 }}
               &gt;
                 Edit
               &lt;/Button&gt;
               &lt;Button
                 onClick={() =&gt; {
-                  onRecordRemove(record)
+                  onRecordRemove(過濾條目)
                 }}
               &gt;
                 Remove
@@ -150,8 +150,11 @@ const RecordsList = ({
             &lt;/div&gt;
           )
         })}
-        {songs.map(song =&gt; {
-          const { artist, lang, load, name, video } = song
+        {songs.map(歌曲 =&gt; {
+          const { artist, lang, load, name, video } = 歌曲
+          const 影片連結網址 = video.startsWith(&#x27;https://&#x27;)
+            ? video
+            : `https://www.youtube.com/watch?v=${video}`
 
           return (
             &lt;div key={name + artist} style={{ padding: 10 }}&gt;
@@ -160,14 +163,10 @@ const RecordsList = ({
               &lt;Cell bold title=&quot;Language&quot; value={lang} /&gt;
               {video &amp;&amp; (
                 &lt;a
-                  href={video}
+                  href={影片連結網址}
                   style={{ marginRight: 15 }}
                   target=&quot;_blank&quot;
-                  title={
-                    video.startsWith(&#x27;https://&#x27;)
-                      ? video
-                      : `https://www.youtube.com/watch?v=${video}`
-                  }
+                  title={影片連結網址}
                 &gt;
                   Video
                 &lt;/a&gt;
@@ -191,7 +190,7 @@ const RecordsList = ({
 
 export default RecordsList
 </textarea><pre id="annotations" style="display:none">[]</pre></div>
-    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sat, 20 Jan 2024 15:10:45 GMT</p>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sat, 20 Jan 2024 15:34:43 GMT</p>
     </body>
   </html>
   
