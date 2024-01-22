@@ -51,6 +51,13 @@
       "kind": 1
     },
     {
+      "file": "src/containers/Panel/Panel.tsx",
+      "line": 234,
+      "character": 14,
+      "text": "parsedFragments",
+      "kind": 1
+    },
+    {
       "file": "src/services/openOptionsPage.tsx",
       "line": 3,
       "character": 2,
@@ -709,8 +716,8 @@
       "kind": 1
     }
   ],
-  "percentage": 97.91451579599422,
-  "total": 4843,
-  "covered": 4742,
-  "uncovered": 101
+  "percentage": 97.89820729445704,
+  "total": 4853,
+  "covered": 4751,
+  "uncovered": 102
 }
