@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import React, { useState, useEffect } from 'react'
 import { Panel, Button } from 'writing-trainer-react-ui'
 
@@ -17,6 +18,8 @@ const PANEL_UI = {
 
 const IndexPage = () => {
   const [theme, setTheme] = useState('')
+
+  const { query } = useRouter()
 
   useEffect(() => {
     const localTheme = localStorage.getItem('theme')
@@ -52,6 +55,9 @@ const IndexPage = () => {
       <div style={{ position: 'relative' }}>
         <Panel
           UI={PANEL_UI}
+          initialFragmentIndex={
+            query.fragmentIndex ? Number(query.fragmentIndex) : undefined
+          }
           languageManager={languageManager}
           languageUIManager={languageUIManager}
           services={panelServices}

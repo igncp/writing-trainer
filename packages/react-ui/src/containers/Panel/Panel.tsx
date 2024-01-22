@@ -44,6 +44,7 @@ type Props = {
     defaultPronunciation?: string
     langOpts?: T_LangOpts
   }
+  initialFragmentIndex?: number
   languageManager: LanguageManager
   languageUIManager: LanguageUIManager
   onHideRequest?: () => void
@@ -75,6 +76,7 @@ const getLanguageDefinitions = (languageManager: LanguageManager) => {
 
 const Panel = ({
   _stories = {},
+  initialFragmentIndex,
   languageManager,
   languageUIManager,
   onHideRequest,
@@ -230,10 +232,17 @@ const Panel = ({
       const lastFragments = await storage.getValue('fragments')
 
       if (lastFragments) {
-        setFragments(JSON.parse(lastFragments))
+        const parsedFragments = JSON.parse(lastFragments)
+
+        setFragments({
+          ...parsedFragments,
+          ...(initialFragmentIndex !== undefined && {
+            index: initialFragmentIndex,
+          }),
+        })
       }
     })()
-  }, [])
+  }, [initialFragmentIndex])
 
   const SPECIAL_CHARS = langHandler!.getSpecialChars()
   const langOpts = _stories.langOpts ?? uiHandler.getLangOpts()
@@ -311,7 +320,7 @@ const Panel = ({
     return () => {
       document.removeEventListener('keydown', handleShortcuts)
     }
-  }, [lastThreeKeys, isShowingEdition, isShowingPronunciation])
+  }, [lastThreeKeys, isShowingEdition, isShowingPronunciation, fragments])
 
   const clearValues = () => {
     // eslint-disable-next-line no-extra-semi,padding-line-between-statements

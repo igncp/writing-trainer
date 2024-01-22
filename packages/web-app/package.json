@@ -11,9 +11,10 @@
   "name": "writing-trainer-web-app",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "npm run build:deps && next build",
+    "build:deps": "cd ../react-ui && npm run build && cd ../web-app && rm -rf .next",
     "check": "npm run eslint && npm run prettier:check && npm run build",
-    "develop": "cd ../react-ui && npm run build && cd ../web-app && rm -rf .next && next dev",
+    "develop": "npm run build:deps && next dev",
     "eslint": "eslint . --ext ts --ext tsx --ext js",
     "format": "bash ../../helpers/format.sh",
     "prettier": "../../node_modules/.bin/prettier \"**/*.{js,jsx,ts,tsx,json,md}\"",
