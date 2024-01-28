@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">69.73% </span>
+                <span class="strong">67.9% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>53/76</span>
+                <span class='fraction'>55/81</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">46.29% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>24/48</span>
+                <span class='fraction'>25/54</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">62.29% </span>
+                <span class="strong">60.6% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>38/61</span>
+                <span class='fraction'>40/66</span>
             </div>
         
             
@@ -218,7 +218,23 @@
 <a name='L153'></a><a href='#L153'>153</a>
 <a name='L154'></a><a href='#L154'>154</a>
 <a name='L155'></a><a href='#L155'>155</a>
-<a name='L156'></a><a href='#L156'>156</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L156'></a><a href='#L156'>156</a>
+<a name='L157'></a><a href='#L157'>157</a>
+<a name='L158'></a><a href='#L158'>158</a>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -274,6 +290,9 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -308,7 +327,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -377,6 +407,8 @@
 &nbsp;
 import { T_UIHandler, T_LangOpts } from '../types'
 &nbsp;
+import { saveCorrectChar, saveIncorrectChar } from './stats'
+&nbsp;
 type T_ParsePronunciation = (text: string, langOpts?: T_LangOpts) =&gt; string
 type T_OnPracticeBackspaceFormat = (practiceValue: string) =&gt; string
 &nbsp;
@@ -387,88 +419,88 @@ type T_CommonHandleWritingKeyDown = (
     parsePronunciation?: T_ParsePronunciation
   },
 ) =&gt; ReturnType&lt;T_UIHandler['handleWritingKeyDown']&gt;
-&nbsp;
-const parsePronunciationDefault: T_ParsePronunciation = p =&gt; p.toLowerCase()<span class="branch-1 cbranch-no" title="branch not covered" ><span class="branch-1 cbranch-no" title="branch not covered" ></span></span>
+<span class="branch-1 cbranch-no" title="branch not covered" ><span class="branch-1 cbranch-no" title="branch not covered" ></span></span>
+const parsePronunciationDefault: T_ParsePronunciation = p =&gt; p.toLowerCase()
 &nbsp;
 const onPracticeBackspaceFormatDefault: T_OnPracticeBackspaceFormat = p =&gt; {
   return p
-    .split(' ')
-    .fil<span class="missing-if-branch" title="else path not taken" >E</span>ter((ch, idx, arr) =&gt; idx !== arr.length - 1 <span class="branch-0 cbranch-no" title="branch not covered" >|| ch.t</span>rim() !== '')
+    .spl<span class="missing-if-branch" title="else path not taken" >E</span>it(' ')<span class="branch-0 cbranch-no" title="branch not covered" ></span>
+    .filter((ch, idx, arr) =&gt; idx !== arr.length - 1 || ch.trim() !== '')
     .filter((_, idx, arr) =&gt; idx !== arr.length - 1)
     .concat([''])
     .join(' ')
 }
-&nbsp;
-export const commonHandleWritingKeyDown: T_CommonHandleWritingKey<span class="branch-0 cbranch-no" title="branch not covered" >Down = </span>(
+<span class="branch-0 cbranch-no" title="branch not covered" ></span>
+export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
   {
     getCurrentCharObjFromPractice,
     keyEvent,
     languageOptions,
     originalTextValue,
     practiceValue,
-    setCurrentDisplayCharIdx,
-    <span class="missing-if-branch" title="if path not taken" >I</span>setCurrentText,
+    <span class="missing-if-branch" title="if path not taken" >I</span>setCurrentDisplayCharIdx,
+    setC<span class="cstat-no" title="statement not covered" >urrentText,</span>
     setP<span class="cstat-no" title="statement not covered" >ractice,</span>
-    setP<span class="cstat-no" title="statement not covered" >racticeH</span>asError,
-    setWriting,
-    <span class="missing-if-branch" title="if path not taken" >I</span>specialCharsValue,<span class="branch-1 cbranch-no" title="branch not covered" ></span>
-    writ<span class="cstat-no" title="statement not covered" >ingValue</span>,
+    setPracticeHasError,
+    <span class="missing-if-branch" title="if path not taken" >I</span>setWriting,<span class="branch-1 cbranch-no" title="branch not covered" ></span>
+    spec<span class="cstat-no" title="statement not covered" >ialChars</span>Value,
+    writingValue,
   },
   {
-    onPracticeBackspaceFormat = onPracticeBackspaceFormatDefault,
-    parseP<span class="branch-0 cbranch-no" title="branch not covered" >ronunciation = parsePronunciationDefault,</span>
+    onPrac<span class="branch-0 cbranch-no" title="branch not covered" >ticeBackspaceFormat = onPracticeBackspaceFormat</span>Default,
+    parsePronunciation = parsePronunciationDefault,
   },
-) =&gt; {
-  if<span class="missing-if-branch" title="else path not taken" >E</span> (keyEvent.key === 'Backspace' &amp;&amp; writingValue.length === 0) {
-    const newPracticeText = onPracticeBackspaceFormat(practiceValue)
-<span class="branch-1 cbranch-no" title="branch not covered" ></span>
+) =&gt;<span class="missing-if-branch" title="else path not taken" >E</span> {
+  if (keyEvent.key === 'Backspace' &amp;&amp; writingValue.length === 0) {
+    cons<span class="branch-1 cbranch-no" title="branch not covered" >t newPracticeText = onPracticeBackspaceFormat(practiceValue)</span>
+&nbsp;
     setPractice(newPracticeText)
     const langObj = getCurrentCharObjFromPractice(newPracticeText)
 &nbsp;
-    if (langObj?.ch) {
-      se<span class="missing-if-branch" title="if path not taken" >I</span>tCurrentDisplayCharIdx(langObj.index)
-    }<span class="cstat-no" title="statement not covered" ></span>
-&nbsp;
-    return<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+    if (<span class="missing-if-branch" title="if path not taken" >I</span>langObj?.ch) {
+      setCur<span class="cstat-no" title="statement not covered" >rentDisplayCharIdx(langObj.index)</span>
+    }
+<span class="missing-if-branch" title="if path not taken" >I</span>
+    return<span class="cstat-no" title="statement not covered" ></span>
   }
-<span class="cstat-no" title="statement not covered" ></span>
-  const currentLangObj = getCurrentCharObjFromPractice()
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-  if (!currentLangObj?.ch) {
-    setPract<span class="cstat-no" title="statement not covered" >iceHasError(false)</span>
+  const currentLangObj = getCurrentCharObjFromPractice()
 <span class="cstat-no" title="statement not covered" ></span>
+  if (!currentLangObj?.ch) {
+    setPracticeHasError(<span class="fstat-no" title="function not covered" >fa</span>lse)<span class="cstat-no" title="statement not covered" ></span>
+&nbsp;
     return<span class="cstat-no" title="statement not covered" ></span>
   }<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" ></span>
-  setCurrentDisplayCharIdx(cu<span class="fstat-no" title="function not covered" >rr</span>entLangObj.index)
+  setCurrentDisplayCharIdx(current<span class="cstat-no" title="statement not covered" >LangObj.index)</span>
 <span class="cstat-no" title="statement not covered" ></span>
-  const { ch: currentCharObj } = currentLangObj
+  const { ch: currentCharObj <span class="fstat-no" title="function not covered" >} </span>= currentLangObj
+<span class="cstat-no" title="statement not covered" ></span>
+  keyEvent.preventDefault()
 &nbsp;
-  keyEvent.preventDe<span class="cstat-no" title="statement not covered" >fault()</span>
-<span class="cstat-no" title="statement not covered" ></span>
-  // including capital letters so it doesn't write when shortcut
-  if (!/[a-z0-9A-Z]/.test(keyEvent.key)) {
-    setPractice(prac<span class="cstat-no" title="statement not covered" >ticeValue + keyEvent</span>.key)
+  // including capit<span class="cstat-no" title="statement not covered" >al letters so it doesn't wr</span>ite when shortcut
+  if (!/[a-z0-9A-Z]/<span class="cstat-no" title="statement not covered" >.test(keyEvent.key)) {</span>
+    setPractice(practiceValue + keyEvent.key)
 &nbsp;
     return<span class="cstat-no" title="statement not covered" ></span>
   }
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
   if (keyEvent.key.length !== 1 &amp;&amp; keyEvent.key !== 'Backspace') {
     return
-  }<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" ></span>
-  co<span class="cstat-no" title="statement not covered" >nst { pronunciation: correctPronunciation } = currentCharObj</span>
-<span class="cstat-no" title="statement not covered" ></span>
-  const <span class="cstat-no" title="statement not covered" >newWritingValue =</span>
-    keyEvent.key === 'Backspace'
-<span class="cstat-no" title="statement not covered" >      ? writingValue.slice(0, writi</span>ngValue.length - 1)
-      : writingValue + keyEvent.key
+  }
 &nbsp;
+  co<span class="cstat-no" title="statement not covered" >nst { pronunciation: correctP</span>ronunciation } = currentCharObj
+<span class="cstat-no" title="statement not covered" ></span>
+  co<span class="cstat-no" title="statement not covered" >nst newWritingValue =</span>
+    keyE<span class="cstat-no" title="statement not covered" >vent.key === 'Backspace'</span>
+      ? <span class="cstat-no" title="statement not covered" >writingValue.slice(0, writingValue.length - 1)</span>
+      : writingValue + keyEvent.key
+<span class="cstat-no" title="statement not covered" ></span>
   const correctPronunciationParsed = parsePronunciation(
     correctPronunciation,
-    languageOptions,
+    lang<span class="cstat-no" title="statement not covered" >uageOptions,</span>
   )
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
   if (
     correctPronunciationParsed ===
       parsePronunciation(newWritingValue, languageOptions) ||
@@ -479,6 +511,10 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKey<span class="br
     setWriting('')
     setPracticeHasError(false)
     setPractice(`${newPractice} `)
+&nbsp;
+    if (process.env.NODE_ENV !== 'test') {
+      saveCorrectChar(currentCharObj.word)
+    }
 &nbsp;
     if (languageOptions.playmodeValue === 'reductive') {
       const newPracticeText = newPractice
@@ -523,6 +559,15 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKey<span class="br
 &nbsp;
   if (hasError) {
     languageOptions.wrongCharacters = languageOptions.wrongCharacters || []
+&nbsp;
+    if (
+      !(languageOptions.wrongCharacters as string[]).includes(
+        currentCharObj.word,
+      ) &amp;&amp;
+      process.env.NODE_ENV !== 'test'
+    ) {
+      saveIncorrectChar(currentCharObj.word)
+    }
     ;(languageOptions.wrongCharacters as string[]).push(currentCharObj.word)
   }
 &nbsp;
@@ -535,7 +580,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKey<span class="br
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-01-24T14:57:02.589Z
+                at 2024-01-28T12:40:00.563Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

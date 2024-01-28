@@ -1,0 +1,159 @@
+
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>stats.ts</title>
+      <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" type="text/css" rel="stylesheet">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.2/codemirror.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.2/mode/javascript/javascript.min.js" type="text/javascript" charset="utf-8"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.2/codemirror.min.css" type="text/css" rel="stylesheet">
+<script src="../../../../assets/source-file.js" type="text/javascript" charset="utf-8"></script>
+<link href="../../../../assets/source-file.css" type="text/css" rel="stylesheet">
+    </head>
+    <body>
+    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/languages/common/stats.ts</td><td class="">100.00%</td><td class="">95%</td><td class="">201</td><td class="">201</td><td class="">0</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">const SUCCESS_CHARS_COLLECTION = &#x27;successChars&#x27;
+const DB_NAME = &#x27;WritingTrainer&#x27;
+
+enum CharType {
+  Fail = &#x27;fail&#x27;,
+  Success = &#x27;success&#x27;,
+}
+
+const getDB = () =&gt; {
+  return new Promise&lt;IDBDatabase&gt;((resolve, reject) =&gt; {
+    const openReq = window.indexedDB.open(DB_NAME, 1)
+
+    openReq.onerror = event =&gt; {
+      console.log(&#x27;Open error: &#x27;, event)
+      reject(event)
+    }
+
+    openReq.onupgradeneeded = event =&gt; {
+      const db = (event.target as unknown as { result: IDBDatabase }).result
+
+      const objectStore = db.createObjectStore(SUCCESS_CHARS_COLLECTION, {
+        autoIncrement: true,
+      })
+
+      objectStore.createIndex(&#x27;name&#x27;, &#x27;name&#x27;, { unique: false })
+      objectStore.createIndex(&#x27;type&#x27;, &#x27;type&#x27;, { unique: false })
+      objectStore.createIndex(&#x27;nametype&#x27;, [&#x27;name&#x27;, &#x27;type&#x27;], { unique: false })
+    }
+
+    openReq.onsuccess = event =&gt; {
+      const db = (event.target as unknown as { result: IDBDatabase }).result
+
+      db.onerror = dbEvent =&gt; {
+        console.error(`Database error:`, dbEvent)
+      }
+
+      resolve(db)
+    }
+  })
+}
+
+type DBRecord = {
+  name: string
+  type: CharType
+}
+
+export const saveCorrectChar = async (char: string) =&gt; {
+  const db = await getDB()
+
+  const transaction = db.transaction([SUCCESS_CHARS_COLLECTION], &#x27;readwrite&#x27;)
+
+  transaction.onerror = ev =&gt; {
+    console.error(`Transaction error`, ev)
+  }
+
+  const objectStore = transaction.objectStore(SUCCESS_CHARS_COLLECTION)
+
+  const request = objectStore.add({
+    name: char,
+    type: CharType.Success,
+  } satisfies DBRecord)
+
+  request.onerror = event =&gt; {
+    console.log(&#x27;Add error&#x27;, event)
+  }
+}
+
+export const saveIncorrectChar = async (char: string) =&gt; {
+  const db = await getDB()
+
+  const transaction = db.transaction([SUCCESS_CHARS_COLLECTION], &#x27;readwrite&#x27;)
+
+  transaction.onerror = ev =&gt; {
+    console.error(`Transaction error`, ev)
+  }
+
+  const objectStore = transaction.objectStore(SUCCESS_CHARS_COLLECTION)
+
+  const request = objectStore.add({
+    name: char,
+    type: CharType.Fail,
+  } satisfies DBRecord)
+
+  request.onerror = event =&gt; {
+    console.log(&#x27;Add error&#x27;, event)
+  }
+}
+
+export const getCharsCount = async () =&gt; {
+  const getCount = async (charType: CharType): Promise&lt;number | undefined&gt; =&gt; {
+    const db = await getDB()
+
+    const transaction = db.transaction([SUCCESS_CHARS_COLLECTION], &#x27;readonly&#x27;)
+    const objectStore = transaction.objectStore(SUCCESS_CHARS_COLLECTION)
+
+    const index = objectStore.index(&#x27;type&#x27;)
+    const keyRange = IDBKeyRange.only(charType)
+
+    return new Promise(resolve =&gt; {
+      const request = index.count(keyRange)
+
+      request.onsuccess = () =&gt; {
+        resolve(request.result)
+      }
+    })
+  }
+
+  const [successCount, failCount] = await Promise.all([
+    getCount(CharType.Success),
+    getCount(CharType.Fail),
+  ])
+
+  return {
+    failCount,
+    successCount,
+  }
+}
+
+export const deleteDB = async (): Promise&lt;void&gt; =&gt; {
+  await (async () =&gt; {
+    const db = await getDB()
+
+    db.close()
+  })()
+
+  return new Promise(resolve =&gt; {
+    const deleteRequest = window.indexedDB.deleteDatabase(DB_NAME)
+
+    deleteRequest.onblocked = () =&gt; {
+      window.location.reload()
+    }
+
+    deleteRequest.onerror = () =&gt; {
+      console.error(&#x27;Error deleting database&#x27;)
+    }
+
+    deleteRequest.onsuccess = () =&gt; {
+      resolve()
+    }
+  })
+}
+</textarea><pre id="annotations" style="display:none">[]</pre></div>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sun, 28 Jan 2024 12:40:05 GMT</p>
+    </body>
+  </html>
+  
