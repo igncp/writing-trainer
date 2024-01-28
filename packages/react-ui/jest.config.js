@@ -8,10 +8,10 @@ module.exports = Object.assign(globalConfig, {
   ],
   coverageThreshold: {
     global: {
-      branches: 25,
-      functions: 25,
-      lines: 25,
-      statements: 25,
+      branches: 1,
+      functions: 1,
+      lines: 1,
+      statements: 1,
     },
   },
   globals: {

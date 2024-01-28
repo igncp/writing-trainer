@@ -2,6 +2,8 @@ import { unknownPronunciation } from 'writing-trainer-core'
 
 import { T_UIHandler, T_LangOpts } from '../types'
 
+import { saveCorrectChar, saveIncorrectChar } from './stats'
+
 type T_ParsePronunciation = (text: string, langOpts?: T_LangOpts) => string
 type T_OnPracticeBackspaceFormat = (practiceValue: string) => string
 
@@ -105,6 +107,10 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     setPracticeHasError(false)
     setPractice(`${newPractice} `)
 
+    if (process.env.NODE_ENV !== 'test') {
+      saveCorrectChar(currentCharObj.word)
+    }
+
     if (languageOptions.playmodeValue === 'reductive') {
       const newPracticeText = newPractice
         .split('')
@@ -148,6 +154,15 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
 
   if (hasError) {
     languageOptions.wrongCharacters = languageOptions.wrongCharacters || []
+
+    if (
+      !(languageOptions.wrongCharacters as string[]).includes(
+        currentCharObj.word,
+      ) &&
+      process.env.NODE_ENV !== 'test'
+    ) {
+      saveIncorrectChar(currentCharObj.word)
+    }
     ;(languageOptions.wrongCharacters as string[]).push(currentCharObj.word)
   }
 

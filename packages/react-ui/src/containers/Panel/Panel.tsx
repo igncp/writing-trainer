@@ -9,6 +9,7 @@ import Button from '../../components/Button/Button'
 import CharactersDisplay from '../../components/CharactersDisplay/CharactersDisplay'
 import ChooseLanguage from '../../components/ChooseLanguage/ChooseLanguage'
 import TextArea from '../../components/TextArea/TextArea'
+import { deleteDB, getCharsCount } from '../../languages/common/stats'
 import { LanguageUIManager } from '../../languages/languageUIManager'
 import {
   T_LangOpts,
@@ -85,6 +86,11 @@ const Panel = ({
   UI,
 }: Props) => {
   const initialLanguageId = languageUIManager.getDefaultLanguage()
+  const [stats, setStats] = useState<null | {
+    correct: number
+    fail: number
+    perc: number
+  }>(null)
 
   const [fragments, setFragments] = useState<{ index: number; list: string[] }>(
     {
@@ -128,12 +134,32 @@ const Panel = ({
 
   const { storage } = services
 
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'test') return
+
+    getCharsCount()
+      .then(({ failCount, successCount }) => {
+        const total = (successCount ?? 0) + (failCount ?? 0)
+
+        setStats({
+          correct: successCount ?? 0,
+          fail: failCount ?? 0,
+          perc: total > 0 ? Math.round(((successCount ?? 0) / total) * 100) : 0,
+        })
+      })
+      .catch(() => {})
+  }, [])
+
   const onPracticeSourceChange = (newFragments?: {
     index: number
     list: string[]
   }) => {
     setCurrentText('')
     setPractice('')
+    setWriting('')
+
+    setPracticeHasError(false)
+
     languageOptions.wrongCharacters = []
 
     if (newFragments) {
@@ -529,6 +555,30 @@ const Panel = ({
           <Button onClick={saveRecord}>
             {currentRecord === null ? 'Save' : 'Update'}
           </Button>
+          {!!stats && (
+            <div
+              style={{
+                color: '#ccc',
+                display: 'flex',
+                flexDirection: 'column',
+                marginBottom: 10,
+              }}
+            >
+              <div>Stats up until last session</div>
+              <div>
+                Correct: {stats.correct} ({stats.perc}%) / Fail: {stats.fail}
+              </div>
+              <Button
+                onClick={() => {
+                  deleteDB().then(() => {
+                    setStats(null)
+                  })
+                }}
+              >
+                Delete DB
+              </Button>
+            </div>
+          )}
         </>
       )}
       {fragments.list.length > 1 && (
