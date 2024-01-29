@@ -38,6 +38,11 @@ const myLittleAirportSongs = [
     '去信和賣碟',
     'gQHmVvwagZw',
   ],
+  [
+    () => import('./my-little-airport-ci-go-mou-gaai'),
+    '詩歌舞街',
+    'J2DxGXp8KYY',
+  ],
 ].map(handleSongTreble('My Little Airport', 'cantonese'))
 
 const janiceVidalSongs = [
