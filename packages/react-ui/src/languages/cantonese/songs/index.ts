@@ -40,4 +40,14 @@ const myLittleAirportSongs = [
   ],
 ].map(handleSongTreble('My Little Airport', 'cantonese'))
 
-export const songs = kayTseSongs.concat(myLittleAirportSongs)
+const janiceVidalSongs = [
+  [
+    () => import('./janice-vidal-jat-gaak-gaak'),
+    '一格格 Frames',
+    'N1jdWcmEv0Q',
+  ],
+].map(handleSongTreble('Janice Vidal', 'cantonese'))
+
+export const songs = kayTseSongs
+  .concat(myLittleAirportSongs)
+  .concat(janiceVidalSongs)
