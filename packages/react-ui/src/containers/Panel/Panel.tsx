@@ -48,6 +48,7 @@ type Props = {
   initialFragmentIndex?: number
   languageManager: LanguageManager
   languageUIManager: LanguageUIManager
+  onChangeTheme?: () => void
   onHideRequest?: () => void
   services: T_Services
   text: string
@@ -80,6 +81,7 @@ const Panel = ({
   initialFragmentIndex,
   languageManager,
   languageUIManager,
+  onChangeTheme,
   onHideRequest,
   services,
   text,
@@ -468,16 +470,8 @@ const Panel = ({
       <Button onClick={clearValues} style={{ paddingLeft: 0 }}>
         Clear
       </Button>
-      <Button onClick={() => setHasExtraControls(true)}>X</Button>
+      <Button onClick={() => setHasExtraControls(!hasExtraControls)}>X</Button>
       {hasExtraControls && <Button onClick={listRecords}>Records</Button>}
-      <Button
-        onClick={() => {
-          setShowingEdition(!isShowingEdition)
-          writingArea.current?.focus()
-        }}
-      >
-        Toggle Edition
-      </Button>
       <Button
         onClick={() => {
           navigator.clipboard.writeText(originalTextValue)
@@ -547,6 +541,14 @@ const Panel = ({
       )}
       {hasExtraControls && (
         <>
+          <Button
+            onClick={() => {
+              setShowingEdition(!isShowingEdition)
+              writingArea.current?.focus()
+            }}
+          >
+            Toggle Edition
+          </Button>
           <ChooseLanguage
             languages={getLanguageDefinitions(languageManager)}
             onOptionsChange={handleLanguageChange}
@@ -555,6 +557,9 @@ const Panel = ({
           <Button onClick={saveRecord}>
             {currentRecord === null ? 'Save' : 'Update'}
           </Button>
+          {onChangeTheme && (
+            <Button onClick={onChangeTheme}>Change Theme</Button>
+          )}
           {!!stats && (
             <div
               style={{

@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { useState, useEffect } from 'react'
-import { Panel, Button } from 'writing-trainer-react-ui'
+import { Panel } from 'writing-trainer-react-ui'
 
 import {
   languageManager,
@@ -22,17 +22,9 @@ const IndexPage = () => {
   const { query } = useRouter()
 
   useEffect(() => {
-    const localTheme = localStorage.getItem('theme')
-
-    if (localTheme) {
-      setTheme(localTheme)
-    }
-  }, [])
-
-  useEffect(() => {
     if (theme) {
       document.body.setAttribute('data-theme', theme)
-      localStorage.setItem('theme', theme)
+      document.cookie = `theme=${theme};path=/`
     }
   }, [theme])
 
@@ -43,14 +35,6 @@ const IndexPage = () => {
       </Head>
       <h1 className={styles.title}>
         <span>Writing Trainer</span>{' '}
-        <Button
-          onClick={() => {
-            setTheme(theme === 'light' ? 'dark' : 'light')
-          }}
-        >
-          <span className={styles.desktop}>Change Theme</span>
-          <span className={styles.mobile}>Theme</span>
-        </Button>
       </h1>
       <div style={{ position: 'relative' }}>
         <Panel
@@ -59,6 +43,9 @@ const IndexPage = () => {
             query.fragmentIndex ? Number(query.fragmentIndex) : undefined
           }
           languageManager={languageManager}
+          onChangeTheme={() => {
+            setTheme(theme === 'light' ? 'dark' : 'light')
+          }}
           languageUIManager={languageUIManager}
           services={panelServices}
           text={usedText}

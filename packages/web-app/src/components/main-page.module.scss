@@ -7,22 +7,8 @@
   gap: 1rem;
   align-items: center;
 
-  .mobile {
-    display: none;
-    @include laptop-down {
-      display: flex;
-    }
-  }
-
-  .desktop {
-    display: none;
-    @include laptop-up {
-      display: flex;
-    }
-  }
-
   @include laptop-down {
-    font-size: 14px;
+    font-size: 10px;
     margin: 0;
   }
 }

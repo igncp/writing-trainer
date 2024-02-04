@@ -156,9 +156,10 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     languageOptions.wrongCharacters = languageOptions.wrongCharacters || []
 
     if (
-      !(languageOptions.wrongCharacters as string[]).includes(
-        currentCharObj.word,
-      ) &&
+      !(languageOptions.wrongCharacters as string[])
+        .slice(0)
+        .slice(-1)
+        .includes(currentCharObj.word) &&
       process.env.NODE_ENV !== 'test'
     ) {
       saveIncorrectChar(currentCharObj.word)

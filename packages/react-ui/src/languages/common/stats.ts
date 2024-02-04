@@ -8,7 +8,7 @@ enum CharType {
 
 const getDB = () => {
   return new Promise<IDBDatabase>((resolve, reject) => {
-    const openReq = window.indexedDB.open(DB_NAME, 1)
+    const openReq = window.indexedDB.open(DB_NAME, 2)
 
     openReq.onerror = event => {
       console.log('Open error: ', event)
@@ -19,11 +19,12 @@ const getDB = () => {
       const db = (event.target as unknown as { result: IDBDatabase }).result
 
       const objectStore = db.createObjectStore(SUCCESS_CHARS_COLLECTION, {
-        autoIncrement: true,
+        autoIncrement: false,
       })
 
       objectStore.createIndex('name', 'name', { unique: false })
       objectStore.createIndex('type', 'type', { unique: false })
+      objectStore.createIndex('count', 'count', { unique: false })
       objectStore.createIndex('nametype', ['name', 'type'], { unique: false })
     }
 
@@ -40,11 +41,12 @@ const getDB = () => {
 }
 
 type DBRecord = {
+  count: number
   name: string
   type: CharType
 }
 
-export const saveCorrectChar = async (char: string) => {
+const saveChar = async (char: string, charType: CharType) => {
   const db = await getDB()
 
   const transaction = db.transaction([SUCCESS_CHARS_COLLECTION], 'readwrite')
@@ -54,37 +56,44 @@ export const saveCorrectChar = async (char: string) => {
   }
 
   const objectStore = transaction.objectStore(SUCCESS_CHARS_COLLECTION)
+  const searchIndex = objectStore.index('nametype')
+  const key = [char, charType]
+  const query = searchIndex.get(key)
 
-  const request = objectStore.add({
-    name: char,
-    type: CharType.Success,
-  } satisfies DBRecord)
+  query.onsuccess = result => {
+    const record = (
+      result.target as unknown as { result: DBRecord | undefined }
+    ).result
 
-  request.onerror = event => {
-    console.log('Add error', event)
+    if (record) {
+      record.count += 1
+      const updateRequest = objectStore.put(record, key)
+
+      updateRequest.onerror = event => {
+        console.error('Update error', event)
+      }
+    } else {
+      const addRequest = objectStore.add(
+        {
+          count: 1,
+          name: char,
+          type: charType,
+        },
+        key,
+      )
+
+      addRequest.onerror = event => {
+        console.error('Add error', event)
+      }
+    }
   }
 }
 
-export const saveIncorrectChar = async (char: string) => {
-  const db = await getDB()
+export const saveCorrectChar = async (char: string) =>
+  saveChar(char, CharType.Success)
 
-  const transaction = db.transaction([SUCCESS_CHARS_COLLECTION], 'readwrite')
-
-  transaction.onerror = ev => {
-    console.error(`Transaction error`, ev)
-  }
-
-  const objectStore = transaction.objectStore(SUCCESS_CHARS_COLLECTION)
-
-  const request = objectStore.add({
-    name: char,
-    type: CharType.Fail,
-  } satisfies DBRecord)
-
-  request.onerror = event => {
-    console.log('Add error', event)
-  }
-}
+export const saveIncorrectChar = async (char: string) =>
+  saveChar(char, CharType.Fail)
 
 export const getCharsCount = async () => {
   const getCount = async (charType: CharType): Promise<number | undefined> => {
@@ -97,10 +106,14 @@ export const getCharsCount = async () => {
     const keyRange = IDBKeyRange.only(charType)
 
     return new Promise(resolve => {
-      const request = index.count(keyRange)
+      const request = index.getAll(keyRange)
 
       request.onsuccess = () => {
-        resolve(request.result)
+        const total = request.result.reduce(
+          (acc: number, record: DBRecord) => acc + record.count,
+          0,
+        )
+        resolve(total)
       }
     })
   }
