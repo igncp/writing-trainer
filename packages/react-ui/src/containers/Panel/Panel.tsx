@@ -573,15 +573,6 @@ const Panel = ({
               <div>
                 Correct: {stats.correct} ({stats.perc}%) / Fail: {stats.fail}
               </div>
-              <Button
-                onClick={() => {
-                  deleteDB().then(() => {
-                    setStats(null)
-                  })
-                }}
-              >
-                Delete DB
-              </Button>
             </div>
           )}
         </>
@@ -697,6 +688,15 @@ const Panel = ({
                     value={fontSize}
                   />
                 </div>
+                <Button
+                  onDoubleClick={() => {
+                    deleteDB().then(() => {
+                      setStats(null)
+                    })
+                  }}
+                >
+                  Delete DB
+                </Button>
               </>
             )}
             {/* This is necessary because the options block initialises some values*/}

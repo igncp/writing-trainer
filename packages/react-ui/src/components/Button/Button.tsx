@@ -15,6 +15,7 @@ export type T_ButtonProps = {
   disabled?: boolean
   href?: string
   onClick?: () => void
+  onDoubleClick?: () => void
   shouldUseLink?: boolean
   style?: React.CSSProperties
 }
@@ -25,6 +26,7 @@ const Button = ({
   disabled,
   href,
   onClick,
+  onDoubleClick,
   shouldUseLink,
   style,
 }: T_ButtonProps) => {
@@ -62,6 +64,7 @@ const Button = ({
     <div
       {...bind}
       onClick={disabled ? noop : onClick}
+      onDoubleClick={disabled ? noop : onDoubleClick}
       role="button"
       style={finalStyle}
     >
