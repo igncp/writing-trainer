@@ -11,7 +11,7 @@
 <link href="../../../../assets/source-file.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/languages/common/stats.ts</td><td class="">100.00%</td><td class="">95%</td><td class="">201</td><td class="">201</td><td class="">0</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">const SUCCESS_CHARS_COLLECTION = &#x27;successChars&#x27;
+    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/languages/common/stats.ts</td><td class="">99.56%</td><td class="">95%</td><td class="">228</td><td class="">227</td><td class="">1</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">const SUCCESS_CHARS_COLLECTION = &#x27;successChars&#x27;
 const DB_NAME = &#x27;WritingTrainer&#x27;
 
 enum CharType {
@@ -21,7 +21,7 @@ enum CharType {
 
 const getDB = () =&gt; {
   return new Promise&lt;IDBDatabase&gt;((resolve, reject) =&gt; {
-    const openReq = window.indexedDB.open(DB_NAME, 1)
+    const openReq = window.indexedDB.open(DB_NAME, 2)
 
     openReq.onerror = event =&gt; {
       console.log(&#x27;Open error: &#x27;, event)
@@ -32,11 +32,12 @@ const getDB = () =&gt; {
       const db = (event.target as unknown as { result: IDBDatabase }).result
 
       const objectStore = db.createObjectStore(SUCCESS_CHARS_COLLECTION, {
-        autoIncrement: true,
+        autoIncrement: false,
       })
 
       objectStore.createIndex(&#x27;name&#x27;, &#x27;name&#x27;, { unique: false })
       objectStore.createIndex(&#x27;type&#x27;, &#x27;type&#x27;, { unique: false })
+      objectStore.createIndex(&#x27;count&#x27;, &#x27;count&#x27;, { unique: false })
       objectStore.createIndex(&#x27;nametype&#x27;, [&#x27;name&#x27;, &#x27;type&#x27;], { unique: false })
     }
 
@@ -53,11 +54,12 @@ const getDB = () =&gt; {
 }
 
 type DBRecord = {
+  count: number
   name: string
   type: CharType
 }
 
-export const saveCorrectChar = async (char: string) =&gt; {
+const saveChar = async (char: string, charType: CharType) =&gt; {
   const db = await getDB()
 
   const transaction = db.transaction([SUCCESS_CHARS_COLLECTION], &#x27;readwrite&#x27;)
@@ -67,37 +69,44 @@ export const saveCorrectChar = async (char: string) =&gt; {
   }
 
   const objectStore = transaction.objectStore(SUCCESS_CHARS_COLLECTION)
+  const searchIndex = objectStore.index(&#x27;nametype&#x27;)
+  const key = [char, charType]
+  const query = searchIndex.get(key)
 
-  const request = objectStore.add({
-    name: char,
-    type: CharType.Success,
-  } satisfies DBRecord)
+  query.onsuccess = result =&gt; {
+    const record = (
+      result.target as unknown as { result: DBRecord | undefined }
+    ).result
 
-  request.onerror = event =&gt; {
-    console.log(&#x27;Add error&#x27;, event)
+    if (record) {
+      record.count += 1
+      const updateRequest = objectStore.put(record, key)
+
+      updateRequest.onerror = event =&gt; {
+        console.error(&#x27;Update error&#x27;, event)
+      }
+    } else {
+      const addRequest = objectStore.add(
+        {
+          count: 1,
+          name: char,
+          type: charType,
+        },
+        key,
+      )
+
+      addRequest.onerror = event =&gt; {
+        console.error(&#x27;Add error&#x27;, event)
+      }
+    }
   }
 }
 
-export const saveIncorrectChar = async (char: string) =&gt; {
-  const db = await getDB()
+export const saveCorrectChar = async (char: string) =&gt;
+  saveChar(char, CharType.Success)
 
-  const transaction = db.transaction([SUCCESS_CHARS_COLLECTION], &#x27;readwrite&#x27;)
-
-  transaction.onerror = ev =&gt; {
-    console.error(`Transaction error`, ev)
-  }
-
-  const objectStore = transaction.objectStore(SUCCESS_CHARS_COLLECTION)
-
-  const request = objectStore.add({
-    name: char,
-    type: CharType.Fail,
-  } satisfies DBRecord)
-
-  request.onerror = event =&gt; {
-    console.log(&#x27;Add error&#x27;, event)
-  }
-}
+export const saveIncorrectChar = async (char: string) =&gt;
+  saveChar(char, CharType.Fail)
 
 export const getCharsCount = async () =&gt; {
   const getCount = async (charType: CharType): Promise&lt;number | undefined&gt; =&gt; {
@@ -110,10 +119,14 @@ export const getCharsCount = async () =&gt; {
     const keyRange = IDBKeyRange.only(charType)
 
     return new Promise(resolve =&gt; {
-      const request = index.count(keyRange)
+      const request = index.getAll(keyRange)
 
       request.onsuccess = () =&gt; {
-        resolve(request.result)
+        const total = request.result.reduce(
+          (acc: number, record: DBRecord) =&gt; acc + record.count,
+          0,
+        )
+        resolve(total)
       }
     })
   }
@@ -152,8 +165,8 @@ export const deleteDB = async (): Promise&lt;void&gt; =&gt; {
     }
   })
 }
-</textarea><pre id="annotations" style="display:none">[]</pre></div>
-    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Mon, 29 Jan 2024 16:11:54 GMT</p>
+</textarea><pre id="annotations" style="display:none">[{&quot;file&quot;:&quot;src/languages/common/stats.ts&quot;,&quot;line&quot;:111,&quot;character&quot;:14,&quot;text&quot;:&quot;total&quot;,&quot;kind&quot;:1}]</pre></div>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sun, 04 Feb 2024 03:39:58 GMT</p>
     </body>
   </html>
   

@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/422</span>
+                <span class='fraction'>0/423</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/308</span>
+                <span class='fraction'>0/310</span>
             </div>
         
             
@@ -838,7 +838,12 @@
 <a name='L773'></a><a href='#L773'>773</a>
 <a name='L774'></a><a href='#L774'>774</a>
 <a name='L775'></a><a href='#L775'>775</a>
-<a name='L776'></a><a href='#L776'>776</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L776'></a><a href='#L776'>776</a>
+<a name='L777'></a><a href='#L777'>777</a>
+<a name='L778'></a><a href='#L778'>778</a>
+<a name='L779'></a><a href='#L779'>779</a>
+<a name='L780'></a><a href='#L780'>780</a>
+<a name='L781'></a><a href='#L781'>781</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1248,11 +1253,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1295,10 +1295,16 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1411,6 +1417,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1663,304 +1673,306 @@ type Props = {<span class="cstat-no" title="statement not covered" ><span class=
   initialFrag<span class="fstat-no" title="function not covered" >mentI</span>ndex?<span class="cstat-no" title="statement not covered" >: numbe<span class="fstat-no" title="function not covered" >r<span class="cstat-no" title="statement not covered" ></span></span></span>
   languageMan<span class="fstat-no" title="function not covered" >ager:</span> LanguageManager
   langua<span class="cstat-no" title="statement not covered" >geUIMan<span class="cstat-no" title="statement not covered" >ager: LanguageUIManager</span></span>
-  onHide<span class="cstat-no" title="statement not covered" >Request?: () =&gt; void<span class="cstat-no" title="statement not covered" ></span></span>
+  onChan<span class="cstat-no" title="statement not covered" >geTheme?: () =&gt; void<span class="cstat-no" title="statement not covered" ></span></span>
+  onHideRequ<span class="cstat-no" title="statement not covered" >est?: () =&gt; void<span class="cstat-no" title="statement not covered" ></span></span>
   services: <span class="cstat-no" title="statement not covered" >T_Services<span class="cstat-no" title="statement not covered" ></span></span>
-  text: stri<span class="cstat-no" title="statement not covered" >ng<span class="cstat-no" title="statement not covered" ></span></span>
-  UI?: {<span class="cstat-no" title="statement not covered" ></span>
-    noHideButton?: boolean<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-  }<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-}<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
-<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-const getLanguageDefinitions = (languageManager: LanguageManager) =&gt; {
-  return languageMan<span class="cstat-no" title="statement not covered" >ager<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-    .getAvailableLan<span class="cstat-no" title="statement not covered" >guages()<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-    .map(langId =&gt; {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
-      const language<span class="cstat-no" title="statement not covered" >Handler = languageManager.g<span class="cstat-no" title="statement not covered" >etLanguageHandle<span class="cstat-no" title="statement not covered" ></span>r(langId)<span class="cstat-no" title="statement not covered" ></span></span></span>
-<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-      if (!languageH<span class="cstat-no" title="statement not covered" >andler) return<span class="cstat-no" title="statement not covered" ></span> null</span>
+  text: stri<span class="cstat-no" title="statement not covered" >ng</span>
+  UI?: {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
+    noHideButton?: boole<span class="cstat-no" title="statement not covered" >an<span class="cstat-no" title="statement not covered" ></span></span>
+  }<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
+}<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
 &nbsp;
-      return<span class="cstat-no" title="statement not covered" > {</span>
-        id: languageHa<span class="cstat-no" title="statement not covered" >ndler.getId()<span class="cstat-no" title="statement not covered" ></span>,<span class="cstat-no" title="statement not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" >        name: languageH<span class="cstat-no" title="statement not covered" >andler.getNam<span class="cstat-no" title="statement not covered" ></span></span>e(),</span>
+const getLanguageDef<span class="cstat-no" title="statement not covered" >initions = (languageManager: LanguageManager) =&gt; {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+  return languageMan<span class="cstat-no" title="statement not covered" >ager<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+    .getAvailableLan<span class="cstat-no" title="statement not covered" >guages()<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
+    .map(langId =&gt; {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
+      const language<span class="cstat-no" title="statement not covered" >Handler = <span class="cstat-no" title="statement not covered" >languageManag</span></span>er.getLanguageHandler(langId)
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
+      if (!languageHandler) return null
+<span class="cstat-no" title="statement not covered" ></span>
+      return {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+<span class="cstat-no" title="statement not covered" >        id: languageHan<span class="cstat-no" title="statement not covered" >dler.getId(),<span class="cstat-no" title="statement not covered" ></span></span></span>
+        name: languageHandler.getName(),
       }
-    })
-    .filter(item =&gt; !!<span class="cstat-no" title="statement not covered" >item) as Array&lt;{<span class="fstat-no" title="function not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" >    id: LanguageDefinition['id']</span>
-    name: string
-<span class="cstat-no" title="statement not covered" >  }&gt;</span>
+    })<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+<span class="cstat-no" title="statement not covered" >    .filter(item =&gt; !!item) as Array&lt;{</span>
+    id: LanguageDefinition['id']
+<span class="cstat-no" title="statement not covered" >    name: string</span>
+  }&gt;<span class="cstat-no" title="statement not covered" ></span>
 }<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" ></span>
 const Panel = ({<span class="cstat-no" title="statement not covered" ></span>
   _stories = {},<span class="cstat-no" title="statement not covered" ></span>
-  initialFragment<span class="cstat-no" title="statement not covered" >Index,</span>
-  languageMana<span class="cstat-no" title="statement not covered" >ger,</span>
+  initialFragm<span class="cstat-no" title="statement not covered" >entIndex,</span>
+  languageManager,<span class="cstat-no" title="statement not covered" ></span>
   languageUIManager,<span class="cstat-no" title="statement not covered" ></span>
-  onHideRequest,<span class="cstat-no" title="statement not covered" ></span>
-  services,
-  text,
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span>  UI,<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
-}: P<span class="cstat-no" title="statement not covered" >rops) =&gt; {</span>
-  const initialLanguageId = languageUIManager.getDefaultLanguage()
-  const [stats, setStat<span class="cstat-no" title="statement not covered" >s] = useState&lt;null | {</span>
+  onChangeTheme,
+  onHideRequest,
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span>  services,<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
+  te<span class="cstat-no" title="statement not covered" >xt,</span>
+  UI,
+}: Props) =&gt; {<span class="cstat-no" title="statement not covered" ></span>
+  const initialLanguageId = l<span class="cstat-no" title="statement not covered" >anguageUIManager.getDe</span>faultLanguage()
+  const [stats, setStats] = u<span class="cstat-no" title="statement not covered" >seStat</span>e&lt;null | {
     correct: number<span class="cstat-no" title="statement not covered" ></span>
     fail: number<span class="cstat-no" title="statement not covered" ></span>
     perc: number<span class="cstat-no" title="statement not covered" ></span>
-  }&gt;(null)<span class="cstat-no" title="statement not covered" ></span>
+  }&gt;(null)<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
 <span class="cstat-no" title="statement not covered" ></span>
-  const [fragments, setFragme<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >nt</span>s] = useState&lt;{ index: number; list: string[] }&gt;(</span>
-<span class="cstat-no" title="statement not covered" >    {</span>
-      index: 0,
-      list: [<span class="fstat-no" title="function not covered" >te</span>xt],
+  const [fragments, setFragments] = useState&lt;{ index: number; list: string[] }&gt;(
+    {<span class="fstat-no" title="function not covered" ></span>
+      index: 0,<span class="cstat-no" title="statement not covered" ></span>
+      li<span class="cstat-no" title="statement not covered" >st: [text],</span>
     },<span class="cstat-no" title="statement not covered" ></span>
   )<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" ></span>
-  const <span class="cstat-no" title="statement not covered" >[showingRecordsInitScreen, setShowingRecordsInitScreen] = useState&lt;</span>
+&nbsp;
+  const [showingRecordsInitScreen, setShowingRecordsInitScreen] = useState&lt;
     RecordsScreen | ''
   &gt;('')
-  const [currentRecord, setCurrentRecord] = useState&lt;Record['id'] | null&gt;(null)
+  const [current<span class="fstat-no" title="function not covered" >Re</span>cord, setCurrent<span class="cstat-no" title="statement not covered" >Record] = useSt</span>ate&lt;Record['id'] | null&gt;(null)
   const [currentText, setCurrentText] = useState&lt;string&gt;('')
-  const original<span class="fstat-no" title="function not covered" >Te</span>xtValue = curren<span class="cstat-no" title="statement not covered" >tText || fragme</span>nts.list[fragments.index]
+  const orig<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >in</span>alTextValue = currentText || fragments.list[fragments.index]</span>
   const [pronunciationValue, setPronunciation] = useState&lt;string&gt;(
-    _stories<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >.d</span>efaultPronunciation ?? '',</span>
-  )
-  const [spec<span class="cstat-no" title="statement not covered" >ialCharsValu</span>e, setSpecia<span class="cstat-no" title="statement not covered" >lChars] = useState&lt;strin</span>g&gt;('')<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span></span></span></span>
-  const [writingValue, setWr<span class="cstat-no" title="statement not covered" >iting] = useState&lt;string&gt;('')</span>
-  const [prac<span class="cstat-no" title="statement not covered" >ticeValue, setPractice] = us</span>eState&lt;st<span class="cstat-no" title="statement not covered" >ring&gt;(<span class="cstat-no" title="statement not covered" ></span></span>
-    _stories.<span class="cstat-no" title="statement not covered" >defaultPractice ?? '',</span>
-  )
-  const [fontSize, setFontSize] = useState&lt;number&gt;(defaultFontSize)
-  const [isShowingPr<span class="cstat-no" title="statement not covered" >onunci</span>ation, setShowin<span class="cstat-no" title="statement not covered" >gPronu</span>nciation] = useState(true)
-  const [isSh<span class="cstat-no" title="statement not covered" >owingEdition, setShowingEd</span>ition] = useState&lt;boolean&gt;(t<span class="cstat-no" title="statement not covered" >rue)<span class="cstat-no" title="statement not covered" ></span></span>
-  const [does<span class="cstat-no" title="statement not covered" >PracticeHaveError, setPracti</span>ceHasError] = use<span class="cstat-no" title="statement not covered" >State&lt;</span>boolean&gt;(false)<span class="cstat-no" title="statement not covered" ></span>
-  const [last<span class="cstat-no" title="statement not covered" >ThreeKeys, setLastThreeKey</span>s] = useState&lt;s<span class="cstat-no" title="statement not covered" >tring[</span>]&gt;([])<span class="cstat-no" title="statement not covered" ></span>
-  const [languageOptions, se<span class="cstat-no" title="statement not covered" >tLanguageOptions] = useState&lt;T_LangOpts&gt;({})</span>
-  const [sele<span class="cstat-no" title="statement not covered" >ctedLanguage, setSelectedLanguage] =<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-    useState&lt;<span class="cstat-no" title="statement not covered" >LanguageDefinition['id']&gt;(</span>initialLanguageId)<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-  const [hasL<span class="cstat-no" title="statement not covered" >oadedStorage, setHasLoaded</span>Storage] = useSt<span class="cstat-no" title="statement not covered" >ate&lt;bo</span>olean&gt;(false)<span class="cstat-no" title="statement not covered" ></span>
-  const [curr<span class="cstat-no" title="statement not covered" >entDisplayCharIdx, setCurrentDisplayCharIdx] = useState&lt;number&gt;(0)<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-  const [writ<span class="cstat-no" title="statement not covered" >ingBorder, setWritingBorder] = useState</span>&lt;'bold' | 'n<span class="cstat-no" title="statement not covered" >ormal'</span>&gt;('bold')<span class="cstat-no" title="statement not covered" ></span>
-  const [hasE<span class="cstat-no" title="statement not covered" >xtraControls, setHasExtraCon</span>trols] = useState(false)<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-  const [isMo<span class="cstat-no" title="statement not covered" >bile, setIsMobile] = useStat</span>e(false)<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-  const writi<span class="cstat-no" title="statement not covered" >ngArea = useRef&lt;HTMLTextAreaE</span>lement | null&gt;(null)<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
+    _stories.<span class="cstat-no" title="statement not covered" >defaultPronu</span>nciation ?? <span class="cstat-no" title="statement not covered" >'',<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span></span></span></span></span></span>
+  )<span class="cstat-no" title="statement not covered" ></span>
+  const [spec<span class="cstat-no" title="statement not covered" >ialCharsValue, setSpecialCha</span>rs] = use<span class="cstat-no" title="statement not covered" >State&lt;</span>string&gt;('')<span class="cstat-no" title="statement not covered" ></span>
+  const [writ<span class="cstat-no" title="statement not covered" >ingValue, setWriting] = useState&lt;string&gt;('')</span>
+  const [practiceValue, setPractice] = useState&lt;string&gt;(
+    _stories.defaultPractice ?? '',
+  )<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
+  const [font<span class="cstat-no" title="statement not covered" >Size, setFontSize] = useSt</span>ate&lt;number&gt;(defaultFontSize)<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
+  const [isSh<span class="cstat-no" title="statement not covered" >owingPronunciation, setShowi</span>ngPronunciation] <span class="cstat-no" title="statement not covered" >= useS</span>tate(true)<span class="cstat-no" title="statement not covered" ></span>
+  const [isSh<span class="cstat-no" title="statement not covered" >owingEdition, setShowingEd</span>ition] = useSta<span class="cstat-no" title="statement not covered" >te&lt;boo</span>lean&gt;(true)<span class="cstat-no" title="statement not covered" ></span>
+  const [doesPracticeHaveErr<span class="cstat-no" title="statement not covered" >or, setPracticeHasError] = useState&lt;boolean&gt;(fa</span>lse)
+  const [last<span class="cstat-no" title="statement not covered" >ThreeKeys, setLastThreeKeys] = useState&lt;string[]&gt;([])<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+  const [lang<span class="cstat-no" title="statement not covered" >uageOptions, setLanguageOp</span>tions] = useState&lt;T_L<span class="cstat-no" title="statement not covered" >angOpt</span>s&gt;({})<span class="cstat-no" title="statement not covered" ></span>
+  const [sele<span class="cstat-no" title="statement not covered" >ctedLanguage, setSelectedL</span>anguage] =<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
+    useState&lt;<span class="cstat-no" title="statement not covered" >LanguageDefinition['id']&gt;(initialLanguageId)<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+  const [hasL<span class="cstat-no" title="statement not covered" >oadedStorage, setHasLoadedStorage] = us</span>eState&lt;boole<span class="cstat-no" title="statement not covered" >an&gt;(fa</span>lse)<span class="cstat-no" title="statement not covered" ></span>
+  const [curr<span class="cstat-no" title="statement not covered" >entDisplayCharIdx, setCurren</span>tDisplayCharIdx] = useStat<span class="cstat-no" title="statement not covered" >e&lt;numb</span>er&gt;(0)<span class="cstat-no" title="statement not covered" ></span>
+  const [writ<span class="cstat-no" title="statement not covered" >ingBorder, setWritingBorder]</span> = useState&lt;'bold' |<span class="cstat-no" title="statement not covered" > 'norm</span>al'&gt;('bold')<span class="cstat-no" title="statement not covered" ></span>
+  const [hasE<span class="cstat-no" title="statement not covered" >xtraControls, setHasExtraCont</span>rols] = useState(false)<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
+  const [isMo<span class="cstat-no" title="statement not covered" >bile, setIsMobile] = useSt</span>ate(false)<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
+  const writi<span class="cstat-no" title="statement not covered" >ngArea = useRef&lt;HTMLTextAr</span>eaElement | null&gt;(n<span class="cstat-no" title="statement not covered" >ull)<span class="cstat-no" title="statement not covered" ></span></span>
 <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-  const uiHan<span class="cstat-no" title="statement not covered" >dler = languageUIManager.g</span>etUIHandler()<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
+  const uiHan<span class="cstat-no" title="statement not covered" >dler = languageUIManager.getU</span>IHandler()<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
 <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-  const langH<span class="cstat-no" title="statement not covered" >andler = languageManager.getC</span>urrentLanguageHandle<span class="cstat-no" title="statement not covered" >r()<span class="cstat-no" title="statement not covered" ></span></span>
+  const langH<span class="cstat-no" title="statement not covered" >andler = languageManager.getCu</span>rrentLanguageHand<span class="cstat-no" title="statement not covered" >ler()<span class="cstat-no" title="statement not covered" ></span></span>
 <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
   const { sto<span class="cstat-no" title="statement not covered" >rage } = services<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-  useEffect((<span class="cstat-no" title="statement not covered" >) =&gt; {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+<span class="cstat-no" title="statement not covered" ></span>
+  useEffect(() =&gt; {<span class="cstat-no" title="statement not covered" ></span>
     if (process.env.NO<span class="cstat-no" title="statement not covered" >DE_ENV === 'test') return</span>
 <span class="cstat-no" title="statement not covered" ></span>
-    getCharsCount()<span class="cstat-no" title="statement not covered" ></span>
-      .then(({ fai<span class="cstat-no" title="statement not covered" >lCount, successCo</span>unt }) =&gt; {
-<span class="cstat-no" title="statement not covered" >        const total = (succ<span class="fstat-no" title="function not covered" >es</span>sCount ?? 0) + (failCount ?? 0)</span>
+<span class="cstat-no" title="statement not covered" >    getCharsCount()<span class="fstat-no" title="function not covered" ></span></span>
+      .t<span class="cstat-no" title="statement not covered" >hen(({ failCount, successCount }) =&gt; {</span>
+        cons<span class="cstat-no" title="statement not covered" >t total </span>= (successCount ?? 0) + (failCount ?? 0)
 <span class="cstat-no" title="statement not covered" ></span>
-        setS<span class="cstat-no" title="statement not covered" >tats({</span>
-<span class="cstat-no" title="statement not covered" >          correct: successCount ?? 0,</span>
-          fail: fa<span class="fstat-no" title="function not covered" >il</span>Count ?? 0,
-          perc: total &gt; 0 ? <span class="cstat-no" title="statement not covered" >Math.round(((</span>successCount ?? <span class="cstat-no" title="statement not covered" >0) / total) * 10</span>0) : 0,
-        })<span class="cstat-no" title="statement not covered" ></span>
-      })<span class="cstat-no" title="statement not covered" ></span>
+        setStats({<span class="fstat-no" title="function not covered" ></span>
+          correct: successCo<span class="cstat-no" title="statement not covered" >unt ?? 0,<span class="cstat-no" title="statement not covered" ></span></span>
+          fail: failCoun<span class="cstat-no" title="statement not covered" >t ?? 0,</span>
+          pe<span class="cstat-no" title="statement not covered" >rc: total &gt; 0 ? Math.round(((successCount ?? 0) / total) * 100) : 0,</span>
+        })
+      })
       .catch(() =&gt; {})
   }, [])
 &nbsp;
-  const onPracticeSourceChange = (newFragments?: {
+  const onPracticeS<span class="fstat-no" title="function not covered" >ou</span>rceChange = (newFragments?: {
     index: number
-    list: string[]<span class="fstat-no" title="function not covered" ></span>
-  }) =&gt; {
-    setCurrentText('')<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+    list: string[]<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+  }) =&gt; <span class="cstat-no" title="statement not covered" >{</span>
+    setC<span class="cstat-no" title="statement not covered" >urrentText('')</span>
     setP<span class="cstat-no" title="statement not covered" >ractice('')</span>
     setW<span class="cstat-no" title="statement not covered" >riting('')</span>
 <span class="cstat-no" title="statement not covered" ></span>
     setP<span class="cstat-no" title="statement not covered" >racticeHasError(false)</span>
 <span class="cstat-no" title="statement not covered" ></span>
-    lang<span class="cstat-no" title="statement not covered" >uageOptions.wrongCharacters = []</span>
-<span class="cstat-no" title="statement not covered" ></span>
-    if (newF<span class="cstat-no" title="statement not covered" >ragments) {</span>
-      setFragments(newFragments)
-      storage.setValue('fragments', JSON.stringify(newFragments))
-    }<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-  }<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" ></span>
+    language<span class="cstat-no" title="statement not covered" >Options.wrongCharacters = []</span>
+&nbsp;
+    if (newFragments) {
+      setFragments(newFragments)<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+      storage.setV<span class="cstat-no" title="statement not covered" >alue('fragments</span>', JSON.stringify(newFragments))
+    }<span class="cstat-no" title="statement not covered" ></span>
+  }
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
   const handleOriginalTextUpdate = (
-    e: React.Chan<span class="fstat-no" title="function not covered" >ge</span>Event&lt;HTMLTex<span class="cstat-no" title="statement not covered" >tAreaElement&gt;,</span>
+    e: React.ChangeEvent&lt;HT<span class="cstat-no" title="statement not covered" >MLTextAreaElement&gt;,</span>
   ) =&gt; {
-    const val = e.target.va<span class="cstat-no" title="statement not covered" >lue</span>
+    const val = e.target.value
     const list = val
-      .split('\n')
+      .s<span class="cstat-no" title="statement not covered" >plit('\n')</span>
       .map(s =&gt; s.trim())
-      .f<span class="cstat-no" title="statement not covered" >ilter(Boolean)</span>
-&nbsp;
-    const newFragments = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >{</span></span>
-      in<span class="cstat-no" title="statement not covered" >dex: 0,</span>
-      li<span class="cstat-no" title="statement not covered" >st: list.length ? list : ['</span>'],
-    }
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-    onPracticeSourceCha<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >ng</span>e(newFragments)</span>
-  }<span class="cstat-no" title="statement not covered" ></span>
-&nbsp;
-  const <span class="cstat-no" title="statement not covered" >updateLangua</span>ge = (lang: LanguageDefinition['id']) =&gt; {
-    lang<span class="cstat-no" title="statement not covered" >uageManager.setCurrentLanguageHandler(lang)</span>
-    setS<span class="cstat-no" title="statement not covered" >elected<span class="fstat-no" title="function not covered" >La</span>nguage(lang)</span>
-  }<span class="cstat-no" title="statement not covered" ></span>
-&nbsp;
-  useEffect(() =&gt; {
-<span class="cstat-no" title="statement not covered" >    const listener = () =&gt; <span class="fstat-no" title="function not covered" >{</span></span>
-      setIsMobile(window.innerWidth &lt;= 768)
-    }
-<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
-    listener()
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-    window.addEv<span class="cstat-no" title="statement not covered" >entListener('resize', listener)</span>
+      .filter(Boolean)<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
 <span class="cstat-no" title="statement not covered" ></span>
-    return () =&gt; {
-      window.removeEvent<span class="cstat-no" title="statement not covered" >Listener('resize', listener</span>)
+    cons<span class="cstat-no" title="statement not covered" >t newFragments = {</span>
+      index: 0,
+<span class="cstat-no" title="statement not covered" >      list: list.length ? l<span class="fstat-no" title="function not covered" >is</span>t : [''],</span>
+    }<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+<span class="cstat-no" title="statement not covered" ></span>
+    onPracticeSourceChange(newFragments)
+  }<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" ></span>
+  const <span class="cstat-no" title="statement not covered" >updateL<span class="fstat-no" title="function not covered" >an</span>guage = (lang: LanguageDefinition['id']) =&gt; {</span>
+    language<span class="cstat-no" title="statement not covered" >Manager.setCurrentLanguageHandler(lang)</span>
+    setSelectedLanguage(lang)
+  }
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+  useEffect(() =&gt; {
+    const listener = () =&gt; {
+      se<span class="cstat-no" title="statement not covered" >t<span class="fstat-no" title="function not covered" >Is</span>Mobile(windo<span class="cstat-no" title="statement not covered" >w.innerWidth &lt;= 768)<span class="fstat-no" title="function not covered" ></span></span></span>
+    }
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+    listener()<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" ></span>
+    window.addEventListener('resize', listener)
+<span class="cstat-no" title="statement not covered" ></span>
+    return () =&gt; {<span class="cstat-no" title="statement not covered" ></span>
+      window.removeEventList<span class="cstat-no" title="statement not covered" >ener('resize', listener)</span>
     }<span class="cstat-no" title="statement not covered" ></span>
   }, [])<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" ></span>
-  useEffect(() =&gt; {<span class="cstat-no" title="statement not covered" ></span>
-    // eslint-disable-next-line
+&nbsp;
+  useEffect(() =&gt; {
+    // eslint-disable-ne<span class="cstat-no" title="statement not covered" >xt-line</span>
     ;(async () =&gt; {
-      const savedFontSiz<span class="cstat-no" title="statement not covered" >e = await storage.getVa</span>lue('fontSize')
+      const savedFontSize = await storage.getValue('fontSize')
 &nbsp;
       if (savedFontSize) {
-        const parsedFontSize = Number(savedFontSize)
-&nbsp;
-<span class="cstat-no" title="statement not covered" >        if (parsedFontSize)<span class="fstat-no" title="function not covered" > {</span></span>
-<span class="cstat-no" title="statement not covered" >          setFontSize(parsedFontSize)</span>
-        }<span class="cstat-no" title="statement not covered" ></span>
-      }
+<span class="cstat-no" title="statement not covered" >        const parsedFontSiz<span class="fstat-no" title="function not covered" >e </span>= Number(savedFontSize)</span>
+<span class="cstat-no" title="statement not covered" ></span>
+        if (<span class="cstat-no" title="statement not covered" >parsedFontSize) {</span>
+          setFontSize(parsedFontSize)
+        }
+      }<span class="cstat-no" title="statement not covered" ></span>
     })()
-  }, [])<span class="cstat-no" title="statement not covered" ></span>
-&nbsp;
-  useEffect(() =&gt; {
-<span class="cstat-no" title="statement not covered" >    if (fontSize !== defaul<span class="fstat-no" title="function not covered" >tF</span>ontSize) {</span>
-      st<span class="cstat-no" title="statement not covered" >orage.setValue('fontSize', fontSize.toString())</span>
-    } else {<span class="cstat-no" title="statement not covered" ></span>
-      storage.setValue('fontSize', '')
-    }<span class="cstat-no" title="statement not covered" ></span>
-  }, [fontSize])
-<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
-  useEffect(() =&gt; {
-    if (<span class="cstat-no" title="statement not covered" >!_stories.defaultLanguage<span class="fstat-no" title="function not covered" >) </span>{</span>
-      return<span class="cstat-no" title="statement not covered" ></span>
-    }<span class="cstat-no" title="statement not covered" ></span>
-&nbsp;
-    updateLanguage(_<span class="cstat-no" title="statement not covered" >stories.defaultLanguage)</span>
-  }, [_stories.defau<span class="cstat-no" title="statement not covered" >ltLanguage])</span>
-&nbsp;
-  const updateLanguageWithStorage = async () =&gt; {
-    const storageSelecte<span class="cstat-no" title="statement not covered" >dLanguage = await storage.getValue(STORAG</span>E_LANGUAGE_KEY)
-&nbsp;
-    if (<span class="cstat-no" title="statement not covered" ></span>
-      storageSelecte<span class="cstat-no" title="statement not covered" >dLanguage &amp;&amp;</span>
-      storageSelectedLanguage !== selectedLanguage &amp;&amp;
-      !_stories.defaultLanguage
-    ) {
-<span class="cstat-no" title="statement not covered" >      updateLanguage(storag<span class="fstat-no" title="function not covered" >eS</span>electedLanguage)</span>
-    }<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-    setHasLoadedStorage(true)
-  }<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-&nbsp;
-  useEffect(() =&gt; {
-    upda<span class="cstat-no" title="statement not covered" >t<span class="fstat-no" title="function not covered" >eL</span>anguageWithS<span class="cstat-no" title="statement not covered" >torage().catch(() =&gt; {})<span class="fstat-no" title="function not covered" ></span></span></span>
   }, [])
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-  useEffect(() =<span class="cstat-no" title="statement not covered" >&gt; {</span>
-    // eslint-disable-next-l<span class="cstat-no" title="statement not covered" >ine</span>
-    ;(async () =&gt; {
-      const lastFragment<span class="cstat-no" title="statement not covered" >s = await storage.getValue(</span>'fragments')
+  useEff<span class="cstat-no" title="statement not covered" >ect(() =&gt; {</span>
+    if (font<span class="cstat-no" title="statement not covered" >Size !==</span> defaultFontSize) {
+      storage.setValue('fontSize', fontSize.toString())
+    } el<span class="cstat-no" title="statement not covered" >se {</span>
+      storage.setValue('fontSize', '')
+    }<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
+  }, [fontSize])
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+  useEffect(<span class="cstat-no" title="statement not covered" >() =&gt; {</span>
+    if (!_stories.defaul<span class="cstat-no" title="statement not covered" >tLanguage) {</span>
+      return
+    }<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" ></span>
-      if (lastFragments) {<span class="cstat-no" title="statement not covered" ></span>
-        const parsedFragment<span class="cstat-no" title="statement not covered" >s = JSON.parse(lastFragments)</span>
+    updateLanguage(_stories.defaultLanguage)
+  }, [_stories.defaultLanguage])
+<span class="cstat-no" title="statement not covered" ></span>
+  const updateLanguageWithStorage = async () =&gt; {
+    const storageSel<span class="cstat-no" title="statement not covered" >ectedLanguage = await stora</span>ge.getValue(STORAGE_LANGUAGE_KEY)
+<span class="cstat-no" title="statement not covered" ></span>
+    if (
+      storageSelectedLanguage &amp;&amp;
+      storageSelectedLanguage !== selectedLanguage &amp;&amp;
+<span class="cstat-no" title="statement not covered" >      !_stories.defaultLang<span class="fstat-no" title="function not covered" >ua</span>ge</span>
+    ) {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+      updateLanguage(storageSelectedLanguage)
+<span class="cstat-no" title="statement not covered" >    }<span class="fstat-no" title="function not covered" ></span></span>
+    setHasLoadedStorage(true)
+  }
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
+  useEffect(() =&gt; {
+    updateLa<span class="cstat-no" title="statement not covered" >nguageWithStorage().catch<span class="fstat-no" title="function not covered" >((</span>) =&gt; {})</span>
+  }, [])<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" ></span>
+  useEffect(() =&gt; {
+    // eslint-disable-ne<span class="cstat-no" title="statement not covered" >xt-line</span>
+    ;(async () =&gt; {<span class="cstat-no" title="statement not covered" ></span>
+      const lastFragments = <span class="cstat-no" title="statement not covered" >await storage.getValue('fragments')</span>
+<span class="cstat-no" title="statement not covered" ></span>
+      if (lastFragments) {
+        const parsedFragments = JSON.parse(lastFragments)
 &nbsp;
-        setFragments({
+        setFragments({<span class="cstat-no" title="statement not covered" ></span>
           ...parsedFragments,
-          ...(initialFra<span class="cstat-no" title="statement not covered" >gmentIndex !== undefine</span>d &amp;&amp; {
+          ...(initialFragmentIndex !== undefined &amp;&amp; {
             index: initialFragmentIndex,
           }),
-        })
-      }
+        })<span class="cstat-no" title="statement not covered" ></span>
+      }<span class="cstat-no" title="statement not covered" ></span>
     })()<span class="cstat-no" title="statement not covered" ></span>
-  }, [initialFragme<span class="cstat-no" title="statement not covered" >ntIndex])</span>
-<span class="cstat-no" title="statement not covered" ></span>
-  const SPECIAL_CHARS = langHandler!.getSpecialChars()
-  const langOpts = _stories.langOpts ?? uiHandler.getLangOpts()
-  const langOptsObj = {<span class="cstat-no" title="statement not covered" ></span>
-    langOpts: {<span class="cstat-no" title="statement not covered" ></span>
-      pronunciationInput: pronunciationV<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >al</span>ue,</span>
-      ..<span class="cstat-no" title="statement not covered" >.((langOpts as unknown as objec<span class="cstat-no" title="statement not covered" >t | undefined) ?? {}),</span></span>
-    },<span class="cstat-no" title="statement not covered" ></span>
-  }<span class="cstat-no" title="statement not covered" ></span>
+  }, [initialFragmentIndex])
+&nbsp;
+  const SPECIAL_CHARS = <span class="cstat-no" title="statement not covered" >langHandler!.getSpecialChars()</span>
+  const langOpts = _<span class="cstat-no" title="statement not covered" >stories.langOpts ?? uiHandler.getLangOpts()</span>
+  const langOptsObj = {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+    lang<span class="cstat-no" title="statement not covered" >Opts: {<span class="cstat-no" title="statement not covered" ></span></span>
+      pronunciationInput: pronun<span class="cstat-no" title="statement not covered" >ciationValue,</span>
+      ..<span class="cstat-no" title="statement not covered" >.((langOpts as unknown as object | undefined) ?? {}),</span>
+    },
+  }
 &nbsp;
   const charsToRemove = specialCharsValue.split('').concat(SPECIAL_CHARS)
-&nbsp;
-  const charsObjs = langHandler!.convertToCharsObjs({
-<span class="cstat-no" title="statement not covered" >    ...langOptsObj,<span class="fstat-no" title="function not covered" ></span></span>
-    charsToRemove,<span class="cstat-no" title="statement not covered" ></span>
-    text<span class="cstat-no" title="statement not covered" >: originalTextValue,</span>
-  })<span class="cstat-no" title="statement not covered" ></span>
-&nbsp;
-  const getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice = (
-<span class="cstat-no" title="statement not covered" >    practiceText = practice<span class="fstat-no" title="function not covered" >Va</span>lue,</span>
-  ) =&gt; {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-    const practiceCharsObjs = langHandler!.convertToCharsObjs({
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+  const charsObjs = langHandle<span class="cstat-no" title="statement not covered" >r!.convertToCharsObjs({</span>
+    ...l<span class="cstat-no" title="statement not covered" >angOptsObj,</span>
+    charsToR<span class="cstat-no" title="statement not covered" >emove,</span>
+    text: originalTextValue,
+  })
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+  const getCurrentCharObjFromP<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >ra</span>ctice: T_getCurrentCharObjFromPractice = (</span>
+    practiceText = practiceValue,
+  ) =&gt; {<span class="cstat-no" title="statement not covered" ></span>
+    const practiceCharsOb<span class="cstat-no" title="statement not covered" >js = langHandler!.convertToCharsObjs({</span>
       ...langOptsObj,<span class="cstat-no" title="statement not covered" ></span>
-      charsToRemove,<span class="cstat-no" title="statement not covered" ></span>
-      text: practiceText,<span class="cstat-no" title="statement not covered" ></span>
+      charsT<span class="cstat-no" title="statement not covered" >oRemove,</span>
+      text: prac<span class="cstat-no" title="statement not covered" >ticeText,</span>
     })<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" ></span>
-    return langHandler!.getCurrentC<span class="cstat-no" title="statement not covered" >harObj({</span>
-      originalCh<span class="cstat-no" title="statement not covered" >arsObjs: charsObjs,</span>
-      practiceCharsObjs,
-    })<span class="cstat-no" title="statement not covered" ></span>
+    return langHandler!.getCurrentCharObj({
+      origin<span class="cstat-no" title="statement not covered" >alCharsObjs: charsObjs,</span>
+      practiceCh<span class="cstat-no" title="statement not covered" >arsObjs,</span>
+    })
   }<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" ></span>
+  useEffect(() =&gt; {
+    const practic<span class="cstat-no" title="statement not covered" >eCharObj = getCurrentCharObjFromPractice()</span>
 &nbsp;
-  useEffect(() =&gt;<span class="cstat-no" title="statement not covered" > {</span>
-    const practi<span class="cstat-no" title="statement not covered" >ceCharObj = getCurrentCharObjFromPract</span>ice()
+    if (practice<span class="cstat-no" title="statement not covered" >CharObj?.ch &amp;&amp; pract</span>iceCharObj.ch.pronunciation !== '?') {
+      setCurrent<span class="cstat-no" title="statement not covered" >DisplayCharIdx(practiceCharObj.index)</span>
+    }
+  }, [practi<span class="cstat-no" title="statement not covered" >ceValue, pronunciationValu</span>e])
 &nbsp;
-    if (practiceC<span class="cstat-no" title="statement not covered" >harObj?.ch &amp;&amp; practiceCharObj.ch.pronunciation !== '?') {</span>
-      setCurrentDisplayCharIdx(practiceCharObj.index)
-    }<span class="cstat-no" title="statement not covered" ></span>
-  }, [practiceVa<span class="cstat-no" title="statement not covered" >lue, pronunciationValue])</span>
-&nbsp;
-  useEffect(<span class="cstat-no" title="statement not covered" >() =&gt; {</span>
-    const handleShortcuts = (e: KeyboardEvent) =&gt; {
-      co<span class="cstat-no" title="statement not covered" >nst value = e.key</span>
-      co<span class="cstat-no" title="statement not covered" >nst new<span class="fstat-no" title="function not covered" >Ar</span>r = lastThreeKeys.slice(-2).concat([value])</span>
-      const <span class="cstat-no" title="statement not covered" >currentResult = newArr.join('+').toLowerCase()</span>
-&nbsp;
+  useEff<span class="cstat-no" title="statement not covered" >ect(() =&gt; {</span>
+    cons<span class="cstat-no" title="statement not covered" >t handl<span class="fstat-no" title="function not covered" >eS</span>hortcuts = (e: KeyboardEvent) =&gt; {</span>
+      const <span class="cstat-no" title="statement not covered" >value = e.key</span>
+      const newArr = lastThreeKeys.slice(-2).concat([value])
+      const currentResult = newArr.join('+').toLowerCase()
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
       if (value === SHORTCUT_NEXT_FRAGMENT) {
-        e.preventDefau<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >lt</span>()</span>
-&nbsp;
-        const newFragments = {
-<span class="cstat-no" title="statement not covered" >          ...fragments,<span class="fstat-no" title="function not covered" ></span></span>
-          in<span class="cstat-no" title="statement not covered" >dex: (fr</span>agments.index + 1) % fragments.list.length,
-        }
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >        onPracticeSourceChange(newFragments)</span>
-      }<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" ></span>
-      if<span class="cstat-no" title="statement not covered" > (currentResult === SHOR</span>TCUT_PRONUNCIATION) {
-<span class="cstat-no" title="statement not covered" >        setShowingPronunciation(!isShowingPron</span>unciation)
-      } else if (currentResult === SHORTCUT_EDITING) {
-        setShowingEdition(!isSh<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >ow</span>ingEdition)</span>
-      } <span class="cstat-no" title="statement not covered" >else if (</span>
-<span class="cstat-no" title="statement not covered" >        value === SHORTCUT_WRITING &amp;&amp;</span>
-        (!document.activeElement || document.activeElement === document.body)
-      ) {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
         e.preventDefault()
-<span class="cstat-no" title="statement not covered" >        writingArea.current?.focus()</span>
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+        cons<span class="cstat-no" title="statement not covered" >t newFra</span>gments = {
+          ...fragments,
+          index: (fragments<span class="cstat-no" title="statement not covered" >.index + 1) % fragments.l</span>ist.length,
+<span class="cstat-no" title="statement not covered" >        }</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >        onPracticeSourceChange(ne</span>wFragments)
       }<span class="cstat-no" title="statement not covered" ></span>
-      setLas<span class="cstat-no" title="statement not covered" >tThreeKeys(newAr</span>r)
-    }<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" ></span>
-    document.addEventListener('keydown', handleShortcuts)
+      if (currentResult === SHORTCUT_PRONUNCIATION) {
+        setShowingPronunciation<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(!</span>isShowingPronunciation)</span>
+      } <span class="cstat-no" title="statement not covered" >else if (currentResult === SHORTCUT_EDITING) {</span>
+<span class="cstat-no" title="statement not covered" >        setShowingEdition(!isShowingEdition)</span>
+      } else if (
+        value === SHORTCUT_WRIT<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >IN</span>G &amp;&amp;</span>
+        (!document.activeElement || document.activeElement === document.body)
+      ) <span class="cstat-no" title="statement not covered" >{</span>
+        e.pr<span class="cstat-no" title="statement not covered" >eventDefault()</span>
+        writ<span class="cstat-no" title="statement not covered" >ingArea.current?</span>.focus()
+      }<span class="cstat-no" title="statement not covered" ></span>
+      setLas<span class="cstat-no" title="statement not covered" >tThreeKe</span>ys(newArr)
+    }
 <span class="cstat-no" title="statement not covered" ></span>
-    return (<span class="cstat-no" title="statement not covered" >) =&gt; {</span>
+    document<span class="cstat-no" title="statement not covered" >.addEventListener('keydown', handleShortcuts)</span>
+&nbsp;
+    retu<span class="cstat-no" title="statement not covered" >rn () =&gt; {</span>
       document.removeEventListener('keydown', handleShortcuts)
-    }<span class="cstat-no" title="statement not covered" ></span>
+    }
   }, [lastThreeKeys, isShowingEdition, isShowingPronunciation, fragments])
 &nbsp;
   const clearValues = () =&gt; {
@@ -1974,218 +1986,221 @@ const Panel = ({<span class="cstat-no" title="statement not covered" ></span>
     storage.setValue('fragments', JSON.stringify(newFragments))
     setShowingPronunciation(true)
     setShowingEdition(true)
-    setCurrentRecord(null)
-    onPracticeSourceChange(newFragments)
-  }<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" ></span>
-  const handleLanguageChange = (newSelectedLanguage: string) =&gt; {
-    storage.setValue(STORAGE_LANG<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >UA</span>GE_KEY, newSelectedLanguage)</span>
-    upda<span class="cstat-no" title="statement not covered" >teLanguage(newSelected</span>Language)
+    setCurrentRecord(null)<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+    onPr<span class="cstat-no" title="statement not covered" >acticeSourceChange(newFrag</span>ments)
   }
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+  const <span class="cstat-no" title="statement not covered" >handleLanguageChange =</span> (newSelectedLanguage: string) =&gt; {
+    storage.setValue(STORAGE_LANGUAGE_KEY, newSelectedLanguage)
+    updateLanguage(ne<span class="cstat-no" title="statement not covered" >wSelectedLanguage)</span>
+  }<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" ></span>
-  const handleWritingKe<span class="cstat-no" title="statement not covered" >yDown = (</span>
-    e: React.KeyboardEvent&lt;HTMLText<span class="cstat-no" title="statement not covered" >AreaElement&gt;,</span>
-  ) =&gt; {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-    // s<span class="cstat-no" title="statement not covered" >pecial key</span>
-    if (e.key === '`') {
-      e.preventDefault<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span></span>
-      se<span class="cstat-no" title="statement not covered" >tWriting('')</span>
-      setPracticeHasError(false)
+  const handleWriting<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >Ke</span>yDown = (</span>
+    e: R<span class="cstat-no" title="statement not covered" >eact.KeyboardEvent&lt;HTMLTextAreaElement&gt;,</span>
+  ) =&gt; {
+    // special key<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+    if (<span class="cstat-no" title="statement not covered" >e.key === '`') {</span>
+      e.preventDefault()
+<span class="cstat-no" title="statement not covered" >      setWriting('')</span>
+      se<span class="cstat-no" title="statement not covered" >tPracticeHasE</span>rror(false)
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      return</span>
+    }<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
 <span class="cstat-no" title="statement not covered" ></span>
-      re<span class="cstat-no" title="statement not covered" >turn</span>
+    if (e.key ==<span class="cstat-no" title="statement not covered" >= 'Enter') {</span>
+      setPractice(`$<span class="cstat-no" title="statement not covered" >{practiceValue}\n`)</span>
     }
 <span class="cstat-no" title="statement not covered" ></span>
-    if (<span class="cstat-no" title="statement not covered" >e.key === 'Enter') {<span class="fstat-no" title="function not covered" ></span></span>
-      setPractic<span class="cstat-no" title="statement not covered" >e(`${practiceVa</span>lue}\n`)
-    }<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" ></span>
-    uiHandler.handleWritingKeyDown({
+    uiHandler.ha<span class="cstat-no" title="statement not covered" >ndleWritingKeyDown({</span>
       charsObjs,<span class="cstat-no" title="statement not covered" ></span>
-      getCurrent<span class="cstat-no" title="statement not covered" >CharObjFromPractice,</span>
+      getCurrentCharObjFromPractice<span class="cstat-no" title="statement not covered" >,</span>
       keyEvent: <span class="cstat-no" title="statement not covered" >e,</span>
-      languageOptions,<span class="cstat-no" title="statement not covered" ></span>
+      languageOp<span class="cstat-no" title="statement not covered" >tions,</span>
       originalTe<span class="cstat-no" title="statement not covered" >xtValue,</span>
-      practiceVa<span class="cstat-no" title="statement not covered" >lue,</span>
+      practiceValue,<span class="fstat-no" title="function not covered" ></span>
       setCurrent<span class="cstat-no" title="statement not covered" >DisplayCharIdx,</span>
       setCurrentText,<span class="fstat-no" title="function not covered" ></span>
-      setPractic<span class="cstat-no" title="statement not covered" >e,</span>
-      setPracticeHasError,<span class="fstat-no" title="function not covered" ></span>
-      setWriting,<span class="cstat-no" title="statement not covered" ></span>
+      setPractice,<span class="cstat-no" title="statement not covered" ></span>
+      setPracticeHasError,
+      setWriting,
       specialCharsValue: charsToRemove.join(''),
-      writingValue,
-    })
-  }<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" ></span>
-  const handleLanguageOptionsChange = (opts: T_LangOpts) =&gt; {
+      writingVal<span class="cstat-no" title="statement not covered" >ue,</span>
+    })<span class="cstat-no" title="statement not covered" ></span>
+  }
+&nbsp;
+  co<span class="cstat-no" title="statement not covered" >nst handleLanguageOptionsChange = (opts: T_LangOpts) =&gt; {</span>
     setLanguageOptions(opts)
-  }<span class="cstat-no" title="statement not covered" ></span>
+  }<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
 &nbsp;
-  const handleWritingAreaClick = () =&gt; {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-    setLastThreeKeys([])
-  }<span class="fstat-no" title="function not covered" ></span>
-&nbsp;
-  const LinksBlo<span class="cstat-no" title="statement not covered" >ck = uiHandler.getLinksBlock()</span>
-  const OptionsB<span class="cstat-no" title="statement not covered" >lock = uiHandler.getOptionsBlock()</span>
-  const handleDisplayedCharClick = uiHandler.getDisplayedCharHandler()
-<span class="fstat-no" title="function not covered" ></span>
-  const saveReco<span class="cstat-no" title="statement not covered" >rd = () =&gt; {</span>
-    setShowingRecordsInitScreen(RecordsScreen.Save)
+  const handleWritingAreaClick = () =&gt; {<span class="fstat-no" title="function not covered" ></span>
+    setLastThree<span class="cstat-no" title="statement not covered" >Keys([])</span>
   }
 &nbsp;
-  const listRecords = () =&gt; {
-    setShowingRecordsInitScreen(RecordsScreen.List)<span class="fstat-no" title="function not covered" ></span>
-  }
-<span class="cstat-no" title="statement not covered" ></span>
-  if (!hasLoadedStorage)<span class="cstat-no" title="statement not covered" > {</span>
-    return null<span class="cstat-no" title="statement not covered" ></span>
+  const LinksBlock = uiHandler.getLinksBlock()
+  const OptionsBlock = uiHandler.getOptionsBlock()
+  const handleDisplayedCharClick = uiHandler.getDisplayedCharHandler()<span class="fstat-no" title="function not covered" ></span>
+&nbsp;
+  const saveRecord = () =&gt; {<span class="cstat-no" title="statement not covered" ></span>
+    setShowingRecordsIni<span class="cstat-no" title="statement not covered" >tScreen(RecordsScreen.Save)</span>
   }<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" ></span>
-  if (showingRecordsInitScre<span class="cstat-no" title="statement not covered" >en) {</span>
-    return (
-      &lt;RecordsSection
-        initScreen={showingRecordsInitScreen}
-        onRecordLoad={(r<span class="cstat-no" title="statement not covered" >e<span class="fstat-no" title="function not covered" >co</span>rd: Record) <span class="cstat-no" title="statement not covered" >=&gt; {<span class="fstat-no" title="function not covered" ></span></span></span>
-          clearValues()
+  const listRecords = ()<span class="cstat-no" title="statement not covered" > =&gt; {</span>
+    setShowingRecordsInitScr<span class="cstat-no" title="statement not covered" >een(Reco</span>rdsScreen.List)
+  }
+&nbsp;
+  if (!hasLoadedStorage) {
+    return null<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
+  }
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-          if (record.language !=<span class="cstat-no" title="statement not covered" >= selectedLanguage) {</span>
-            handleLanguageChange(record.lang<span class="cstat-no" title="statement not covered" >uage)</span>
-          }
-<span class="cstat-no" title="statement not covered" ></span>
-          setShowingRecordsInitScreen(''<span class="cstat-no" title="statement not covered" >)<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
-          setShowingEdition(false)<span class="cstat-no" title="statement not covered" ></span>
+  if (showingRecordsInitScreen) <span class="cstat-no" title="statement not covered" >{</span>
+    return (<span class="cstat-no" title="statement not covered" ></span>
+      &lt;RecordsSection
+        initScreen={showingRecordsInitSc<span class="cstat-no" title="statement not covered" >reen}</span>
+        onRecordLoad={(record: Record) =<span class="cstat-no" title="statement not covered" >&gt; {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
+          clearValues()<span class="cstat-no" title="statement not covered" ></span>
+&nbsp;
+          if (record.language !== selectedLanguage) {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+            handleLanguageChange(record.language)<span class="fstat-no" title="function not covered" ></span>
+          }<span class="cstat-no" title="statement not covered" ></span>
+&nbsp;
+          setShowingRecordsInitScreen('')
+          setShowingEdition(false)
           setShowingPronunciation(false)
-          const newFragments = { index: 0, list: reco<span class="fstat-no" title="function not covered" >rd</span>.text.split('\n'<span class="cstat-no" title="statement not covered" >) }</span>
-          onPracticeSourceChange(newFragments)<span class="fstat-no" title="function not covered" ></span>
-          setCurrentRecord(record.id)<span class="cstat-no" title="statement not covered" ></span>
+          const newFragments = { index: 0, list: record.text.split('\n') }
+          onPracticeSourceChange(newFrag<span class="cstat-no" title="statement not covered" >ments)</span>
+          setCurrentRecord(record.id)
           setPronunciation(record.pronunciation)
         }}
-        onRecordsClose={() =&gt; {
-          setShowingRecordsInitScreen('')
-        }}
+        onRecordsClose={() =&gt; {<span class="cstat-no" title="statement not covered" ></span>
+          setShowingRecordsInitScreen(''<span class="cstat-no" title="statement not covered" >)</span>
+        }}<span class="cstat-no" title="statement not covered" ></span>
         onSongLoad={lyrics =&gt; {<span class="cstat-no" title="statement not covered" ></span>
           const newFragments = {
             index: 0,
             list: lyrics,
-          }<span class="cstat-no" title="statement not covered" ></span>
-          onPracticeSourceChange(newFrag<span class="cstat-no" title="statement not covered" >ments)</span>
-          setShowingRecordsInitScreen(''<span class="cstat-no" title="statement not covered" >)</span>
+          }
+          onPracticeSourceChange(newFragments)<span class="fstat-no" title="function not covered" ></span>
+          setShowingRecordsInitScreen('')
         }}<span class="cstat-no" title="statement not covered" ></span>
-        pronunciation={pronunciationValue}
+        pronunciatio<span class="cstat-no" title="statement not covered" >n={pronunciationValue}</span>
         selectedLanguage={selectedLanguage}
         services={services}
-        text={originalTextValue}
-      /&gt;<span class="fstat-no" title="function not covered" ></span>
-    )
+        text={originalTextValue}<span class="fstat-no" title="function not covered" ></span>
+      /&gt;
+    )<span class="cstat-no" title="statement not covered" ></span>
   }<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" ></span>
+&nbsp;
   return (
     &lt;&gt;
       &lt;Button onClick={clearValues} style={{ paddingLeft: 0 }}&gt;
         Clear
       &lt;/Button&gt;
-      &lt;Button onClick={() =&gt; setHasExtraControls(true)}&gt;X&lt;/Button&gt;
+      &lt;Button onClick={() =&gt; setHasExtraControls(!hasExtraControls)}&gt;X&lt;/Button&gt;
       {hasExtraControls &amp;&amp; &lt;Button onClick={listRecords}&gt;Records&lt;/Button&gt;}
       &lt;Button
         onClick={() =&gt; {
-          setShowingEdition(!isShowingEdition)
-          writingArea.current?.focus()
+          navigator.clipboard.writeText(originalTextValue)
         }}
       &gt;
-        Toggle Edition
-      &lt;/Button&gt;
-      &lt;Button
-        onClick={() =&gt; {
-          navigator.clipboard.writeText(originalTextValue)
-        }}<span class="fstat-no" title="function not covered" ></span>
-      &gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-        Copy<span class="cstat-no" title="statement not covered" ></span>
+        Copy
       &lt;/Button&gt;
       {isShowingEdition &amp;&amp; (
-        &lt;&gt;<span class="fstat-no" title="function not covered" ></span>
-          &lt;label htmlFor="file-inpu<span class="cstat-no" title="statement not covered" >t" style={{ cursor: 'pointer' }}&gt;</span>
-            &lt;But<span class="cstat-no" title="statement not covered" >ton&gt;Upload&lt;/Button&gt;</span>
-            &lt;input
-              id="file-input"
+        &lt;&gt;
+          &lt;label htmlFor="file-input" style={{ cursor: 'pointer' }}&gt;
+            &lt;Button&gt;Upload&lt;/Button&gt;<span class="fstat-no" title="function not covered" ></span>
+            &lt;input<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+              id="file-input<span class="cstat-no" title="statement not covered" >"</span>
               onChange={() =&gt; {
                 const fileEl = document.getElementById(
-                  'file-input',
-                ) as HTMLInputElement | null<span class="fstat-no" title="function not covered" ></span>
+                  'file-input',<span class="fstat-no" title="function not covered" ></span>
+                ) as HTMLInputEleme<span class="cstat-no" title="statement not covered" >nt | null</span>
 <span class="cstat-no" title="statement not covered" ></span>
                 if (!fileEl) return
 &nbsp;
-<span class="cstat-no" title="statement not covered" >                const file = fileEl.files?.[0]</span>
+                const file = fileEl.files?.[0]
 &nbsp;
-                if (!file) {<span class="fstat-no" title="function not covered" ></span>
-<span class="cstat-no" title="statement not covered" >                  return</span>
-                }
+                if (!file) {
+                  return<span class="fstat-no" title="function not covered" ></span>
+                }<span class="cstat-no" title="statement not covered" ></span>
 &nbsp;
                 // eslint-disable-next-line
-                ;(async () =&gt; {
+<span class="cstat-no" title="statement not covered" >                ;(async () =&gt; {</span>
                   let fileContent = await file.text()
-&nbsp;
-                  if (['.srt', '.vtt'].find(ext =&gt; file.name.endsWith(ext))) {
+<span class="fstat-no" title="function not covered" ></span>
+<span class="cstat-no" title="statement not covered" >                  if (['.srt', '.vtt'].f</span>ind(ext =&gt; file.name.endsWith(ext))) {
                     fileContent = fileContent
                       .split('\n')
                       .map(line =&gt; line.trim())
                       .filter(
-                        line =&gt;<span class="fstat-no" title="function not covered" ></span>
+                        line =&gt;
                           !!line &amp;&amp;
-<span class="cstat-no" title="statement not covered" >                          !line.includes('--&gt;') &amp;&amp;</span>
-                          !/^[0-9]*$/.test(line),<span class="cstat-no" title="statement not covered" ></span>
+                          !line.includes('--&gt;') &amp;&amp;
+                          !/^[0-9]*$/.test(line),
                       )
                       .join('\n')
                   }
-<span class="cstat-no" title="statement not covered" ></span>
-                  const newFragments = {<span class="cstat-no" title="statement not covered" ></span>
-                    index: 0,<span class="cstat-no" title="statement not covered" ></span>
-                    list: fileContent.split('\n'),
+<span class="fstat-no" title="function not covered" ></span>
+                  const newFragments = {
+                    inde<span class="cstat-no" title="statement not covered" >x: 0,</span>
+                    list: fileContent.split('\n'),<span class="cstat-no" title="statement not covered" ></span>
                   }
-<span class="cstat-no" title="statement not covered" ></span>
-                  onPrac<span class="cstat-no" title="statement not covered" >ticeSourceChange(newFragments)</span>
-                  setSho<span class="cstat-no" title="statement not covered" >wingEdition(false)</span>
-                  setShowingPronunciation(false)
-                })()
+&nbsp;
+                  onPracticeSourceChange(newFragments)
+                  setShowing<span class="cstat-no" title="statement not covered" >Edition(false)</span>
+                  setShowingPronunciation(false)<span class="cstat-no" title="statement not covered" ></span>
+                })()<span class="cstat-no" title="statement not covered" ></span>
               }}
               style={{ display: 'none' }}
-              type="file"
-            /&gt;
-          &lt;/label&gt;
+              type="file<span class="cstat-no" title="statement not covered" >"</span>
+            /&gt;<span class="cstat-no" title="statement not covered" ></span>
+          &lt;/label&gt;<span class="cstat-no" title="statement not covered" ></span>
           &lt;Button
-            onClick={() =&gt; {<span class="fstat-no" title="function not covered" ></span>
-              setShowingPronunci<span class="cstat-no" title="statement not covered" >ation(!isShowingPronunciation)</span>
+            onClick={() =&gt; {
+              setShowingPronunciation(!isShowingPronunciation)
               writingArea.current?.focus()
             }}
           &gt;
             Toggle Pronunciation
           &lt;/Button&gt;
-        &lt;/&gt;
-      )}
+        &lt;/&gt;<span class="fstat-no" title="function not covered" ></span>
+      )}<span class="cstat-no" title="statement not covered" ></span>
       {hasExtraControls &amp;&amp; (
-        &lt;&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
-          &lt;ChooseLanguage<span class="cstat-no" title="statement not covered" ></span>
-            languages={g<span class="cstat-no" title="statement not covered" >etLanguageDefinitions(langua</span>geManager)}
-            onOptionsChange={handleLanguageChange}
-            selectedLang<span class="cstat-no" title="statement not covered" >uage={selectedLanguage}</span>
-          /&gt;<span class="cstat-no" title="statement not covered" ></span>
-          &lt;Button onClick={saveRecord}&gt;
-            {currentRecord === null ? 'Save' : '<span class="fstat-no" title="function not covered" >Up</span>date'}
-          &lt;/Button&gt;
-          {!!stats &amp;&amp; (<span class="cstat-no" title="statement not covered" ></span>
-            &lt;div
-              style={{<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
-                color: '#ccc',<span class="fstat-no" title="function not covered" ></span>
+        &lt;&gt;
+          &lt;Button
+            onClick={() =&gt; {
+              setShowingEdition(!isShowingEdition)
+              writingArea.current?.focus()
+            }}
+          &gt;
+            Toggle Edition<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
+          &lt;/Button&gt;<span class="cstat-no" title="statement not covered" ></span>
+          &lt;ChooseLanguag<span class="cstat-no" title="statement not covered" >e</span>
+            languages={getLanguageDefinitions(languageManager)}
+            onOptionsCha<span class="cstat-no" title="statement not covered" >nge={handleLanguageChange}</span>
+            selectedLanguage={selectedLangua<span class="cstat-no" title="statement not covered" >ge}</span>
+          /&gt;
+          &lt;Button onClick={saveRecord}&gt;<span class="fstat-no" title="function not covered" ></span>
+            {currentRecord === null ? 'Save' : 'Update'}
+          &lt;/Button&gt;<span class="cstat-no" title="statement not covered" ></span>
+          {onChangeTheme &amp;&amp; (
+            &lt;Button onClick={onChangeTheme}&gt;Change Theme&lt;/Button&gt;<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
+          )}<span class="fstat-no" title="function not covered" ></span>
+          {!!stats &amp;&amp; (
+            &lt;div<span class="cstat-no" title="statement not covered" ></span>
+              style={{
+                color: '#ccc',
                 display: 'flex',
-                flexDire<span class="cstat-no" title="statement not covered" >ction: 'column',</span>
+                flexDirection: 'column',
                 marginBottom: 10,
               }}
             &gt;
               &lt;div&gt;Stats up until last session&lt;/div&gt;
               &lt;div&gt;
-                Correct: {stats.correct} ({stats.perc}%) / Fail: {stats.fail}
+<span class="cstat-no" title="statement not covered" >                Correct: </span>{stats.correct} ({stats.perc}%) / Fail: {stats.fail}
               &lt;/div&gt;
               &lt;Button
                 onClick={() =&gt; {
-<span class="cstat-no" title="statement not covered" >                  deleteD</span>B().then(() =&gt; {
+                  deleteDB().then(() =&gt; {
                     setStats(null)
                   })
                 }}
@@ -2395,7 +2410,7 @@ export default Panel
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-01-29T16:11:49.969Z
+                at 2024-02-04T03:39:53.528Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

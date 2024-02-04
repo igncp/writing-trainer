@@ -16,6 +16,13 @@
       "kind": 1
     },
     {
+      "file": "src/languages/common/stats.ts",
+      "line": 111,
+      "character": 14,
+      "text": "total",
+      "kind": 1
+    },
+    {
       "file": "src/languages/common/CharsOptions/OptionsBlock.tsx",
       "line": 13,
       "character": 31,
@@ -52,7 +59,7 @@
     },
     {
       "file": "src/containers/Panel/Panel.tsx",
-      "line": 260,
+      "line": 262,
       "character": 14,
       "text": "parsedFragments",
       "kind": 1
@@ -716,8 +723,8 @@
       "kind": 1
     }
   ],
-  "percentage": 98.01556420233463,
-  "total": 5140,
-  "covered": 5038,
-  "uncovered": 102
+  "percentage": 98.01043075140042,
+  "total": 5177,
+  "covered": 5074,
+  "uncovered": 103
 }
