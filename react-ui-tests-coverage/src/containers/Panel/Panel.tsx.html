@@ -1333,11 +1333,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1384,6 +1379,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2108,62 +2108,62 @@ const Panel = ({<span class="cstat-no" title="statement not covered" ></span>
         &lt;&gt;
           &lt;label htmlFor="file-input" style={{ cursor: 'pointer' }}&gt;
             &lt;Button&gt;Upload&lt;/Button&gt;<span class="fstat-no" title="function not covered" ></span>
-            &lt;input<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-              id="file-input<span class="cstat-no" title="statement not covered" >"</span>
+            &lt;input<span class="cstat-no" title="statement not covered" ></span>
+              id<span class="cstat-no" title="statement not covered" >="file-input"</span>
               onChange={() =&gt; {
                 const fileEl = document.getElementById(
-                  'file-input',<span class="fstat-no" title="function not covered" ></span>
-                ) as HTMLInputEleme<span class="cstat-no" title="statement not covered" >nt | null</span>
-<span class="cstat-no" title="statement not covered" ></span>
-                if (!fileEl) return
+                  'file-input',
+                ) as HTMLInputElement | null
 &nbsp;
+                if (!fileEl) return<span class="fstat-no" title="function not covered" ></span>
+<span class="cstat-no" title="statement not covered" ></span>
                 const file = fileEl.files?.[0]
 &nbsp;
-                if (!file) {
-                  return<span class="fstat-no" title="function not covered" ></span>
-                }<span class="cstat-no" title="statement not covered" ></span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" >                if (!file) {</span>
+                  return
+                }<span class="fstat-no" title="function not covered" ></span>
+<span class="cstat-no" title="statement not covered" ></span>
                 // eslint-disable-next-line
-<span class="cstat-no" title="statement not covered" >                ;(async () =&gt; {</span>
+                ;(async () =&gt; {
                   let fileContent = await file.text()
-<span class="fstat-no" title="function not covered" ></span>
-<span class="cstat-no" title="statement not covered" >                  if (['.srt', '.vtt'].f</span>ind(ext =&gt; file.name.endsWith(ext))) {
+&nbsp;
+                  if (['.srt', '.vtt'].find(ext =&gt; file.name.endsWith(ext))) {
                     fileContent = fileContent
                       .split('\n')
                       .map(line =&gt; line.trim())
                       .filter(
                         line =&gt;
                           !!line &amp;&amp;
-                          !line.includes('--&gt;') &amp;&amp;
+                          !line.includes('--&gt;') &amp;&amp;<span class="fstat-no" title="function not covered" ></span>
                           !/^[0-9]*$/.test(line),
-                      )
-                      .join('\n')
-                  }
-<span class="fstat-no" title="function not covered" ></span>
-                  const newFragments = {
-                    inde<span class="cstat-no" title="statement not covered" >x: 0,</span>
-                    list: fileContent.split('\n'),<span class="cstat-no" title="statement not covered" ></span>
+                      )<span class="cstat-no" title="statement not covered" ></span>
+                      .join('\n')<span class="cstat-no" title="statement not covered" ></span>
                   }
 &nbsp;
+                  const newFragments = {
+                    index: 0<span class="cstat-no" title="statement not covered" >,</span>
+                    list: fileContent.split('\n'),<span class="cstat-no" title="statement not covered" ></span>
+                  }<span class="cstat-no" title="statement not covered" ></span>
+&nbsp;
                   onPracticeSourceChange(newFragments)
-                  setShowing<span class="cstat-no" title="statement not covered" >Edition(false)</span>
-                  setShowingPronunciation(false)<span class="cstat-no" title="statement not covered" ></span>
+                  setSho<span class="cstat-no" title="statement not covered" >wingEdition(false)</span>
+                  setSho<span class="cstat-no" title="statement not covered" >wingPronunciation(false)</span>
                 })()<span class="cstat-no" title="statement not covered" ></span>
               }}
               style={{ display: 'none' }}
-              type="file<span class="cstat-no" title="statement not covered" >"</span>
-            /&gt;<span class="cstat-no" title="statement not covered" ></span>
-          &lt;/label&gt;<span class="cstat-no" title="statement not covered" ></span>
+              type="file"
+            /&gt;
+          &lt;/label&gt;
           &lt;Button
             onClick={() =&gt; {
               setShowingPronunciation(!isShowingPronunciation)
-              writingArea.current?.focus()
-            }}
+              writingArea.current?.focus()<span class="fstat-no" title="function not covered" ></span>
+            }}<span class="cstat-no" title="statement not covered" ></span>
           &gt;
-            Toggle Pronunciation
-          &lt;/Button&gt;
-        &lt;/&gt;<span class="fstat-no" title="function not covered" ></span>
-      )}<span class="cstat-no" title="statement not covered" ></span>
+            Toggle Pronunciation<span class="fstat-no" title="function not covered" ></span>
+          &lt;/Button&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+        &lt;/&gt;<span class="cstat-no" title="statement not covered" ></span>
+      )}
       {hasExtraControls &amp;&amp; (
         &lt;&gt;
           &lt;Button
@@ -2198,15 +2198,6 @@ const Panel = ({<span class="cstat-no" title="statement not covered" ></span>
               &lt;div&gt;
 <span class="cstat-no" title="statement not covered" >                Correct: </span>{stats.correct} ({stats.perc}%) / Fail: {stats.fail}
               &lt;/div&gt;
-              &lt;Button
-                onClick={() =&gt; {
-                  deleteDB().then(() =&gt; {
-                    setStats(null)
-                  })
-                }}
-              &gt;
-                Delete DB
-              &lt;/Button&gt;
             &lt;/div&gt;
           )}
         &lt;/&gt;
@@ -2322,6 +2313,15 @@ const Panel = ({<span class="cstat-no" title="statement not covered" ></span>
                     value={fontSize}
                   /&gt;
                 &lt;/div&gt;
+                &lt;Button
+                  onDoubleClick={() =&gt; {
+                    deleteDB().then(() =&gt; {
+                      setStats(null)
+                    })
+                  }}
+                &gt;
+                  Delete DB
+                &lt;/Button&gt;
               &lt;/&gt;
             )}
             {/* This is necessary because the options block initialises some values*/}
@@ -2410,7 +2410,7 @@ export default Panel
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-02-04T03:39:53.528Z
+                at 2024-02-04T06:37:04.443Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
