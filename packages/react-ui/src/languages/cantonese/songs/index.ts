@@ -1,12 +1,12 @@
 const handleSongTreble =
-  (artist: string, lang: string) =>
+  (artist: string) =>
   ([load, name, video]: [
     () => Promise<{ lyrics: string[] }>,
     string,
     string,
   ]) => ({
     artist,
-    lang,
+    lang: 'cantonese',
     load,
     name,
     video,
@@ -19,7 +19,7 @@ const kayTseSongs = [
   [() => import('./kay-tse-zoi-ngo-zau'), '載我走', 'wboL_3_StIA'],
   [() => import('./kay-tse-lei-bat-hoi'), '離不開', 'pNDI9oBG7po'],
   [() => import('./kay-tse-faat-jyu-cing'), '法與情', 'qjvAG2Y2LaE'],
-].map(handleSongTreble('Kay Tse', 'cantonese'))
+].map(handleSongTreble('Kay Tse'))
 
 const myLittleAirportSongs = [
   [
@@ -48,7 +48,7 @@ const myLittleAirportSongs = [
     '再殺一個人',
     'R53S8JJw5dY',
   ],
-].map(handleSongTreble('My Little Airport', 'cantonese'))
+].map(handleSongTreble('My Little Airport'))
 
 const janiceVidalSongs = [
   [
@@ -56,7 +56,7 @@ const janiceVidalSongs = [
     '一格格 Frames',
     'N1jdWcmEv0Q',
   ],
-].map(handleSongTreble('Janice Vidal', 'cantonese'))
+].map(handleSongTreble('Janice Vidal'))
 
 export const songs = kayTseSongs
   .concat(myLittleAirportSongs)

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { LanguageDefinition, Record } from 'writing-trainer-core'
 
 import { songs as cantoneseSongs } from '../../languages/cantonese/songs'
+import { songs as mandarinSongs } from '../../languages/mandarin/songs'
 import { T_Services } from '../../typings/mainTypes'
 
 import RecordsWrapper from './RecordsWrapper'
@@ -203,7 +204,7 @@ const RecordsSection = ({
         onRecordRemove={handleRecordRemove}
         onSongLoad={onSongLoad}
         records={records}
-        songs={cantoneseSongs}
+        songs={cantoneseSongs.concat(mandarinSongs)}
       />
     </RecordsWrapper>
   )
