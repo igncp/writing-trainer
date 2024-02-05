@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/216</span>
+                <span class='fraction'>0/217</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/142</span>
+                <span class='fraction'>0/143</span>
             </div>
         
             
@@ -275,7 +275,8 @@
 <a name='L210'></a><a href='#L210'>210</a>
 <a name='L211'></a><a href='#L211'>211</a>
 <a name='L212'></a><a href='#L212'>212</a>
-<a name='L213'></a><a href='#L213'>213</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L213'></a><a href='#L213'>213</a>
+<a name='L214'></a><a href='#L214'>214</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -358,6 +359,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -491,88 +493,89 @@
 import { Langua<span class="cstat-no" title="statement not covered" >geDefinition, Record } from<span class="fstat-no" title="function not covered" > '</span>writing-trainer-core'</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
 import {<span class="cstat-no" title="statement not covered" > songs as canton<span class="cstat-no" title="statement not covered" >es</span>eSong<span class="cstat-no" title="statement not covered" >s } from '../../l</span>anguages/cantonese/songs'</span>
-import { T_S<span class="cstat-no" title="statement not covered" >ervices } from '..</span>/../typings/mainTypes'
-<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-import RecordsWr<span class="cstat-no" title="statement not covered" >apper from '.</span>/RecordsWrapper'
-import RecordSave, { RecordToSave } from './screens/RecordSave'
-import R<span class="cstat-no" title="statement not covered" >ecordsList</span> from './screens/RecordsList'
-&nbsp;
-expo<span class="cstat-no" title="statement not covered" >rt enum RecordsScreen {</span>
-  Edit = 'edit',
-  List = 'list',<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-  Sa<span class="cstat-no" title="statement not covered" >ve = 'save',<span class="cstat-no" title="statement not covered" ></span></span>
+import { son<span class="cstat-no" title="statement not covered" >gs as mandarinSong</span>s } from '../../languages/mandarin/songs'
+import { T_S<span class="cstat-no" title="statement not covered" >ervices } from '.<span class="cstat-no" title="statement not covered" >./../typings/mainTypes'</span></span>
+<span class="cstat-no" title="statement not covered" ></span>
+import RecordsWrapper from './RecordsWrapper'
+import R<span class="cstat-no" title="statement not covered" >ecordSave,</span> { RecordToSave } from './screens/RecordSave'
+import RecordsList from './screens/RecordsList'
+<span class="cstat-no" title="statement not covered" ></span>
+export enum RecordsScreen {
+  Edit = 'edit',<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+  Li<span class="cstat-no" title="statement not covered" >st = 'list',<span class="cstat-no" title="statement not covered" ></span></span>
+  Save = 'save'<span class="cstat-no" title="statement not covered" >,</span>
 }<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
+const RECORDS_STORAGE = 'records'
 <span class="cstat-no" title="statement not covered" ></span>
-const <span class="cstat-no" title="statement not covered" >RECORDS_STORAGE = 'records'<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
+const <span class="fstat-no" title="function not covered" >ge</span>tMaxRecordId = (records: Record[]) =&gt; {
+  re<span class="cstat-no" title="statement not covered" >turn records.length ? <span class="cstat-no" title="statement not covered" >Math.max</span></span>(...records.map(r =&gt; r.id)) : 0
+}<span class="cstat-no" title="statement not covered" ></span>
 &nbsp;
-cons<span class="cstat-no" title="statement not covered" >t getMaxRecordId = (records: Record[</span>]) =&gt; {
-  retu<span class="fstat-no" title="function not covered" >rn</span> records.length ? Math.max(...records.map(r =&gt; r.id)) : 0
-}<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
+const getInitialRecord = <span class="cstat-no" title="statement not covered" >({<span class="fstat-no" title="function not covered" ></span></span>
+  ed<span class="cstat-no" title="statement not covered" >itingRecordId,</span>
+  rec<span class="fstat-no" title="function not covered" >or</span>ds,
+}: {<span class="cstat-no" title="statement not covered" ></span>
+  editingRecordId: Record['id'] | null
+  records: Record[]<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+}) =<span class="cstat-no" title="statement not covered" >&gt; {<span class="cstat-no" title="statement not covered" ></span></span>
+  if (editingReco<span class="cstat-no" title="statement not covered" >rdI</span>d === null) {
+<span class="cstat-no" title="statement not covered" >    return null<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
+  }<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" ></span>
-const getInitialRecord = ({
-  editingRecordId,<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-  re<span class="cstat-no" title="statement not covered" >cords,</span>
-}: {<span class="fstat-no" title="function not covered" ></span>
-  ed<span class="cstat-no" title="statement not covered" >itingRecordId: Rec</span>ord['id'] | null
-  records: Record[]
-}) =&gt; {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-  if<span class="cstat-no" title="statement not covered" > (editingRecordId === null)<span class="cstat-no" title="statement not covered" > {</span></span>
-    return null<span class="cstat-no" title="statement not covered" ></span>
-  }<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
-<span class="cstat-no" title="statement not covered" ></span>
-  co<span class="cstat-no" title="statement not covered" >nst record = re</span>cords.find(r =&gt; r.id === editingRecordId)
-&nbsp;
-  if (!record) {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-    return nu<span class="fstat-no" title="function not covered" >ll<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
-  }<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
-  return {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
-    link: record.<span class="fstat-no" title="function not covered" >link,<span class="cstat-no" title="statement not covered" ></span></span>
-    name<span class="cstat-no" title="statement not covered" >: record.name,</span>
-  }
-}
+  const record = records.find(r =&gt; r.id === editingRecordId)
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-type IProps <span class="cstat-no" title="statement not covered" >= {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span></span>
-  in<span class="cstat-no" title="statement not covered" >itScreen: RecordsScreen<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
-  onRecordLoa<span class="fstat-no" title="function not covered" >d: (r</span>: Rec<span class="cstat-no" title="statement not covered" >ord) =&gt;<span class="fstat-no" title="function not covered" > v</span>oid<span class="cstat-no" title="statement not covered" ></span></span>
-  onRecordsCl<span class="fstat-no" title="function not covered" >ose: </span>() =&gt; void
-  onSong<span class="cstat-no" title="statement not covered" >Load: (<span class="cstat-no" title="statement not covered" >s: string[]) =&gt; void</span></span>
-  pronun<span class="cstat-no" title="statement not covered" >ciation: string<span class="cstat-no" title="statement not covered" ></span></span>
-  selectedLa<span class="cstat-no" title="statement not covered" >nguage: LanguageDefinition['id']<span class="cstat-no" title="statement not covered" ></span></span>
-  services: <span class="cstat-no" title="statement not covered" >T_Services<span class="cstat-no" title="statement not covered" ></span></span>
-  text: stri<span class="cstat-no" title="statement not covered" >ng</span>
+  if (!record<span class="fstat-no" title="function not covered" >) {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
+<span class="cstat-no" title="statement not covered" >    return null<span class="fstat-no" title="function not covered" ></span></span>
+  }<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
+  return {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+    link<span class="cstat-no" title="statement not covered" >: record.link,</span>
+    name: record.name,
+  }
+}<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span></span>
+type<span class="cstat-no" title="statement not covered" > IProps = {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
+  initScreen:<span class="fstat-no" title="function not covered" > Reco</span>rdsSc<span class="cstat-no" title="statement not covered" >reen<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
+  onRecordLoa<span class="fstat-no" title="function not covered" >d: (r</span>: Record) =&gt; void
+  onReco<span class="cstat-no" title="statement not covered" >rdsClos<span class="cstat-no" title="statement not covered" >e: () =&gt; void</span></span>
+  onSong<span class="cstat-no" title="statement not covered" >Load: (s: string[]) =&gt; void<span class="cstat-no" title="statement not covered" ></span></span>
+  pronunciat<span class="cstat-no" title="statement not covered" >ion: string<span class="cstat-no" title="statement not covered" ></span></span>
+  selectedLa<span class="cstat-no" title="statement not covered" >nguage: Langua<span class="cstat-no" title="statement not covered" >geDefinition['id']</span></span>
+  services: <span class="cstat-no" title="statement not covered" >T_Services</span>
+  text: string<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
 }<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-const RecordsSection = (<span class="cstat-no" title="statement not covered" >{<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
-  initScreen,<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-  onRecordLoad,
-  onRecordsClose,<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-  onSongLoad,<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-  pronunciation,<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
-  selectedLanguage,<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
-  services,<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-  text,<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-}: IProps) =&gt; {
-  const [cur<span class="cstat-no" title="statement not covered" >rentScreen, setCurrentScreen</span>] = useState&lt;RecordsScreen&gt;(initScreen)
-  const [editingRecord<span class="cstat-no" title="statement not covered" >Id, setEditin<span class="cstat-no" title="statement not covered" ></span>gRecord</span>Id] = useSta<span class="cstat-no" title="statement not covered" >te&lt;Record['</span>id'] | null&gt;(
-    null<span class="cstat-no" title="statement not covered" >,<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-  )
-  const [records, setRecords] = useState&lt;Record[]&gt;([])
-  const [isLoading, <span class="cstat-no" title="statement not covered" >setIsLoading] = useState&lt;boolean<span class="fstat-no" title="function not covered" >&gt;(</span>false)</span>
 <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
-  const <span class="cstat-no" title="statement not covered" >{ storage } = services</span>
-<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
-  const retr<span class="cstat-no" title="statement not covered" >ieveRecords = asy</span>nc () =&gt; {
+const RecordsSection = (<span class="cstat-no" title="statement not covered" >{<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+  initScreen,
+  onRecordLoad,<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+  onRecordsClose,<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+  onSongLoad,<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
+  pronunciation,<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span></span>
+  selectedLanguage,<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
+  services,<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
+  text,
+}: IProps) =<span class="cstat-no" title="statement not covered" >&gt; {</span>
+  const [currentScreen<span class="cstat-no" title="statement not covered" >, setCurrentS<span class="cstat-no" title="statement not covered" ></span>creen] </span>= useState&lt;R<span class="cstat-no" title="statement not covered" >ecordsScree</span>n&gt;(initScreen)
+  const <span class="cstat-no" title="statement not covered" >[editingRecordI<span class="cstat-no" title="statement not covered" >d, setEditing<span class="cstat-no" title="statement not covered" ></span></span>RecordId] = useState&lt;Record['id'] | null&gt;(</span>
+    null,
+  )
+  const [records, se<span class="cstat-no" title="statement not covered" >tRecords] = useState&lt;Record[]&gt;([<span class="fstat-no" title="function not covered" >])</span></span>
+  co<span class="cstat-no" title="statement not covered" >nst [isLoading, setIsLoading] = useS<span class="cstat-no" title="statement not covered" >tate&lt;boolean&gt;<span class="cstat-no" title="statement not covered" >(f</span>alse)<span class="cstat-no" title="statement not covered" ></span></span></span>
+<span class="cstat-no" title="statement not covered" ></span>
+  const { st<span class="cstat-no" title="statement not covered" >orage } =<span class="cstat-no" title="statement not covered" > services</span></span>
+<span class="cstat-no" title="statement not covered" ></span>
+  const retrieveRecords = async () =&gt; {
     setIsLoading(true)
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    const recordsStr = await storage.getValue(RECORDS_STORAGE)</span>
-&nbsp;
-    if (recordsStr) {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" >      const parsedRecords: Record[] = JSON.parse(recordsStr).ma</span>p(
-        (recordObj: ReturnType&lt;Record['toJson']&gt;) =&gt; new Record(recordObj),
+<span class="cstat-no" title="statement not covered" ></span>
+    const recordsStr = await storage.getValue(RECORDS_STORAGE)
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+<span class="cstat-no" title="statement not covered" >    if (recordsStr) {</span>
+      const parsedRecords: Record[] = JSON.parse(recordsStr).map(
+<span class="cstat-no" title="statement not covered" >        (recordObj: ReturnType&lt;Record['toJson']&gt;) =&gt; new Record</span>(recordObj),
 <span class="cstat-no" title="statement not covered" >      )</span>
 <span class="cstat-no" title="statement not covered" ></span>
-      setRecor<span class="cstat-no" title="statement not covered" >ds(parsedRecords)</span>
+      setRecords(parsedRecord<span class="cstat-no" title="statement not covered" >s)</span>
     }<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" ></span>
     setIsLoading(false)<span class="cstat-no" title="statement not covered" ></span>
@@ -692,7 +695,7 @@ const RecordsSection = (<span class="cstat-no" title="statement not covered" >{<
         onRecordRemove={handleRecordRemove}
 <span class="cstat-no" title="statement not covered" >        onSongLoad={onSongLoad}</span>
 <span class="cstat-no" title="statement not covered" >        records={records}</span>
-        songs={cantoneseSongs}
+        songs={cantoneseSongs.concat(mandarinSongs)}
       /&gt;
 <span class="cstat-no" title="statement not covered" >    &lt;/RecordsWrapper&gt;</span>
   )
@@ -706,7 +709,7 @@ export default RecordsSection
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-02-04T06:37:04.443Z
+                at 2024-02-05T15:13:21.632Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
