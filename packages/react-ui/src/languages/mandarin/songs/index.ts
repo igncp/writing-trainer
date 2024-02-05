@@ -20,4 +20,8 @@ const sandyLamSongs = [
   ],
 ].map(handleSongTreble('Sandy Lam'))
 
-export const songs = sandyLamSongs
+const stefanieSunSongs = [
+  [() => import('./stefanie-sun_yu-jian'), '遇見', 'm4nu_F_9dWU'],
+].map(handleSongTreble('Stefanie Sun'))
+
+export const songs = sandyLamSongs.concat(stefanieSunSongs)
