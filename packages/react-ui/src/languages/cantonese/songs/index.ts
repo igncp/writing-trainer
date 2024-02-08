@@ -48,6 +48,11 @@ const myLittleAirportSongs = [
     '再殺一個人',
     'R53S8JJw5dY',
   ],
+  [
+    () => import('./my-little-airport_jat-go-ngaan-san'),
+    '一個眼神',
+    'Zv7Ty9NuLKM',
+  ],
 ].map(handleSongTreble('My Little Airport'))
 
 const janiceVidalSongs = [
