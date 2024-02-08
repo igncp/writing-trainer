@@ -66,3 +66,8 @@ const janiceVidalSongs = [
 export const songs = kayTseSongs
   .concat(myLittleAirportSongs)
   .concat(janiceVidalSongs)
+  .concat(
+    [
+      [() => import('./stephy-tang_din-dang-daam'), '電燈膽', 'IDywqSyQ3Mc'],
+    ].map(handleSongTreble('Stephy Tang')),
+  )
