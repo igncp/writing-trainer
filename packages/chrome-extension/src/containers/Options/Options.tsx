@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, TextArea } from 'writing-trainer-react-ui'
+import { 按鈕, 文字區 } from 'writing-trainer-react-ui'
 
 import storage from '@/services/storage'
 import { STORAGE_ENABLED_PAGES_KEY } from '@/utils/constants'
@@ -55,8 +55,8 @@ const Options = () => {
         Pages where it is enabled. Use a regex on each line.{' '}
         <Wrapper>Don't forget to save.</Wrapper>
       </p>
-      <Button onClick={handleSave}>Save</Button>
-      <TextArea
+      <按鈕 onClick={handleSave}>Save</按鈕>
+      <文字區
         defaultValue={enabledPagesValue}
         onChange={handleEnabledPagesChange}
         rows={20}

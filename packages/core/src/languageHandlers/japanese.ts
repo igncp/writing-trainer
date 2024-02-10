@@ -9,7 +9,7 @@ const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
   text,
 }) => {
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  const defaultSpecialChars = japaneseHandler.getSpecialChars()
+  const defaultSpecialChars = japaneseHandler.取得特殊字符()
   const allCharsToRemove = defaultSpecialChars
     .concat(charsToRemove)
     .concat([' '])

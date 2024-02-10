@@ -8,7 +8,7 @@ const commonProps = {
   text: 'F OO _B A R ',
 }
 
-describe('Button', () => {
+describe('按鈕', () => {
   it('renders some dummy content', () => {
     const { getByText } = render(<LinksBlock {...commonProps} />)
 

@@ -1,7 +1,7 @@
 import { LanguageDefinition } from '../constants'
 import { CharObj, CurrentCharObj } from '../languageManager'
 
-import { SPECIAL_SYMBOLS } from './_commonChars'
+import { 特殊字元 } from './_特殊字元'
 
 type T_convertToCharsObjs = (opts: {
   charsToRemove: string[]
@@ -35,7 +35,7 @@ class LanguageHandler {
     charsToRemove: string[]
     text: string
   }) {
-    const specialChars = this.getSpecialChars()
+    const specialChars = this.取得特殊字符()
     const allCharsToRemove = charsToRemove.concat(specialChars)
 
     return text
@@ -105,8 +105,8 @@ class LanguageHandler {
     return this.language.name
   }
 
-  public getSpecialChars() {
-    return SPECIAL_SYMBOLS.concat(this.extraSpecialChars)
+  public 取得特殊字符() {
+    return 特殊字元.concat(this.extraSpecialChars)
   }
 }
 

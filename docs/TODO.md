@@ -1,8 +1,5 @@
 ## Code revamp
 
-- Dark theme
-- Except for utils, move to E2E tests (e.g. react components)
-
 ## Tasks
 
 - Convert UI handler type to class

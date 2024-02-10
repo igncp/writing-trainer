@@ -1,7 +1,7 @@
 import * as writingTrainer from '..'
 import { LanguageDefinition, unknownPronunciation } from '../constants'
 import { LanguageHandler } from '../languageHandlers/_common'
-import { SPECIAL_SYMBOLS } from '../languageHandlers/_commonChars'
+import { 特殊字元 } from '../languageHandlers/_特殊字元'
 import { cantoneseHandler } from '../languageHandlers/cantonese'
 import { englishHandler } from '../languageHandlers/english'
 import { japaneseHandler } from '../languageHandlers/japanese'
@@ -22,8 +22,8 @@ describe('interface', () => {
       LanguageManager,
       mandarinHandler,
       Record,
-      SPECIAL_SYMBOLS,
       unknownPronunciation,
+      特殊字元,
     })
   })
 })

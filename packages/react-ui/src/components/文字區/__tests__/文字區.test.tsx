@@ -2,12 +2,12 @@ import React from 'react'
 
 import { render, waitFor } from '@testing-library/react'
 
-import TextArea from '../TextArea'
+import 文字區 from '../文字區'
 
-describe('TextArea', () => {
+describe('文字區', () => {
   it('renders the content', () => {
     const { getByText } = render(
-      <TextArea onChange={() => {}} rows={1} value={'Test Content'} />,
+      <文字區 onChange={() => {}} rows={1} value={'Test Content'} />,
     )
 
     expect(() => getByText('Test Content')).not.toThrow()
@@ -15,7 +15,7 @@ describe('TextArea', () => {
 
   it('disables grammarly', async () => {
     const { baseElement, getByText } = render(
-      <TextArea onChange={() => {}} rows={1} value={'Test Content'} />,
+      <文字區 onChange={() => {}} rows={1} value={'Test Content'} />,
     )
 
     await waitFor(() => getByText('Test Content'))

@@ -21,8 +21,8 @@ const ChooseLanguage = ({
 }: Props) => {
   const { bind, hovered } = useHover()
 
-  const handleOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    onOptionsChange(e.target.value)
+  const handleOptionChange = (事件: React.ChangeEvent<HTMLSelectElement>) => {
+    onOptionsChange(事件.target.value)
   }
 
   return (

@@ -20,19 +20,19 @@ const OptionsBlock: T_OptionsBlock = ({ languageOptions, onOptionsChange }) => {
     })
   }
 
-  const handleTonesChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setTonesValue(e.target.value)
+  const handleTonesChange = (事件: React.ChangeEvent<HTMLSelectElement>) => {
+    setTonesValue(事件.target.value)
 
     handleOptionsChange({
-      tonesValue: e.target.value,
+      tonesValue: 事件.target.value,
     })
   }
 
-  const handlePlaymodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setPlaymodeValue(e.target.value)
+  const handlePlaymodeChange = (事件: React.ChangeEvent<HTMLSelectElement>) => {
+    setPlaymodeValue(事件.target.value)
 
     handleOptionsChange({
-      playmodeValue: e.target.value,
+      playmodeValue: 事件.target.value,
     })
   }
 

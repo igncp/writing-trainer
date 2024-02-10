@@ -5,7 +5,7 @@ import {
   unknownPronunciation,
 } from './constants'
 import { LanguageHandler } from './languageHandlers/_common'
-import { SPECIAL_SYMBOLS } from './languageHandlers/_commonChars'
+import { 特殊字元 } from './languageHandlers/_特殊字元'
 import { cantoneseHandler } from './languageHandlers/cantonese'
 import { englishHandler } from './languageHandlers/english'
 import { japaneseHandler } from './languageHandlers/japanese'
@@ -24,7 +24,7 @@ export {
   LanguageManager,
   mandarinHandler,
   Record,
-  SPECIAL_SYMBOLS,
   T_Storage,
   unknownPronunciation,
+  特殊字元,
 }

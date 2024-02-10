@@ -1,4 +1,4 @@
-const SPECIAL_SYMBOLS = [
+const 特殊字元 = [
   `
 `,
 
@@ -100,4 +100,4 @@ const SPECIAL_SYMBOLS = [
   '�️',
 ]
 
-export { SPECIAL_SYMBOLS }
+export { 特殊字元 }

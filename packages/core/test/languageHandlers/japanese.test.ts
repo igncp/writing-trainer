@@ -1,4 +1,4 @@
-import { japaneseHandler, SPECIAL_SYMBOLS } from '../../src'
+import { japaneseHandler, 特殊字元 } from '../../src'
 
 describe('values', () => {
   it('has the correct values', () => {
@@ -7,10 +7,10 @@ describe('values', () => {
   })
 })
 
-describe('getSpecialChars', () => {
+describe('取得特殊字符', () => {
   it('returns the expected array', () => {
-    expect(japaneseHandler.getSpecialChars()).toEqual(SPECIAL_SYMBOLS)
-    expect(japaneseHandler.getSpecialChars()).toEqual(SPECIAL_SYMBOLS)
+    expect(japaneseHandler.取得特殊字符()).toEqual(特殊字元)
+    expect(japaneseHandler.取得特殊字符()).toEqual(特殊字元)
   })
 })
 

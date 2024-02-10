@@ -3,22 +3,22 @@ import React from 'react'
 import { fireEvent, render } from '@testing-library/react'
 
 import { DIM_COMP_OPACITY, HOVERED_COMP_OPACITY } from '../../../utils/ui'
-import Button from '../Button'
+import 按鈕 from '../按鈕'
 
 const commonProps = {
   children: 'Test Content',
   onClick: jest.fn(),
 }
 
-describe('Button', () => {
+describe('按鈕', () => {
   it('renders the content', () => {
-    const { getByText } = render(<Button {...commonProps} />)
+    const { getByText } = render(<按鈕 {...commonProps} />)
 
     expect(() => getByText('Test Content')).not.toThrow()
   })
 
   it('renders a div by default', () => {
-    const { baseElement } = render(<Button {...commonProps} />)
+    const { baseElement } = render(<按鈕 {...commonProps} />)
 
     expect(baseElement.querySelectorAll('div').length).toEqual(2)
     expect(baseElement.querySelectorAll('a').length).toEqual(0)
@@ -26,7 +26,7 @@ describe('Button', () => {
 
   it('renders a link when requested', () => {
     const { baseElement } = render(
-      <Button {...commonProps} href="hrefValue" shouldUseLink />,
+      <按鈕 {...commonProps} href="hrefValue" shouldUseLink />,
     )
 
     expect(baseElement.querySelectorAll('div').length).toEqual(1)
@@ -39,7 +39,7 @@ describe('Button', () => {
 
   it('changes opacity when hovered', () => {
     const { baseElement } = render(
-      <Button {...commonProps} href="hrefValue" shouldUseLink />,
+      <按鈕 {...commonProps} href="hrefValue" shouldUseLink />,
     )
 
     const linkEl = baseElement.querySelector('a') as HTMLAnchorElement
@@ -52,7 +52,7 @@ describe('Button', () => {
   })
 
   it('click has no effect when disabled', () => {
-    const { baseElement } = render(<Button {...commonProps} disabled />)
+    const { baseElement } = render(<按鈕 {...commonProps} disabled />)
 
     const el = baseElement.querySelector('div') as HTMLDivElement
 
@@ -64,7 +64,7 @@ describe('Button', () => {
   })
 
   it('click has effect when not disabled', () => {
-    const { baseElement } = render(<Button {...commonProps} />)
+    const { baseElement } = render(<按鈕 {...commonProps} />)
 
     const el = baseElement.querySelector('div') as HTMLDivElement
 

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Button, { T_ButtonProps } from '../../../components/Button/Button'
+import 按鈕, { T_ButtonProps } from '../../../components/按鈕/按鈕'
 
 type Props = {
   language: string
@@ -15,13 +15,13 @@ const GoogleTranslateButton = ({ language, text, ...rest }: Props) => {
     .join('')
 
   return (
-    <Button
+    <按鈕
       href={`https://translate.google.com/#${language}/en/${hrefText}`}
       shouldUseLink
       {...rest}
     >
       Google Translate
-    </Button>
+    </按鈕>
   )
 }
 

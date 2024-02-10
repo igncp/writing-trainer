@@ -1,6 +1,6 @@
-import Button from './components/Button/Button'
-import PanelBase from './components/PanelBase/PanelBase'
-import TextArea from './components/TextArea/TextArea'
+import 按鈕 from './components/按鈕/按鈕'
+import 文字區 from './components/文字區/文字區'
+import 面板基本 from './components/面板基本/面板基本'
 import Panel from './containers/Panel/Panel'
 import { uiHandlers } from './languages/handlers'
 import { LanguageUIManager } from './languages/languageUIManager'
@@ -11,13 +11,13 @@ import {
 } from './utils/hooks'
 
 export {
-  Button,
   LanguageUIManager,
   Panel,
-  PanelBase,
-  TextArea,
   uiHandlers,
   useBodyOverflowSwitch,
   useHover,
   useTextSelection,
+  按鈕,
+  文字區,
+  面板基本,
 }

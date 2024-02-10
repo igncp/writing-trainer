@@ -1,4 +1,4 @@
-import { englishHandler, SPECIAL_SYMBOLS } from '../../src'
+import { englishHandler, 特殊字元 } from '../../src'
 
 describe('values', () => {
   it('has the correct values', () => {
@@ -7,10 +7,10 @@ describe('values', () => {
   })
 })
 
-describe('getSpecialChars', () => {
+describe('取得特殊字符', () => {
   it('returns the expected array', () => {
-    expect(englishHandler.getSpecialChars()).toEqual(SPECIAL_SYMBOLS)
-    expect(englishHandler.getSpecialChars()).toEqual(SPECIAL_SYMBOLS)
+    expect(englishHandler.取得特殊字符()).toEqual(特殊字元)
+    expect(englishHandler.取得特殊字符()).toEqual(特殊字元)
   })
 })
 

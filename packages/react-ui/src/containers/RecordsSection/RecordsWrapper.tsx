@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Button from '../../components/Button/Button'
+import 按鈕 from '../../components/按鈕/按鈕'
 
 type IProps = {
   children: React.ReactNode
@@ -10,7 +10,7 @@ type IProps = {
 const RecordsWrapper = ({ children, onRecordsClose }: IProps) => {
   return (
     <div>
-      <Button onClick={onRecordsClose}>Close</Button>
+      <按鈕 onClick={onRecordsClose}>關閉</按鈕>
       <div>{children}</div>
     </div>
   )

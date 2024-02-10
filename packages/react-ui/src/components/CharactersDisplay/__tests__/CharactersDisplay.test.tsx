@@ -12,7 +12,7 @@ const commonProps = {
   shouldHidePronunciation: false,
 }
 
-describe('Button', () => {
+describe('按鈕', () => {
   it('renders the content', () => {
     const { getByText } = render(<CharactersDisplay {...commonProps} />)
 

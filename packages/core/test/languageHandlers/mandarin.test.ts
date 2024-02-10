@@ -1,4 +1,4 @@
-import { SPECIAL_SYMBOLS, mandarinHandler } from '../../src'
+import { 特殊字元, mandarinHandler } from '../../src'
 
 describe('values', () => {
   it('has the correct values', () => {
@@ -7,18 +7,18 @@ describe('values', () => {
   })
 })
 
-describe('getSpecialChars', () => {
+describe('取得特殊字符', () => {
   it('returns the expected array', () => {
-    expect(mandarinHandler.getSpecialChars()).toEqual(
-      SPECIAL_SYMBOLS.concat(
+    expect(mandarinHandler.取得特殊字符()).toEqual(
+      特殊字元.concat(
         'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(
           '',
         ),
       ),
     )
 
-    expect(mandarinHandler.getSpecialChars()).toEqual(
-      SPECIAL_SYMBOLS.concat(
+    expect(mandarinHandler.取得特殊字符()).toEqual(
+      特殊字元.concat(
         'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(
           '',
         ),

@@ -7,7 +7,7 @@ const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
   charsToRemove,
   text,
 }) => {
-  const specialChars = englishHandler.getSpecialChars() // eslint-disable-line @typescript-eslint/no-use-before-define
+  const specialChars = englishHandler.取得特殊字符() // eslint-disable-line @typescript-eslint/no-use-before-define
   const allCharsToRemove = specialChars.concat(charsToRemove).concat([' '])
 
   const charsObjs: CharObj[] = []

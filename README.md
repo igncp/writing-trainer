@@ -1,13 +1,13 @@
 # Writing Trainer
 
-Applications I use to practice language learning. For more info:
+我用來練習語言學習的應用程式。 欲了解更多信息:
 
 - [chrome-extension](./packages/chrome-extension)
 - [core](./packages/core)
 - [react-ui](./packages/react-ui)
 - [web-app](./packages/web-app)
 
-## Hosted Pages
+## 託管頁面
 
 - [chrome-extension-storybook](https://igncp.github.io/writing-trainer/chrome-extension-storybook)
 - [chrome-extension-types-coverage](https://igncp.github.io/writing-trainer/chrome-extension-types-coverage)
@@ -18,9 +18,9 @@ Applications I use to practice language learning. For more info:
 - [react-ui-types-coverage](https://igncp.github.io/writing-trainer/react-ui-types-coverage)
 - [web-app](https://igncp.github.io/writing-trainer/web-app)
 
-## Setup
+## 設定
 
-Requirements:
+要求:
 
 - Node.js LTS
 

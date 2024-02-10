@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import Button from '../../../components/Button/Button'
 import TextInput from '../../../components/TextInput/TextInput'
+import 按鈕 from '../../../components/按鈕/按鈕'
 import { T_Services } from '../../../typings/mainTypes'
 
 export interface RecordToSave {
@@ -61,7 +61,7 @@ const RecordSave = ({
   return (
     <React.Fragment>
       <div>
-        <Button onClick={onShowRecordsList}>List</Button>
+        <按鈕 onClick={onShowRecordsList}>List</按鈕>
       </div>
       <div>
         <div style={{ padding: 10 }}>
@@ -96,9 +96,9 @@ const RecordSave = ({
         </div>
       </div>
       <div>
-        <Button disabled={isSaveButtonDisabled} onClick={handleRecordSave}>
+        <按鈕 disabled={isSaveButtonDisabled} onClick={handleRecordSave}>
           Save
-        </Button>
+        </按鈕>
       </div>
     </React.Fragment>
   )

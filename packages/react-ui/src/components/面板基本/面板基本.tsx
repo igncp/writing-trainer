@@ -1,11 +1,11 @@
 import React from 'react'
 
-type Props = {
+type 特性 = {
   children: React.ReactNode
-  onOverlayClick: () => void
+  覆蓋點擊: () => void
 }
 
-const PanelBase = ({ children, onOverlayClick }: Props) => {
+const 面板基本 = ({ children, 覆蓋點擊 }: 特性) => {
   return (
     <div
       style={{
@@ -31,7 +31,7 @@ const PanelBase = ({ children, onOverlayClick }: Props) => {
         {children}
       </div>
       <div
-        onClick={onOverlayClick}
+        onClick={覆蓋點擊}
         style={{
           bottom: 0,
           left: 0,
@@ -45,4 +45,4 @@ const PanelBase = ({ children, onOverlayClick }: Props) => {
   )
 }
 
-export default PanelBase
+export default 面板基本

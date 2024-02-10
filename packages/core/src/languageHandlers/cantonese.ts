@@ -15,7 +15,7 @@ const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
     '') as string
   const pronunciationInputArr = pronunciationInput.split(' ').filter(c => !!c)
 
-  const defaultSpecialChars = cantoneseHandler.getSpecialChars() // eslint-disable-line @typescript-eslint/no-use-before-define
+  const defaultSpecialChars = cantoneseHandler.取得特殊字符() // eslint-disable-line @typescript-eslint/no-use-before-define
   const allCharsToRemove = defaultSpecialChars
     .concat(charsToRemove)
     .concat([' '])

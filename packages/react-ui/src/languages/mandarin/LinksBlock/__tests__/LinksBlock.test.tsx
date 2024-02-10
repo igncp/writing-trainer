@@ -8,12 +8,12 @@ const commonProps = {
   text: 'F OO _B A R ',
 }
 
-describe('Button', () => {
+describe('按鈕', () => {
   it('renders the content', () => {
     const { getByText } = render(<LinksBlock {...commonProps} />)
 
     expect(() => getByText('Google Translate')).not.toThrow()
-    expect(() => getByText('Pronunciation')).not.toThrow()
+    expect(() => getByText('發音')).not.toThrow()
 
     expect(() => getByText(commonProps.text)).toThrow()
   })

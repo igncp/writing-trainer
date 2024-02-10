@@ -1,26 +1,26 @@
-import _get from 'lodash/get'
+import 獲取 from 'lodash/get'
 import React, { useEffect, useRef } from 'react'
 
-type TextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
-  autoScroll?: boolean
+type 特性 = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
   setRef?: (ref: HTMLTextAreaElement | null) => void
-  withoutCursor?: boolean
+  無遊標?: boolean
+  自動捲動?: boolean
 }
 
-const TextArea = ({
-  autoScroll,
+const 文字區 = ({
   onChange,
   setRef,
   style,
-  withoutCursor,
-  ...props
-}: TextAreaProps) => {
+  無遊標,
+  自動捲動,
+  ...特性
+}: 特性) => {
   const ref = useRef<HTMLTextAreaElement>(null)
-  const color = _get(style, 'color', 'var(--color-text, "black")')
-  const cursorStyle = withoutCursor
+  const 顏色 = 獲取(style, 'color', 'var(--color-text, "black")')
+  const 遊標樣式 = 無遊標
     ? {
         color: 'transparent',
-        textShadow: `0 0 0 ${color}`,
+        textShadow: `0 0 0 ${顏色}`,
       }
     : {}
 
@@ -29,7 +29,7 @@ const TextArea = ({
   }
 
   useEffect(() => {
-    if (autoScroll && ref.current) {
+    if (自動捲動 && ref.current) {
       ref.current.scrollTop = ref.current.scrollHeight
     }
   })
@@ -46,16 +46,16 @@ const TextArea = ({
         resize: 'none',
         width: '100%',
 
-        ...cursorStyle,
+        ...遊標樣式,
         ...style,
       }}
-      {...props}
+      {...特性}
     />
   )
 }
 
-TextArea.defaultProps = {
-  autoScroll: false,
+文字區.defaultProps = {
+  自動捲動: false,
 }
 
-export default TextArea
+export default 文字區

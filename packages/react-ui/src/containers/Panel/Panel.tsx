@@ -5,11 +5,11 @@ import {
   Record,
 } from 'writing-trainer-core'
 
-import Button from '../../components/Button/Button'
 import CharactersDisplay from '../../components/CharactersDisplay/CharactersDisplay'
 import ChooseLanguage from '../../components/ChooseLanguage/ChooseLanguage'
-import TextArea from '../../components/TextArea/TextArea'
-import { deleteDB, getCharsCount } from '../../languages/common/stats'
+import 按鈕 from '../../components/按鈕/按鈕'
+import 文字區 from '../../components/文字區/文字區'
+import { 刪除資料庫, 取得字元數 } from '../../languages/common/統計'
 import { LanguageUIManager } from '../../languages/languageUIManager'
 import {
   T_LangOpts,
@@ -29,14 +29,12 @@ const createInputSetterFn =
 const SHORTCUT_EDITING = 'control+control+shift'
 const SHORTCUT_PRONUNCIATION = 'shift+shift+control'
 const SHORTCUT_NEXT_FRAGMENT = 'Tab'
-const SHORTCUT_WRITING = 'w'
 const defaultFontSize = 30
 
-const PRACTICE_TEXT_PLACEHOLDER = `Practice Text
-Next fragment: ${SHORTCUT_NEXT_FRAGMENT}
-Toggle Editing: ${SHORTCUT_EDITING}
-Toggle Pronunciation: ${SHORTCUT_PRONUNCIATION}
-Focus Writing (if no input has focus): ${SHORTCUT_WRITING}`
+const PRACTICE_TEXT_PLACEHOLDER = `練習文本
+下一個片段: ${SHORTCUT_NEXT_FRAGMENT}
+切換編輯: ${SHORTCUT_EDITING}
+切換發音: ${SHORTCUT_PRONUNCIATION}`
 
 type Props = {
   _stories?: {
@@ -139,7 +137,7 @@ const Panel = ({
   useEffect(() => {
     if (process.env.NODE_ENV === 'test') return
 
-    getCharsCount()
+    取得字元數()
       .then(({ failCount, successCount }) => {
         const total = (successCount ?? 0) + (failCount ?? 0)
 
@@ -272,7 +270,7 @@ const Panel = ({
     })()
   }, [initialFragmentIndex])
 
-  const SPECIAL_CHARS = langHandler!.getSpecialChars()
+  const 特殊字元 = langHandler!.取得特殊字符()
   const langOpts = _stories.langOpts ?? uiHandler.getLangOpts()
   const langOptsObj = {
     langOpts: {
@@ -281,7 +279,7 @@ const Panel = ({
     },
   }
 
-  const charsToRemove = specialCharsValue.split('').concat(SPECIAL_CHARS)
+  const charsToRemove = specialCharsValue.split('').concat(特殊字元)
 
   const charsObjs = langHandler!.convertToCharsObjs({
     ...langOptsObj,
@@ -333,12 +331,6 @@ const Panel = ({
         setShowingPronunciation(!isShowingPronunciation)
       } else if (currentResult === SHORTCUT_EDITING) {
         setShowingEdition(!isShowingEdition)
-      } else if (
-        value === SHORTCUT_WRITING &&
-        (!document.activeElement || document.activeElement === document.body)
-      ) {
-        e.preventDefault()
-        writingArea.current?.focus()
       }
       setLastThreeKeys(newArr)
     }
@@ -371,25 +363,25 @@ const Panel = ({
   }
 
   const handleWritingKeyDown = (
-    e: React.KeyboardEvent<HTMLTextAreaElement>,
+    事件: React.KeyboardEvent<HTMLTextAreaElement>,
   ) => {
     // special key
-    if (e.key === '`') {
-      e.preventDefault()
+    if (事件.key === '`') {
+      事件.preventDefault()
       setWriting('')
       setPracticeHasError(false)
 
       return
     }
 
-    if (e.key === 'Enter') {
+    if (事件.key === 'Enter') {
       setPractice(`${practiceValue}\n`)
     }
 
     uiHandler.handleWritingKeyDown({
       charsObjs,
       getCurrentCharObjFromPractice,
-      keyEvent: e,
+      keyEvent: 事件,
       languageOptions,
       originalTextValue,
       practiceValue,
@@ -467,22 +459,22 @@ const Panel = ({
 
   return (
     <>
-      <Button onClick={clearValues} style={{ paddingLeft: 0 }}>
-        Clear
-      </Button>
-      <Button onClick={() => setHasExtraControls(!hasExtraControls)}>X</Button>
-      {hasExtraControls && <Button onClick={listRecords}>Records</Button>}
-      <Button
+      <按鈕 onClick={clearValues} style={{ paddingLeft: 0 }}>
+        清除文字
+      </按鈕>
+      <按鈕 onClick={() => setHasExtraControls(!hasExtraControls)}>X</按鈕>
+      {hasExtraControls && <按鈕 onClick={listRecords}>已儲存和歌曲</按鈕>}
+      <按鈕
         onClick={() => {
           navigator.clipboard.writeText(originalTextValue)
         }}
       >
-        Copy
-      </Button>
+        複製
+      </按鈕>
       {isShowingEdition && (
         <>
           <label htmlFor="file-input" style={{ cursor: 'pointer' }}>
-            <Button>Upload</Button>
+            <按鈕>上傳文件</按鈕>
             <input
               id="file-input"
               onChange={() => {
@@ -529,37 +521,35 @@ const Panel = ({
               type="file"
             />
           </label>
-          <Button
+          <按鈕
             onClick={() => {
               setShowingPronunciation(!isShowingPronunciation)
               writingArea.current?.focus()
             }}
           >
-            Toggle Pronunciation
-          </Button>
+            切換發音
+          </按鈕>
         </>
       )}
       {hasExtraControls && (
         <>
-          <Button
+          <按鈕
             onClick={() => {
               setShowingEdition(!isShowingEdition)
               writingArea.current?.focus()
             }}
           >
-            Toggle Edition
-          </Button>
+            切換版本
+          </按鈕>
           <ChooseLanguage
             languages={getLanguageDefinitions(languageManager)}
             onOptionsChange={handleLanguageChange}
             selectedLanguage={selectedLanguage}
           />
-          <Button onClick={saveRecord}>
-            {currentRecord === null ? 'Save' : 'Update'}
-          </Button>
-          {onChangeTheme && (
-            <Button onClick={onChangeTheme}>Change Theme</Button>
-          )}
+          <按鈕 onClick={saveRecord}>
+            {currentRecord === null ? '儲存' : '更新'}
+          </按鈕>
+          {onChangeTheme && <按鈕 onClick={onChangeTheme}>改變主題</按鈕>}
           {!!stats && (
             <div
               style={{
@@ -569,16 +559,16 @@ const Panel = ({
                 marginBottom: 10,
               }}
             >
-              <div>Stats up until last session</div>
+              <div>截至上次會話的統計數據</div>
               <div>
-                Correct: {stats.correct} ({stats.perc}%) / Fail: {stats.fail}
+                正確的: {stats.correct} ({stats.perc}%) / 失敗: {stats.fail}
               </div>
             </div>
           )}
         </>
       )}
       {fragments.list.length > 1 && (
-        <Button
+        <按鈕
           onClick={() => {
             const newFragments = {
               ...fragments,
@@ -587,11 +577,11 @@ const Panel = ({
             onPracticeSourceChange(newFragments)
           }}
         >
-          Current Fragment: {fragments.index + 1} / {fragments.list.length}
-        </Button>
+          當前小文本: {fragments.index + 1} / {fragments.list.length}
+        </按鈕>
       )}
       {fragments.list.length > 5 && (
-        <Button
+        <按鈕
           onClick={() => {
             const newFragments = {
               ...fragments,
@@ -603,27 +593,27 @@ const Panel = ({
             onPracticeSourceChange(newFragments)
           }}
         >
-          Prev Fragment
-        </Button>
+          之前的小文字
+        </按鈕>
       )}
       {currentRecord !== null && (
-        <Button
+        <按鈕
           onClick={() => {
             setCurrentRecord(null)
           }}
         >
-          Close Record
-        </Button>
+          關閉已儲存的文本
+        </按鈕>
       )}
-      <Button
+      <按鈕
         onClick={onHideRequest ?? undefined}
         style={{
           display: UI?.noHideButton ? 'none' : 'block',
           float: 'right',
         }}
       >
-        Hide
-      </Button>
+        隱藏
+      </按鈕>
       <div style={{ padding: '0 0 20px' }}>
         {isShowingEdition && (
           <div
@@ -633,7 +623,7 @@ const Panel = ({
               gap: 10,
             }}
           >
-            <TextArea
+            <文字區
               onBlur={() => {
                 if (uiHandler.onBlur) {
                   const { newFragmentsList } = uiHandler.onBlur({
@@ -656,15 +646,15 @@ const Panel = ({
                 writingArea.current?.focus()
               }}
               onChange={handleOriginalTextUpdate}
-              placeholder="Original text"
+              placeholder="原文"
               rows={3}
               value={fragments.list.join('\n')}
             />
             {hasExtraControls && (
               <>
-                <TextArea
+                <文字區
                   onChange={createInputSetterFn(setPronunciation)}
-                  placeholder="Pronunciation"
+                  placeholder="發音"
                   rows={2}
                   value={pronunciationValue}
                 />
@@ -672,14 +662,14 @@ const Panel = ({
                   languageOptions={languageOptions}
                   onOptionsChange={handleLanguageOptionsChange}
                 />
-                <TextArea
+                <文字區
                   onChange={createInputSetterFn(setSpecialChars)}
-                  placeholder="Special characters"
+                  placeholder="特殊字元"
                   rows={1}
                   value={specialCharsValue}
                 />
                 <div style={{ fontSize: '12px' }}>
-                  Font size:{' '}
+                  字體大小:{' '}
                   <input
                     onChange={event => {
                       setFontSize(Number(event.target.value))
@@ -688,15 +678,15 @@ const Panel = ({
                     value={fontSize}
                   />
                 </div>
-                <Button
+                <按鈕
                   onDoubleClick={() => {
-                    deleteDB().then(() => {
+                    刪除資料庫().then(() => {
                       setStats(null)
                     })
                   }}
                 >
-                  Delete DB
-                </Button>
+                  刪除資料庫
+                </按鈕>
               </>
             )}
             {/* This is necessary because the options block initialises some values*/}
@@ -723,7 +713,7 @@ const Panel = ({
               }
             />
           </div>
-          <TextArea
+          <文字區
             autoFocus
             onBlur={() => setWritingBorder('normal')}
             onChange={e => {
@@ -744,15 +734,14 @@ const Panel = ({
             onClick={handleWritingAreaClick}
             onFocus={() => setWritingBorder('bold')}
             onKeyDown={handleWritingKeyDown}
-            placeholder={practiceValue ? '' : 'Writing area'}
+            placeholder={practiceValue ? '' : '書寫區'}
             rows={1}
             setRef={ref => (writingArea.current = ref)}
             style={{ borderWidth: writingBorder === 'bold' ? 2 : 1 }}
             value={writingValue}
-            withoutCursor
+            無遊標
           />
-          <TextArea
-            autoScroll
+          <文字區
             onChange={createInputSetterFn(setPractice)}
             onFocus={() => {
               writingArea.current?.focus()
@@ -769,6 +758,7 @@ const Panel = ({
               lineHeight: `${fontSize + 10}px`,
             }}
             value={practiceValue}
+            自動捲動
           />
         </div>
       </div>

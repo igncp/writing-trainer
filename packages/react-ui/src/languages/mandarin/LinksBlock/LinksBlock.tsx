@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Button from '../../../components/Button/Button'
+import 按鈕 from '../../../components/按鈕/按鈕'
 import { copyTextToClipboard } from '../../../utils/general'
 import GTButton from '../../common/Links/GoogleTranslateButton'
 import { T_LinksBlock } from '../../types'
@@ -22,15 +22,15 @@ const LinksBlock: T_LinksBlock = ({ text }) => {
   return (
     <div style={{ width: '100%' }}>
       <GTButton language="zh-CN" style={{ paddingLeft: '0' }} text={text} />
-      <Button
+      <按鈕
         onClick={() => {
           copyTextToClipboard(hrefText)
           window.open(MANDARIN_CONVERTER_LINK)
         }}
         style={linkStyle}
       >
-        Pronunciation
-      </Button>
+        發音
+      </按鈕>
     </div>
   )
 }

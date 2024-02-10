@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button } from 'writing-trainer-react-ui'
+import { 按鈕 } from 'writing-trainer-react-ui'
 
 import openOptionsPage from '@/services/openOptionsPage'
 import sendTabsMessage from '@/services/sendTabsMessage'
@@ -20,17 +20,17 @@ const Popup = ({ onEnableOnceClick, onOptionsPageClick }: PopupProps) => {
   return (
     <div style={{ width: 400 }}>
       <div>
-        <Button
+        <按鈕
           disabled={!isButtonOneEnabled}
           onClick={() => {
             onEnableOnceClick?.({ setButtonOneEnabled })
           }}
         >
           Enable one time
-        </Button>
+        </按鈕>
       </div>
       <div>
-        <Button onClick={onOptionsPageClick}>Open Config</Button>
+        <按鈕 onClick={onOptionsPageClick}>Open Config</按鈕>
       </div>
     </div>
   )

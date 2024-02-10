@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Record } from 'writing-trainer-core'
 
-import Button from '../../../components/Button/Button'
 import TextInput from '../../../components/TextInput/TextInput'
+import 按鈕 from '../../../components/按鈕/按鈕'
 
 type CellProps = {
   bold?: boolean
@@ -113,27 +113,27 @@ const RecordsList = ({
                   Website
                 </a>
               )}
-              <Button
+              <按鈕
                 onClick={() => {
                   onRecordLoad(過濾條目)
                 }}
               >
                 Load
-              </Button>
-              <Button
+              </按鈕>
+              <按鈕
                 onClick={() => {
                   onRecordEdit(過濾條目)
                 }}
               >
                 Edit
-              </Button>
-              <Button
+              </按鈕>
+              <按鈕
                 onClick={() => {
                   onRecordRemove(過濾條目)
                 }}
               >
                 Remove
-              </Button>
+              </按鈕>
             </div>
           )
         })}
@@ -155,18 +155,18 @@ const RecordsList = ({
                   target="_blank"
                   title={影片連結網址}
                 >
-                  Video
+                  影片
                 </a>
               )}
-              <Button
+              <按鈕
                 onClick={() => {
                   load().then(({ lyrics }) => {
                     onSongLoad(lyrics)
                   })
                 }}
               >
-                Load
-              </Button>
+                載入
+              </按鈕>
             </div>
           )
         })}

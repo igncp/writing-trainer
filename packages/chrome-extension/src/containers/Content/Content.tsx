@@ -3,7 +3,7 @@ import { LanguageManager } from 'writing-trainer-core'
 import {
   LanguageUIManager,
   Panel,
-  PanelBase,
+  面板基本,
   useBodyOverflowSwitch,
   useTextSelection,
 } from 'writing-trainer-react-ui'
@@ -113,7 +113,7 @@ const Content = ({ onContentEnabledResult }: ContentProps) => {
   }
 
   return (
-    <PanelBase onOverlayClick={hidePanel}>
+    <面板基本 覆蓋點擊={hidePanel}>
       <Panel
         languageManager={languageManager}
         languageUIManager={languageUIManager}
@@ -121,7 +121,7 @@ const Content = ({ onContentEnabledResult }: ContentProps) => {
         services={panelServices}
         text={usedText}
       />
-    </PanelBase>
+    </面板基本>
   )
 }
 

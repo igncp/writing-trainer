@@ -1,4 +1,4 @@
-import { SPECIAL_SYMBOLS, cantoneseHandler } from '../../src'
+import { 特殊字元, cantoneseHandler } from '../../src'
 
 describe('values', () => {
   it('has the correct values', () => {
@@ -7,18 +7,18 @@ describe('values', () => {
   })
 })
 
-describe('getSpecialChars', () => {
+describe('取得特殊字符', () => {
   it('returns the expected array', () => {
-    expect(cantoneseHandler.getSpecialChars()).toEqual(
-      SPECIAL_SYMBOLS.concat(
+    expect(cantoneseHandler.取得特殊字符()).toEqual(
+      特殊字元.concat(
         'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(
           '',
         ),
       ),
     )
 
-    expect(cantoneseHandler.getSpecialChars()).toEqual(
-      SPECIAL_SYMBOLS.concat(
+    expect(cantoneseHandler.取得特殊字符()).toEqual(
+      特殊字元.concat(
         'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(
           '',
         ),

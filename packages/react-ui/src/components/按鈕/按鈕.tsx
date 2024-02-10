@@ -20,7 +20,7 @@ export type T_ButtonProps = {
   style?: React.CSSProperties
 }
 
-const Button = ({
+const 按鈕 = ({
   children,
   className,
   disabled,
@@ -73,4 +73,4 @@ const Button = ({
   )
 }
 
-export default Button
+export default 按鈕
