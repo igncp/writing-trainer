@@ -1,0 +1,172 @@
+
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>統計.ts</title>
+      <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" type="text/css" rel="stylesheet">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.2/codemirror.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.2/mode/javascript/javascript.min.js" type="text/javascript" charset="utf-8"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.2/codemirror.min.css" type="text/css" rel="stylesheet">
+<script src="../../../../assets/source-file.js" type="text/javascript" charset="utf-8"></script>
+<link href="../../../../assets/source-file.css" type="text/css" rel="stylesheet">
+    </head>
+    <body>
+    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/languages/common/統計.ts</td><td class="">99.56%</td><td class="">95%</td><td class="">228</td><td class="">227</td><td class="">1</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">const 成功收集字符 = &#x27;successChars&#x27;
+const 資料庫名稱 = &#x27;WritingTrainer&#x27;
+
+enum 字元類型 {
+  失敗 = &#x27;fail&#x27;,
+  成功 = &#x27;success&#x27;,
+}
+
+const 取得資料庫 = () =&gt; {
+  return new Promise&lt;IDBDatabase&gt;((解決, 拒絕) =&gt; {
+    const 開放請求 = window.indexedDB.open(資料庫名稱, 2)
+
+    開放請求.onerror = 事件 =&gt; {
+      console.log(&#x27;開放請求錯誤:&#x27;, 事件)
+      拒絕(事件)
+    }
+
+    開放請求.onupgradeneeded = 事件 =&gt; {
+      const 資料庫 = (事件.target as unknown as { result: IDBDatabase }).result
+
+      const 物件儲存 = 資料庫.createObjectStore(成功收集字符, {
+        autoIncrement: false,
+      })
+
+      物件儲存.createIndex(&#x27;name&#x27;, &#x27;name&#x27;, { unique: false })
+      物件儲存.createIndex(&#x27;type&#x27;, &#x27;type&#x27;, { unique: false })
+      物件儲存.createIndex(&#x27;count&#x27;, &#x27;count&#x27;, { unique: false })
+      物件儲存.createIndex(&#x27;nametype&#x27;, [&#x27;name&#x27;, &#x27;type&#x27;], { unique: false })
+    }
+
+    開放請求.onsuccess = 事件 =&gt; {
+      const 資料庫 = (事件.target as unknown as { result: IDBDatabase }).result
+
+      資料庫.onerror = 資料庫事件 =&gt; {
+        console.error(`資料庫錯誤:`, 資料庫事件)
+      }
+
+      解決(資料庫)
+    }
+  })
+}
+
+type DBRecord = {
+  count: number
+  name: string
+  type: 字元類型
+}
+
+const 儲存字元 = async (char: string, charType: 字元類型) =&gt; {
+  const 資料庫 = await 取得資料庫()
+
+  const transaction = 資料庫.transaction([成功收集字符], &#x27;readwrite&#x27;)
+
+  transaction.onerror = 事件 =&gt; {
+    console.error(`Transaction error`, 事件)
+  }
+
+  const objectStore = transaction.objectStore(成功收集字符)
+  const searchIndex = objectStore.index(&#x27;nametype&#x27;)
+  const key = [char, charType]
+  const query = searchIndex.get(key)
+
+  query.onsuccess = result =&gt; {
+    const record = (
+      result.target as unknown as { result: DBRecord | undefined }
+    ).result
+
+    if (record) {
+      record.count += 1
+      const updateRequest = objectStore.put(record, key)
+
+      updateRequest.onerror = 事件 =&gt; {
+        console.error(&#x27;Update error&#x27;, 事件)
+      }
+    } else {
+      const addRequest = objectStore.add(
+        {
+          count: 1,
+          name: char,
+          type: charType,
+        },
+        key,
+      )
+
+      addRequest.onerror = 事件 =&gt; {
+        console.error(&#x27;Add error&#x27;, 事件)
+      }
+    }
+  }
+}
+
+export const 儲存成功字元 = async (字元: string) =&gt;
+  儲存字元(字元, 字元類型.成功)
+
+export const 儲存失敗字元 = async (字元: string) =&gt;
+  儲存字元(字元, 字元類型.失敗)
+
+export const 取得字元數 = async () =&gt; {
+  const getCount = async (charType: 字元類型): Promise&lt;number | undefined&gt; =&gt; {
+    const 資料庫 = await 取得資料庫()
+
+    const transaction = 資料庫.transaction([成功收集字符], &#x27;readonly&#x27;)
+    const objectStore = transaction.objectStore(成功收集字符)
+
+    const index = objectStore.index(&#x27;type&#x27;)
+    const keyRange = IDBKeyRange.only(charType)
+
+    return new Promise(resolve =&gt; {
+      const request = index.getAll(keyRange)
+
+      request.onsuccess = () =&gt; {
+        const total = request.result.reduce(
+          (acc: number, record: DBRecord) =&gt; acc + record.count,
+          0,
+        )
+        resolve(total)
+      }
+    })
+  }
+
+  const [successCount, failCount] = await Promise.all([
+    getCount(字元類型.成功),
+    getCount(字元類型.失敗),
+  ])
+
+  return {
+    failCount,
+    successCount,
+  }
+}
+
+export const 刪除資料庫 = async (): Promise&lt;void&gt; =&gt; {
+  await (async () =&gt; {
+    const 資料庫 = await 取得資料庫()
+
+    資料庫.close()
+  })()
+
+  return new Promise(resolve =&gt; {
+    const deleteRequest = window.indexedDB.deleteDatabase(資料庫名稱)
+
+    deleteRequest.onblocked = () =&gt; {
+      window.location.reload()
+    }
+
+    deleteRequest.onerror = () =&gt; {
+      console.error(&#x27;Error deleting database&#x27;)
+    }
+
+    deleteRequest.onsuccess = () =&gt; {
+      resolve()
+    }
+  })
+}
+</textarea><pre id="annotations" style="display:none">[{&quot;file&quot;:&quot;src/languages/common/統計.ts&quot;,&quot;line&quot;:111,&quot;character&quot;:14,&quot;text&quot;:&quot;total&quot;,&quot;kind&quot;:1}]</pre></div>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sat, 10 Feb 2024 04:22:34 GMT</p>
+    </body>
+  </html>
+  

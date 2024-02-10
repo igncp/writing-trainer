@@ -11,18 +11,18 @@
 <link href="../../../../assets/source-file.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Panel/Panel.tsx</td><td class="">99.69%</td><td class="">95%</td><td class="">978</td><td class="">975</td><td class="">3</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useRef, useState } from &#x27;react&#x27;
+    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Panel/Panel.tsx</td><td class="">99.69%</td><td class="">95%</td><td class="">963</td><td class="">960</td><td class="">3</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useRef, useState } from &#x27;react&#x27;
 import {
   LanguageDefinition,
   LanguageManager,
   Record,
 } from &#x27;writing-trainer-core&#x27;
 
-import Button from &#x27;../../components/Button/Button&#x27;
 import CharactersDisplay from &#x27;../../components/CharactersDisplay/CharactersDisplay&#x27;
 import ChooseLanguage from &#x27;../../components/ChooseLanguage/ChooseLanguage&#x27;
-import TextArea from &#x27;../../components/TextArea/TextArea&#x27;
-import { deleteDB, getCharsCount } from &#x27;../../languages/common/stats&#x27;
+import 按鈕 from &#x27;../../components/按鈕/按鈕&#x27;
+import 文字區 from &#x27;../../components/文字區/文字區&#x27;
+import { 刪除資料庫, 取得字元數 } from &#x27;../../languages/common/統計&#x27;
 import { LanguageUIManager } from &#x27;../../languages/languageUIManager&#x27;
 import {
   T_LangOpts,
@@ -42,14 +42,12 @@ const createInputSetterFn =
 const SHORTCUT_EDITING = &#x27;control+control+shift&#x27;
 const SHORTCUT_PRONUNCIATION = &#x27;shift+shift+control&#x27;
 const SHORTCUT_NEXT_FRAGMENT = &#x27;Tab&#x27;
-const SHORTCUT_WRITING = &#x27;w&#x27;
 const defaultFontSize = 30
 
-const PRACTICE_TEXT_PLACEHOLDER = `Practice Text
-Next fragment: ${SHORTCUT_NEXT_FRAGMENT}
-Toggle Editing: ${SHORTCUT_EDITING}
-Toggle Pronunciation: ${SHORTCUT_PRONUNCIATION}
-Focus Writing (if no input has focus): ${SHORTCUT_WRITING}`
+const PRACTICE_TEXT_PLACEHOLDER = `練習文本
+下一個片段: ${SHORTCUT_NEXT_FRAGMENT}
+切換編輯: ${SHORTCUT_EDITING}
+切換發音: ${SHORTCUT_PRONUNCIATION}`
 
 type Props = {
   _stories?: {
@@ -152,7 +150,7 @@ const Panel = ({
   useEffect(() =&gt; {
     if (process.env.NODE_ENV === &#x27;test&#x27;) return
 
-    getCharsCount()
+    取得字元數()
       .then(({ failCount, successCount }) =&gt; {
         const total = (successCount ?? 0) + (failCount ?? 0)
 
@@ -285,7 +283,7 @@ const Panel = ({
     })()
   }, [initialFragmentIndex])
 
-  const SPECIAL_CHARS = langHandler!.getSpecialChars()
+  const 特殊字元 = langHandler!.取得特殊字符()
   const langOpts = _stories.langOpts ?? uiHandler.getLangOpts()
   const langOptsObj = {
     langOpts: {
@@ -294,7 +292,7 @@ const Panel = ({
     },
   }
 
-  const charsToRemove = specialCharsValue.split(&#x27;&#x27;).concat(SPECIAL_CHARS)
+  const charsToRemove = specialCharsValue.split(&#x27;&#x27;).concat(特殊字元)
 
   const charsObjs = langHandler!.convertToCharsObjs({
     ...langOptsObj,
@@ -346,12 +344,6 @@ const Panel = ({
         setShowingPronunciation(!isShowingPronunciation)
       } else if (currentResult === SHORTCUT_EDITING) {
         setShowingEdition(!isShowingEdition)
-      } else if (
-        value === SHORTCUT_WRITING &amp;&amp;
-        (!document.activeElement || document.activeElement === document.body)
-      ) {
-        e.preventDefault()
-        writingArea.current?.focus()
       }
       setLastThreeKeys(newArr)
     }
@@ -384,25 +376,25 @@ const Panel = ({
   }
 
   const handleWritingKeyDown = (
-    e: React.KeyboardEvent&lt;HTMLTextAreaElement&gt;,
+    事件: React.KeyboardEvent&lt;HTMLTextAreaElement&gt;,
   ) =&gt; {
     // special key
-    if (e.key === &#x27;`&#x27;) {
-      e.preventDefault()
+    if (事件.key === &#x27;`&#x27;) {
+      事件.preventDefault()
       setWriting(&#x27;&#x27;)
       setPracticeHasError(false)
 
       return
     }
 
-    if (e.key === &#x27;Enter&#x27;) {
+    if (事件.key === &#x27;Enter&#x27;) {
       setPractice(`${practiceValue}\n`)
     }
 
     uiHandler.handleWritingKeyDown({
       charsObjs,
       getCurrentCharObjFromPractice,
-      keyEvent: e,
+      keyEvent: 事件,
       languageOptions,
       originalTextValue,
       practiceValue,
@@ -480,22 +472,22 @@ const Panel = ({
 
   return (
     &lt;&gt;
-      &lt;Button onClick={clearValues} style={{ paddingLeft: 0 }}&gt;
-        Clear
-      &lt;/Button&gt;
-      &lt;Button onClick={() =&gt; setHasExtraControls(!hasExtraControls)}&gt;X&lt;/Button&gt;
-      {hasExtraControls &amp;&amp; &lt;Button onClick={listRecords}&gt;Records&lt;/Button&gt;}
-      &lt;Button
+      &lt;按鈕 onClick={clearValues} style={{ paddingLeft: 0 }}&gt;
+        清除文字
+      &lt;/按鈕&gt;
+      &lt;按鈕 onClick={() =&gt; setHasExtraControls(!hasExtraControls)}&gt;X&lt;/按鈕&gt;
+      {hasExtraControls &amp;&amp; &lt;按鈕 onClick={listRecords}&gt;已儲存和歌曲&lt;/按鈕&gt;}
+      &lt;按鈕
         onClick={() =&gt; {
           navigator.clipboard.writeText(originalTextValue)
         }}
       &gt;
-        Copy
-      &lt;/Button&gt;
+        複製
+      &lt;/按鈕&gt;
       {isShowingEdition &amp;&amp; (
         &lt;&gt;
           &lt;label htmlFor=&quot;file-input&quot; style={{ cursor: &#x27;pointer&#x27; }}&gt;
-            &lt;Button&gt;Upload&lt;/Button&gt;
+            &lt;按鈕&gt;上傳文件&lt;/按鈕&gt;
             &lt;input
               id=&quot;file-input&quot;
               onChange={() =&gt; {
@@ -542,37 +534,35 @@ const Panel = ({
               type=&quot;file&quot;
             /&gt;
           &lt;/label&gt;
-          &lt;Button
+          &lt;按鈕
             onClick={() =&gt; {
               setShowingPronunciation(!isShowingPronunciation)
               writingArea.current?.focus()
             }}
           &gt;
-            Toggle Pronunciation
-          &lt;/Button&gt;
+            切換發音
+          &lt;/按鈕&gt;
         &lt;/&gt;
       )}
       {hasExtraControls &amp;&amp; (
         &lt;&gt;
-          &lt;Button
+          &lt;按鈕
             onClick={() =&gt; {
               setShowingEdition(!isShowingEdition)
               writingArea.current?.focus()
             }}
           &gt;
-            Toggle Edition
-          &lt;/Button&gt;
+            切換版本
+          &lt;/按鈕&gt;
           &lt;ChooseLanguage
             languages={getLanguageDefinitions(languageManager)}
             onOptionsChange={handleLanguageChange}
             selectedLanguage={selectedLanguage}
           /&gt;
-          &lt;Button onClick={saveRecord}&gt;
-            {currentRecord === null ? &#x27;Save&#x27; : &#x27;Update&#x27;}
-          &lt;/Button&gt;
-          {onChangeTheme &amp;&amp; (
-            &lt;Button onClick={onChangeTheme}&gt;Change Theme&lt;/Button&gt;
-          )}
+          &lt;按鈕 onClick={saveRecord}&gt;
+            {currentRecord === null ? &#x27;儲存&#x27; : &#x27;更新&#x27;}
+          &lt;/按鈕&gt;
+          {onChangeTheme &amp;&amp; &lt;按鈕 onClick={onChangeTheme}&gt;改變主題&lt;/按鈕&gt;}
           {!!stats &amp;&amp; (
             &lt;div
               style={{
@@ -582,16 +572,16 @@ const Panel = ({
                 marginBottom: 10,
               }}
             &gt;
-              &lt;div&gt;Stats up until last session&lt;/div&gt;
+              &lt;div&gt;截至上次會話的統計數據&lt;/div&gt;
               &lt;div&gt;
-                Correct: {stats.correct} ({stats.perc}%) / Fail: {stats.fail}
+                正確的: {stats.correct} ({stats.perc}%) / 失敗: {stats.fail}
               &lt;/div&gt;
             &lt;/div&gt;
           )}
         &lt;/&gt;
       )}
       {fragments.list.length &gt; 1 &amp;&amp; (
-        &lt;Button
+        &lt;按鈕
           onClick={() =&gt; {
             const newFragments = {
               ...fragments,
@@ -600,11 +590,11 @@ const Panel = ({
             onPracticeSourceChange(newFragments)
           }}
         &gt;
-          Current Fragment: {fragments.index + 1} / {fragments.list.length}
-        &lt;/Button&gt;
+          當前小文本: {fragments.index + 1} / {fragments.list.length}
+        &lt;/按鈕&gt;
       )}
       {fragments.list.length &gt; 5 &amp;&amp; (
-        &lt;Button
+        &lt;按鈕
           onClick={() =&gt; {
             const newFragments = {
               ...fragments,
@@ -616,27 +606,27 @@ const Panel = ({
             onPracticeSourceChange(newFragments)
           }}
         &gt;
-          Prev Fragment
-        &lt;/Button&gt;
+          之前的小文字
+        &lt;/按鈕&gt;
       )}
       {currentRecord !== null &amp;&amp; (
-        &lt;Button
+        &lt;按鈕
           onClick={() =&gt; {
             setCurrentRecord(null)
           }}
         &gt;
-          Close Record
-        &lt;/Button&gt;
+          關閉已儲存的文本
+        &lt;/按鈕&gt;
       )}
-      &lt;Button
+      &lt;按鈕
         onClick={onHideRequest ?? undefined}
         style={{
           display: UI?.noHideButton ? &#x27;none&#x27; : &#x27;block&#x27;,
           float: &#x27;right&#x27;,
         }}
       &gt;
-        Hide
-      &lt;/Button&gt;
+        隱藏
+      &lt;/按鈕&gt;
       &lt;div style={{ padding: &#x27;0 0 20px&#x27; }}&gt;
         {isShowingEdition &amp;&amp; (
           &lt;div
@@ -646,7 +636,7 @@ const Panel = ({
               gap: 10,
             }}
           &gt;
-            &lt;TextArea
+            &lt;文字區
               onBlur={() =&gt; {
                 if (uiHandler.onBlur) {
                   const { newFragmentsList } = uiHandler.onBlur({
@@ -669,15 +659,15 @@ const Panel = ({
                 writingArea.current?.focus()
               }}
               onChange={handleOriginalTextUpdate}
-              placeholder=&quot;Original text&quot;
+              placeholder=&quot;原文&quot;
               rows={3}
               value={fragments.list.join(&#x27;\n&#x27;)}
             /&gt;
             {hasExtraControls &amp;&amp; (
               &lt;&gt;
-                &lt;TextArea
+                &lt;文字區
                   onChange={createInputSetterFn(setPronunciation)}
-                  placeholder=&quot;Pronunciation&quot;
+                  placeholder=&quot;發音&quot;
                   rows={2}
                   value={pronunciationValue}
                 /&gt;
@@ -685,14 +675,14 @@ const Panel = ({
                   languageOptions={languageOptions}
                   onOptionsChange={handleLanguageOptionsChange}
                 /&gt;
-                &lt;TextArea
+                &lt;文字區
                   onChange={createInputSetterFn(setSpecialChars)}
-                  placeholder=&quot;Special characters&quot;
+                  placeholder=&quot;特殊字元&quot;
                   rows={1}
                   value={specialCharsValue}
                 /&gt;
                 &lt;div style={{ fontSize: &#x27;12px&#x27; }}&gt;
-                  Font size:{&#x27; &#x27;}
+                  字體大小:{&#x27; &#x27;}
                   &lt;input
                     onChange={event =&gt; {
                       setFontSize(Number(event.target.value))
@@ -701,15 +691,15 @@ const Panel = ({
                     value={fontSize}
                   /&gt;
                 &lt;/div&gt;
-                &lt;Button
+                &lt;按鈕
                   onDoubleClick={() =&gt; {
-                    deleteDB().then(() =&gt; {
+                    刪除資料庫().then(() =&gt; {
                       setStats(null)
                     })
                   }}
                 &gt;
-                  Delete DB
-                &lt;/Button&gt;
+                  刪除資料庫
+                &lt;/按鈕&gt;
               &lt;/&gt;
             )}
             {/* This is necessary because the options block initialises some values*/}
@@ -736,7 +726,7 @@ const Panel = ({
               }
             /&gt;
           &lt;/div&gt;
-          &lt;TextArea
+          &lt;文字區
             autoFocus
             onBlur={() =&gt; setWritingBorder(&#x27;normal&#x27;)}
             onChange={e =&gt; {
@@ -757,15 +747,14 @@ const Panel = ({
             onClick={handleWritingAreaClick}
             onFocus={() =&gt; setWritingBorder(&#x27;bold&#x27;)}
             onKeyDown={handleWritingKeyDown}
-            placeholder={practiceValue ? &#x27;&#x27; : &#x27;Writing area&#x27;}
+            placeholder={practiceValue ? &#x27;&#x27; : &#x27;書寫區&#x27;}
             rows={1}
             setRef={ref =&gt; (writingArea.current = ref)}
             style={{ borderWidth: writingBorder === &#x27;bold&#x27; ? 2 : 1 }}
             value={writingValue}
-            withoutCursor
+            無遊標
           /&gt;
-          &lt;TextArea
-            autoScroll
+          &lt;文字區
             onChange={createInputSetterFn(setPractice)}
             onFocus={() =&gt; {
               writingArea.current?.focus()
@@ -782,6 +771,7 @@ const Panel = ({
               lineHeight: `${fontSize + 10}px`,
             }}
             value={practiceValue}
+            自動捲動
           /&gt;
         &lt;/div&gt;
       &lt;/div&gt;
@@ -791,8 +781,8 @@ const Panel = ({
 }
 
 export default Panel
-</textarea><pre id="annotations" style="display:none">[{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:24,&quot;character&quot;:3,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:25,&quot;character&quot;:4,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:262,&quot;character&quot;:14,&quot;text&quot;:&quot;parsedFragments&quot;,&quot;kind&quot;:1}]</pre></div>
-    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Thu, 08 Feb 2024 16:02:22 GMT</p>
+</textarea><pre id="annotations" style="display:none">[{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:24,&quot;character&quot;:3,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:25,&quot;character&quot;:4,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:260,&quot;character&quot;:14,&quot;text&quot;:&quot;parsedFragments&quot;,&quot;kind&quot;:1}]</pre></div>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sat, 10 Feb 2024 04:22:34 GMT</p>
     </body>
   </html>
   

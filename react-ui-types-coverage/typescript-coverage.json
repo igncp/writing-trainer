@@ -16,7 +16,7 @@
       "kind": 1
     },
     {
-      "file": "src/languages/common/stats.ts",
+      "file": "src/languages/common/統計.ts",
       "line": 111,
       "character": 14,
       "text": "total",
@@ -59,7 +59,7 @@
     },
     {
       "file": "src/containers/Panel/Panel.tsx",
-      "line": 262,
+      "line": 260,
       "character": 14,
       "text": "parsedFragments",
       "kind": 1
@@ -261,20 +261,6 @@
       "kind": 1
     },
     {
-      "file": "src/components/Button/__stories__/Button.stories.tsx",
-      "line": 10,
-      "character": 6,
-      "text": "Common",
-      "kind": 1
-    },
-    {
-      "file": "src/components/Button/__stories__/Button.stories.tsx",
-      "line": 17,
-      "character": 9,
-      "text": "Common",
-      "kind": 1
-    },
-    {
       "file": "src/components/ChooseLanguage/__stories__/ChooseLanguage.stories.tsx",
       "line": 31,
       "character": 6,
@@ -289,28 +275,42 @@
       "kind": 1
     },
     {
-      "file": "src/components/TextArea/__stories__/TextArea.stories.tsx",
+      "file": "src/components/TextInput/__stories__/TextInput.stories.tsx",
       "line": 10,
       "character": 6,
       "text": "Common",
       "kind": 1
     },
     {
-      "file": "src/components/TextArea/__stories__/TextArea.stories.tsx",
+      "file": "src/components/TextInput/__stories__/TextInput.stories.tsx",
       "line": 17,
       "character": 9,
       "text": "Common",
       "kind": 1
     },
     {
-      "file": "src/components/TextInput/__stories__/TextInput.stories.tsx",
+      "file": "src/components/按鈕/__stories__/按鈕.stories.tsx",
       "line": 10,
       "character": 6,
       "text": "Common",
       "kind": 1
     },
     {
-      "file": "src/components/TextInput/__stories__/TextInput.stories.tsx",
+      "file": "src/components/按鈕/__stories__/按鈕.stories.tsx",
+      "line": 17,
+      "character": 9,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/components/文字區/__stories__/文字區.stories.tsx",
+      "line": 10,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/components/文字區/__stories__/文字區.stories.tsx",
       "line": 17,
       "character": 9,
       "text": "Common",
@@ -723,8 +723,8 @@
       "kind": 1
     }
   ],
-  "percentage": 98.02719785481709,
-  "total": 5221,
-  "covered": 5118,
+  "percentage": 98.02151363810988,
+  "total": 5206,
+  "covered": 5103,
   "uncovered": 103
 }
