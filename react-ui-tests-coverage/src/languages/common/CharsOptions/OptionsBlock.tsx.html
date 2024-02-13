@@ -211,29 +211,29 @@
 &nbsp;
 import { T_OptionsBlock } from '<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" >..</span>/../types'</span>
 <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
-const Option<span class="cstat-no" title="statement not covered" >sBlock: T_OptionsB</span>lock = ({ languageOptions, onOptionsChange }) =&gt; {
-  const [ton<span class="cstat-no" title="statement not covered" >esValue, setTones<span class="cstat-no" title="statement not covered" >Value] = useState(</span></span>
-    (languageOpt<span class="cstat-no" title="statement not covered" >ions.tonesVal</span>ue as string) || 'without-tones',
+const Option<span class="cstat-no" title="statement not covered" >sBlock: T_OptionsB</span>lock = ({ 更改語言選項, 語言選項 }) =&gt; {
+  const [聲調值<span class="cstat-no" title="statement not covered" >, 保存聲調值] = useSta<span class="cstat-no" title="statement not covered" >te(</span></span>
+    (語言選項.聲調值 as<span class="cstat-no" title="statement not covered" > string) || '</span>不要使用聲調',
   )
-  const <span class="cstat-no" title="statement not covered" >[playmodeV</span>alue, setPlaymodeValue] = useState(
-    (languageOptions.playmodeValue as string) || 'reductive',
+  const <span class="cstat-no" title="statement not covered" >[遊戲模式值, se</span>tPlaymodeValue] = useState(
+    (語言選項.遊戲模式值 as string) || '還原論者',
   )
 &nbsp;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   co<span class="missing-if-branch" title="else path not taken" >E</span>nst handleOptionsChange = (newValues: any) =&gt; {
-    onOptionsChange({
-    <span class="missing-if-branch" title="else path not taken" >E</span>  playmodeValue,<span class="branch-1 cbranch-no" title="branch not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span>
-      tonesValue,
+    更改語言選項({
+    <span class="missing-if-branch" title="else path not taken" >E</span>  聲調值,<span class="branch-1 cbranch-no" title="branch not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span>
+      遊戲模式值,
 &nbsp;
       ...newValues,
     })<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" ></span></span>
   }<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
 <span class="cstat-no" title="statement not covered" ></span>
   const handleTonesChange = (事件: React.ChangeEvent&lt;HTMLSelectElement&gt;) =&gt; {
-    setTonesValue(事件.target.value)
+    保存聲調值(事件.target.value)
 &nbsp;
     h<span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" >an</span>dleOptionsChange({</span>
-<span class="cstat-no" title="statement not covered" >      tonesValue: 事件.t</span>arget.value,
+<span class="cstat-no" title="statement not covered" >      聲調值: 事件.target.v</span>alue,
     })
   }
 <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span></span>
@@ -241,7 +241,7 @@ const Option<span class="cstat-no" title="statement not covered" >sBlock: T_Opti
     <span class="missing-if-branch" title="else path not taken" >E</span>setPlaymodeValue(事件.target.value)<span class="missing-if-branch" title="else path not taken" >E</span>
 &nbsp;
     handleOptionsChange({
-      playmodeValue: 事件.target.value,
+      遊戲模式值: 事件.target.value,
     })
   }
 &nbsp;
@@ -251,23 +251,23 @@ const Option<span class="cstat-no" title="statement not covered" >sBlock: T_Opti
 &nbsp;
   return (
     &lt;div&gt;
-      &lt;select onChange={handleTonesChange} value={tonesValue}&gt;
-        &lt;option value="witho<span class="fstat-no" title="function not covered" >ut</span>-tones"&gt;Without Tones&lt;/option&gt;
-<span class="cstat-no" title="statement not covered" >        &lt;option value="with-tones"&gt;With </span>Tones&lt;/option&gt;
+      &lt;select onChange={handleTonesChange} value={聲調值}&gt;
+        &lt;option value="不要使用聲<span class="fstat-no" title="function not covered" >調"</span>&gt;不要使用聲調&lt;/option&gt;
+<span class="cstat-no" title="statement not covered" >        &lt;option value="使用聲調"&gt;使用聲</span>調&lt;/option&gt;
       &lt;/<span class="cstat-no" title="statement not covered" >select&gt;</span>
-      &lt;select onChange={handlePlaymodeChange} value={playmodeValue}&gt;
-        &lt;option value="reductive"&gt;Reductive&lt;/option&gt;
-        &lt;option value="repetitive"&gt;Repetitive&lt;/option&gt;
+      &lt;select onChange={handlePlaymodeChange} value={遊戲模式值}&gt;
+        &lt;option value="還原論者"&gt;還原論者&lt;/option&gt;
+        &lt;option value="重複的"&gt;重複的&lt;/option&gt;
       &lt;/select&gt;<span class="fstat-no" title="function not covered" ></span>
       &lt;s<span class="cstat-no" title="statement not covered" >pan style={{ marginLeft: 10 }}&gt;</span>
-<span class="cstat-no" title="statement not covered" >        &lt;label htmlFor="autoSplitLines"&gt;</span>
-          Auto split lines:
+<span class="cstat-no" title="statement not covered" >        &lt;label htmlFor="自動分割文字行"&gt;</span>
+          自動分割文字行:
           &lt;input
-            checked={!!languageOptions.autoSplitLines}
-            id="autoSplitLines"
+            checked={!!語言選項.自動分割文字行}
+            id="自動分割文字行"
             onChange={() =&gt; {
               handleOptionsChange({
-                autoSplitLines: !languageOptions.autoSplitLines,
+                自動分割文字行: !語言選項.自動分割文字行,
               })
             }}
             type="checkbox"
@@ -286,7 +286,7 @@ export default OptionsBl<span class="cstat-no" title="statement not covered" >oc
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-02-10T04:22:29.459Z
+                at 2024-02-13T08:08:52.776Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

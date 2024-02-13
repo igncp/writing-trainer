@@ -232,9 +232,7 @@
 <a name='L167'></a><a href='#L167'>167</a>
 <a name='L168'></a><a href='#L168'>168</a>
 <a name='L169'></a><a href='#L169'>169</a>
-<a name='L170'></a><a href='#L170'>170</a>
-<a name='L171'></a><a href='#L171'>171</a>
-<a name='L172'></a><a href='#L172'>172</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L170'></a><a href='#L170'>170</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -403,15 +401,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { unknownPronunciation } from 'writing-trainer-core'
 &nbsp;
-import { T_UIHandler, T_LangOpts } from '../types'
+import { T_UIHandler, 類型_語言選項 } from '../types'
 &nbsp;
 import { 儲存成功字元, 儲存失敗字元 } from './統計'
 &nbsp;
-type T_ParsePronunciation = (text: string, langOpts?: T_LangOpts) =&gt; string
+type T_ParsePronunciation = (text: string, 語言選項?: 類型_語言選項) =&gt; string
 type T_OnPracticeBackspaceFormat = (practiceValue: string) =&gt; string
 &nbsp;
 type T_CommonHandleWritingKeyDown = (
@@ -437,16 +433,16 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
   {
     getCurrentCharObjFromPractice,
     keyEvent,
-    languageOptions,
     originalTextValue,
     practiceValue,
-    <span class="missing-if-branch" title="if path not taken" >I</span>setCurrentDisplayCharIdx,
-    setC<span class="cstat-no" title="statement not covered" >urrentText,</span>
+    setCurrentDisplayCharIdx,
+    <span class="missing-if-branch" title="if path not taken" >I</span>setCurrentText,
     setP<span class="cstat-no" title="statement not covered" >ractice,</span>
-    setPracticeHasError,
-    <span class="missing-if-branch" title="if path not taken" >I</span>setWriting,<span class="branch-1 cbranch-no" title="branch not covered" ></span>
-    spec<span class="cstat-no" title="statement not covered" >ialChars</span>Value,
-    writingValue,
+    setP<span class="cstat-no" title="statement not covered" >racticeH</span>asError,
+    setWriting,
+    <span class="missing-if-branch" title="if path not taken" >I</span>specialCharsValue,<span class="branch-1 cbranch-no" title="branch not covered" ></span>
+    writ<span class="cstat-no" title="statement not covered" >ingValue</span>,
+    語言選項,
   },
   {
     onPrac<span class="branch-0 cbranch-no" title="branch not covered" >ticeBackspaceFormat = onPracticeBackspaceFormat</span>Default,
@@ -500,12 +496,12 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
 &nbsp;
   const correctPronunciationParsed = parsePronunciation(
     correctPronunciation,
-    language<span class="cstat-no" title="statement not covered" >Options,</span>
+    語言選項,<span class="cstat-no" title="statement not covered" ></span>
   )
 &nbsp;
   if (<span class="cstat-no" title="statement not covered" ></span>
     correctPronunciationParsed ===
-<span class="cstat-no" title="statement not covered" >      parsePronunciation(newWriting</span>Value, languageOptions) ||
+<span class="cstat-no" title="statement not covered" >      parsePronunciation(newWriting</span>Value, 語言選項) ||
     correctPronunciationParsed === unknownPronunciation
   ) {
     const newPractice = practiceValue + currentCharObj.word
@@ -518,7 +514,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
       儲存成功字元(currentCharObj.word)
     }
 &nbsp;
-    if (languageOptions.playmodeValue === 'reductive') {
+    if (語言選項.遊戲模式值 === '還原論者') {
       const newPracticeText = newPractice
         .split('')
         .filter(c =&gt; !specialCharsValue.includes(c))
@@ -530,9 +526,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
         .join('')
 &nbsp;
       if (newPracticeText === originalText) {
-        const wrongCharacters = languageOptions.wrongCharacters as
-          | string[]
-          | undefined
+        const wrongCharacters = 語言選項.wrongCharacters as string[] | undefined
 &nbsp;
         if ((wrongCharacters ?? []).length) {
           const chars = Array.from(new Set(wrongCharacters))
@@ -543,7 +537,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
             .join('')
 &nbsp;
           setCurrentText(fullChars)
-          languageOptions.wrongCharacters = []
+          語言選項.wrongCharacters = []
         } else {
           setCurrentText('')
         }
@@ -560,10 +554,10 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
   const hasError = !correctPronunciation.startsWith(newWritingValue)
 &nbsp;
   if (hasError) {
-    languageOptions.wrongCharacters = languageOptions.wrongCharacters || []
+    語言選項.wrongCharacters = 語言選項.wrongCharacters || []
 &nbsp;
     if (
-      !(languageOptions.wrongCharacters as string[])
+      !(語言選項.wrongCharacters as string[])
         .slice(0)
         .slice(-1)
         .includes(currentCharObj.word) &amp;&amp;
@@ -571,7 +565,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     ) {
       儲存失敗字元(currentCharObj.word)
     }
-    ;(languageOptions.wrongCharacters as string[]).push(currentCharObj.word)
+    ;(語言選項.wrongCharacters as string[]).push(currentCharObj.word)
   }
 &nbsp;
   setPracticeHasError(hasError)
@@ -583,7 +577,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-02-10T04:22:29.459Z
+                at 2024-02-13T08:08:52.776Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

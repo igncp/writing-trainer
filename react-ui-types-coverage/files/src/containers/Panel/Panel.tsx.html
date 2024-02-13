@@ -25,7 +25,7 @@ import 文字區 from &#x27;../../components/文字區/文字區&#x27;
 import { 刪除資料庫, 取得字元數 } from &#x27;../../languages/common/統計&#x27;
 import { LanguageUIManager } from &#x27;../../languages/languageUIManager&#x27;
 import {
-  T_LangOpts,
+  類型_語言選項,
   T_getCurrentCharObjFromPractice,
 } from &#x27;../../languages/types&#x27;
 import { T_Services } from &#x27;../../typings/mainTypes&#x27;
@@ -54,7 +54,7 @@ type Props = {
     defaultLanguage?: LanguageDefinition[&#x27;id&#x27;]
     defaultPractice?: string
     defaultPronunciation?: string
-    langOpts?: T_LangOpts
+    語言選項?: 類型_語言選項
   }
   initialFragmentIndex?: number
   languageManager: LanguageManager
@@ -70,7 +70,7 @@ type Props = {
 
 const getLanguageDefinitions = (languageManager: LanguageManager) =&gt; {
   return languageManager
-    .getAvailableLanguages()
+    .取得可用語言()
     .map(langId =&gt; {
       const languageHandler = languageManager.getLanguageHandler(langId)
 
@@ -105,6 +105,8 @@ const Panel = ({
     perc: number
   }&gt;(null)
 
+  const uiHandler = languageUIManager.getUIHandler()
+
   const [fragments, setFragments] = useState&lt;{ index: number; list: string[] }&gt;(
     {
       index: 0,
@@ -131,7 +133,6 @@ const Panel = ({
   const [isShowingEdition, setShowingEdition] = useState&lt;boolean&gt;(true)
   const [doesPracticeHaveError, setPracticeHasError] = useState&lt;boolean&gt;(false)
   const [lastThreeKeys, setLastThreeKeys] = useState&lt;string[]&gt;([])
-  const [languageOptions, setLanguageOptions] = useState&lt;T_LangOpts&gt;({})
   const [selectedLanguage, setSelectedLanguage] =
     useState&lt;LanguageDefinition[&#x27;id&#x27;]&gt;(initialLanguageId)
   const [hasLoadedStorage, setHasLoadedStorage] = useState&lt;boolean&gt;(false)
@@ -140,8 +141,7 @@ const Panel = ({
   const [hasExtraControls, setHasExtraControls] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const writingArea = useRef&lt;HTMLTextAreaElement | null&gt;(null)
-
-  const uiHandler = languageUIManager.getUIHandler()
+  const 語言選項 = _stories.語言選項 ?? uiHandler.取得語言選項()
 
   const langHandler = languageManager.getCurrentLanguageHandler()
 
@@ -173,7 +173,7 @@ const Panel = ({
 
     setPracticeHasError(false)
 
-    languageOptions.wrongCharacters = []
+    語言選項.wrongCharacters = []
 
     if (newFragments) {
       setFragments(newFragments)
@@ -283,19 +283,18 @@ const Panel = ({
     })()
   }, [initialFragmentIndex])
 
-  const 特殊字元 = langHandler!.取得特殊字符()
-  const langOpts = _stories.langOpts ?? uiHandler.getLangOpts()
-  const langOptsObj = {
-    langOpts: {
+  const 特殊字元 = langHandler?.取得特殊字符()
+  const 語言選項對象 = {
+    語言選項: {
       pronunciationInput: pronunciationValue,
-      ...((langOpts as unknown as object | undefined) ?? {}),
+      ...((語言選項 as unknown as 類型_語言選項 | undefined) ?? {}),
     },
   }
 
-  const charsToRemove = specialCharsValue.split(&#x27;&#x27;).concat(特殊字元)
+  const charsToRemove = specialCharsValue.split(&#x27;&#x27;).concat(特殊字元 ?? [])
 
-  const charsObjs = langHandler!.convertToCharsObjs({
-    ...langOptsObj,
+  const charsObjs = langHandler?.convertToCharsObjs({
+    ...語言選項對象,
     charsToRemove,
     text: originalTextValue,
   })
@@ -303,14 +302,16 @@ const Panel = ({
   const getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice = (
     practiceText = practiceValue,
   ) =&gt; {
-    const practiceCharsObjs = langHandler!.convertToCharsObjs({
-      ...langOptsObj,
+    if (!langHandler) return null
+
+    const practiceCharsObjs = langHandler.convertToCharsObjs({
+      ...語言選項對象,
       charsToRemove,
       text: practiceText,
     })
 
-    return langHandler!.getCurrentCharObj({
-      originalCharsObjs: charsObjs,
+    return langHandler.getCurrentCharObj({
+      originalCharsObjs: charsObjs ?? [],
       practiceCharsObjs,
     })
   }
@@ -392,10 +393,9 @@ const Panel = ({
     }
 
     uiHandler.handleWritingKeyDown({
-      charsObjs,
+      charsObjs: charsObjs ?? [],
       getCurrentCharObjFromPractice,
       keyEvent: 事件,
-      languageOptions,
       originalTextValue,
       practiceValue,
       setCurrentDisplayCharIdx,
@@ -405,11 +405,12 @@ const Panel = ({
       setWriting,
       specialCharsValue: charsToRemove.join(&#x27;&#x27;),
       writingValue,
+      語言選項,
     })
   }
 
-  const handleLanguageOptionsChange = (opts: T_LangOpts) =&gt; {
-    setLanguageOptions(opts)
+  const 更改語言選項 = (選項: 類型_語言選項) =&gt; {
+    uiHandler.儲存語言選項(選項)
   }
 
   const handleWritingAreaClick = () =&gt; {
@@ -641,7 +642,7 @@ const Panel = ({
                 if (uiHandler.onBlur) {
                   const { newFragmentsList } = uiHandler.onBlur({
                     fragmentsList: fragments.list,
-                    languageOptions,
+                    語言選項,
                   })
 
                   if (newFragmentsList) {
@@ -671,10 +672,7 @@ const Panel = ({
                   rows={2}
                   value={pronunciationValue}
                 /&gt;
-                &lt;OptionsBlock
-                  languageOptions={languageOptions}
-                  onOptionsChange={handleLanguageOptionsChange}
-                /&gt;
+                &lt;OptionsBlock 更改語言選項={更改語言選項} 語言選項={語言選項} /&gt;
                 &lt;文字區
                   onChange={createInputSetterFn(setSpecialChars)}
                   placeholder=&quot;特殊字元&quot;
@@ -704,25 +702,21 @@ const Panel = ({
             )}
             {/* This is necessary because the options block initialises some values*/}
             &lt;div style={{ display: &#x27;none&#x27; }}&gt;
-              &lt;OptionsBlock
-                languageOptions={languageOptions}
-                onOptionsChange={handleLanguageOptionsChange}
-              /&gt;
+              &lt;OptionsBlock 更改語言選項={更改語言選項} 語言選項={語言選項} /&gt;
             &lt;/div&gt;
           &lt;/div&gt;
         )}{&#x27; &#x27;}
         &lt;div&gt;
           &lt;div style={{ marginBottom: 10, marginTop: 5 }}&gt;
             &lt;CharactersDisplay
-              charsObjs={charsObjs}
+              charsObjs={charsObjs ?? []}
               focusedIndex={currentDisplayCharIdx}
               fontSize={fontSize}
               onCharClick={handleDisplayedCharClick}
               shouldHaveDifferentWidths={!uiHandler.shouldAllCharsHaveSameWidth}
               shouldHidePronunciation={!isShowingPronunciation}
               showCurrentCharPronunciation={
-                doesPracticeHaveError &amp;&amp;
-                languageOptions.playmodeValue === &#x27;reductive&#x27;
+                doesPracticeHaveError &amp;&amp; 語言選項.遊戲模式值 === &#x27;還原論者&#x27;
               }
             /&gt;
           &lt;/div&gt;
@@ -782,7 +776,7 @@ const Panel = ({
 
 export default Panel
 </textarea><pre id="annotations" style="display:none">[{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:24,&quot;character&quot;:3,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:25,&quot;character&quot;:4,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:260,&quot;character&quot;:14,&quot;text&quot;:&quot;parsedFragments&quot;,&quot;kind&quot;:1}]</pre></div>
-    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Sat, 10 Feb 2024 04:22:34 GMT</p>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Tue, 13 Feb 2024 08:08:57 GMT</p>
     </body>
   </html>
   

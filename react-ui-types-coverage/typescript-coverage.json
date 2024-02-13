@@ -37,6 +37,20 @@
       "kind": 1
     },
     {
+      "file": "src/languages/cantonese/cantonese.tsx",
+      "line": 66,
+      "character": 8,
+      "text": "rest",
+      "kind": 1
+    },
+    {
+      "file": "src/languages/mandarin/mandarin.tsx",
+      "line": 85,
+      "character": 8,
+      "text": "rest",
+      "kind": 1
+    },
+    {
       "file": "src/containers/RecordsSection/RecordsSection.tsx",
       "line": 82,
       "character": 61,
@@ -318,14 +332,14 @@
     },
     {
       "file": "src/languages/english/__stories__/OptionsBlock.stories.tsx",
-      "line": 17,
+      "line": 12,
       "character": 6,
       "text": "Common",
       "kind": 1
     },
     {
       "file": "src/languages/english/__stories__/OptionsBlock.stories.tsx",
-      "line": 24,
+      "line": 19,
       "character": 9,
       "text": "Common",
       "kind": 1
@@ -723,8 +737,8 @@
       "kind": 1
     }
   ],
-  "percentage": 98.02151363810988,
-  "total": 5206,
-  "covered": 5103,
-  "uncovered": 103
+  "percentage": 98.00342270393611,
+  "total": 5259,
+  "covered": 5154,
+  "uncovered": 105
 }
