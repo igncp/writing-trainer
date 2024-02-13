@@ -84,22 +84,22 @@ const 儲存語言選項 = (opts: 類型_語言選項) => {
   localStorage.setItem('mandarinLangOpts', JSON.stringify(toSave))
 }
 
-const parsePronunciation = (text: string, 選項: 類型_語言選項) => {
-  let parsedText = text.toLowerCase()
+const 解析發音 = (文字: string, 選項: 類型_語言選項) => {
+  let 解析後的文本 = 文字.toLowerCase()
 
   if (
     !選項.聲調值 ||
     (選項.聲調值 as 類型_廣東話的語言選項['聲調值']) === '不要使用聲調'
   ) {
-    parsedText = parsedText.replace(/[0-9]/g, '')
+    解析後的文本 = 解析後的文本.replace(/[0-9]/g, '')
   }
 
-  return parsedText
+  return 解析後的文本
 }
 
-const handleWritingKeyDown: T_UIHandler['handleWritingKeyDown'] = params => {
-  commonHandleWritingKeyDown(params, {
-    parsePronunciation,
+const handleWritingKeyDown: T_UIHandler['handleWritingKeyDown'] = 參數 => {
+  commonHandleWritingKeyDown(參數, {
+    解析發音,
   })
 }
 

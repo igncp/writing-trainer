@@ -160,7 +160,7 @@ const Panel = ({
 
     setPracticeHasError(false)
 
-    語言選項.wrongCharacters = []
+    語言選項.錯誤的字符 = []
 
     if (newFragments) {
       setFragments(newFragments)
@@ -382,7 +382,6 @@ const Panel = ({
     uiHandler.handleWritingKeyDown({
       charsObjs: charsObjs ?? [],
       getCurrentCharObjFromPractice,
-      keyEvent: 事件,
       originalTextValue,
       practiceValue,
       setCurrentDisplayCharIdx,
@@ -392,8 +391,11 @@ const Panel = ({
       setWriting,
       specialCharsValue: charsToRemove.join(''),
       writingValue,
+      按鍵事件: 事件,
       語言選項,
     })
+
+    uiHandler.儲存語言選項(語言選項)
   }
 
   const 更改語言選項 = (選項: 類型_語言選項) => {

@@ -27,13 +27,13 @@ describe('取得語言選項', () => {
 describe('handleWritingKeyDown', () => {
   const commonOpts: any = {
     getCurrentCharObjFromPractice: jest.fn(),
-    keyEvent: { key: 'eventKeyValue' },
     practiceValue: 'foo bar baz ',
     setCurrentDisplayCharIdx: jest.fn(),
     setPractice: jest.fn(),
     setPracticeHasError: jest.fn(),
     setWriting: jest.fn(),
     writingValue: 'writingValue',
+    按鍵事件: { key: 'eventKeyValue' },
     語言選項: {},
   }
 
@@ -45,8 +45,8 @@ describe('handleWritingKeyDown', () => {
           ch: 'charValue' as any,
           index: 'indexValue' as any,
         }),
-      keyEvent: { key: 'Backspace' },
       writingValue: '',
+      按鍵事件: { key: 'Backspace' },
     }
 
     englishUIHandler.handleWritingKeyDown(opts)
@@ -74,13 +74,13 @@ describe('handleWritingKeyDown', () => {
       getCurrentCharObjFromPractice: () => ({
         ch: { pronunciation: 'abc', word: 'wordValue' },
       }),
-      keyEvent: { key: 'c', preventDefault: jest.fn() },
       writingValue: 'ab',
+      按鍵事件: { key: 'c', preventDefault: jest.fn() },
     }
 
     englishUIHandler.handleWritingKeyDown(opts)
 
-    expect(opts.keyEvent.preventDefault.mock.calls).toEqual([[]])
+    expect(opts.按鍵事件.preventDefault.mock.calls).toEqual([[]])
     expect(opts.setWriting.mock.calls).toEqual([['']])
     expect(opts.setPractice.mock.calls).toEqual([['foo bar baz wordValue ']])
   })

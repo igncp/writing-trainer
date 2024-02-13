@@ -26,7 +26,6 @@ export type T_getCurrentCharObjFromPractice = (
 type T_handleWritingKeyDown = (opts: {
   charsObjs: CharObj[]
   getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice
-  keyEvent: React.KeyboardEvent<HTMLTextAreaElement>
   originalTextValue: string
   practiceValue: string
   setCurrentDisplayCharIdx: (idx: number) => void
@@ -36,6 +35,7 @@ type T_handleWritingKeyDown = (opts: {
   setWriting: (o: string) => void
   specialCharsValue: string
   writingValue: string
+  按鍵事件: React.KeyboardEvent<HTMLTextAreaElement>
   語言選項: 類型_語言選項
 }) => void
 
