@@ -7,11 +7,11 @@ type T_Dictionary = { [k: string]: string }
 
 const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
   charsToRemove,
-  langOpts = {},
   text,
+  語言選項 = {},
 }) => {
-  const dictionary: T_Dictionary = (langOpts.dictionary || {}) as T_Dictionary
-  const pronunciationInput: string = (langOpts.pronunciationInput ||
+  const dictionary: T_Dictionary = (語言選項.dictionary || {}) as T_Dictionary
+  const pronunciationInput: string = (語言選項.pronunciationInput ||
     '') as string
   const pronunciationInputArr = pronunciationInput.split(' ').filter(c => !!c)
 

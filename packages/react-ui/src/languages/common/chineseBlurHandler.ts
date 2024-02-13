@@ -2,9 +2,9 @@ import { T_UIHandler } from '../types'
 
 export const chineseBlurHandler: T_UIHandler['onBlur'] = ({
   fragmentsList,
-  languageOptions,
+  語言選項,
 }) => {
-  if (languageOptions.autoSplitLines) {
+  if (語言選項.自動分割文字行) {
     const splitChars = new Set(['。', '？', '！', '；', '，'])
     const splitLength = 20
     const newList = fragmentsList

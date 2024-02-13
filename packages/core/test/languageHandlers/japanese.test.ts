@@ -19,10 +19,10 @@ describe('convertToCharsObjs', () => {
     expect(
       japaneseHandler.convertToCharsObjs({
         charsToRemove: [],
-        langOpts: {
+        text: 'あい,うえお',
+        語言選項: {
           pronunciationInput: 'ai2 ue2 o1',
         },
-        text: 'あい,うえお',
       }),
     ).toEqual([
       {
@@ -48,10 +48,10 @@ describe('convertToCharsObjs', () => {
     expect(
       japaneseHandler.convertToCharsObjs({
         charsToRemove: [],
-        langOpts: {
+        text: 'あい,うえお',
+        語言選項: {
           pronunciationInput: 'ai2 ue o1',
         },
-        text: 'あい,うえお',
       }),
     ).toEqual([
       {
@@ -99,10 +99,10 @@ describe('convertToCharsObjs', () => {
     expect(
       japaneseHandler.convertToCharsObjs({
         charsToRemove: [],
-        langOpts: {
+        text: 'あい えう',
+        語言選項: {
           pronunciationInput: 'ai0 eu1',
         },
-        text: 'あい えう',
       }),
     ).toEqual([
       {
@@ -128,10 +128,10 @@ describe('convertToCharsObjs', () => {
     expect(
       japaneseHandler.convertToCharsObjs({
         charsToRemove: [],
-        langOpts: {
+        text: 'あい',
+        語言選項: {
           pronunciationInput: 'fō2',
         },
-        text: 'あい',
       }),
     ).toEqual([
       {
@@ -145,10 +145,10 @@ describe('convertToCharsObjs', () => {
     expect(
       japaneseHandler.convertToCharsObjs({
         charsToRemove: [],
-        langOpts: {
+        text: 'あい',
+        語言選項: {
           pronunciationInput: 'AbCdE2',
         },
-        text: 'あい',
       }),
     ).toEqual([
       {

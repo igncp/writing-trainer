@@ -5,15 +5,15 @@ import { render } from '@testing-library/react'
 import OptionsBlock from '../OptionsBlock'
 
 const commonProps = {
-  languageOptions: {},
-  onOptionsChange: () => {},
+  更改語言選項: () => {},
+  語言選項: {},
 }
 
 describe('OptionsBlock', () => {
   it('renders the content', () => {
     const { getByText } = render(<OptionsBlock {...commonProps} />)
 
-    expect(() => getByText('Without Tones')).not.toThrow()
-    expect(() => getByText('With Tones')).not.toThrow()
+    expect(() => getByText('不要使用聲調')).not.toThrow()
+    expect(() => getByText('使用聲調')).not.toThrow()
   })
 })

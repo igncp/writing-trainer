@@ -5,8 +5,8 @@ import OptionsBlock from '../OptionsBlock'
 const OptionsBlockStories = () => {
   return (
     <OptionsBlock
-      languageOptions={{}}
-      onOptionsChange={() => console.log('options-change')}
+      更改語言選項={() => console.log('更改語言選項')}
+      語言選項={{}}
     />
   )
 }

@@ -32,10 +32,6 @@ class LanguageManager {
     this.currentLanguageHandlerId = null
   }
 
-  public getAvailableLanguages() {
-    return this.getLanguagesIds()
-  }
-
   public getCurrentLanguageHandler() {
     if (!this.currentLanguageHandlerId) {
       return null
@@ -66,6 +62,10 @@ class LanguageManager {
 
   public unregisterLanguage(langId: string) {
     this.languages = this.languages.filter(l => l.getId() !== langId)
+  }
+
+  public 取得可用語言() {
+    return this.getLanguagesIds()
   }
 }
 

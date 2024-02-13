@@ -5,12 +5,7 @@ import { action } from '@storybook/addon-actions'
 import OptionsBlock from '../OptionsBlock'
 
 const OptionsBlockStories = () => {
-  return (
-    <OptionsBlock
-      languageOptions={{}}
-      onOptionsChange={action('options-change')}
-    />
-  )
+  return <OptionsBlock 更改語言選項={action('options-change')} 語言選項={{}} />
 }
 
 const Template = () => <OptionsBlockStories />

@@ -18,13 +18,13 @@ afterEach(() => {
 describe('constructor', () => {
   it('populates the language manager', () => {
     expect((languageManager.clear as any).mock.calls).toEqual([])
-    expect(languageManager.getAvailableLanguages()).toEqual([])
+    expect(languageManager.取得可用語言()).toEqual([])
     expect(languageManager.getCurrentLanguageHandler()).toEqual(null)
 
     new LanguageUIManager(languageManager, uiHandlers)
 
     expect((languageManager.clear as any).mock.calls).toEqual([[]])
-    expect(languageManager.getAvailableLanguages()).not.toEqual([])
+    expect(languageManager.取得可用語言()).not.toEqual([])
     expect(languageManager.getCurrentLanguageHandler()).not.toEqual(null)
   })
 })

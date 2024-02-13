@@ -5,8 +5,8 @@ import { 特殊字元 } from './_特殊字元'
 
 type T_convertToCharsObjs = (opts: {
   charsToRemove: string[]
-  langOpts?: { [k: string]: unknown }
   text: string
+  語言選項?: { [k: string]: unknown }
 }) => CharObj[]
 
 class LanguageHandler {

@@ -71,13 +71,13 @@ describe('convertToCharsObjs', () => {
     expect(
       mandarinHandler.convertToCharsObjs({
         charsToRemove: [],
-        langOpts: {
+        text: '你好嗎?我很好',
+        語言選項: {
           dictionary: {
             ...fullDictionary,
             很: undefined,
           },
         },
-        text: '你好嗎?我很好',
       }),
     ).toEqual(
       correctResult.map(c =>
@@ -88,8 +88,8 @@ describe('convertToCharsObjs', () => {
     expect(
       mandarinHandler.convertToCharsObjs({
         charsToRemove: [],
-        langOpts: {},
         text: '你好嗎?我很好',
+        語言選項: {},
       }),
     ).toEqual(
       correctResult.map(c =>
@@ -111,11 +111,11 @@ describe('convertToCharsObjs', () => {
     expect(
       mandarinHandler.convertToCharsObjs({
         charsToRemove: [],
-        langOpts: {
+        text: '你好嗎?我很好',
+        語言選項: {
           dictionary: fullDictionary,
           pronunciationInput: 'foo bar',
         },
-        text: '你好嗎?我很好',
       }),
     ).toEqual(
       correctResult.map((c, cIdx) => ({

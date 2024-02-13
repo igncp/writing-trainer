@@ -4,10 +4,14 @@ import OptionsBlock from '../common/CharsOptions/OptionsBlock'
 import { chineseBlurHandler } from '../common/chineseBlurHandler'
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
 import { tradToSimplifiedItems } from '../common/conversion'
-import { T_UIHandler, T_LangOpts, T_CharsDisplayClickHandler } from '../types'
+import {
+  T_UIHandler,
+  類型_語言選項,
+  T_CharsDisplayClickHandler,
+} from '../types'
 
 import LinksBlock from './LinksBlock/LinksBlock'
-import { T_CantoneseLanguageOptions } from './cantoneseTypes'
+import { 類型_廣東話的語言選項 } from './cantoneseTypes'
 import dictionary from './converted-list-jy.yml'
 
 const charToPronunciationMap: { [key: string]: string } = {}
@@ -51,13 +55,41 @@ Object.keys(dictionaryParsed).forEach(char => {
   pronunciationToCharMap[item[0]] = char
 })
 
-const parsePronunciation = (text: string, opts: T_LangOpts) => {
+const 語言選項基礎: 類型_語言選項 = {
+  dictionary: charToPronunciationMap,
+}
+
+const 取得語言選項 = () => {
+  if (typeof localStorage === 'undefined') {
+    return {}
+  }
+
+  const rest = JSON.parse(localStorage.getItem('mandarinLangOpts') ?? '{}')
+
+  return {
+    ...語言選項基礎,
+    ...rest,
+  } satisfies 類型_語言選項
+}
+
+const 儲存語言選項 = (opts: 類型_語言選項) => {
+  if (typeof localStorage === 'undefined') {
+    return
+  }
+
+  const toSave = { ...opts }
+
+  delete toSave.dictionary
+
+  localStorage.setItem('mandarinLangOpts', JSON.stringify(toSave))
+}
+
+const parsePronunciation = (text: string, 選項: 類型_語言選項) => {
   let parsedText = text.toLowerCase()
 
   if (
-    !opts.tonesValue ||
-    (opts.tonesValue as T_CantoneseLanguageOptions['tonesValue']) ===
-      'without-tones'
+    !選項.聲調值 ||
+    (選項.聲調值 as 類型_廣東話的語言選項['聲調值']) === '不要使用聲調'
   ) {
     parsedText = parsedText.replace(/[0-9]/g, '')
   }
@@ -69,10 +101,6 @@ const handleWritingKeyDown: T_UIHandler['handleWritingKeyDown'] = params => {
   commonHandleWritingKeyDown(params, {
     parsePronunciation,
   })
-}
-
-const langOpts: T_LangOpts = {
-  dictionary: charToPronunciationMap,
 }
 
 const privateFns = {
@@ -143,13 +171,14 @@ export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
 
 const uiHandler: T_UIHandler = {
   getDisplayedCharHandler: () => handleDisplayedCharClick,
-  getLangOpts: () => langOpts,
   getLinksBlock: () => LinksBlock,
   getOptionsBlock: () => OptionsBlock,
   handleWritingKeyDown,
   languageHandler: cantoneseHandler,
   onBlur: chineseBlurHandler,
   shouldAllCharsHaveSameWidth: false,
+  儲存語言選項,
+  取得語言選項,
 }
 
 export default uiHandler

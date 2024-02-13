@@ -1,7 +1,7 @@
 import React from 'react'
 import { CharObj, CurrentCharObj, LanguageHandler } from 'writing-trainer-core'
 
-export type T_LangOpts = { [k: string]: unknown }
+export type 類型_語言選項 = { [k: string]: unknown }
 
 export type T_LinksBlock = (opts: {
   children?: React.ReactNode
@@ -9,9 +9,9 @@ export type T_LinksBlock = (opts: {
 }) => React.ReactNode
 
 export type T_OptionsBlock = (props: {
-  languageOptions: T_LangOpts
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onOptionsChange: (...args: any[]) => void
+  更改語言選項: (...args: any[]) => void
+  語言選項: 類型_語言選項
 }) => React.ReactNode
 
 export type T_getPronunciationOfText = (opts: {
@@ -27,7 +27,6 @@ type T_handleWritingKeyDown = (opts: {
   charsObjs: CharObj[]
   getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice
   keyEvent: React.KeyboardEvent<HTMLTextAreaElement>
-  languageOptions: T_LangOpts
   originalTextValue: string
   practiceValue: string
   setCurrentDisplayCharIdx: (idx: number) => void
@@ -37,6 +36,7 @@ type T_handleWritingKeyDown = (opts: {
   setWriting: (o: string) => void
   specialCharsValue: string
   writingValue: string
+  語言選項: 類型_語言選項
 }) => void
 
 export type T_CharsDisplayClickHandler =
@@ -45,7 +45,7 @@ export type T_CharsDisplayClickHandler =
 
 type T_BlurHandlerOpts = {
   fragmentsList: string[]
-  languageOptions: T_LangOpts
+  語言選項: 類型_語言選項
 }
 
 type T_BlurHandler = (opts: T_BlurHandlerOpts) => {
@@ -54,11 +54,12 @@ type T_BlurHandler = (opts: T_BlurHandlerOpts) => {
 
 export interface T_UIHandler {
   getDisplayedCharHandler: () => T_CharsDisplayClickHandler
-  getLangOpts: () => T_LangOpts
   getLinksBlock: () => T_LinksBlock
   getOptionsBlock: () => T_OptionsBlock
   handleWritingKeyDown: T_handleWritingKeyDown
   languageHandler: LanguageHandler
   onBlur?: T_BlurHandler
   shouldAllCharsHaveSameWidth: boolean
+  儲存語言選項: (o: 類型_語言選項) => void
+  取得語言選項: () => 類型_語言選項
 }

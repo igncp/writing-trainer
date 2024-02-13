@@ -5,8 +5,8 @@ import { render } from '@testing-library/react'
 import OptionsBlock from '../OptionsBlock'
 
 const commonProps = {
-  languageOptions: {},
-  onOptionsChange: () => {},
+  更改語言選項: () => {},
+  語言選項: {},
 }
 
 describe('OptionsBlock', () => {

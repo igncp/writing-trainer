@@ -5,15 +5,15 @@ import { LanguageHandler } from './_common'
 
 const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
   charsToRemove,
-  langOpts = {},
   text,
+  語言選項 = {},
 }) => {
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const defaultSpecialChars = japaneseHandler.取得特殊字符()
   const allCharsToRemove = defaultSpecialChars
     .concat(charsToRemove)
     .concat([' '])
-  const pronunciationInput: string = (langOpts.pronunciationInput ||
+  const pronunciationInput: string = (語言選項.pronunciationInput ||
     '') as string
   const pronunciationInputArr = pronunciationInput
     .replace(/ō/g, 'ou')

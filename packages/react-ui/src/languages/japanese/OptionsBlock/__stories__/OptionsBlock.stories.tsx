@@ -7,8 +7,8 @@ const OptionsBlockStories = () => {
     <div>
       <p>The options block for Japanese is empty at the moment</p>
       <OptionsBlock
-        languageOptions={{}}
-        onOptionsChange={() => console.log('onOptionsChange')}
+        更改語言選項={() => console.log('更改語言選項')}
+        語言選項={{}}
       />
     </div>
   )

@@ -5,7 +5,8 @@ import CharactersDisplay from '../CharactersDisplay'
 
 const charsObjsMandarin = mandarinHandler.convertToCharsObjs({
   charsToRemove: [',', '.'],
-  langOpts: {
+  text: '崩比筆,壁必畢.閉編',
+  語言選項: {
     dictionary: {
       壁: 'bi4',
       崩: 'beng1',
@@ -17,7 +18,6 @@ const charsObjsMandarin = mandarinHandler.convertToCharsObjs({
       閉: 'bi4',
     },
   },
-  text: '崩比筆,壁必畢.閉編',
 })
 
 const commonProps = {

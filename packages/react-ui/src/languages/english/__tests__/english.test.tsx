@@ -4,7 +4,7 @@ import LinksBlock from '../LinksBlock/LinksBlock'
 import OptionsBlock from '../OptionsBlock'
 import englishUIHandler, { _test } from '../english'
 
-const { langOpts } = _test!
+const { 語言選項 } = _test!
 
 const languageManager = new LanguageManager()
 
@@ -18,9 +18,9 @@ describe('getDisplayedCharHandler', () => {
   })
 })
 
-describe('getLangOpts', () => {
+describe('取得語言選項', () => {
   it('returns the expected object', () => {
-    expect(englishUIHandler.getLangOpts()).toEqual(langOpts)
+    expect(englishUIHandler.取得語言選項()).toEqual(語言選項)
   })
 })
 
@@ -28,13 +28,13 @@ describe('handleWritingKeyDown', () => {
   const commonOpts: any = {
     getCurrentCharObjFromPractice: jest.fn(),
     keyEvent: { key: 'eventKeyValue' },
-    languageOptions: {},
     practiceValue: 'foo bar baz ',
     setCurrentDisplayCharIdx: jest.fn(),
     setPractice: jest.fn(),
     setPracticeHasError: jest.fn(),
     setWriting: jest.fn(),
     writingValue: 'writingValue',
+    語言選項: {},
   }
 
   it('removes a word (leaving a space) and select the previous one when deleting', () => {

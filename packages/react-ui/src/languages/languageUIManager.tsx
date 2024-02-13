@@ -34,15 +34,15 @@ class LanguageUIManager {
   public getUIHandler() {
     const languageHandler = this.manager.getCurrentLanguageHandler()
 
-    if (!languageHandler as unknown) {
+    if (!languageHandler) {
       throw new Error('No language handler set')
     }
 
-    const uiHandler = this.idToLanguageUIHandlerMap[languageHandler!.getId()]
+    const uiHandler = this.idToLanguageUIHandlerMap[languageHandler.getId()]
 
     if (!uiHandler as unknown) {
       throw new Error(
-        `No UI language handler for language: ${languageHandler!.getId()}`,
+        `No UI language handler for language: ${languageHandler.getId()}`,
       )
     }
 
