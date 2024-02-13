@@ -228,11 +228,7 @@
 <a name='L163'></a><a href='#L163'>163</a>
 <a name='L164'></a><a href='#L164'>164</a>
 <a name='L165'></a><a href='#L165'>165</a>
-<a name='L166'></a><a href='#L166'>166</a>
-<a name='L167'></a><a href='#L167'>167</a>
-<a name='L168'></a><a href='#L168'>168</a>
-<a name='L169'></a><a href='#L169'>169</a>
-<a name='L170'></a><a href='#L170'>170</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L166'></a><a href='#L166'>166</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -281,7 +277,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -335,9 +330,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -407,18 +399,18 @@ import { T_UIHandler, 類型_語言選項 } from '../types'
 &nbsp;
 import { 儲存成功字元, 儲存失敗字元 } from './統計'
 &nbsp;
-type T_ParsePronunciation = (text: string, 語言選項?: 類型_語言選項) =&gt; string
+type 類型_解析發音 = (文字: string, 語言選項?: 類型_語言選項) =&gt; string
 type T_OnPracticeBackspaceFormat = (practiceValue: string) =&gt; string
 &nbsp;
 type T_CommonHandleWritingKeyDown = (
   opts: Parameters&lt;T_UIHandler['handleWritingKeyDown']&gt;[0],
   opts2: {
     onPracticeBackspaceFormat?: T_OnPracticeBackspaceFormat
-    parsePronunciation?: T_ParsePronunciation
+    解析發音?: 類型_解析發音
   },
 ) =&gt; ReturnType&lt;T_UIHandler['handleWritingKeyDown']&gt;
 <span class="branch-1 cbranch-no" title="branch not covered" ><span class="branch-1 cbranch-no" title="branch not covered" ></span></span>
-const parsePronunciationDefault: T_ParsePronunciation = p =&gt; p.toLowerCase()
+const 預設解析發音: 類型_解析發音 = 文字 =&gt; 文字.toLowerCase()
 &nbsp;
 const onPracticeBackspaceFormatDefault: T_OnPracticeBackspaceFormat = p =&gt; {
   return p
@@ -432,79 +424,75 @@ const onPracticeBackspaceFormatDefault: T_OnPracticeBackspaceFormat = p =&gt; {
 export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
   {
     getCurrentCharObjFromPractice,
-    keyEvent,
     originalTextValue,
     practiceValue,
     setCurrentDisplayCharIdx,
-    <span class="missing-if-branch" title="if path not taken" >I</span>setCurrentText,
-    setP<span class="cstat-no" title="statement not covered" >ractice,</span>
-    setP<span class="cstat-no" title="statement not covered" >racticeH</span>asError,
-    setWriting,
-    <span class="missing-if-branch" title="if path not taken" >I</span>specialCharsValue,<span class="branch-1 cbranch-no" title="branch not covered" ></span>
-    writ<span class="cstat-no" title="statement not covered" >ingValue</span>,
+    setCurrentText,
+    <span class="missing-if-branch" title="if path not taken" >I</span>setPractice,
+    setP<span class="cstat-no" title="statement not covered" >racticeHasError,</span>
+    setW<span class="cstat-no" title="statement not covered" >riting,</span>
+    specialCharsValue,
+    <span class="missing-if-branch" title="if path not taken" >I</span>writingValue,<span class="branch-1 cbranch-no" title="branch not covered" ></span>
+    按鍵事件<span class="cstat-no" title="statement not covered" >,</span>
     語言選項,
   },
   {
     onPrac<span class="branch-0 cbranch-no" title="branch not covered" >ticeBackspaceFormat = onPracticeBackspaceFormat</span>Default,
-    parsePronunciation = parsePronunciationDefault,
+    解析發音 = 預設解析發音,
   },
 ) =&gt;<span class="missing-if-branch" title="else path not taken" >E</span> {
-  if (keyEvent.key === 'Backspace' &amp;&amp; writingValue.length === 0) {
-    cons<span class="branch-1 cbranch-no" title="branch not covered" >t newPracticeText = onPracticeBackspaceFormat(practiceValue)</span>
+  if (按鍵<span class="branch-1 cbranch-no" title="branch not covered" >事件.key === 'Backspace' &amp;&amp; writingValue.length === 0) {</span>
+    const newPracticeText = onPracticeBackspaceFormat(practiceValue)
 &nbsp;
     setPractice(newPracticeText)
     const langObj = getCurrentCharObjFromPractice(newPracticeText)
-&nbsp;
-    if (<span class="missing-if-branch" title="if path not taken" >I</span>langObj?.ch) {
-      setCur<span class="cstat-no" title="statement not covered" >rentDisplayCharIdx(langObj.index)</span>
-    }
 <span class="missing-if-branch" title="if path not taken" >I</span>
-    return<span class="cstat-no" title="statement not covered" ></span>
-  }
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-  const currentLangObj = getCurrentCharObjFromPractice()
+    if (lang<span class="cstat-no" title="statement not covered" >Obj?.ch) {</span>
+      setCurrentDisplayCharIdx(langObj.index)
+    }<span class="missing-if-branch" title="if path not taken" >I</span>
 <span class="cstat-no" title="statement not covered" ></span>
-  if (!currentLangObj?.ch) {
-    setPracticeHasError(<span class="fstat-no" title="function not covered" >fa</span>lse)<span class="cstat-no" title="statement not covered" ></span>
+    return
+  }<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
 &nbsp;
+  const currentLangObj = getCur<span class="cstat-no" title="statement not covered" >rentCharObjFromPractice()</span>
+&nbsp;
+  if (!currentLangObj?.c<span class="fstat-no" title="function not covered" >h)</span> {<span class="cstat-no" title="statement not covered" ></span>
+    setPracticeHasError(false)
+<span class="cstat-no" title="statement not covered" ></span>
     return<span class="cstat-no" title="statement not covered" ></span>
   }<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" ></span>
-  setCurrentDisplayCharIdx(current<span class="cstat-no" title="statement not covered" >LangObj.index)</span>
-<span class="cstat-no" title="statement not covered" ></span>
-  const { ch: currentCharObj <span class="fstat-no" title="function not covered" >} </span>= currentLangObj
-<span class="cstat-no" title="statement not covered" ></span>
-  keyEvent.preventDefault()
+  setCurrentDisplayCharIdx(currentLa<span class="cstat-no" title="statement not covered" >ngObj.index)</span>
+<span class="fstat-no" title="function not covered" ></span>
+  const { ch: currentCha<span class="cstat-no" title="statement not covered" >rObj } = currentLangObj</span>
 &nbsp;
-  // including capit<span class="cstat-no" title="statement not covered" >al letters so it doesn't wr</span>ite when shortcut
-  if (!/[a-z0-9A-Z]/<span class="cstat-no" title="statement not covered" >.test(keyEvent.key)) {</span>
-    setPractice(practiceValue + keyEvent.key)
-&nbsp;
-    return<span class="cstat-no" title="statement not covered" ></span>
-  }
+  按鍵事件.preventDefault()
 <span class="cstat-no" title="statement not covered" ></span>
-  if (keyEvent.key.length !== 1 &amp;&amp; keyEvent.key !== 'Backspace') {
+  // including capit<span class="cstat-no" title="statement not covered" >al letters so it </span>doesn't write when shortcut
+  if (!/[a-z0-9A-Z]/.test(按鍵事件.key)) {
+    setPractice(practiceValue + 按鍵事件.key)
+<span class="cstat-no" title="statement not covered" ></span>
+    return
+  }<span class="cstat-no" title="statement not covered" ></span>
+&nbsp;
+  if (按鍵事件.key.length !== 1 &amp;&amp; 按鍵事件.key !== 'Backspace') {
     return
   }
-&nbsp;
-  co<span class="cstat-no" title="statement not covered" >nst { pronunciation: correctP</span>ronunciation } = currentCharObj
 <span class="cstat-no" title="statement not covered" ></span>
-  co<span class="cstat-no" title="statement not covered" >nst newWritingValue =</span>
-    keyE<span class="cstat-no" title="statement not covered" >vent.key === 'Backspace'</span>
-      ? <span class="cstat-no" title="statement not covered" >writingValue.slice(0, writingValue.length - 1)</span>
-      : writingValue + keyEvent.key
+  const { pronuncia<span class="cstat-no" title="statement not covered" >tion: correctPronunciation } = currentCharObj</span>
+<span class="cstat-no" title="statement not covered" ></span>
+  const <span class="cstat-no" title="statement not covered" >newWritingValue =</span>
+    按鍵事件<span class="cstat-no" title="statement not covered" >.key === 'Backspace'</span>
+      ? writingValue.slice(0, writingValue.length - 1)
+      : writingValue + 按鍵事件.key
 &nbsp;
-  const correctPronunciationParsed = parsePronunciation(
-    correctPronunciation,
-    語言選項,<span class="cstat-no" title="statement not covered" ></span>
-  )
-&nbsp;
-  if (<span class="cstat-no" title="statement not covered" ></span>
-    correctPronunciationParsed ===
-<span class="cstat-no" title="statement not covered" >      parsePronunciation(newWriting</span>Value, 語言選項) ||
-    correctPronunciationParsed === unknownPronunciation
+  const correctPronunciationParsed = 解析發音(correctPronunciation, 語言選項)
+<span class="cstat-no" title="statement not covered" ></span>
+  if (
+    correctPronunciationParsed === 解析發音(newWritingValue, 語言選項) ||
+    corr<span class="cstat-no" title="statement not covered" >ectPronunciationParsed === unknownPron</span>unciation
   ) {
-    const newPractice = practiceValue + currentCharObj.word
+<span class="cstat-no" title="statement not covered" >    const newPractice = practiceVal</span>ue + currentCharObj.word
 &nbsp;
     setWriting('')
     setPracticeHasError(false)
@@ -526,10 +514,10 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
         .join('')
 &nbsp;
       if (newPracticeText === originalText) {
-        const wrongCharacters = 語言選項.wrongCharacters as string[] | undefined
+        const 錯誤的字符 = 語言選項.錯誤的字符 as string[] | undefined
 &nbsp;
-        if ((wrongCharacters ?? []).length) {
-          const chars = Array.from(new Set(wrongCharacters))
+        if ((錯誤的字符 ?? []).length) {
+          const chars = Array.from(new Set(錯誤的字符))
           const fullChars = Array.from({ length: 3 })
             .map(() =&gt; {
               return chars.join('')
@@ -537,7 +525,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
             .join('')
 &nbsp;
           setCurrentText(fullChars)
-          語言選項.wrongCharacters = []
+          語言選項.錯誤的字符 = []
         } else {
           setCurrentText('')
         }
@@ -554,10 +542,10 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
   const hasError = !correctPronunciation.startsWith(newWritingValue)
 &nbsp;
   if (hasError) {
-    語言選項.wrongCharacters = 語言選項.wrongCharacters || []
+    語言選項.錯誤的字符 = 語言選項.錯誤的字符 || []
 &nbsp;
     if (
-      !(語言選項.wrongCharacters as string[])
+      !(語言選項.錯誤的字符 as string[])
         .slice(0)
         .slice(-1)
         .includes(currentCharObj.word) &amp;&amp;
@@ -565,7 +553,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     ) {
       儲存失敗字元(currentCharObj.word)
     }
-    ;(語言選項.wrongCharacters as string[]).push(currentCharObj.word)
+    ;(語言選項.錯誤的字符 as string[]).push(currentCharObj.word)
   }
 &nbsp;
   setPracticeHasError(hasError)
@@ -577,7 +565,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-02-13T08:08:52.776Z
+                at 2024-02-13T09:04:17.810Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

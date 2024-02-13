@@ -17,18 +17,18 @@ import { T_UIHandler, 類型_語言選項 } from &#x27;../types&#x27;
 
 import { 儲存成功字元, 儲存失敗字元 } from &#x27;./統計&#x27;
 
-type T_ParsePronunciation = (text: string, 語言選項?: 類型_語言選項) =&gt; string
+type 類型_解析發音 = (文字: string, 語言選項?: 類型_語言選項) =&gt; string
 type T_OnPracticeBackspaceFormat = (practiceValue: string) =&gt; string
 
 type T_CommonHandleWritingKeyDown = (
   opts: Parameters&lt;T_UIHandler[&#x27;handleWritingKeyDown&#x27;]&gt;[0],
   opts2: {
     onPracticeBackspaceFormat?: T_OnPracticeBackspaceFormat
-    parsePronunciation?: T_ParsePronunciation
+    解析發音?: 類型_解析發音
   },
 ) =&gt; ReturnType&lt;T_UIHandler[&#x27;handleWritingKeyDown&#x27;]&gt;
 
-const parsePronunciationDefault: T_ParsePronunciation = p =&gt; p.toLowerCase()
+const 預設解析發音: 類型_解析發音 = 文字 =&gt; 文字.toLowerCase()
 
 const onPracticeBackspaceFormatDefault: T_OnPracticeBackspaceFormat = p =&gt; {
   return p
@@ -42,7 +42,6 @@ const onPracticeBackspaceFormatDefault: T_OnPracticeBackspaceFormat = p =&gt; {
 export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
   {
     getCurrentCharObjFromPractice,
-    keyEvent,
     originalTextValue,
     practiceValue,
     setCurrentDisplayCharIdx,
@@ -52,14 +51,15 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     setWriting,
     specialCharsValue,
     writingValue,
+    按鍵事件,
     語言選項,
   },
   {
     onPracticeBackspaceFormat = onPracticeBackspaceFormatDefault,
-    parsePronunciation = parsePronunciationDefault,
+    解析發音 = 預設解析發音,
   },
 ) =&gt; {
-  if (keyEvent.key === &#x27;Backspace&#x27; &amp;&amp; writingValue.length === 0) {
+  if (按鍵事件.key === &#x27;Backspace&#x27; &amp;&amp; writingValue.length === 0) {
     const newPracticeText = onPracticeBackspaceFormat(practiceValue)
 
     setPractice(newPracticeText)
@@ -84,34 +84,30 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
 
   const { ch: currentCharObj } = currentLangObj
 
-  keyEvent.preventDefault()
+  按鍵事件.preventDefault()
 
   // including capital letters so it doesn&#x27;t write when shortcut
-  if (!/[a-z0-9A-Z]/.test(keyEvent.key)) {
-    setPractice(practiceValue + keyEvent.key)
+  if (!/[a-z0-9A-Z]/.test(按鍵事件.key)) {
+    setPractice(practiceValue + 按鍵事件.key)
 
     return
   }
 
-  if (keyEvent.key.length !== 1 &amp;&amp; keyEvent.key !== &#x27;Backspace&#x27;) {
+  if (按鍵事件.key.length !== 1 &amp;&amp; 按鍵事件.key !== &#x27;Backspace&#x27;) {
     return
   }
 
   const { pronunciation: correctPronunciation } = currentCharObj
 
   const newWritingValue =
-    keyEvent.key === &#x27;Backspace&#x27;
+    按鍵事件.key === &#x27;Backspace&#x27;
       ? writingValue.slice(0, writingValue.length - 1)
-      : writingValue + keyEvent.key
+      : writingValue + 按鍵事件.key
 
-  const correctPronunciationParsed = parsePronunciation(
-    correctPronunciation,
-    語言選項,
-  )
+  const correctPronunciationParsed = 解析發音(correctPronunciation, 語言選項)
 
   if (
-    correctPronunciationParsed ===
-      parsePronunciation(newWritingValue, 語言選項) ||
+    correctPronunciationParsed === 解析發音(newWritingValue, 語言選項) ||
     correctPronunciationParsed === unknownPronunciation
   ) {
     const newPractice = practiceValue + currentCharObj.word
@@ -136,10 +132,10 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
         .join(&#x27;&#x27;)
 
       if (newPracticeText === originalText) {
-        const wrongCharacters = 語言選項.wrongCharacters as string[] | undefined
+        const 錯誤的字符 = 語言選項.錯誤的字符 as string[] | undefined
 
-        if ((wrongCharacters ?? []).length) {
-          const chars = Array.from(new Set(wrongCharacters))
+        if ((錯誤的字符 ?? []).length) {
+          const chars = Array.from(new Set(錯誤的字符))
           const fullChars = Array.from({ length: 3 })
             .map(() =&gt; {
               return chars.join(&#x27;&#x27;)
@@ -147,7 +143,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
             .join(&#x27;&#x27;)
 
           setCurrentText(fullChars)
-          語言選項.wrongCharacters = []
+          語言選項.錯誤的字符 = []
         } else {
           setCurrentText(&#x27;&#x27;)
         }
@@ -164,10 +160,10 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
   const hasError = !correctPronunciation.startsWith(newWritingValue)
 
   if (hasError) {
-    語言選項.wrongCharacters = 語言選項.wrongCharacters || []
+    語言選項.錯誤的字符 = 語言選項.錯誤的字符 || []
 
     if (
-      !(語言選項.wrongCharacters as string[])
+      !(語言選項.錯誤的字符 as string[])
         .slice(0)
         .slice(-1)
         .includes(currentCharObj.word) &amp;&amp;
@@ -175,13 +171,13 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     ) {
       儲存失敗字元(currentCharObj.word)
     }
-    ;(語言選項.wrongCharacters as string[]).push(currentCharObj.word)
+    ;(語言選項.錯誤的字符 as string[]).push(currentCharObj.word)
   }
 
   setPracticeHasError(hasError)
 }
 </textarea><pre id="annotations" style="display:none">[]</pre></div>
-    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Tue, 13 Feb 2024 08:08:57 GMT</p>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Tue, 13 Feb 2024 09:04:22 GMT</p>
     </body>
   </html>
   

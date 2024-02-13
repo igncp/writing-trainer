@@ -544,27 +544,27 @@
       "file": "src/languages/english/__tests__/english.test.tsx",
       "line": 82,
       "character": 16,
-      "text": "keyEvent",
+      "text": "按鍵事件",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
       "line": 82,
-      "character": 25,
+      "character": 21,
       "text": "preventDefault",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
       "line": 82,
-      "character": 40,
+      "character": 36,
       "text": "mock",
       "kind": 1
     },
     {
       "file": "src/languages/english/__tests__/english.test.tsx",
       "line": 82,
-      "character": 45,
+      "character": 41,
       "text": "calls",
       "kind": 1
     },
@@ -737,8 +737,8 @@
       "kind": 1
     }
   ],
-  "percentage": 98.00342270393611,
-  "total": 5259,
-  "covered": 5154,
+  "percentage": 98.00456100342075,
+  "total": 5262,
+  "covered": 5157,
   "uncovered": 105
 }
