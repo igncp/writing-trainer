@@ -653,14 +653,14 @@
       "kind": 1
     },
     {
-      "file": "src/languages/cantonese/LinksBlock/__stories__/LinksBlock.stories.tsx",
+      "file": "src/languages/cantonese/連結區塊/__stories__/連結區塊.stories.tsx",
       "line": 10,
       "character": 6,
       "text": "Common",
       "kind": 1
     },
     {
-      "file": "src/languages/cantonese/LinksBlock/__stories__/LinksBlock.stories.tsx",
+      "file": "src/languages/cantonese/連結區塊/__stories__/連結區塊.stories.tsx",
       "line": 17,
       "character": 9,
       "text": "Common",
@@ -681,29 +681,15 @@
       "kind": 1
     },
     {
-      "file": "src/languages/english/LinksBlock/__stories__/LinksBlock.stories.tsx",
+      "file": "src/languages/english/連結區塊/__stories__/連結區塊.stories.tsx",
       "line": 10,
       "character": 6,
       "text": "Common",
       "kind": 1
     },
     {
-      "file": "src/languages/english/LinksBlock/__stories__/LinksBlock.stories.tsx",
+      "file": "src/languages/english/連結區塊/__stories__/連結區塊.stories.tsx",
       "line": 17,
-      "character": 9,
-      "text": "Common",
-      "kind": 1
-    },
-    {
-      "file": "src/languages/japanese/LinksBlock/__stories__/LinksBlock.stories.tsx",
-      "line": 15,
-      "character": 6,
-      "text": "Common",
-      "kind": 1
-    },
-    {
-      "file": "src/languages/japanese/LinksBlock/__stories__/LinksBlock.stories.tsx",
-      "line": 22,
       "character": 9,
       "text": "Common",
       "kind": 1
@@ -723,14 +709,28 @@
       "kind": 1
     },
     {
-      "file": "src/languages/mandarin/LinksBlock/__stories__/LinksBlock.stories.tsx",
+      "file": "src/languages/japanese/連結區塊/__stories__/連結區塊.stories.tsx",
+      "line": 15,
+      "character": 6,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/languages/japanese/連結區塊/__stories__/連結區塊.stories.tsx",
+      "line": 22,
+      "character": 9,
+      "text": "Common",
+      "kind": 1
+    },
+    {
+      "file": "src/languages/mandarin/連結區塊/__stories__/連結區塊.stories.tsx",
       "line": 10,
       "character": 6,
       "text": "Common",
       "kind": 1
     },
     {
-      "file": "src/languages/mandarin/LinksBlock/__stories__/LinksBlock.stories.tsx",
+      "file": "src/languages/mandarin/連結區塊/__stories__/連結區塊.stories.tsx",
       "line": 17,
       "character": 9,
       "text": "Common",

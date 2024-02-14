@@ -1,1 +1,0 @@
-:root{--color-text:#000;--color-background:#f5f5f5}body{color:var(--color-text);background-color:var(--color-background)}body[data-theme=dark]{--color-text:#fff;--color-background:#000}body ::placeholder{color:var(--color-text)}input,select,textarea{background-color:var(--color-background);color:var(--color-text)}
