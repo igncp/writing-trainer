@@ -408,7 +408,7 @@ const Panel = ({
     setLastThreeKeys([])
   }
 
-  const LinksBlock = uiHandler.getLinksBlock()
+  const 連結區塊 = uiHandler.取得連結區塊()
   const OptionsBlock = uiHandler.getOptionsBlock()
   const handleDisplayedCharClick = uiHandler.getDisplayedCharHandler()
 
@@ -765,7 +765,7 @@ const Panel = ({
           />
         </div>
       </div>
-      <LinksBlock text={originalTextValue} />
+      <連結區塊 文字={originalTextValue} />
     </>
   )
 }

@@ -7,9 +7,9 @@ import {
 
 export type 類型_語言選項 = { [k: string]: unknown }
 
-export type T_LinksBlock = (opts: {
+export type 類型_連結區塊 = (選項: {
   children?: React.ReactNode
-  text: string
+  文字: string
 }) => React.ReactNode
 
 export type T_OptionsBlock = (props: {
@@ -62,7 +62,6 @@ type T_BlurHandler = (opts: T_BlurHandlerOpts) => {
 
 export interface T_UIHandler {
   getDisplayedCharHandler: () => T_CharsDisplayClickHandler
-  getLinksBlock: () => T_LinksBlock
   getOptionsBlock: () => T_OptionsBlock
   handleWritingKeyDown: T_handleWritingKeyDown
   languageHandler: LanguageHandler
@@ -70,6 +69,7 @@ export interface T_UIHandler {
   shouldAllCharsHaveSameWidth: boolean
   儲存語言選項: (o: 類型_語言選項) => void
   取得語言選項: () => 類型_語言選項
+  取得連結區塊: () => 類型_連結區塊
   取得錯誤顏色?: (
     選項: 類型_語言選項,
     字元: CurrentCharObj | null,

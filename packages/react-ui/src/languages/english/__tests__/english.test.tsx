@@ -1,8 +1,8 @@
 import { CurrentCharObj, LanguageManager } from 'writing-trainer-core'
 
-import LinksBlock from '../LinksBlock/LinksBlock'
 import OptionsBlock from '../OptionsBlock'
 import englishUIHandler, { _test } from '../english'
+import 連結區塊 from '../連結區塊/連結區塊'
 
 const { 語言選項 } = _test!
 
@@ -92,8 +92,8 @@ describe('getOptionsBlock', () => {
   })
 })
 
-describe('getLinksBlock', () => {
+describe('取得連結區塊', () => {
   it('returns the expected component', () => {
-    expect(englishUIHandler.getLinksBlock()).toEqual(LinksBlock)
+    expect(englishUIHandler.取得連結區塊()).toEqual(連結區塊)
   })
 })

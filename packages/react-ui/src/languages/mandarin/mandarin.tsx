@@ -10,9 +10,9 @@ import {
   T_CharsDisplayClickHandler,
 } from '../types'
 
-import LinksBlock from './LinksBlock/LinksBlock'
 import dictionary from './converted-list-ma.yml'
 import { 類型_普通話的語言選項 } from './mandarinTypes'
+import 連結區塊 from './連結區塊/連結區塊'
 
 const charToPronunciationMap: { [key: string]: string } = {}
 const pronunciationToCharMap: { [key: string]: string } = {}
@@ -176,17 +176,16 @@ const 取得錯誤顏色 = (選項: 類型_語言選項, 字元: CurrentCharObj 
   }
 
   return {
-    1: '#707070',
-    2: 'green',
-    3: 'red',
-    4: 'blue',
-    5: 'yellow',
+    1: 'var(--color-error-silver)',
+    2: 'var(--color-error-green)',
+    3: 'var(--color-error-red)',
+    4: 'var(--color-error-blue)',
+    5: 'var(--color-error-yellow)',
   }[音數]
 }
 
 const uiHandler: T_UIHandler = {
   getDisplayedCharHandler: () => handleDisplayedCharClick,
-  getLinksBlock: () => LinksBlock,
   getOptionsBlock: () => OptionsBlock,
   handleWritingKeyDown,
   languageHandler: mandarinHandler,
@@ -194,6 +193,7 @@ const uiHandler: T_UIHandler = {
   shouldAllCharsHaveSameWidth: false,
   儲存語言選項,
   取得語言選項,
+  取得連結區塊: () => 連結區塊,
   取得錯誤顏色,
 }
 

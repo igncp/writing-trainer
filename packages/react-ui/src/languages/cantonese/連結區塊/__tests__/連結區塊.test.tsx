@@ -2,27 +2,27 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import LinksBlock from '../LinksBlock'
+import 連結區塊 from '../連結區塊'
 
 const commonProps = {
-  text: 'F OO _B A R ',
+  文字: 'F OO _B A R ',
 }
 
 describe('按鈕', () => {
   it('renders the content', () => {
-    const { getByText } = render(<LinksBlock {...commonProps} />)
+    const { getByText } = render(<連結區塊 {...commonProps} />)
 
     expect(() => getByText('Google Translate')).not.toThrow()
     expect(() => getByText('發音')).not.toThrow()
 
-    expect(() => getByText(commonProps.text)).toThrow()
+    expect(() => getByText(commonProps.文字)).toThrow()
   })
 
   it('uses the expected Google Translate link', () => {
-    const { getByText } = render(<LinksBlock {...commonProps} />)
+    const { getByText } = render(<連結區塊 {...commonProps} />)
     const el = getByText('Google Translate')
     const href = el.getAttribute('href') as string
 
-    expect(href).toEqual('https://translate.google.com/#zh-CN/en/FOO_BAR')
+    expect(href).toEqual('https://translate.google.com/#zh-HK/en/FOO_BAR')
   })
 })

@@ -2,18 +2,18 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import LinksBlock from '../LinksBlock'
+import 連結區塊 from '../連結區塊'
 
 const commonProps = {
-  text: 'F OO _B A R ',
+  文字: 'F OO _B A R ',
 }
 
 describe('按鈕', () => {
   it('renders some dummy content', () => {
-    const { getByText } = render(<LinksBlock {...commonProps} />)
+    const { getByText } = render(<連結區塊 {...commonProps} />)
 
     expect(() => getByText('Links Block')).toThrow()
 
-    expect(() => getByText(commonProps.text)).toThrow()
+    expect(() => getByText(commonProps.文字)).toThrow()
   })
 })

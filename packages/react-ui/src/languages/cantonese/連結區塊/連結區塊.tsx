@@ -3,17 +3,17 @@ import React from 'react'
 import 按鈕 from '../../../components/按鈕/按鈕'
 import { copyTextToClipboard } from '../../../utils/general'
 import GTButton from '../../common/Links/GoogleTranslateButton'
-import { T_LinksBlock } from '../../types'
+import { 類型_連結區塊 } from '../../types'
 
-const MANDARIN_CONVERTER_LINK =
-  'https://www.chineseconverter.com/en/convert/chinese-to-pinyin'
+const CANTONESE_CONVERTER_LINK =
+  'https://www.cantonesetools.org/en/cantonese-to-jyutping'
 
 const linkStyle = {
   margin: '10px auto',
 }
 
-const LinksBlock: T_LinksBlock = ({ text }) => {
-  const hrefText = text
+const 連結區塊: 類型_連結區塊 = ({ 文字 }) => {
+  const hrefText = 文字
     .split('')
     .map(c => c.trim())
     .filter(c => !!c)
@@ -21,11 +21,11 @@ const LinksBlock: T_LinksBlock = ({ text }) => {
 
   return (
     <div style={{ width: '100%' }}>
-      <GTButton language="zh-CN" style={{ paddingLeft: '0' }} text={text} />
+      <GTButton language="zh-HK" style={{ paddingLeft: 0 }} text={文字} />
       <按鈕
         onClick={() => {
           copyTextToClipboard(hrefText)
-          window.open(MANDARIN_CONVERTER_LINK)
+          window.open(CANTONESE_CONVERTER_LINK)
         }}
         style={linkStyle}
       >
@@ -35,4 +35,4 @@ const LinksBlock: T_LinksBlock = ({ text }) => {
   )
 }
 
-export default LinksBlock
+export default 連結區塊

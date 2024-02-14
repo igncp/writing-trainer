@@ -10,9 +10,9 @@ import {
   T_CharsDisplayClickHandler,
 } from '../types'
 
-import LinksBlock from './LinksBlock/LinksBlock'
 import { 類型_廣東話的語言選項 } from './cantoneseTypes'
 import dictionary from './converted-list-jy.yml'
+import 連結區塊 from './連結區塊/連結區塊'
 
 const charToPronunciationMap: { [key: string]: string } = {}
 const pronunciationToCharMap: { [key: string]: string } = {}
@@ -171,7 +171,6 @@ export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
 
 const uiHandler: T_UIHandler = {
   getDisplayedCharHandler: () => handleDisplayedCharClick,
-  getLinksBlock: () => LinksBlock,
   getOptionsBlock: () => OptionsBlock,
   handleWritingKeyDown,
   languageHandler: cantoneseHandler,
@@ -179,6 +178,7 @@ const uiHandler: T_UIHandler = {
   shouldAllCharsHaveSameWidth: false,
   儲存語言選項,
   取得語言選項,
+  取得連結區塊: () => 連結區塊,
 }
 
 export default uiHandler
