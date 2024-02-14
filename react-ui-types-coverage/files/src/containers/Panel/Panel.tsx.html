@@ -11,7 +11,7 @@
 <link href="../../../../assets/source-file.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Panel/Panel.tsx</td><td class="">99.69%</td><td class="">95%</td><td class="">981</td><td class="">978</td><td class="">3</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useRef, useState } from &#x27;react&#x27;
+    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Panel/Panel.tsx</td><td class="">99.70%</td><td class="">95%</td><td class="">992</td><td class="">989</td><td class="">3</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useRef, useState } from &#x27;react&#x27;
 import {
   LanguageDefinition,
   LanguageManager,
@@ -27,6 +27,7 @@ import { LanguageUIManager } from &#x27;../../languages/languageUIManager&#x27;
 import {
   類型_語言選項,
   T_getCurrentCharObjFromPractice,
+  類型_文字片段列表,
 } from &#x27;../../languages/types&#x27;
 import { T_Services } from &#x27;../../typings/mainTypes&#x27;
 import RecordsSection, { RecordsScreen } from &#x27;../RecordsSection/RecordsSection&#x27;
@@ -108,19 +109,17 @@ const Panel = ({
 
   const uiHandler = languageUIManager.getUIHandler()
 
-  const [fragments, setFragments] = useState&lt;{ index: number; list: string[] }&gt;(
-    {
-      index: 0,
-      list: [text],
-    },
-  )
+  const [文字片段列表, setFragments] = useState&lt;類型_文字片段列表&gt;({
+    列表: [text],
+    索引: 0,
+  })
 
   const [showingRecordsInitScreen, setShowingRecordsInitScreen] = useState&lt;
     RecordsScreen | &#x27;&#x27;
   &gt;(&#x27;&#x27;)
   const [currentRecord, setCurrentRecord] = useState&lt;Record[&#x27;id&#x27;] | null&gt;(null)
   const [currentText, setCurrentText] = useState&lt;string&gt;(&#x27;&#x27;)
-  const originalTextValue = currentText || fragments.list[fragments.index]
+  const originalTextValue = currentText || 文字片段列表.列表[文字片段列表.索引]
   const [pronunciationValue, setPronunciation] = useState&lt;string&gt;(
     _stories.defaultPronunciation ?? &#x27;&#x27;,
   )
@@ -164,10 +163,7 @@ const Panel = ({
       .catch(() =&gt; {})
   }, [])
 
-  const onPracticeSourceChange = (newFragments?: {
-    index: number
-    list: string[]
-  }) =&gt; {
+  const onPracticeSourceChange = (newFragments?: 類型_文字片段列表) =&gt; {
     setCurrentText(&#x27;&#x27;)
     setPractice(&#x27;&#x27;)
     setWriting(&#x27;&#x27;)
@@ -191,9 +187,9 @@ const Panel = ({
       .map(s =&gt; s.trim())
       .filter(Boolean)
 
-    const newFragments = {
-      index: 0,
-      list: list.length ? list : [&#x27;&#x27;],
+    const newFragments: 類型_文字片段列表 = {
+      列表: list.length ? list : [&#x27;&#x27;],
+      索引: 0,
     }
 
     onPracticeSourceChange(newFragments)
@@ -334,9 +330,9 @@ const Panel = ({
       if (value === SHORTCUT_NEXT_FRAGMENT) {
         e.preventDefault()
 
-        const newFragments = {
-          ...fragments,
-          index: (fragments.index + 1) % fragments.list.length,
+        const newFragments: 類型_文字片段列表 = {
+          ...文字片段列表,
+          索引: (文字片段列表.索引 + 1) % 文字片段列表.列表.length,
         }
 
         onPracticeSourceChange(newFragments)
@@ -355,7 +351,7 @@ const Panel = ({
     return () =&gt; {
       document.removeEventListener(&#x27;keydown&#x27;, handleShortcuts)
     }
-  }, [lastThreeKeys, isShowingEdition, isShowingPronunciation, fragments])
+  }, [lastThreeKeys, isShowingEdition, isShowingPronunciation, 文字片段列表])
 
   const clearValues = () =&gt; {
     // eslint-disable-next-line no-extra-semi,padding-line-between-statements
@@ -364,7 +360,7 @@ const Panel = ({
         fn(&#x27;&#x27;)
       },
     )
-    const newFragments = { index: 0, list: [&#x27;&#x27;] }
+    const newFragments: 類型_文字片段列表 = { 列表: [&#x27;&#x27;], 索引: 0 }
     storage.setValue(&#x27;fragments&#x27;, JSON.stringify(newFragments))
     setShowingPronunciation(true)
     setShowingEdition(true)
@@ -451,7 +447,10 @@ const Panel = ({
           setShowingRecordsInitScreen(&#x27;&#x27;)
           setShowingEdition(false)
           setShowingPronunciation(false)
-          const newFragments = { index: 0, list: record.text.split(&#x27;\n&#x27;) }
+          const newFragments: 類型_文字片段列表 = {
+            列表: record.text.split(&#x27;\n&#x27;),
+            索引: 0,
+          }
           onPracticeSourceChange(newFragments)
           setCurrentRecord(record.id)
           setPronunciation(record.pronunciation)
@@ -460,9 +459,9 @@ const Panel = ({
           setShowingRecordsInitScreen(&#x27;&#x27;)
         }}
         onSongLoad={lyrics =&gt; {
-          const newFragments = {
-            index: 0,
-            list: lyrics,
+          const newFragments: 類型_文字片段列表 = {
+            列表: lyrics,
+            索引: 0,
           }
           onPracticeSourceChange(newFragments)
           setShowingRecordsInitScreen(&#x27;&#x27;)
@@ -529,9 +528,9 @@ const Panel = ({
                       .join(&#x27;\n&#x27;)
                   }
 
-                  const newFragments = {
-                    index: 0,
-                    list: fileContent.split(&#x27;\n&#x27;),
+                  const newFragments: 類型_文字片段列表 = {
+                    列表: fileContent.split(&#x27;\n&#x27;),
+                    索引: 0,
                   }
 
                   onPracticeSourceChange(newFragments)
@@ -589,28 +588,28 @@ const Panel = ({
           )}
         &lt;/&gt;
       )}
-      {fragments.list.length &gt; 1 &amp;&amp; (
+      {文字片段列表.列表.length &gt; 1 &amp;&amp; (
         &lt;按鈕
           onClick={() =&gt; {
             const newFragments = {
-              ...fragments,
-              index: (fragments.index + 1) % fragments.list.length,
+              ...文字片段列表,
+              index: (文字片段列表.索引 + 1) % 文字片段列表.列表.length,
             }
             onPracticeSourceChange(newFragments)
           }}
         &gt;
-          當前小文本: {fragments.index + 1} / {fragments.list.length}
+          當前小文本: {文字片段列表.索引 + 1} / {文字片段列表.列表.length}
         &lt;/按鈕&gt;
       )}
-      {fragments.list.length &gt; 5 &amp;&amp; (
+      {文字片段列表.列表.length &gt; 5 &amp;&amp; (
         &lt;按鈕
           onClick={() =&gt; {
             const newFragments = {
-              ...fragments,
+              ...文字片段列表,
               index:
-                fragments.index &lt;= 0
-                  ? fragments.list.length - 1
-                  : fragments.index - 1,
+                文字片段列表.索引 &lt;= 0
+                  ? 文字片段列表.列表.length - 1
+                  : 文字片段列表.索引 - 1,
             }
             onPracticeSourceChange(newFragments)
           }}
@@ -649,13 +648,13 @@ const Panel = ({
               onBlur={() =&gt; {
                 if (uiHandler.onBlur) {
                   const { newFragmentsList } = uiHandler.onBlur({
-                    fragmentsList: fragments.list,
+                    fragmentsList: 文字片段列表.列表,
                     語言選項,
                   })
 
                   if (newFragmentsList) {
                     const newFragments = {
-                      ...fragments,
+                      ...文字片段列表,
                       list: newFragmentsList,
                     }
 
@@ -670,7 +669,7 @@ const Panel = ({
               onChange={handleOriginalTextUpdate}
               placeholder=&quot;原文&quot;
               rows={3}
-              value={fragments.list.join(&#x27;\n&#x27;)}
+              value={文字片段列表.列表.join(&#x27;\n&#x27;)}
             /&gt;
             {hasExtraControls &amp;&amp; (
               &lt;&gt;
@@ -680,7 +679,12 @@ const Panel = ({
                   rows={2}
                   value={pronunciationValue}
                 /&gt;
-                &lt;OptionsBlock 更改語言選項={更改語言選項} 語言選項={語言選項} /&gt;
+                {langHandler &amp;&amp; (
+                  &lt;OptionsBlock
+                    更改語言選項={更改語言選項}
+                    語言選項={語言選項}
+                  /&gt;
+                )}
                 &lt;文字區
                   onChange={createInputSetterFn(setSpecialChars)}
                   placeholder=&quot;特殊字元&quot;
@@ -710,7 +714,9 @@ const Panel = ({
             )}
             {/* This is necessary because the options block initialises some values*/}
             &lt;div style={{ display: &#x27;none&#x27; }}&gt;
-              &lt;OptionsBlock 更改語言選項={更改語言選項} 語言選項={語言選項} /&gt;
+              {langHandler &amp;&amp; (
+                &lt;OptionsBlock 更改語言選項={更改語言選項} 語言選項={語言選項} /&gt;
+              )}
             &lt;/div&gt;
           &lt;/div&gt;
         )}{&#x27; &#x27;}
@@ -778,14 +784,18 @@ const Panel = ({
           /&gt;
         &lt;/div&gt;
       &lt;/div&gt;
-      &lt;連結區塊 文字={originalTextValue} /&gt;
+      &lt;連結區塊
+        文字={originalTextValue}
+        文字片段列表={文字片段列表}
+        更改文字片段列表={setFragments}
+      /&gt;
     &lt;/&gt;
   )
 }
 
 export default Panel
-</textarea><pre id="annotations" style="display:none">[{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:24,&quot;character&quot;:3,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:25,&quot;character&quot;:4,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:261,&quot;character&quot;:14,&quot;text&quot;:&quot;parsedFragments&quot;,&quot;kind&quot;:1}]</pre></div>
-    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Wed, 14 Feb 2024 03:55:11 GMT</p>
+</textarea><pre id="annotations" style="display:none">[{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:25,&quot;character&quot;:3,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:26,&quot;character&quot;:4,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:257,&quot;character&quot;:14,&quot;text&quot;:&quot;parsedFragments&quot;,&quot;kind&quot;:1}]</pre></div>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Wed, 14 Feb 2024 06:25:24 GMT</p>
     </body>
   </html>
   

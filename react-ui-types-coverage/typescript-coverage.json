@@ -59,21 +59,21 @@
     },
     {
       "file": "src/containers/Panel/Panel.tsx",
-      "line": 24,
+      "line": 25,
       "character": 3,
       "text": "setValue",
       "kind": 1
     },
     {
       "file": "src/containers/Panel/Panel.tsx",
-      "line": 25,
+      "line": 26,
       "character": 4,
       "text": "setValue",
       "kind": 1
     },
     {
       "file": "src/containers/Panel/Panel.tsx",
-      "line": 261,
+      "line": 257,
       "character": 14,
       "text": "parsedFragments",
       "kind": 1
@@ -654,14 +654,14 @@
     },
     {
       "file": "src/languages/cantonese/連結區塊/__stories__/連結區塊.stories.tsx",
-      "line": 10,
+      "line": 18,
       "character": 6,
       "text": "Common",
       "kind": 1
     },
     {
       "file": "src/languages/cantonese/連結區塊/__stories__/連結區塊.stories.tsx",
-      "line": 17,
+      "line": 25,
       "character": 9,
       "text": "Common",
       "kind": 1
@@ -682,14 +682,14 @@
     },
     {
       "file": "src/languages/english/連結區塊/__stories__/連結區塊.stories.tsx",
-      "line": 10,
+      "line": 18,
       "character": 6,
       "text": "Common",
       "kind": 1
     },
     {
       "file": "src/languages/english/連結區塊/__stories__/連結區塊.stories.tsx",
-      "line": 17,
+      "line": 25,
       "character": 9,
       "text": "Common",
       "kind": 1
@@ -710,35 +710,35 @@
     },
     {
       "file": "src/languages/japanese/連結區塊/__stories__/連結區塊.stories.tsx",
-      "line": 15,
+      "line": 21,
       "character": 6,
       "text": "Common",
       "kind": 1
     },
     {
       "file": "src/languages/japanese/連結區塊/__stories__/連結區塊.stories.tsx",
-      "line": 22,
+      "line": 28,
       "character": 9,
       "text": "Common",
       "kind": 1
     },
     {
       "file": "src/languages/mandarin/連結區塊/__stories__/連結區塊.stories.tsx",
-      "line": 10,
+      "line": 18,
       "character": 6,
       "text": "Common",
       "kind": 1
     },
     {
       "file": "src/languages/mandarin/連結區塊/__stories__/連結區塊.stories.tsx",
-      "line": 17,
+      "line": 25,
       "character": 9,
       "text": "Common",
       "kind": 1
     }
   ],
-  "percentage": 98.0311269454341,
-  "total": 5333,
-  "covered": 5228,
+  "percentage": 98.08149095560022,
+  "total": 5473,
+  "covered": 5368,
   "uncovered": 105
 }
