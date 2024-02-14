@@ -1,5 +1,5 @@
 import {
-  CharObj,
+  字元對象類別,
   LanguageDefinition,
   LanguageManager,
   LanguageHandler,
@@ -10,18 +10,18 @@ const languageManager = new LanguageManager()
 const createDummyLanguageHandler = (
   id: LanguageDefinition['id'],
 ): LanguageHandler => {
-  const convertToCharsObjs = () => {
-    const result: CharObj[] = []
+  const 轉換為字元對象列表 = () => {
+    const result: 字元對象類別[] = []
 
     return result
   }
 
   return new LanguageHandler({
-    convertToCharsObjs,
     language: new LanguageDefinition({
       id,
       name: 'Some Name',
     }),
+    轉換為字元對象列表,
   })
 }
 

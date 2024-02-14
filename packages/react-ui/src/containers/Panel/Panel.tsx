@@ -86,6 +86,7 @@ const Panel = ({
   UI,
 }: Props) => {
   const initialLanguageId = languageUIManager.getDefaultLanguage()
+  const [, 觸發重新渲染] = useState<number>(0)
   const [stats, setStats] = useState<null | {
     correct: number
     fail: number
@@ -280,7 +281,7 @@ const Panel = ({
 
   const charsToRemove = specialCharsValue.split('').concat(特殊字元 ?? [])
 
-  const charsObjs = langHandler?.convertToCharsObjs({
+  const 字元對象列表 = langHandler?.轉換為字元對象列表({
     ...語言選項對象,
     charsToRemove,
     text: originalTextValue,
@@ -291,14 +292,14 @@ const Panel = ({
   ) => {
     if (!langHandler) return null
 
-    const practiceCharsObjs = langHandler.convertToCharsObjs({
+    const practiceCharsObjs = langHandler.轉換為字元對象列表({
       ...語言選項對象,
       charsToRemove,
       text: practiceText,
     })
 
     return langHandler.getCurrentCharObj({
-      originalCharsObjs: charsObjs ?? [],
+      originalCharsObjs: 字元對象列表 ?? [],
       practiceCharsObjs,
     })
   }
@@ -380,7 +381,6 @@ const Panel = ({
     }
 
     uiHandler.handleWritingKeyDown({
-      charsObjs: charsObjs ?? [],
       getCurrentCharObjFromPractice,
       originalTextValue,
       practiceValue,
@@ -391,6 +391,7 @@ const Panel = ({
       setWriting,
       specialCharsValue: charsToRemove.join(''),
       writingValue,
+      字元對象列表: 字元對象列表 ?? [],
       按鍵事件: 事件,
       語言選項,
     })
@@ -400,6 +401,7 @@ const Panel = ({
 
   const 更改語言選項 = (選項: 類型_語言選項) => {
     uiHandler.儲存語言選項(選項)
+    觸發重新渲染(Math.random())
   }
 
   const handleWritingAreaClick = () => {
@@ -459,6 +461,10 @@ const Panel = ({
       />
     )
   }
+
+  const 重點字元顏色 = doesPracticeHaveError
+    ? uiHandler.取得錯誤顏色?.(語言選項, getCurrentCharObjFromPractice())
+    : undefined
 
   return (
     <>
@@ -698,8 +704,6 @@ const Panel = ({
         <div>
           <div style={{ marginBottom: 10, marginTop: 5 }}>
             <CharactersDisplay
-              charsObjs={charsObjs ?? []}
-              focusedIndex={currentDisplayCharIdx}
               fontSize={fontSize}
               onCharClick={handleDisplayedCharClick}
               shouldHaveDifferentWidths={!uiHandler.shouldAllCharsHaveSameWidth}
@@ -707,6 +711,9 @@ const Panel = ({
               showCurrentCharPronunciation={
                 doesPracticeHaveError && 語言選項.遊戲模式值 === '還原論者'
               }
+              字元對象列表={字元對象列表 ?? []}
+              重點字元索引={currentDisplayCharIdx}
+              重點字元顏色={重點字元顏色}
             />
           </div>
           <文字區
@@ -747,7 +754,7 @@ const Panel = ({
             style={{
               border: `4px solid ${
                 doesPracticeHaveError
-                  ? 'red'
+                  ? 重點字元顏色 ?? 'red'
                   : 'var(--color-background, "white")'
               }`,
               fontSize,

@@ -1,13 +1,13 @@
 import { LanguageDefinition } from './constants'
 import { LanguageHandler } from './languageHandlers/_common'
 
-class CharObj {
+class 字元對象類別 {
   public readonly pronunciation: string
   public readonly word: string // @TODO: rename to "text"
 
   public constructor(opt: {
-    pronunciation: CharObj['pronunciation']
-    word: CharObj['word']
+    pronunciation: 字元對象類別['pronunciation']
+    word: 字元對象類別['word']
   }) {
     this.pronunciation = opt.pronunciation
     this.word = opt.word
@@ -15,9 +15,9 @@ class CharObj {
 }
 
 class CurrentCharObj {
-  public readonly ch: CharObj
+  public readonly ch: 字元對象類別
   public readonly index: number
-  public constructor(opts: { ch: CharObj; index: number }) {
+  public constructor(opts: { ch: 字元對象類別; index: number }) {
     this.ch = opts.ch
     this.index = opts.index
   }
@@ -25,10 +25,10 @@ class CurrentCharObj {
 
 class LanguageManager {
   private currentLanguageHandlerId: LanguageDefinition['id'] | null = null
-  private languages: LanguageHandler[] = []
+  private 語言列表: LanguageHandler[] = []
 
   public clear() {
-    this.languages.length = 0
+    this.語言列表.length = 0
     this.currentLanguageHandlerId = null
   }
 
@@ -37,23 +37,19 @@ class LanguageManager {
       return null
     }
 
-    const languagesIds = this.getLanguagesIds()
+    const languagesIds = this.取得語言標識符()
 
     const idx = languagesIds.indexOf(this.currentLanguageHandlerId)
 
-    return idx !== -1 ? this.languages[idx] : null
+    return idx !== -1 ? this.語言列表[idx] : null
   }
 
   public getLanguageHandler(id: string) {
-    return this.languages.find(l => l.getId() === id) ?? null
+    return this.語言列表.find(語言 => 語言.getId() === id) ?? null
   }
 
-  private getLanguagesIds() {
-    return this.languages.map(l => l.getId())
-  }
-
-  public registerLanguage(lang: LanguageHandler) {
-    this.languages.push(lang)
+  public registerLanguage(語言: LanguageHandler) {
+    this.語言列表.push(語言)
   }
 
   public setCurrentLanguageHandler(v: string) {
@@ -61,12 +57,16 @@ class LanguageManager {
   }
 
   public unregisterLanguage(langId: string) {
-    this.languages = this.languages.filter(l => l.getId() !== langId)
+    this.語言列表 = this.語言列表.filter(語言 => 語言.getId() !== langId)
   }
 
   public 取得可用語言() {
-    return this.getLanguagesIds()
+    return this.取得語言標識符()
+  }
+
+  private 取得語言標識符() {
+    return this.語言列表.map(語言 => 語言.getId())
   }
 }
 
-export { CharObj, CurrentCharObj, LanguageManager }
+export { CurrentCharObj, LanguageManager, 字元對象類別 }

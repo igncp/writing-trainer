@@ -56,7 +56,7 @@ describe('handleWritingKeyDown', () => {
     expect(opts.setWriting.mock.calls).toEqual([])
   })
 
-  it('handles when a CharObj is missing', () => {
+  it('handles when a 字元對象類別 is missing', () => {
     const opts: any = {
       ...commonOpts,
       getCurrentCharObjFromPractice: () => ({}),

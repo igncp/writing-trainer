@@ -3,7 +3,7 @@ import { mandarinHandler, englishHandler } from 'writing-trainer-core'
 
 import CharactersDisplay from '../CharactersDisplay'
 
-const charsObjsMandarin = mandarinHandler.convertToCharsObjs({
+const charsObjsMandarin = mandarinHandler.轉換為字元對象列表({
   charsToRemove: [',', '.'],
   text: '崩比筆,壁必畢.閉編',
   語言選項: {
@@ -21,11 +21,11 @@ const charsObjsMandarin = mandarinHandler.convertToCharsObjs({
 })
 
 const commonProps = {
-  charsObjs: charsObjsMandarin,
   onCharClick: () => console.log('on-click'),
+  字元對象列表: charsObjsMandarin,
 }
 
-const charObjsEnglish = englishHandler.convertToCharsObjs({
+const charObjsEnglish = englishHandler.轉換為字元對象列表({
   charsToRemove: [],
   text: 'Sample of English text',
 })
@@ -42,9 +42,9 @@ const DifferentWidthsNoPronunciation = () => {
   return (
     <CharactersDisplay
       {...commonProps}
-      charsObjs={charObjsEnglish}
       shouldHaveDifferentWidths
       shouldHidePronunciation
+      字元對象列表={charObjsEnglish}
     />
   )
 }

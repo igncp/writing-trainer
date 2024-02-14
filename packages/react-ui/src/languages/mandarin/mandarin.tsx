@@ -1,4 +1,4 @@
-import { mandarinHandler } from 'writing-trainer-core'
+import { CurrentCharObj, mandarinHandler } from 'writing-trainer-core'
 
 import OptionsBlock from '../common/CharsOptions/OptionsBlock'
 import { chineseBlurHandler } from '../common/chineseBlurHandler'
@@ -140,20 +140,20 @@ const privateFns = {
 }
 
 export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
-  charObj,
-  charsObjs,
-  index,
+  字元對象,
+  字元對象列表,
+  索引,
 }) => {
-  if (!(charObj as unknown) || !charObj.pronunciation) {
+  if (!(字元對象 as unknown) || !字元對象.pronunciation) {
     return
   }
 
-  const ch = charObj.word
+  const ch = 字元對象.word
 
   privateFns.sendCantodictFormForText(ch, 'single')
 
-  const prev = charsObjs[index - 1]
-  const next = charsObjs[index + 1]
+  const prev = 字元對象列表[索引 - 1]
+  const next = 字元對象列表[索引 + 1]
 
   if ((prev as unknown) && prev.pronunciation) {
     privateFns.sendCantodictFormForText(prev.word + ch, 'left')
@@ -162,6 +162,26 @@ export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
   if ((next as unknown) && next.pronunciation) {
     privateFns.sendCantodictFormForText(ch + next.word, 'right')
   }
+}
+
+const 取得錯誤顏色 = (選項: 類型_語言選項, 字元: CurrentCharObj | null) => {
+  if (!選項.使用聲調的顏色 || !字元?.ch.pronunciation) {
+    return undefined
+  }
+
+  const 音數 = Number(字元.ch.pronunciation[字元.ch.pronunciation.length - 1])
+
+  if (Number.isNaN(音數)) {
+    return undefined
+  }
+
+  return {
+    1: '#707070',
+    2: 'green',
+    3: 'red',
+    4: 'blue',
+    5: 'yellow',
+  }[音數]
 }
 
 const uiHandler: T_UIHandler = {
@@ -174,6 +194,7 @@ const uiHandler: T_UIHandler = {
   shouldAllCharsHaveSameWidth: false,
   儲存語言選項,
   取得語言選項,
+  取得錯誤顏色,
 }
 
 export default uiHandler

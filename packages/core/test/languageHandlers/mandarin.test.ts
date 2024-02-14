@@ -27,7 +27,7 @@ describe('取得特殊字符', () => {
   })
 })
 
-describe('convertToCharsObjs', () => {
+describe('轉換為字元對象列表', () => {
   it('returns the correct arrays', () => {
     const correctResult = [
       {
@@ -69,7 +69,7 @@ describe('convertToCharsObjs', () => {
     }
 
     expect(
-      mandarinHandler.convertToCharsObjs({
+      mandarinHandler.轉換為字元對象列表({
         charsToRemove: [],
         text: '你好嗎?我很好',
         語言選項: {
@@ -86,7 +86,7 @@ describe('convertToCharsObjs', () => {
     )
 
     expect(
-      mandarinHandler.convertToCharsObjs({
+      mandarinHandler.轉換為字元對象列表({
         charsToRemove: [],
         text: '你好嗎?我很好',
         語言選項: {},
@@ -98,7 +98,7 @@ describe('convertToCharsObjs', () => {
     )
 
     expect(
-      mandarinHandler.convertToCharsObjs({
+      mandarinHandler.轉換為字元對象列表({
         charsToRemove: [],
         text: '你好嗎?我很好',
       }),
@@ -109,7 +109,7 @@ describe('convertToCharsObjs', () => {
     )
 
     expect(
-      mandarinHandler.convertToCharsObjs({
+      mandarinHandler.轉換為字元對象列表({
         charsToRemove: [],
         text: '你好嗎?我很好',
         語言選項: {

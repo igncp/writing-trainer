@@ -1,11 +1,11 @@
 import { LanguageDefinition, unknownPronunciation } from '../constants'
-import { CharObj } from '../languageManager'
+import { 字元對象類別 } from '../languageManager'
 
 import { LanguageHandler } from './_common'
 
 type T_Dictionary = { [k: string]: string }
 
-const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
+const 轉換為字元對象列表: LanguageHandler['轉換為字元對象列表'] = ({
   charsToRemove,
   text,
   語言選項 = {},
@@ -20,29 +20,29 @@ const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
     .concat(charsToRemove)
     .concat([' '])
 
-  const charsObjs: CharObj[] = []
+  const 字元對象列表: 字元對象類別[] = []
 
   text.split('').forEach((ch, chIdx) => {
     if (allCharsToRemove.includes(ch)) {
-      const charObj = new CharObj({
+      const 字元對象 = new 字元對象類別({
         pronunciation: '',
         word: ch,
       })
 
-      charsObjs.push(charObj)
+      字元對象列表.push(字元對象)
     } else {
-      const charObj = new CharObj({
+      const 字元對象 = new 字元對象類別({
         pronunciation:
           pronunciationInputArr[chIdx] ||
           dictionary[ch] ||
           unknownPronunciation,
         word: ch,
       })
-      charsObjs.push(charObj)
+      字元對象列表.push(字元對象)
     }
   })
 
-  return charsObjs
+  return 字元對象列表
 }
 
 const language = new LanguageDefinition({
@@ -51,10 +51,10 @@ const language = new LanguageDefinition({
 })
 
 const mandarinHandler = new LanguageHandler({
-  convertToCharsObjs,
   extraSpecialChars:
     'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(''),
   language,
+  轉換為字元對象列表,
 })
 
 export { mandarinHandler }

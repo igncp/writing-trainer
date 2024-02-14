@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { CharObj } from 'writing-trainer-core'
+import { 字元對象類別 } from 'writing-trainer-core'
 
 import { T_CharsDisplayClickHandler } from '../../languages/types'
 
@@ -7,23 +7,25 @@ const CHAR_WIDTH = 25
 const MAX_HEIGHT = 160
 
 type Props = {
-  charsObjs: CharObj[]
-  focusedIndex?: number
   fontSize?: number
   onCharClick: T_CharsDisplayClickHandler
   shouldHaveDifferentWidths?: boolean
   shouldHidePronunciation: boolean
   showCurrentCharPronunciation?: boolean
+  字元對象列表: 字元對象類別[]
+  重點字元索引?: number
+  重點字元顏色?: string
 }
 
 const CharactersDisplay = ({
-  charsObjs,
-  focusedIndex,
   fontSize,
   onCharClick,
   shouldHaveDifferentWidths,
   shouldHidePronunciation,
   showCurrentCharPronunciation,
+  字元對象列表,
+  重點字元索引,
+  重點字元顏色,
 }: Props) => {
   const usedFontSize = fontSize ?? 30
   const wrapperRef = useRef<HTMLDivElement | undefined>()
@@ -35,7 +37,7 @@ const CharactersDisplay = ({
     }
 
     const charEl = wrapperRef.current.childNodes[
-      focusedIndex as number
+      重點字元索引 as number
     ] as HTMLDivElement
 
     if (!(charEl as unknown)) {
@@ -51,19 +53,19 @@ const CharactersDisplay = ({
     } else if (offsetTop < scrollTop) {
       wrapperRef.current.scrollTop = offsetTop
     }
-  }, [focusedIndex])
+  }, [重點字元索引])
 
   return (
     <div
       ref={wrapperRef as React.MutableRefObject<HTMLDivElement>}
       style={{ maxHeight: MAX_HEIGHT, overflow: 'auto', position: 'relative' }}
     >
-      {charsObjs.map((charObj, index) => {
-        const { pronunciation, word } = charObj
+      {字元對象列表.map((字元對象, 索引) => {
+        const { pronunciation, word } = 字元對象
 
         return (
           <div
-            key={`${index}${charObj.word}`}
+            key={`${索引}${字元對象.word}`}
             onClick={e => {
               e.stopPropagation()
 
@@ -72,16 +74,17 @@ const CharactersDisplay = ({
               }
 
               onCharClick({
-                charObj,
-                charsObjs,
-                index,
+                字元對象,
+                字元對象列表,
+                索引,
               })
             }}
             style={{
+              color: 索引 === 重點字元索引 ? 重點字元顏色 : undefined,
               cursor: pronunciation && onCharClick ? 'pointer' : 'default',
               display: 'inline-block',
               marginBottom: 10,
-              opacity: index === focusedIndex ? 1 : 0.3,
+              opacity: 索引 === 重點字元索引 ? 1 : 0.3,
             }}
           >
             <div
@@ -94,7 +97,7 @@ const CharactersDisplay = ({
               }}
             >
               {(() => {
-                if (showCurrentCharPronunciation && index === focusedIndex)
+                if (showCurrentCharPronunciation && 索引 === 重點字元索引)
                   return pronunciation
 
                 return shouldHidePronunciation ? '' : pronunciation

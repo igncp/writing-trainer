@@ -1,15 +1,15 @@
 import React from 'react'
-import { CharObj } from 'writing-trainer-core'
+import { 字元對象類別 } from 'writing-trainer-core'
 
 import { fireEvent, render } from '@testing-library/react'
 
 import CharactersDisplay from '../CharactersDisplay'
 
 const commonProps = {
-  charsObjs: [new CharObj({ pronunciation: 'bar', word: 'FOO' })],
-  focusedIndex: 0,
   onCharClick: jest.fn(),
   shouldHidePronunciation: false,
+  字元對象列表: [new 字元對象類別({ pronunciation: 'bar', word: 'FOO' })],
+  重點字元索引: 0,
 }
 
 describe('按鈕', () => {
@@ -37,9 +37,9 @@ describe('按鈕', () => {
       expect(commonProps.onCharClick.mock.calls).toEqual([
         [
           {
-            charObj: commonProps.charsObjs[0],
-            charsObjs: commonProps.charsObjs,
-            index: 0,
+            字元對象: commonProps.字元對象列表[0],
+            字元對象列表: commonProps.字元對象列表,
+            索引: 0,
           },
         ],
       ])

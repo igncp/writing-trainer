@@ -140,11 +140,11 @@ const privateFns = {
 }
 
 export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
-  charObj,
-  charsObjs,
-  index,
+  字元對象,
+  字元對象列表,
+  索引,
 }) => {
-  if (!(charObj as unknown) || !charObj.pronunciation) {
+  if (!(字元對象 as unknown) || !字元對象.pronunciation) {
     return
   }
 
@@ -153,12 +153,12 @@ export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
     return
   }
 
-  const ch = charObj.word
+  const ch = 字元對象.word
 
   privateFns.sendCantodictFormForText(ch, 'single')
 
-  const prev = charsObjs[index - 1]
-  const next = charsObjs[index + 1]
+  const prev = 字元對象列表[索引 - 1]
+  const next = 字元對象列表[索引 + 1]
 
   if ((prev as unknown) && prev.pronunciation) {
     privateFns.sendCantodictFormForText(prev.word + ch, 'left')

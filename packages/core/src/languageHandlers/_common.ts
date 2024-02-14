@@ -1,29 +1,29 @@
 import { LanguageDefinition } from '../constants'
-import { CharObj, CurrentCharObj } from '../languageManager'
+import { 字元對象類別, CurrentCharObj } from '../languageManager'
 
 import { 特殊字元 } from './_特殊字元'
 
-type T_convertToCharsObjs = (opts: {
+type 類型_轉換為字元對象列表 = (opts: {
   charsToRemove: string[]
   text: string
   語言選項?: { [k: string]: unknown }
-}) => CharObj[]
+}) => 字元對象類別[]
 
 class LanguageHandler {
-  public readonly convertToCharsObjs: T_convertToCharsObjs
   private readonly extraSpecialChars: string[]
   private readonly language: LanguageDefinition
+  public readonly 轉換為字元對象列表: 類型_轉換為字元對象列表
 
   public constructor({
-    convertToCharsObjs,
     extraSpecialChars,
     language,
+    轉換為字元對象列表,
   }: {
-    convertToCharsObjs: LanguageHandler['convertToCharsObjs']
     extraSpecialChars?: string[]
     language: LanguageHandler['language']
+    轉換為字元對象列表: LanguageHandler['轉換為字元對象列表']
   }) {
-    this.convertToCharsObjs = convertToCharsObjs
+    this.轉換為字元對象列表 = 轉換為字元對象列表
     this.language = language
     this.extraSpecialChars = extraSpecialChars ?? []
   }
@@ -49,8 +49,8 @@ class LanguageHandler {
     originalCharsObjs,
     practiceCharsObjs,
   }: {
-    originalCharsObjs: CharObj[]
-    practiceCharsObjs: CharObj[]
+    originalCharsObjs: 字元對象類別[]
+    practiceCharsObjs: 字元對象類別[]
   }) {
     const originalCharsWithPronunciationObjs = originalCharsObjs
       .map((ch, idx) => ({ ch, idx }))

@@ -1,25 +1,25 @@
 import { LanguageDefinition } from '../constants'
-import { CharObj } from '../languageManager'
+import { 字元對象類別 } from '../languageManager'
 
 import { LanguageHandler } from './_common'
 
-const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
+const 轉換為字元對象列表: LanguageHandler['轉換為字元對象列表'] = ({
   charsToRemove,
   text,
 }) => {
   const specialChars = englishHandler.取得特殊字符() // eslint-disable-line @typescript-eslint/no-use-before-define
   const allCharsToRemove = specialChars.concat(charsToRemove).concat([' '])
 
-  const charsObjs: CharObj[] = []
+  const 字元對象列表: 字元對象類別[] = []
   let nextWord = ''
 
   const addWord = () => {
     if (nextWord) {
-      const charObj = new CharObj({
+      const 字元對象 = new 字元對象類別({
         pronunciation: nextWord,
         word: nextWord,
       })
-      charsObjs.push(charObj)
+      字元對象列表.push(字元對象)
 
       nextWord = ''
     }
@@ -29,12 +29,12 @@ const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
     if (allCharsToRemove.includes(ch)) {
       addWord()
 
-      const charObj = new CharObj({
+      const 字元對象 = new 字元對象類別({
         pronunciation: '',
         word: ch,
       })
 
-      charsObjs.push(charObj)
+      字元對象列表.push(字元對象)
     } else {
       nextWord += ch
     }
@@ -42,7 +42,7 @@ const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
 
   addWord()
 
-  return charsObjs
+  return 字元對象列表
 }
 
 const language = new LanguageDefinition({
@@ -51,8 +51,8 @@ const language = new LanguageDefinition({
 })
 
 const englishHandler = new LanguageHandler({
-  convertToCharsObjs,
   language,
+  轉換為字元對象列表,
 })
 
 export { englishHandler }

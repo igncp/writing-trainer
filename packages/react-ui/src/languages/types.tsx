@@ -1,5 +1,9 @@
 import React from 'react'
-import { CharObj, CurrentCharObj, LanguageHandler } from 'writing-trainer-core'
+import {
+  字元對象類別,
+  CurrentCharObj,
+  LanguageHandler,
+} from 'writing-trainer-core'
 
 export type 類型_語言選項 = { [k: string]: unknown }
 
@@ -24,7 +28,6 @@ export type T_getCurrentCharObjFromPractice = (
 ) => CurrentCharObj | null
 
 type T_handleWritingKeyDown = (opts: {
-  charsObjs: CharObj[]
   getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice
   originalTextValue: string
   practiceValue: string
@@ -35,12 +38,17 @@ type T_handleWritingKeyDown = (opts: {
   setWriting: (o: string) => void
   specialCharsValue: string
   writingValue: string
+  字元對象列表: 字元對象類別[]
   按鍵事件: React.KeyboardEvent<HTMLTextAreaElement>
   語言選項: 類型_語言選項
 }) => void
 
 export type T_CharsDisplayClickHandler =
-  | ((opts: { charObj: CharObj; charsObjs: CharObj[]; index: number }) => void)
+  | ((opts: {
+      字元對象: 字元對象類別
+      字元對象列表: 字元對象類別[]
+      索引: number
+    }) => void)
   | null
 
 type T_BlurHandlerOpts = {
@@ -62,4 +70,8 @@ export interface T_UIHandler {
   shouldAllCharsHaveSameWidth: boolean
   儲存語言選項: (o: 類型_語言選項) => void
   取得語言選項: () => 類型_語言選項
+  取得錯誤顏色?: (
+    選項: 類型_語言選項,
+    字元: CurrentCharObj | null,
+  ) => string | undefined
 }

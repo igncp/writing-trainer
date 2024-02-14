@@ -1,9 +1,9 @@
 import { LanguageDefinition } from '../constants'
-import { CharObj } from '../languageManager'
+import { 字元對象類別 } from '../languageManager'
 
 import { LanguageHandler } from './_common'
 
-const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
+const 轉換為字元對象列表: LanguageHandler['轉換為字元對象列表'] = ({
   charsToRemove,
   text,
   語言選項 = {},
@@ -30,7 +30,7 @@ const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
       return { num: Number(numRegResul[2]), text: numRegResul[1] }
     })
 
-  const charsObjs: CharObj[] = []
+  const 字元對象列表: 字元對象類別[] = []
   let nextWord = ''
 
   const addWord = () => {
@@ -38,13 +38,13 @@ const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
       return
     }
 
-    const charObj = new CharObj({
+    const 字元對象 = new 字元對象類別({
       pronunciation: pronunciationInputArr.length
         ? pronunciationInputArr.shift()!.text
         : '?',
       word: nextWord,
     })
-    charsObjs.push(charObj)
+    字元對象列表.push(字元對象)
 
     nextWord = ''
   }
@@ -53,11 +53,11 @@ const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
     if (allCharsToRemove.includes(ch)) {
       addWord()
 
-      const charObj = new CharObj({
+      const 字元對象 = new 字元對象類別({
         pronunciation: '',
         word: ch,
       })
-      charsObjs.push(charObj)
+      字元對象列表.push(字元對象)
 
       return
     }
@@ -74,7 +74,7 @@ const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
 
   addWord()
 
-  return charsObjs
+  return 字元對象列表
 }
 
 const language = new LanguageDefinition({
@@ -83,8 +83,8 @@ const language = new LanguageDefinition({
 })
 
 const japaneseHandler = new LanguageHandler({
-  convertToCharsObjs,
   language,
+  轉換為字元對象列表,
 })
 
 export { japaneseHandler }

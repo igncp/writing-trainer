@@ -10,12 +10,15 @@ import { cantoneseHandler } from './languageHandlers/cantonese'
 import { englishHandler } from './languageHandlers/english'
 import { japaneseHandler } from './languageHandlers/japanese'
 import { mandarinHandler } from './languageHandlers/mandarin'
-import { CharObj, CurrentCharObj, LanguageManager } from './languageManager'
+import {
+  字元對象類別,
+  CurrentCharObj,
+  LanguageManager,
+} from './languageManager'
 import { Record } from './records'
 
 export {
   cantoneseHandler,
-  CharObj,
   CurrentCharObj,
   englishHandler,
   japaneseHandler,
@@ -26,5 +29,6 @@ export {
   Record,
   T_Storage,
   unknownPronunciation,
+  字元對象類別,
   特殊字元,
 }

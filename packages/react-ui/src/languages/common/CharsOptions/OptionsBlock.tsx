@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import { T_OptionsBlock } from '../../types'
 
@@ -13,6 +13,8 @@ const OptionsBlock: T_OptionsBlock = ({ 更改語言選項, 語言選項 }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleOptionsChange = (newValues: any) => {
     更改語言選項({
+      ...語言選項,
+
       聲調值,
       遊戲模式值,
 
@@ -36,10 +38,6 @@ const OptionsBlock: T_OptionsBlock = ({ 更改語言選項, 語言選項 }) => {
     })
   }
 
-  useEffect(() => {
-    handleOptionsChange({})
-  }, [])
-
   return (
     <div>
       <select onChange={handleTonesChange} value={聲調值}>
@@ -59,6 +57,21 @@ const OptionsBlock: T_OptionsBlock = ({ 更改語言選項, 語言選項 }) => {
             onChange={() => {
               handleOptionsChange({
                 自動分割文字行: !語言選項.自動分割文字行,
+              })
+            }}
+            type="checkbox"
+          />
+        </label>
+      </span>
+      <span style={{ marginLeft: 10 }}>
+        <label htmlFor="使用聲調的顏色">
+          使用聲調的顏色:
+          <input
+            checked={!!語言選項.使用聲調的顏色}
+            id="使用聲調的顏色"
+            onChange={() => {
+              handleOptionsChange({
+                使用聲調的顏色: !語言選項.使用聲調的顏色,
               })
             }}
             type="checkbox"

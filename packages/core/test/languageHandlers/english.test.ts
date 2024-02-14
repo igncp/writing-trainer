@@ -14,10 +14,10 @@ describe('取得特殊字符', () => {
   })
 })
 
-describe('convertToCharsObjs', () => {
+describe('轉換為字元對象列表', () => {
   it('returns the correct array', () => {
     expect(
-      englishHandler.convertToCharsObjs({
+      englishHandler.轉換為字元對象列表({
         charsToRemove: [],
         text: 'fo__o',
       }),
@@ -41,7 +41,7 @@ describe('convertToCharsObjs', () => {
     ])
 
     expect(
-      englishHandler.convertToCharsObjs({
+      englishHandler.轉換為字元對象列表({
         charsToRemove: [],
         text: 'ab c',
       }),

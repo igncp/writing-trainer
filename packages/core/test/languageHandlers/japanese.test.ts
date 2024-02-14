@@ -14,10 +14,10 @@ describe('取得特殊字符', () => {
   })
 })
 
-describe('convertToCharsObjs', () => {
+describe('轉換為字元對象列表', () => {
   it('returns the correct array when correct pronunciation', () => {
     expect(
-      japaneseHandler.convertToCharsObjs({
+      japaneseHandler.轉換為字元對象列表({
         charsToRemove: [],
         text: 'あい,うえお',
         語言選項: {
@@ -46,7 +46,7 @@ describe('convertToCharsObjs', () => {
 
   it('returns the expected array when invalid pronunciation', () => {
     expect(
-      japaneseHandler.convertToCharsObjs({
+      japaneseHandler.轉換為字元對象列表({
         charsToRemove: [],
         text: 'あい,うえお',
         語言選項: {
@@ -77,7 +77,7 @@ describe('convertToCharsObjs', () => {
     ])
 
     expect(
-      japaneseHandler.convertToCharsObjs({
+      japaneseHandler.轉換為字元對象列表({
         charsToRemove: [],
         text: 'あい,うえお',
       }),
@@ -97,7 +97,7 @@ describe('convertToCharsObjs', () => {
     ])
 
     expect(
-      japaneseHandler.convertToCharsObjs({
+      japaneseHandler.轉換為字元對象列表({
         charsToRemove: [],
         text: 'あい えう',
         語言選項: {
@@ -126,7 +126,7 @@ describe('convertToCharsObjs', () => {
 
   it('replaces the expected characters', () => {
     expect(
-      japaneseHandler.convertToCharsObjs({
+      japaneseHandler.轉換為字元對象列表({
         charsToRemove: [],
         text: 'あい',
         語言選項: {
@@ -143,7 +143,7 @@ describe('convertToCharsObjs', () => {
 
   it('turns all letters to lowercase', () => {
     expect(
-      japaneseHandler.convertToCharsObjs({
+      japaneseHandler.轉換為字元對象列表({
         charsToRemove: [],
         text: 'あい',
         語言選項: {
