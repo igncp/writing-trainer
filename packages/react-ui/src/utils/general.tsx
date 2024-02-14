@@ -2,10 +2,10 @@ export const getSelectedText = (): string => {
   return window.getSelection()?.toString() ?? ''
 }
 
-export const copyTextToClipboard = (str: string): void => {
+export const 將文字複製到剪貼簿 = (文字: string): void => {
   const element = document.createElement('textarea')
 
-  element.innerHTML = str
+  element.innerHTML = 文字
 
   element.style.position = 'absolute'
   element.style.left = '-9999px'

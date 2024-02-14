@@ -1,6 +1,6 @@
 import dict from './chars-t-s.txt'
 
-export const tradToSimplifiedItems = dict
+export const 繁體轉簡體 = dict
   .split('\n')
   .reduce<Record<string, string[] | undefined>>((acc, line) => {
     if (!line || line.startsWith('--')) {

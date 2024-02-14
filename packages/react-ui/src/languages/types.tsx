@@ -5,11 +5,15 @@ import {
   LanguageHandler,
 } from 'writing-trainer-core'
 
+export type 類型_文字片段列表 = { 列表: string[]; 索引: number }
+
 export type 類型_語言選項 = { [k: string]: unknown }
 
 export type 類型_連結區塊 = (選項: {
   children?: React.ReactNode
   文字: string
+  文字片段列表: 類型_文字片段列表
+  更改文字片段列表: (列表: 類型_文字片段列表) => void
 }) => React.ReactNode
 
 export type T_OptionsBlock = (props: {

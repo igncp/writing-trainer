@@ -6,6 +6,8 @@ import 連結區塊 from '../連結區塊'
 
 const commonProps = {
   文字: 'F OO _B A R ',
+  文字片段列表: { 列表: [], 索引: 0 },
+  更改文字片段列表: () => {},
 }
 
 describe('按鈕', () => {

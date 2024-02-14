@@ -3,7 +3,7 @@ import { CurrentCharObj, mandarinHandler } from 'writing-trainer-core'
 import OptionsBlock from '../common/CharsOptions/OptionsBlock'
 import { chineseBlurHandler } from '../common/chineseBlurHandler'
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
-import { tradToSimplifiedItems } from '../common/conversion'
+import { 繁體轉簡體 } from '../common/conversion'
 import {
   T_UIHandler,
   類型_語言選項,
@@ -38,8 +38,8 @@ const dictionaryParsed = (
 
   acc[char] = [pronunciation, finalPerc]
 
-  if (tradToSimplifiedItems[char]) {
-    tradToSimplifiedItems[char]?.forEach(simplified => {
+  if (繁體轉簡體[char]) {
+    繁體轉簡體[char]?.forEach(simplified => {
       acc[simplified] = [pronunciation, finalPerc]
     })
   }

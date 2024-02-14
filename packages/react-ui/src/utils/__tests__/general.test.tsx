@@ -1,4 +1,4 @@
-import { copyTextToClipboard, getSelectedText } from '../general'
+import { 將文字複製到剪貼簿, getSelectedText } from '../general'
 
 beforeEach(() => {
   window.getSelection = jest.fn()
@@ -28,7 +28,7 @@ describe('copyTextToClipboard', () => {
     expect((document as any).execCommand.mock.calls).toEqual([])
     expect((document as any).createElement.mock.calls).toEqual([])
 
-    copyTextToClipboard('foo')
+    將文字複製到剪貼簿('foo')
 
     expect((document as any).execCommand.mock.calls).toEqual([['copy']])
     expect((document as any).createElement.mock.calls).toEqual([['textarea']])

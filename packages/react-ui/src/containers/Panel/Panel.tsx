@@ -14,6 +14,7 @@ import { LanguageUIManager } from '../../languages/languageUIManager'
 import {
   類型_語言選項,
   T_getCurrentCharObjFromPractice,
+  類型_文字片段列表,
 } from '../../languages/types'
 import { T_Services } from '../../typings/mainTypes'
 import RecordsSection, { RecordsScreen } from '../RecordsSection/RecordsSection'
@@ -95,19 +96,17 @@ const Panel = ({
 
   const uiHandler = languageUIManager.getUIHandler()
 
-  const [fragments, setFragments] = useState<{ index: number; list: string[] }>(
-    {
-      index: 0,
-      list: [text],
-    },
-  )
+  const [文字片段列表, setFragments] = useState<類型_文字片段列表>({
+    列表: [text],
+    索引: 0,
+  })
 
   const [showingRecordsInitScreen, setShowingRecordsInitScreen] = useState<
     RecordsScreen | ''
   >('')
   const [currentRecord, setCurrentRecord] = useState<Record['id'] | null>(null)
   const [currentText, setCurrentText] = useState<string>('')
-  const originalTextValue = currentText || fragments.list[fragments.index]
+  const originalTextValue = currentText || 文字片段列表.列表[文字片段列表.索引]
   const [pronunciationValue, setPronunciation] = useState<string>(
     _stories.defaultPronunciation ?? '',
   )
@@ -151,10 +150,7 @@ const Panel = ({
       .catch(() => {})
   }, [])
 
-  const onPracticeSourceChange = (newFragments?: {
-    index: number
-    list: string[]
-  }) => {
+  const onPracticeSourceChange = (newFragments?: 類型_文字片段列表) => {
     setCurrentText('')
     setPractice('')
     setWriting('')
@@ -178,9 +174,9 @@ const Panel = ({
       .map(s => s.trim())
       .filter(Boolean)
 
-    const newFragments = {
-      index: 0,
-      list: list.length ? list : [''],
+    const newFragments: 類型_文字片段列表 = {
+      列表: list.length ? list : [''],
+      索引: 0,
     }
 
     onPracticeSourceChange(newFragments)
@@ -321,9 +317,9 @@ const Panel = ({
       if (value === SHORTCUT_NEXT_FRAGMENT) {
         e.preventDefault()
 
-        const newFragments = {
-          ...fragments,
-          index: (fragments.index + 1) % fragments.list.length,
+        const newFragments: 類型_文字片段列表 = {
+          ...文字片段列表,
+          索引: (文字片段列表.索引 + 1) % 文字片段列表.列表.length,
         }
 
         onPracticeSourceChange(newFragments)
@@ -342,7 +338,7 @@ const Panel = ({
     return () => {
       document.removeEventListener('keydown', handleShortcuts)
     }
-  }, [lastThreeKeys, isShowingEdition, isShowingPronunciation, fragments])
+  }, [lastThreeKeys, isShowingEdition, isShowingPronunciation, 文字片段列表])
 
   const clearValues = () => {
     // eslint-disable-next-line no-extra-semi,padding-line-between-statements
@@ -351,7 +347,7 @@ const Panel = ({
         fn('')
       },
     )
-    const newFragments = { index: 0, list: [''] }
+    const newFragments: 類型_文字片段列表 = { 列表: [''], 索引: 0 }
     storage.setValue('fragments', JSON.stringify(newFragments))
     setShowingPronunciation(true)
     setShowingEdition(true)
@@ -438,7 +434,10 @@ const Panel = ({
           setShowingRecordsInitScreen('')
           setShowingEdition(false)
           setShowingPronunciation(false)
-          const newFragments = { index: 0, list: record.text.split('\n') }
+          const newFragments: 類型_文字片段列表 = {
+            列表: record.text.split('\n'),
+            索引: 0,
+          }
           onPracticeSourceChange(newFragments)
           setCurrentRecord(record.id)
           setPronunciation(record.pronunciation)
@@ -447,9 +446,9 @@ const Panel = ({
           setShowingRecordsInitScreen('')
         }}
         onSongLoad={lyrics => {
-          const newFragments = {
-            index: 0,
-            list: lyrics,
+          const newFragments: 類型_文字片段列表 = {
+            列表: lyrics,
+            索引: 0,
           }
           onPracticeSourceChange(newFragments)
           setShowingRecordsInitScreen('')
@@ -516,9 +515,9 @@ const Panel = ({
                       .join('\n')
                   }
 
-                  const newFragments = {
-                    index: 0,
-                    list: fileContent.split('\n'),
+                  const newFragments: 類型_文字片段列表 = {
+                    列表: fileContent.split('\n'),
+                    索引: 0,
                   }
 
                   onPracticeSourceChange(newFragments)
@@ -576,28 +575,28 @@ const Panel = ({
           )}
         </>
       )}
-      {fragments.list.length > 1 && (
+      {文字片段列表.列表.length > 1 && (
         <按鈕
           onClick={() => {
             const newFragments = {
-              ...fragments,
-              index: (fragments.index + 1) % fragments.list.length,
+              ...文字片段列表,
+              index: (文字片段列表.索引 + 1) % 文字片段列表.列表.length,
             }
             onPracticeSourceChange(newFragments)
           }}
         >
-          當前小文本: {fragments.index + 1} / {fragments.list.length}
+          當前小文本: {文字片段列表.索引 + 1} / {文字片段列表.列表.length}
         </按鈕>
       )}
-      {fragments.list.length > 5 && (
+      {文字片段列表.列表.length > 5 && (
         <按鈕
           onClick={() => {
             const newFragments = {
-              ...fragments,
+              ...文字片段列表,
               index:
-                fragments.index <= 0
-                  ? fragments.list.length - 1
-                  : fragments.index - 1,
+                文字片段列表.索引 <= 0
+                  ? 文字片段列表.列表.length - 1
+                  : 文字片段列表.索引 - 1,
             }
             onPracticeSourceChange(newFragments)
           }}
@@ -636,13 +635,13 @@ const Panel = ({
               onBlur={() => {
                 if (uiHandler.onBlur) {
                   const { newFragmentsList } = uiHandler.onBlur({
-                    fragmentsList: fragments.list,
+                    fragmentsList: 文字片段列表.列表,
                     語言選項,
                   })
 
                   if (newFragmentsList) {
                     const newFragments = {
-                      ...fragments,
+                      ...文字片段列表,
                       list: newFragmentsList,
                     }
 
@@ -657,7 +656,7 @@ const Panel = ({
               onChange={handleOriginalTextUpdate}
               placeholder="原文"
               rows={3}
-              value={fragments.list.join('\n')}
+              value={文字片段列表.列表.join('\n')}
             />
             {hasExtraControls && (
               <>
@@ -667,7 +666,12 @@ const Panel = ({
                   rows={2}
                   value={pronunciationValue}
                 />
-                <OptionsBlock 更改語言選項={更改語言選項} 語言選項={語言選項} />
+                {langHandler && (
+                  <OptionsBlock
+                    更改語言選項={更改語言選項}
+                    語言選項={語言選項}
+                  />
+                )}
                 <文字區
                   onChange={createInputSetterFn(setSpecialChars)}
                   placeholder="特殊字元"
@@ -697,7 +701,9 @@ const Panel = ({
             )}
             {/* This is necessary because the options block initialises some values*/}
             <div style={{ display: 'none' }}>
-              <OptionsBlock 更改語言選項={更改語言選項} 語言選項={語言選項} />
+              {langHandler && (
+                <OptionsBlock 更改語言選項={更改語言選項} 語言選項={語言選項} />
+              )}
             </div>
           </div>
         )}{' '}
@@ -765,7 +771,11 @@ const Panel = ({
           />
         </div>
       </div>
-      <連結區塊 文字={originalTextValue} />
+      <連結區塊
+        文字={originalTextValue}
+        文字片段列表={文字片段列表}
+        更改文字片段列表={setFragments}
+      />
     </>
   )
 }
