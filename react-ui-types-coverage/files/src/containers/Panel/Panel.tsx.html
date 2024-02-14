@@ -11,7 +11,7 @@
 <link href="../../../../assets/source-file.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Panel/Panel.tsx</td><td class="">99.69%</td><td class="">95%</td><td class="">966</td><td class="">963</td><td class="">3</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useRef, useState } from &#x27;react&#x27;
+    <div style="margin-top:3em" class="ui container"><h1 class="ui header"><a href="../../../../index.html">TypeScript coverage report</a></h1><table style="margin-top:2em" class="ui celled table"><thead class=""><tr class=""><th class="">Filename</th><th class="">Percent</th><th class="">Threshold</th><th class="">Total</th><th class="">Covered</th><th class="">Uncovered</th></tr></thead><tbody class=""><tr class="positive"><td class="">src/containers/Panel/Panel.tsx</td><td class="">99.69%</td><td class="">95%</td><td class="">981</td><td class="">978</td><td class="">3</td></tr></tbody></table><textarea id="editor" readonly="" style="margin-top:3em">import React, { useEffect, useRef, useState } from &#x27;react&#x27;
 import {
   LanguageDefinition,
   LanguageManager,
@@ -99,6 +99,7 @@ const Panel = ({
   UI,
 }: Props) =&gt; {
   const initialLanguageId = languageUIManager.getDefaultLanguage()
+  const [, 觸發重新渲染] = useState&lt;number&gt;(0)
   const [stats, setStats] = useState&lt;null | {
     correct: number
     fail: number
@@ -293,7 +294,7 @@ const Panel = ({
 
   const charsToRemove = specialCharsValue.split(&#x27;&#x27;).concat(特殊字元 ?? [])
 
-  const charsObjs = langHandler?.convertToCharsObjs({
+  const 字元對象列表 = langHandler?.轉換為字元對象列表({
     ...語言選項對象,
     charsToRemove,
     text: originalTextValue,
@@ -304,14 +305,14 @@ const Panel = ({
   ) =&gt; {
     if (!langHandler) return null
 
-    const practiceCharsObjs = langHandler.convertToCharsObjs({
+    const practiceCharsObjs = langHandler.轉換為字元對象列表({
       ...語言選項對象,
       charsToRemove,
       text: practiceText,
     })
 
     return langHandler.getCurrentCharObj({
-      originalCharsObjs: charsObjs ?? [],
+      originalCharsObjs: 字元對象列表 ?? [],
       practiceCharsObjs,
     })
   }
@@ -393,7 +394,6 @@ const Panel = ({
     }
 
     uiHandler.handleWritingKeyDown({
-      charsObjs: charsObjs ?? [],
       getCurrentCharObjFromPractice,
       originalTextValue,
       practiceValue,
@@ -404,6 +404,7 @@ const Panel = ({
       setWriting,
       specialCharsValue: charsToRemove.join(&#x27;&#x27;),
       writingValue,
+      字元對象列表: 字元對象列表 ?? [],
       按鍵事件: 事件,
       語言選項,
     })
@@ -413,6 +414,7 @@ const Panel = ({
 
   const 更改語言選項 = (選項: 類型_語言選項) =&gt; {
     uiHandler.儲存語言選項(選項)
+    觸發重新渲染(Math.random())
   }
 
   const handleWritingAreaClick = () =&gt; {
@@ -472,6 +474,10 @@ const Panel = ({
       /&gt;
     )
   }
+
+  const 重點字元顏色 = doesPracticeHaveError
+    ? uiHandler.取得錯誤顏色?.(語言選項, getCurrentCharObjFromPractice())
+    : undefined
 
   return (
     &lt;&gt;
@@ -711,8 +717,6 @@ const Panel = ({
         &lt;div&gt;
           &lt;div style={{ marginBottom: 10, marginTop: 5 }}&gt;
             &lt;CharactersDisplay
-              charsObjs={charsObjs ?? []}
-              focusedIndex={currentDisplayCharIdx}
               fontSize={fontSize}
               onCharClick={handleDisplayedCharClick}
               shouldHaveDifferentWidths={!uiHandler.shouldAllCharsHaveSameWidth}
@@ -720,6 +724,9 @@ const Panel = ({
               showCurrentCharPronunciation={
                 doesPracticeHaveError &amp;&amp; 語言選項.遊戲模式值 === &#x27;還原論者&#x27;
               }
+              字元對象列表={字元對象列表 ?? []}
+              重點字元索引={currentDisplayCharIdx}
+              重點字元顏色={重點字元顏色}
             /&gt;
           &lt;/div&gt;
           &lt;文字區
@@ -760,7 +767,7 @@ const Panel = ({
             style={{
               border: `4px solid ${
                 doesPracticeHaveError
-                  ? &#x27;red&#x27;
+                  ? 重點字元顏色 ?? &#x27;red&#x27;
                   : &#x27;var(--color-background, &quot;white&quot;)&#x27;
               }`,
               fontSize,
@@ -777,8 +784,8 @@ const Panel = ({
 }
 
 export default Panel
-</textarea><pre id="annotations" style="display:none">[{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:24,&quot;character&quot;:3,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:25,&quot;character&quot;:4,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:260,&quot;character&quot;:14,&quot;text&quot;:&quot;parsedFragments&quot;,&quot;kind&quot;:1}]</pre></div>
-    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Tue, 13 Feb 2024 09:04:22 GMT</p>
+</textarea><pre id="annotations" style="display:none">[{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:24,&quot;character&quot;:3,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:25,&quot;character&quot;:4,&quot;text&quot;:&quot;setValue&quot;,&quot;kind&quot;:1},{&quot;file&quot;:&quot;src/containers/Panel/Panel.tsx&quot;,&quot;line&quot;:261,&quot;character&quot;:14,&quot;text&quot;:&quot;parsedFragments&quot;,&quot;kind&quot;:1}]</pre></div>
+    <p class="footer-text">TypeScript Coverage Report generated by <a href="https://github.com/plantain-00/type-coverage">type-coverage</a> and <a href="https://github.com/alexcanessa/typescript-coverage-report">typescript-coverage-report</a> at Wed, 14 Feb 2024 01:44:17 GMT</p>
     </body>
   </html>
   

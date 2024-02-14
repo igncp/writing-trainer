@@ -31,7 +31,7 @@
     },
     {
       "file": "src/languages/common/CharsOptions/OptionsBlock.tsx",
-      "line": 18,
+      "line": 20,
       "character": 9,
       "text": "newValues",
       "kind": 1
@@ -73,7 +73,7 @@
     },
     {
       "file": "src/containers/Panel/Panel.tsx",
-      "line": 260,
+      "line": 261,
       "character": 14,
       "text": "parsedFragments",
       "kind": 1
@@ -737,8 +737,8 @@
       "kind": 1
     }
   ],
-  "percentage": 98.00456100342075,
-  "total": 5262,
-  "covered": 5157,
+  "percentage": 98.0311269454341,
+  "total": 5333,
+  "covered": 5228,
   "uncovered": 105
 }
