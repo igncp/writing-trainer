@@ -31,7 +31,7 @@ export type T_getCurrentCharObjFromPractice = (
   t?: string,
 ) => CurrentCharObj | null
 
-type T_handleWritingKeyDown = (opts: {
+type T_處理寫鍵按下 = (opts: {
   getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice
   originalTextValue: string
   practiceValue: string
@@ -64,10 +64,9 @@ type T_BlurHandler = (opts: T_BlurHandlerOpts) => {
   newFragmentsList: string[] | undefined
 }
 
-export interface T_UIHandler {
+export interface 類型_語言UI處理程序 {
   getDisplayedCharHandler: () => T_CharsDisplayClickHandler
   getOptionsBlock: () => T_OptionsBlock
-  handleWritingKeyDown: T_handleWritingKeyDown
   languageHandler: LanguageHandler
   onBlur?: T_BlurHandler
   shouldAllCharsHaveSameWidth: boolean
@@ -78,4 +77,6 @@ export interface T_UIHandler {
     選項: 類型_語言選項,
     字元: CurrentCharObj | null,
   ) => string | undefined
+  處理寫鍵按下: T_處理寫鍵按下
+  處理清除事件?: (處理程序: 類型_語言UI處理程序) => void
 }

@@ -3,6 +3,6 @@ import english from './english/english'
 import japanese from './japanese/japanese'
 import mandarin from './mandarin/mandarin'
 
-const uiHandlers = [mandarin, japanese, english, cantonese]
+const 語言UI處理程序清單 = [mandarin, japanese, english, cantonese]
 
-export { uiHandlers }
+export { 語言UI處理程序清單 }

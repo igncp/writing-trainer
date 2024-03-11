@@ -5,7 +5,7 @@ import { chineseBlurHandler } from '../common/chineseBlurHandler'
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
 import { 繁體轉簡體 } from '../common/conversion'
 import {
-  T_UIHandler,
+  類型_語言UI處理程序,
   類型_語言選項,
   T_CharsDisplayClickHandler,
 } from '../types'
@@ -68,7 +68,7 @@ const 解析發音 = (文字: string, 選項: 類型_語言選項) => {
   return 解析後的文本
 }
 
-const handleWritingKeyDown: T_UIHandler['handleWritingKeyDown'] = 參數 => {
+const 處理寫鍵按下: 類型_語言UI處理程序['處理寫鍵按下'] = 參數 => {
   commonHandleWritingKeyDown(參數, {
     解析發音,
   })
@@ -184,10 +184,9 @@ const 取得錯誤顏色 = (選項: 類型_語言選項, 字元: CurrentCharObj 
   }[音數]
 }
 
-const uiHandler: T_UIHandler = {
+const 語言UI處理程序: 類型_語言UI處理程序 = {
   getDisplayedCharHandler: () => handleDisplayedCharClick,
   getOptionsBlock: () => OptionsBlock,
-  handleWritingKeyDown,
   languageHandler: mandarinHandler,
   onBlur: chineseBlurHandler,
   shouldAllCharsHaveSameWidth: false,
@@ -195,6 +194,10 @@ const uiHandler: T_UIHandler = {
   取得語言選項,
   取得連結區塊: () => 連結區塊,
   取得錯誤顏色,
+  處理寫鍵按下,
+  處理清除事件: (處理程序: 類型_語言UI處理程序) => {
+    處理程序.儲存語言選項({ ...處理程序.取得語言選項(), 錯誤的字符: [] })
+  },
 }
 
-export default uiHandler
+export default 語言UI處理程序

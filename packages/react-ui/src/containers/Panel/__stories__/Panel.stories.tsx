@@ -8,12 +8,15 @@ import {
 } from 'writing-trainer-core'
 
 import { dummyServices } from '../../../__stories__/storybookHelpers'
-import { uiHandlers } from '../../../languages/handlers'
+import { 語言UI處理程序清單 } from '../../../languages/handlers'
 import { LanguageUIManager } from '../../../languages/languageUIManager'
 import Panel from '../Panel'
 
 const languageManager = new LanguageManager()
-const languageUIManager = new LanguageUIManager(languageManager, uiHandlers)
+const languageUIManager = new LanguageUIManager(
+  languageManager,
+  語言UI處理程序清單,
+)
 
 const initialText = '崩比筆,壁必畢.閉編'
 

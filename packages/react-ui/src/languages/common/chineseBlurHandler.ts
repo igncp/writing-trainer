@@ -1,6 +1,6 @@
-import { T_UIHandler } from '../types'
+import { 類型_語言UI處理程序 } from '../types'
 
-export const chineseBlurHandler: T_UIHandler['onBlur'] = ({
+export const chineseBlurHandler: 類型_語言UI處理程序['onBlur'] = ({
   fragmentsList,
   語言選項,
 }) => {

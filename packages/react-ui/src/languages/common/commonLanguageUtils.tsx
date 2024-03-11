@@ -1,6 +1,6 @@
 import { unknownPronunciation } from 'writing-trainer-core'
 
-import { T_UIHandler, 類型_語言選項 } from '../types'
+import { 類型_語言UI處理程序, 類型_語言選項 } from '../types'
 
 import { 儲存成功字元, 儲存失敗字元 } from './統計'
 
@@ -8,12 +8,12 @@ type 類型_解析發音 = (文字: string, 語言選項?: 類型_語言選項) 
 type T_OnPracticeBackspaceFormat = (practiceValue: string) => string
 
 type T_CommonHandleWritingKeyDown = (
-  opts: Parameters<T_UIHandler['handleWritingKeyDown']>[0],
+  opts: Parameters<類型_語言UI處理程序['處理寫鍵按下']>[0],
   opts2: {
     onPracticeBackspaceFormat?: T_OnPracticeBackspaceFormat
     解析發音?: 類型_解析發音
   },
-) => ReturnType<T_UIHandler['handleWritingKeyDown']>
+) => ReturnType<類型_語言UI處理程序['處理寫鍵按下']>
 
 const 預設解析發音: 類型_解析發音 = 文字 => 文字.toLowerCase()
 

@@ -94,7 +94,7 @@ const Panel = ({
     perc: number
   }>(null)
 
-  const uiHandler = languageUIManager.getUIHandler()
+  const 語言UI處理程序 = languageUIManager.獲取語言UI處理程序()
 
   const [文字片段列表, setFragments] = useState<類型_文字片段列表>({
     列表: [text],
@@ -128,7 +128,7 @@ const Panel = ({
   const [hasExtraControls, setHasExtraControls] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const writingArea = useRef<HTMLTextAreaElement | null>(null)
-  const 語言選項 = _stories.語言選項 ?? uiHandler.取得語言選項()
+  const 語言選項 = _stories.語言選項 ?? 語言UI處理程序.取得語言選項()
 
   const langHandler = languageManager.getCurrentLanguageHandler()
 
@@ -348,6 +348,7 @@ const Panel = ({
       },
     )
     const newFragments: 類型_文字片段列表 = { 列表: [''], 索引: 0 }
+    語言UI處理程序.處理清除事件?.(語言UI處理程序)
     storage.setValue('fragments', JSON.stringify(newFragments))
     setShowingPronunciation(true)
     setShowingEdition(true)
@@ -360,9 +361,7 @@ const Panel = ({
     updateLanguage(newSelectedLanguage)
   }
 
-  const handleWritingKeyDown = (
-    事件: React.KeyboardEvent<HTMLTextAreaElement>,
-  ) => {
+  const 處理寫鍵按下 = (事件: React.KeyboardEvent<HTMLTextAreaElement>) => {
     // special key
     if (事件.key === '`') {
       事件.preventDefault()
@@ -376,7 +375,7 @@ const Panel = ({
       setPractice(`${practiceValue}\n`)
     }
 
-    uiHandler.handleWritingKeyDown({
+    語言UI處理程序.處理寫鍵按下({
       getCurrentCharObjFromPractice,
       originalTextValue,
       practiceValue,
@@ -392,11 +391,11 @@ const Panel = ({
       語言選項,
     })
 
-    uiHandler.儲存語言選項(語言選項)
+    語言UI處理程序.儲存語言選項(語言選項)
   }
 
   const 更改語言選項 = (選項: 類型_語言選項) => {
-    uiHandler.儲存語言選項(選項)
+    語言UI處理程序.儲存語言選項(選項)
     觸發重新渲染(Math.random())
   }
 
@@ -404,9 +403,9 @@ const Panel = ({
     setLastThreeKeys([])
   }
 
-  const 連結區塊 = uiHandler.取得連結區塊()
-  const OptionsBlock = uiHandler.getOptionsBlock()
-  const handleDisplayedCharClick = uiHandler.getDisplayedCharHandler()
+  const 連結區塊 = 語言UI處理程序.取得連結區塊()
+  const OptionsBlock = 語言UI處理程序.getOptionsBlock()
+  const handleDisplayedCharClick = 語言UI處理程序.getDisplayedCharHandler()
 
   const saveRecord = () => {
     setShowingRecordsInitScreen(RecordsScreen.Save)
@@ -462,7 +461,7 @@ const Panel = ({
   }
 
   const 重點字元顏色 = doesPracticeHaveError
-    ? uiHandler.取得錯誤顏色?.(語言選項, getCurrentCharObjFromPractice())
+    ? 語言UI處理程序.取得錯誤顏色?.(語言選項, getCurrentCharObjFromPractice())
     : undefined
 
   return (
@@ -633,8 +632,8 @@ const Panel = ({
           >
             <文字區
               onBlur={() => {
-                if (uiHandler.onBlur) {
-                  const { newFragmentsList } = uiHandler.onBlur({
+                if (語言UI處理程序.onBlur) {
+                  const { newFragmentsList } = 語言UI處理程序.onBlur({
                     fragmentsList: 文字片段列表.列表,
                     語言選項,
                   })
@@ -712,7 +711,9 @@ const Panel = ({
             <CharactersDisplay
               fontSize={fontSize}
               onCharClick={handleDisplayedCharClick}
-              shouldHaveDifferentWidths={!uiHandler.shouldAllCharsHaveSameWidth}
+              shouldHaveDifferentWidths={
+                !語言UI處理程序.shouldAllCharsHaveSameWidth
+              }
               shouldHidePronunciation={!isShowingPronunciation}
               showCurrentCharPronunciation={
                 doesPracticeHaveError && 語言選項.遊戲模式值 === '還原論者'
@@ -737,12 +738,12 @@ const Panel = ({
                   preventDefault: () => {},
                 } as unknown as React.KeyboardEvent<HTMLTextAreaElement>
 
-                handleWritingKeyDown(mockEvent)
+                處理寫鍵按下(mockEvent)
               }
             }}
             onClick={handleWritingAreaClick}
             onFocus={() => setWritingBorder('bold')}
-            onKeyDown={handleWritingKeyDown}
+            onKeyDown={處理寫鍵按下}
             placeholder={practiceValue ? '' : '書寫區'}
             rows={1}
             setRef={ref => (writingArea.current = ref)}

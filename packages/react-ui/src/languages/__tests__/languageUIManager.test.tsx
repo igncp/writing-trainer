@@ -1,6 +1,6 @@
 import { LanguageManager } from 'writing-trainer-core'
 
-import { uiHandlers } from '../handlers'
+import { 語言UI處理程序清單 } from '../handlers'
 import { LanguageUIManager } from '../languageUIManager'
 
 const languageManager = new LanguageManager()
@@ -21,7 +21,7 @@ describe('constructor', () => {
     expect(languageManager.取得可用語言()).toEqual([])
     expect(languageManager.getCurrentLanguageHandler()).toEqual(null)
 
-    new LanguageUIManager(languageManager, uiHandlers)
+    new LanguageUIManager(languageManager, 語言UI處理程序清單)
 
     expect((languageManager.clear as any).mock.calls).toEqual([[]])
     expect(languageManager.取得可用語言()).not.toEqual([])
@@ -29,22 +29,28 @@ describe('constructor', () => {
   })
 })
 
-describe('getUIHandler', () => {
+describe('獲取語言UI處理程序', () => {
   it('returns the UI handler with same id as the current language handler', () => {
-    const languageUIManager = new LanguageUIManager(languageManager, uiHandlers)
-
-    expect(languageUIManager.getUIHandler().languageHandler.getId()).toEqual(
-      languageManager.getCurrentLanguageHandler()!.getId(),
+    const languageUIManager = new LanguageUIManager(
+      languageManager,
+      語言UI處理程序清單,
     )
+
+    expect(
+      languageUIManager.獲取語言UI處理程序().languageHandler.getId(),
+    ).toEqual(languageManager.getCurrentLanguageHandler()!.getId())
   })
 })
 
 describe('getDefaultLanguage', () => {
   it('returns the first id of the array', () => {
-    const languageUIManager = new LanguageUIManager(languageManager, uiHandlers)
+    const languageUIManager = new LanguageUIManager(
+      languageManager,
+      語言UI處理程序清單,
+    )
 
     expect(languageUIManager.getDefaultLanguage()).toEqual(
-      uiHandlers[0].languageHandler.getId(),
+      語言UI處理程序清單[0].languageHandler.getId(),
     )
   })
 })

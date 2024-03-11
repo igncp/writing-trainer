@@ -1,15 +1,15 @@
 import { LanguageManager, T_Storage } from 'writing-trainer-core'
-import { LanguageUIManager, uiHandlers } from 'writing-trainer-react-ui'
+import { LanguageUIManager, 語言UI處理程序清單 } from 'writing-trainer-react-ui'
 
 import { siteUrl } from './constants'
 
 const usedText = '忘掉種過的花, 重新的出發, 放棄理想吧'
 // Make sure that the first handler is for mandarin
 const newUIHandlers = [
-  ...uiHandlers.filter(
+  ...語言UI處理程序清單.filter(
     handler => handler.languageHandler.getId() === 'mandarin',
   ),
-  ...uiHandlers.filter(
+  ...語言UI處理程序清單.filter(
     handler => handler.languageHandler.getId() !== 'mandarin',
   ),
 ]
