@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">28.94% </span>
+                <span class="strong">28.69% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>33/114</span>
+                <span class='fraction'>33/115</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">13.33% </span>
+                <span class="strong">12.5% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/15</span>
+                <span class='fraction'>2/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">28.3% </span>
+                <span class="strong">28.03% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>30/106</span>
+                <span class='fraction'>30/107</span>
             </div>
         
             
@@ -247,7 +247,10 @@
 <a name='L182'></a><a href='#L182'>182</a>
 <a name='L183'></a><a href='#L183'>183</a>
 <a name='L184'></a><a href='#L184'>184</a>
-<a name='L185'></a><a href='#L185'>185</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L185'></a><a href='#L185'>185</a>
+<a name='L186'></a><a href='#L186'>186</a>
+<a name='L187'></a><a href='#L187'>187</a>
+<a name='L188'></a><a href='#L188'>188</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -391,8 +394,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -438,7 +444,7 @@ import {<span class="cstat-no" title="statement not covered" > chineseBlurHand<s
 import { com<span class="cstat-no" title="statement not covered" >monHandleWritingKe</span>yDown } from '../common/commonLanguageUtils'
 import { 繁體轉<span class="cstat-no" title="statement not covered" >簡體 } from '../com<span class="cstat-no" title="statement not covered" >mon/conversion'</span></span>
 import {<span class="cstat-no" title="statement not covered" ></span>
-  T_UIHandler,
+  類型_語言UI處理程序,
   類型_語言選<span class="cstat-no" title="statement not covered" >項,</span>
   T_CharsDisplayClickHandler,
 } fr<span class="cstat-no" title="statement not covered" >om '../types'</span>
@@ -530,7 +536,7 @@ const 解析發音 = (文字: string, 選項: <span class="fstat-no" title="func
   return<span class="cstat-no" title="statement not covered" > 解析後的文本</span>
 }<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" ></span>
-const ha<span class="cstat-no" title="statement not covered" >ndleWritingKeyDown: T_UIHandler['handleWritingKeyDown'] =</span> 參數 =&gt; {
+const 處理<span class="cstat-no" title="statement not covered" >寫鍵按下: 類型_語言UI處理程序['處理寫鍵按下'] = 參數 =&gt; {</span>
   common<span class="cstat-no" title="statement not covered" >HandleWritingKeyDown(參數, {</span>
     解析發音<span class="cstat-no" title="statement not covered" >,</span>
   })<span class="cstat-no" title="statement not covered" ></span>
@@ -575,10 +581,10 @@ const pr<span class="cstat-no" title="statement not covered" >ivateFns = {</span
 export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
   字元對象,
   字元對象列表,
-  索引,
-}) =&gt; {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-  if (!(字元對象 as unknown) || !字元對象.pronunciation) {
-    return
+  索引,<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+}) =&gt; {
+  if (!(字元對象<span class="fstat-no" title="function not covered" > a</span>s unknown) || !字元對象.pronunciation) {
+    retu<span class="cstat-no" title="statement not covered" >rn</span>
   }
 &nbsp;
   // Don't open cantodict on mobile whick requires opening multiple tabs
@@ -602,19 +608,22 @@ export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
   }
 }
 &nbsp;
-const uiHandler: T_UIHandler = {
+const 語言UI處理程序: 類型_語言UI處理程序 = {
   getDisplayedCharHandler: () =&gt; handleDisplayedCharClick,
   getOptionsBlock: () =&gt; OptionsBlock,
-  handleWritingKeyDown,
   languageHandler: cantoneseHandler,
   onBlur: chineseBlurHandler,
   shouldAllCharsHaveSameWidth: false,
   儲存語言選項,
   取得語言選項,
   取得連結區塊: () =&gt; 連結區塊,
+  處理寫鍵按下,
+  處理清除事件: (處理程序: 類型_語言UI處理程序) =&gt; {
+    處理程序.儲存語言選項({ ...處理程序.取得語言選項(), 錯誤的字符: [] })
+  },
 }
 &nbsp;
-export default uiHandler
+export default 語言UI處理程序
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -622,7 +631,7 @@ export default uiHandler
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-02-14T06:25:19.725Z
+                at 2024-03-11T13:56:02.328Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

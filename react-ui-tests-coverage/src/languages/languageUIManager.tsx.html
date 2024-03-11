@@ -128,7 +128,14 @@
 <a name='L63'></a><a href='#L63'>63</a>
 <a name='L64'></a><a href='#L64'>64</a>
 <a name='L65'></a><a href='#L65'>65</a>
-<a name='L66'></a><a href='#L66'>66</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -150,17 +157,6 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -170,8 +166,26 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -195,17 +209,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { LanguageManager } from 'writing-trainer-core'
 &nbsp;
-import { uiHandlers as defaultUIHandlers } from './handlers'
-import { T_UIHandler } from './types'
+import { 語言UI處理程序清單 as 預設語言UI處理程序清單 } from './handlers'
+import { 類型_語言UI處理程序 } from './types'
 &nbsp;
 class LanguageUIManager {
-  private readonly handlers: T_UIHandler[]
-  private readonly idToLanguageUIHandlerMap: { [k: string]: T_UIHandler } = {}
-  private readonly manager: LanguageManager<span class="branch-1 cbranch-no" title="branch not covered" ></span>
-<span class="missing-if-branch" title="if path not taken" >I</span>
-  public con<span class="cstat-no" title="statement not covered" >structor(manager: LanguageManager, handlers?</span>: T_UIHandler[]) {
+  private readonly handlers: 類型_語言UI處理程序[]
+  private readonly idToLanguageUIHandlerMap: {
+    [k: string]: 類型_語言UI處理程序<span class="branch-1 cbranch-no" title="branch not covered" ></span>
+  } = {}<span class="missing-if-branch" title="if path not taken" >I</span>
+<span class="cstat-no" title="statement not covered" ></span>
+  private readonly manager: LanguageManager
+&nbsp;
+  public constructor(
+    manager: LanguageManager,
+    handlers?: 類型_語言UI處理程序[],
+  ) {
     this.manager = manager
-    this.handlers = handlers ?? defaultUIHandlers
+    this.handlers = handlers ?? 預設語言UI處理程序清單
 &nbsp;
     if (this.handlers.length === 0) {
       throw new Error('No UI handlers provided')
@@ -213,47 +233,48 @@ class LanguageUIManager {
 &nbsp;
     this.idToLanguageUIHandlerMap = this.handlers.reduce&lt;
       LanguageUIManager['idToLanguageUIHandlerMap']
-    &gt;((acc, uiHandler) =&gt; {
-      acc[uiHandler.languageHandler.getId()] = uiHandler
+    &gt;((acc, 語言UI處理程序) =&gt; {
+      acc[語言UI處理程序.languageHandler.getId()] = 語言UI處理程序
 &nbsp;
-      re<span class="missing-if-branch" title="if path not taken" >I</span>turn acc
-    }, {})<span class="cstat-no" title="statement not covered" ></span>
+      return acc
+    }, {})
 &nbsp;
-    this.init()
-  }<span class="missing-if-branch" title="if path not taken" >I</span>
-<span class="cstat-no" title="statement not covered" ></span>
+    this<span class="missing-if-branch" title="if path not taken" >I</span>.init()
+  }<span class="cstat-no" title="statement not covered" ></span>
+&nbsp;
   public getDefaultLanguage() {
-    return this.handlers[0]!.languageHandler.getId()
+    retu<span class="missing-if-branch" title="if path not taken" >I</span>rn this.handlers[0]!.languageHandler.getId()
+  }<span class="cstat-no" title="statement not covered" ></span>
+&nbsp;
+  public init() {
+    this.manager.clear()
+&nbsp;
+    this.handlers.forEach(語言UI處理程序 =&gt; {
+      this.manager.registerLanguage(語言UI處理程序.languageHandler)
+    })
+&nbsp;
+    const defaultLanguage = this.getDefaultLanguage()
+&nbsp;
+    this.manager.setCurrentLanguageHandler(defaultLanguage)
   }
 &nbsp;
-  public getUIHandler() {
+  public 獲取語言UI處理程序() {
     const languageHandler = this.manager.getCurrentLanguageHandler()
 &nbsp;
     if (!languageHandler) {
       throw new Error('No language handler set')
     }
 &nbsp;
-    const uiHandler = this.idToLanguageUIHandlerMap[languageHandler.getId()]
+    const 語言UI處理程序 =
+      this.idToLanguageUIHandlerMap[languageHandler.getId()]
 &nbsp;
-    if (!uiHandler as unknown) {
+    if (!語言UI處理程序 as unknown) {
       throw new Error(
         `No UI language handler for language: ${languageHandler.getId()}`,
       )
     }
 &nbsp;
-    return uiHandler
-  }
-&nbsp;
-  public init() {
-    this.manager.clear()
-&nbsp;
-    this.handlers.forEach(uiHandler =&gt; {
-      this.manager.registerLanguage(uiHandler.languageHandler)
-    })
-&nbsp;
-    const defaultLanguage = this.getDefaultLanguage()
-&nbsp;
-    this.manager.setCurrentLanguageHandler(defaultLanguage)
+    return 語言UI處理程序
   }
 }
 &nbsp;
@@ -265,7 +286,7 @@ export { LanguageUIManager }
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-02-14T06:25:19.725Z
+                at 2024-03-11T13:56:02.328Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
