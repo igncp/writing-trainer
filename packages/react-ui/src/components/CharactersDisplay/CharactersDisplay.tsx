@@ -8,24 +8,24 @@ const MAX_HEIGHT = 160
 
 type Props = {
   fontSize?: number
-  onCharClick: T_CharsDisplayClickHandler
-  shouldHaveDifferentWidths?: boolean
-  shouldHidePronunciation: boolean
-  showCurrentCharPronunciation?: boolean
   字元對象列表: 字元對象類別[]
+  應該有不同的寬度?: boolean
+  應該隱藏發音: boolean
+  按一下該符號: T_CharsDisplayClickHandler
   重點字元索引?: number
   重點字元顏色?: string
+  顯示目前字元的發音?: boolean
 }
 
 const CharactersDisplay = ({
   fontSize,
-  onCharClick,
-  shouldHaveDifferentWidths,
-  shouldHidePronunciation,
-  showCurrentCharPronunciation,
   字元對象列表,
+  應該有不同的寬度,
+  應該隱藏發音,
+  按一下該符號,
   重點字元索引,
   重點字元顏色,
+  顯示目前字元的發音,
 }: Props) => {
   const usedFontSize = fontSize ?? 30
   const wrapperRef = useRef<HTMLDivElement | undefined>()
@@ -69,11 +69,11 @@ const CharactersDisplay = ({
             onClick={e => {
               e.stopPropagation()
 
-              if (!onCharClick) {
+              if (!按一下該符號) {
                 return
               }
 
-              onCharClick({
+              按一下該符號({
                 字元對象,
                 字元對象列表,
                 索引,
@@ -81,7 +81,7 @@ const CharactersDisplay = ({
             }}
             style={{
               color: 索引 === 重點字元索引 ? 重點字元顏色 : undefined,
-              cursor: pronunciation && onCharClick ? 'pointer' : 'default',
+              cursor: pronunciation && 按一下該符號 ? 'pointer' : 'default',
               display: 'inline-block',
               marginBottom: 10,
               opacity: 索引 === 重點字元索引 ? 1 : 0.3,
@@ -93,23 +93,21 @@ const CharactersDisplay = ({
                 height: 10,
                 marginBottom: 1,
                 textAlign: 'center',
-                ...(shouldHaveDifferentWidths ? {} : { width: charWidth }),
+                ...(應該有不同的寬度 ? {} : { width: charWidth }),
               }}
             >
               {(() => {
-                if (showCurrentCharPronunciation && 索引 === 重點字元索引)
+                if (顯示目前字元的發音 && 索引 === 重點字元索引)
                   return pronunciation
 
-                return shouldHidePronunciation ? '' : pronunciation
+                return 應該隱藏發音 ? '' : pronunciation
               })()}
             </div>
             <div
+              className="min-width-[10px] pt-[5px] text-center"
               style={{
                 fontSize: usedFontSize + 10,
-                minWidth: 10,
-                paddingTop: 5,
-                textAlign: 'center',
-                ...(shouldHaveDifferentWidths ? {} : { width: charWidth }),
+                ...(應該有不同的寬度 ? {} : { width: charWidth }),
               }}
             >
               {word}

@@ -21,8 +21,8 @@ const charsObjsMandarin = mandarinHandler.轉換為字元對象列表({
 })
 
 const commonProps = {
-  onCharClick: () => console.log('on-click'),
   字元對象列表: charsObjsMandarin,
+  按一下該符號: () => console.log('on-click'),
 }
 
 const charObjsEnglish = englishHandler.轉換為字元對象列表({
@@ -31,20 +31,20 @@ const charObjsEnglish = englishHandler.轉換為字元對象列表({
 })
 
 const Common = () => {
-  return <CharactersDisplay {...commonProps} shouldHidePronunciation={false} />
+  return <CharactersDisplay {...commonProps} 應該隱藏發音={false} />
 }
 
 const WithoutPronunciation = () => {
-  return <CharactersDisplay {...commonProps} shouldHidePronunciation />
+  return <CharactersDisplay {...commonProps} 應該隱藏發音 />
 }
 
 const DifferentWidthsNoPronunciation = () => {
   return (
     <CharactersDisplay
       {...commonProps}
-      shouldHaveDifferentWidths
-      shouldHidePronunciation
       字元對象列表={charObjsEnglish}
+      應該有不同的寬度
+      應該隱藏發音
     />
   )
 }

@@ -1,4 +1,5 @@
 import { join, dirname } from 'path'
+import path from 'path'
 import webpack from 'webpack'
 
 /**
@@ -49,6 +50,20 @@ const configStorybook = {
       {
         loader: 'yaml-loader',
         test: /\.ya?ml$/,
+      },
+      {
+        include: path.resolve(__dirname, '../'),
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: [require('tailwindcss')],
+              },
+            },
+          },
+        ],
       },
     )
 

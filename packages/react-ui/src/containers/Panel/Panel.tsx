@@ -47,13 +47,13 @@ type Props = {
   initialFragmentIndex?: number
   languageManager: LanguageManager
   languageUIManager: LanguageUIManager
-  onChangeTheme?: () => void
   onHideRequest?: () => void
   services: T_Services
   text: string
   UI?: {
     noHideButton?: boolean
   }
+  關於改變主題?: () => void
 }
 
 const getLanguageDefinitions = (languageManager: LanguageManager) => {
@@ -80,11 +80,11 @@ const Panel = ({
   initialFragmentIndex,
   languageManager,
   languageUIManager,
-  onChangeTheme,
   onHideRequest,
   services,
   text,
   UI,
+  關於改變主題,
 }: Props) => {
   const initialLanguageId = languageUIManager.getDefaultLanguage()
   const [, 觸發重新渲染] = useState<number>(0)
@@ -556,7 +556,7 @@ const Panel = ({
           <按鈕 onClick={saveRecord}>
             {currentRecord === null ? '儲存' : '更新'}
           </按鈕>
-          {onChangeTheme && <按鈕 onClick={onChangeTheme}>改變主題</按鈕>}
+          {關於改變主題 && <按鈕 onClick={關於改變主題}>改變主題</按鈕>}
           {!!stats && (
             <div
               style={{
@@ -710,17 +710,15 @@ const Panel = ({
           <div style={{ marginBottom: 10, marginTop: 5 }}>
             <CharactersDisplay
               fontSize={fontSize}
-              onCharClick={handleDisplayedCharClick}
-              shouldHaveDifferentWidths={
-                !語言UI處理程序.shouldAllCharsHaveSameWidth
-              }
-              shouldHidePronunciation={!isShowingPronunciation}
-              showCurrentCharPronunciation={
-                doesPracticeHaveError && 語言選項.遊戲模式值 === '還原論者'
-              }
               字元對象列表={字元對象列表 ?? []}
+              應該有不同的寬度={!語言UI處理程序.shouldAllCharsHaveSameWidth}
+              應該隱藏發音={!isShowingPronunciation}
+              按一下該符號={handleDisplayedCharClick}
               重點字元索引={currentDisplayCharIdx}
               重點字元顏色={重點字元顏色}
+              顯示目前字元的發音={
+                doesPracticeHaveError && 語言選項.遊戲模式值 === '還原論者'
+              }
             />
           </div>
           <文字區

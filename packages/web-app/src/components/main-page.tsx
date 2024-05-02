@@ -10,14 +10,12 @@ import {
   usedText,
 } from '../utils'
 
-import * as styles from './main-page.module.scss'
-
 const PANEL_UI = {
   noHideButton: true,
 }
 
 const IndexPage = () => {
-  const [theme, setTheme] = useState('')
+  const [theme, setTheme] = useState('dark')
 
   const { query } = useRouter()
 
@@ -33,7 +31,7 @@ const IndexPage = () => {
       <Head>
         <title>Writing Trainer</title>
       </Head>
-      <h1 className={styles.title}>
+      <h1 className="margin-[0] flex flex-row items-center justify-center gap-[1rem] text-[10px] md:text-[20px]">
         <span>Writing Trainer</span>{' '}
       </h1>
       <div style={{ position: 'relative' }}>
@@ -43,7 +41,7 @@ const IndexPage = () => {
             query.fragmentIndex ? Number(query.fragmentIndex) : undefined
           }
           languageManager={languageManager}
-          onChangeTheme={() => {
+          關於改變主題={() => {
             setTheme(theme === 'light' ? 'dark' : 'light')
           }}
           languageUIManager={languageUIManager}
