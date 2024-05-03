@@ -75,23 +75,36 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
 
   按鍵事件.preventDefault()
 
-  // including capital letters so it doesn't write when shortcut
-  if (!/[a-z0-9A-Z]/.test(按鍵事件.key)) {
-    setPractice(practiceValue + 按鍵事件.key)
+  const 解析按鍵 = (() => {
+    // 按鍵音調更舒適
+    switch (按鍵事件.key) {
+      case '!':
+        return '4'
+      case '@':
+        return '5'
+      case '#':
+        return '6'
+      default:
+        return 按鍵事件.key
+    }
+  })()
+
+  if (!/[a-z0-9]/.test(解析按鍵)) {
+    setPractice(practiceValue + 解析按鍵)
 
     return
   }
 
-  if (按鍵事件.key.length !== 1 && 按鍵事件.key !== 'Backspace') {
+  if (解析按鍵.length !== 1 && 解析按鍵 !== 'Backspace') {
     return
   }
 
   const { pronunciation: correctPronunciation } = currentCharObj
 
   const newWritingValue =
-    按鍵事件.key === 'Backspace'
+    解析按鍵 === 'Backspace'
       ? writingValue.slice(0, writingValue.length - 1)
-      : writingValue + 按鍵事件.key
+      : writingValue + 解析按鍵
 
   const correctPronunciationParsed = 解析發音(correctPronunciation, 語言選項)
 

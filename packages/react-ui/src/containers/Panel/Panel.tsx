@@ -348,6 +348,7 @@ const Panel = ({
   }
 
   const 處理寫鍵按下 = (事件: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // 允許瀏覽器快捷鍵
     if (事件.ctrlKey) return
 
     if (事件.key === 'Enter') {
