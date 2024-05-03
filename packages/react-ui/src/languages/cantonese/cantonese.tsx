@@ -1,4 +1,4 @@
-import { cantoneseHandler } from 'writing-trainer-core'
+import { CurrentCharObj, cantoneseHandler } from 'writing-trainer-core'
 
 import OptionsBlock from '../common/CharsOptions/OptionsBlock'
 import { chineseBlurHandler } from '../common/chineseBlurHandler'
@@ -87,10 +87,7 @@ const 儲存語言選項 = (opts: 類型_語言選項) => {
 const 解析發音 = (文字: string, 選項: 類型_語言選項) => {
   let 解析後的文本 = 文字.toLowerCase()
 
-  if (
-    !選項.聲調值 ||
-    (選項.聲調值 as 類型_廣東話的語言選項['聲調值']) === '不要使用聲調'
-  ) {
+  if ((選項.聲調值 as 類型_廣東話的語言選項['聲調值']) === '不要使用聲調') {
     解析後的文本 = 解析後的文本.replace(/[0-9]/g, '')
   }
 
@@ -169,6 +166,27 @@ export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
   }
 }
 
+const 取得錯誤顏色 = (選項: 類型_語言選項, 字元: CurrentCharObj | null) => {
+  if (選項.使用聲調的顏色 === false || !字元?.ch.pronunciation) {
+    return undefined
+  }
+
+  const 音數 = Number(字元.ch.pronunciation[字元.ch.pronunciation.length - 1])
+
+  if (Number.isNaN(音數)) {
+    return undefined
+  }
+
+  return {
+    1: 'var(--color-error-silver)',
+    2: 'var(--color-error-green)',
+    3: 'var(--color-error-pink)',
+    4: 'var(--color-error-blue)',
+    5: 'var(--color-error-orange)',
+    6: 'var(--color-error-purple)',
+  }[音數]
+}
+
 const 語言UI處理程序: 類型_語言UI處理程序 = {
   getDisplayedCharHandler: () => handleDisplayedCharClick,
   getOptionsBlock: () => OptionsBlock,
@@ -178,6 +196,7 @@ const 語言UI處理程序: 類型_語言UI處理程序 = {
   儲存語言選項,
   取得語言選項,
   取得連結區塊: () => 連結區塊,
+  取得錯誤顏色,
   處理寫鍵按下,
   處理清除事件: (處理程序: 類型_語言UI處理程序) => {
     處理程序.儲存語言選項({ ...處理程序.取得語言選項(), 錯誤的字符: [] })

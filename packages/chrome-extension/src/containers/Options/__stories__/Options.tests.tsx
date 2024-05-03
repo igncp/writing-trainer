@@ -46,7 +46,7 @@ describe('Options', () => {
       },
     )
 
-    const button = getByText('Save')
+    const button = getByText('儲存')
     fireEvent.click(button)
 
     expect((mockStorage.setValue as jest.Mock).mock.calls).toEqual([

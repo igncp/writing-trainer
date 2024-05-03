@@ -27,15 +27,11 @@ const createInputSetterFn =
     setValue(e.target.value)
   }
 
-const SHORTCUT_EDITING = 'control+control+shift'
-const SHORTCUT_PRONUNCIATION = 'shift+shift+control'
 const SHORTCUT_NEXT_FRAGMENT = 'Tab'
 const defaultFontSize = 30
 
 const PRACTICE_TEXT_PLACEHOLDER = `練習文本
-下一個片段: ${SHORTCUT_NEXT_FRAGMENT}
-切換編輯: ${SHORTCUT_EDITING}
-切換發音: ${SHORTCUT_PRONUNCIATION}`
+下一個片段: ${SHORTCUT_NEXT_FRAGMENT}`
 
 type Props = {
   _stories?: {
@@ -118,14 +114,13 @@ const Panel = ({
   const [fontSize, setFontSize] = useState<number>(defaultFontSize)
   const [isShowingPronunciation, setShowingPronunciation] = useState(true)
   const [isShowingEdition, setShowingEdition] = useState<boolean>(true)
-  const [doesPracticeHaveError, setPracticeHasError] = useState<boolean>(false)
-  const [lastThreeKeys, setLastThreeKeys] = useState<string[]>([])
+  const [練習有錯誤, 設定練習有錯誤] = useState<boolean>(false)
   const [selectedLanguage, setSelectedLanguage] =
     useState<LanguageDefinition['id']>(initialLanguageId)
   const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false)
   const [currentDisplayCharIdx, setCurrentDisplayCharIdx] = useState<number>(0)
   const [writingBorder, setWritingBorder] = useState<'bold' | 'normal'>('bold')
-  const [hasExtraControls, setHasExtraControls] = useState(false)
+  const [有額外的控制, 設定有額外控件] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const writingArea = useRef<HTMLTextAreaElement | null>(null)
   const 語言選項 = _stories.語言選項 ?? 語言UI處理程序.取得語言選項()
@@ -155,7 +150,7 @@ const Panel = ({
     setPractice('')
     setWriting('')
 
-    setPracticeHasError(false)
+    設定練習有錯誤(false)
 
     語言選項.錯誤的字符 = []
 
@@ -311,8 +306,6 @@ const Panel = ({
   useEffect(() => {
     const handleShortcuts = (e: KeyboardEvent) => {
       const value = e.key
-      const newArr = lastThreeKeys.slice(-2).concat([value])
-      const currentResult = newArr.join('+').toLowerCase()
 
       if (value === SHORTCUT_NEXT_FRAGMENT) {
         e.preventDefault()
@@ -324,13 +317,6 @@ const Panel = ({
 
         onPracticeSourceChange(newFragments)
       }
-
-      if (currentResult === SHORTCUT_PRONUNCIATION) {
-        setShowingPronunciation(!isShowingPronunciation)
-      } else if (currentResult === SHORTCUT_EDITING) {
-        setShowingEdition(!isShowingEdition)
-      }
-      setLastThreeKeys(newArr)
     }
 
     document.addEventListener('keydown', handleShortcuts)
@@ -338,7 +324,7 @@ const Panel = ({
     return () => {
       document.removeEventListener('keydown', handleShortcuts)
     }
-  }, [lastThreeKeys, isShowingEdition, isShowingPronunciation, 文字片段列表])
+  }, [isShowingEdition, isShowingPronunciation, 文字片段列表])
 
   const clearValues = () => {
     // eslint-disable-next-line no-extra-semi,padding-line-between-statements
@@ -362,14 +348,7 @@ const Panel = ({
   }
 
   const 處理寫鍵按下 = (事件: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    // special key
-    if (事件.key === '`') {
-      事件.preventDefault()
-      setWriting('')
-      setPracticeHasError(false)
-
-      return
-    }
+    if (事件.ctrlKey) return
 
     if (事件.key === 'Enter') {
       setPractice(`${practiceValue}\n`)
@@ -382,7 +361,7 @@ const Panel = ({
       setCurrentDisplayCharIdx,
       setCurrentText,
       setPractice,
-      setPracticeHasError,
+      setPracticeHasError: 設定練習有錯誤,
       setWriting,
       specialCharsValue: charsToRemove.join(''),
       writingValue,
@@ -397,10 +376,6 @@ const Panel = ({
   const 更改語言選項 = (選項: 類型_語言選項) => {
     語言UI處理程序.儲存語言選項(選項)
     觸發重新渲染(Math.random())
-  }
-
-  const handleWritingAreaClick = () => {
-    setLastThreeKeys([])
   }
 
   const 連結區塊 = 語言UI處理程序.取得連結區塊()
@@ -460,7 +435,7 @@ const Panel = ({
     )
   }
 
-  const 重點字元顏色 = doesPracticeHaveError
+  const 重點字元顏色 = 練習有錯誤
     ? 語言UI處理程序.取得錯誤顏色?.(語言選項, getCurrentCharObjFromPractice())
     : undefined
 
@@ -469,8 +444,8 @@ const Panel = ({
       <按鈕 onClick={clearValues} style={{ paddingLeft: 0 }}>
         清除文字
       </按鈕>
-      <按鈕 onClick={() => setHasExtraControls(!hasExtraControls)}>X</按鈕>
-      {hasExtraControls && <按鈕 onClick={listRecords}>已儲存和歌曲</按鈕>}
+      <按鈕 onClick={() => 設定有額外控件(!有額外的控制)}>X</按鈕>
+      {有額外的控制 && <按鈕 onClick={listRecords}>已儲存和歌曲</按鈕>}
       <按鈕
         onClick={() => {
           navigator.clipboard.writeText(originalTextValue)
@@ -538,7 +513,7 @@ const Panel = ({
           </按鈕>
         </>
       )}
-      {hasExtraControls && (
+      {有額外的控制 && (
         <>
           <按鈕
             onClick={() => {
@@ -558,14 +533,7 @@ const Panel = ({
           </按鈕>
           {關於改變主題 && <按鈕 onClick={關於改變主題}>改變主題</按鈕>}
           {!!stats && (
-            <div
-              style={{
-                color: '#ccc',
-                display: 'flex',
-                flexDirection: 'column',
-                marginBottom: 10,
-              }}
-            >
+            <div className="flex-colum mb-[10px] flex text-[#ccc]">
               <div>截至上次會話的統計數據</div>
               <div>
                 正確的: {stats.correct} ({stats.perc}%) / 失敗: {stats.fail}
@@ -657,7 +625,7 @@ const Panel = ({
               rows={3}
               value={文字片段列表.列表.join('\n')}
             />
-            {hasExtraControls && (
+            {有額外的控制 && (
               <>
                 <文字區
                   onChange={createInputSetterFn(setPronunciation)}
@@ -717,7 +685,10 @@ const Panel = ({
               重點字元索引={currentDisplayCharIdx}
               重點字元顏色={重點字元顏色}
               顯示目前字元的發音={
-                doesPracticeHaveError && 語言選項.遊戲模式值 === '還原論者'
+                練習有錯誤 &&
+                [undefined, '還原論者'].includes(
+                  語言選項.遊戲模式值 as string | undefined,
+                )
               }
             />
           </div>
@@ -739,7 +710,6 @@ const Panel = ({
                 處理寫鍵按下(mockEvent)
               }
             }}
-            onClick={handleWritingAreaClick}
             onFocus={() => setWritingBorder('bold')}
             onKeyDown={處理寫鍵按下}
             placeholder={practiceValue ? '' : '書寫區'}
@@ -758,7 +728,7 @@ const Panel = ({
             rows={3}
             style={{
               border: `4px solid ${
-                doesPracticeHaveError
+                練習有錯誤
                   ? 重點字元顏色 ?? 'red'
                   : 'var(--color-background, "white")'
               }`,

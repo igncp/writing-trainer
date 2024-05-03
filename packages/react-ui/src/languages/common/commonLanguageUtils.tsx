@@ -17,7 +17,9 @@ type T_CommonHandleWritingKeyDown = (
 
 const 預設解析發音: 類型_解析發音 = 文字 => 文字.toLowerCase()
 
-const onPracticeBackspaceFormatDefault: T_OnPracticeBackspaceFormat = p => {
+const onPracticeBackspaceFormatDefault: T_OnPracticeBackspaceFormat = (
+  p = '',
+) => {
   return p
     .split(' ')
     .filter((ch, idx, arr) => idx !== arr.length - 1 || ch.trim() !== '')
@@ -36,7 +38,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     setPractice,
     setPracticeHasError,
     setWriting,
-    specialCharsValue,
+    specialCharsValue = '',
     writingValue,
     按鍵事件,
     語言選項,
@@ -107,13 +109,17 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
       儲存成功字元(currentCharObj.word)
     }
 
-    if (語言選項.遊戲模式值 === '還原論者') {
-      const newPracticeText = newPractice
+    if (
+      [undefined, '還原論者'].includes(
+        語言選項.遊戲模式值 as string | undefined,
+      )
+    ) {
+      const newPracticeText = (newPractice || '')
         .split('')
         .filter(c => !specialCharsValue.includes(c))
         .join('')
 
-      const originalText = originalTextValue
+      const originalText = (originalTextValue || '')
         .split('')
         .filter(c => !specialCharsValue.includes(c))
         .join('')

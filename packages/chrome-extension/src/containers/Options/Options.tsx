@@ -52,10 +52,9 @@ const Options = () => {
   return (
     <div>
       <p>
-        Pages where it is enabled. Use a regex on each line.{' '}
-        <Wrapper>Don't forget to save.</Wrapper>
+        啟用它的頁面。 在每行上使用正規表示式。 <Wrapper>別忘了保存。</Wrapper>
       </p>
-      <按鈕 onClick={handleSave}>Save</按鈕>
+      <按鈕 onClick={handleSave}>儲存</按鈕>
       <文字區
         defaultValue={enabledPagesValue}
         onChange={handleEnabledPagesChange}

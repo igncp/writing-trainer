@@ -58,10 +58,7 @@ Object.keys(dictionaryParsed).forEach(char => {
 const 解析發音 = (文字: string, 選項: 類型_語言選項) => {
   let 解析後的文本 = 文字.toLowerCase()
 
-  if (
-    !選項.聲調值 ||
-    (選項.聲調值 as 類型_普通話的語言選項['聲調值']) === '不要使用聲調'
-  ) {
+  if ((選項.聲調值 as 類型_普通話的語言選項['聲調值']) === '不要使用聲調') {
     解析後的文本 = 解析後的文本.replace(/[0-9]/g, '')
   }
 
@@ -165,7 +162,7 @@ export const handleDisplayedCharClick: T_CharsDisplayClickHandler = ({
 }
 
 const 取得錯誤顏色 = (選項: 類型_語言選項, 字元: CurrentCharObj | null) => {
-  if (!選項.使用聲調的顏色 || !字元?.ch.pronunciation) {
+  if (選項.使用聲調的顏色 === false || !字元?.ch.pronunciation) {
     return undefined
   }
 

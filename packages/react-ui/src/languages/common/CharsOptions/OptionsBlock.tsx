@@ -4,7 +4,7 @@ import { T_OptionsBlock } from '../../types'
 
 const OptionsBlock: T_OptionsBlock = ({ 更改語言選項, 語言選項 }) => {
   const [聲調值, 保存聲調值] = useState(
-    (語言選項.聲調值 as string) || '不要使用聲調',
+    (語言選項.聲調值 as string) || '使用聲調',
   )
   const [遊戲模式值, setPlaymodeValue] = useState(
     (語言選項.遊戲模式值 as string) || '還原論者',
@@ -67,7 +67,7 @@ const OptionsBlock: T_OptionsBlock = ({ 更改語言選項, 語言選項 }) => {
         <label htmlFor="使用聲調的顏色">
           使用聲調的顏色:
           <input
-            checked={!!語言選項.使用聲調的顏色}
+            checked={語言選項.使用聲調的顏色 !== false}
             id="使用聲調的顏色"
             onChange={() => {
               handleOptionsChange({

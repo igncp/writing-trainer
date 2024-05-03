@@ -97,7 +97,7 @@ const RecordSave = ({
       </div>
       <div>
         <按鈕 disabled={isSaveButtonDisabled} onClick={handleRecordSave}>
-          Save
+          儲存
         </按鈕>
       </div>
     </React.Fragment>
