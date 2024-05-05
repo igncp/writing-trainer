@@ -25,6 +25,9 @@ export const 繁體轉簡體 = 字典
 export const 簡體轉繁體例外: Record<string, string | undefined> = {
   个: '個',
   了: '了',
+  出: '出',
+  向: '向',
+  回: '回',
   家: '家',
   巨: '巨',
 }
