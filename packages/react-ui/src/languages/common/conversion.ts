@@ -1,23 +1,27 @@
-import dict from './chars-t-s.txt'
+import 字典 from './chars-t-s.txt'
 
-export const 繁體轉簡體 = dict
+export const 繁體轉簡體 = 字典
   .split('\n')
-  .reduce<Record<string, string[] | undefined>>((acc, line) => {
+  .reduce<Record<string, string[] | undefined>>((累積, line) => {
     if (!line || line.startsWith('--')) {
-      return acc
+      return 累積
     }
 
-    const [traditional, simplifiedItemsStr] = line.split('\t')
+    const [繁體文本, 簡化的文字列表] = line.split('\t')
 
-    if (!simplifiedItemsStr) {
-      return acc
+    if (!簡化的文字列表) {
+      return 累積
     }
 
-    const simplifiedItems = simplifiedItemsStr.split(' ').filter(Boolean)
+    const simplifiedItems = 簡化的文字列表.split(' ').filter(Boolean)
 
-    if (traditional && simplifiedItems.length) {
-      acc[traditional] = simplifiedItems
+    if (繁體文本 && simplifiedItems.length) {
+      累積[繁體文本] = simplifiedItems
     }
 
-    return acc
+    return 累積
   }, {})
+
+export const 簡體轉繁體例外: Record<string, string | undefined> = {
+  个: '個',
+}
