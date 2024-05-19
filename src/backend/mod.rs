@@ -188,7 +188,7 @@ pub async fn start_backend() -> std::io::Result<()> {
     HttpServer::new(move || {
         let cors = Cors::default()
             .allowed_origin("http://localhost:3000")
-            .allowed_origin("https://api.learn-languages-writing.com")
+            .allowed_origin("https://igncp.github.io")
             .allow_any_header()
             .allow_any_method()
             .expose_any_header()
