@@ -16,7 +16,7 @@ use uuid::Uuid;
 
 use crate::backend::{
     auth::{get_google_user, request_token, AppState, AuthConfig, QueryCode, TokenClaims},
-    db::{get_user, save_user, User},
+    db::{get_user_by_email, save_user, User},
     gql::{create_schema, GraphQLContext, Schema},
 };
 
@@ -62,7 +62,7 @@ async fn google_oauth_handler(
 
     let email = google_user.email.to_lowercase();
 
-    let user = get_user(email.to_owned());
+    let user = get_user_by_email(email.to_owned());
     let user_id: String;
 
     if user.is_none() {
@@ -99,6 +99,8 @@ async fn google_oauth_handler(
     let cookie = Cookie::build("token", token)
         .path("/")
         .max_age(ActixWebDuration::new(60 * data.env.jwt_max_age, 0))
+        .secure(data.env.google_oauth_redirect_url.starts_with("https://"))
+        .same_site(actix_web::cookie::SameSite::None)
         .http_only(true)
         .finish();
 
@@ -184,7 +186,13 @@ pub async fn start_backend() -> std::io::Result<()> {
     warn!("Starting the Mahjong HTTP server on port http://{address}:{port}");
 
     HttpServer::new(move || {
-        let cors = Cors::permissive();
+        let cors = Cors::default()
+            .allowed_origin("http://localhost:3000")
+            .allowed_origin("https://api.learn-languages-writing.com")
+            .allow_any_header()
+            .allow_any_method()
+            .expose_any_header()
+            .supports_credentials();
 
         let schema = std::sync::Arc::new(create_schema());
         let auth_config = std::sync::Arc::new(AuthConfig::new());

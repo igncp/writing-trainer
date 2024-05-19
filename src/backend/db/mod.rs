@@ -26,6 +26,18 @@ pub fn get_user(user_id: String) -> Option<User> {
         .expect("Error loading user")
 }
 
+pub fn get_user_by_email(email_val: String) -> Option<User> {
+    let connection = &mut establish_connection();
+
+    use schema::users::dsl::*;
+
+    users
+        .filter(email.eq(email_val))
+        .first(connection)
+        .optional()
+        .expect("Error loading user")
+}
+
 pub fn save_user(user: User) {
     let connection = &mut establish_connection();
 
