@@ -1,2 +1,8 @@
-packages
+node_modules
 gh_pages
+storybook-static
+coverage
+coverage-ts
+.next
+out
+dist

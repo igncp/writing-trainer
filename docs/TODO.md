@@ -14,6 +14,12 @@
   - commonLanguageUtils
 - Code TODOs
 
+## Backend
+
+- Login with Google (OAuth)
+  - Sync stats
+  - Sync saved words
+
 ## Ideas
 
 - Packages:
@@ -25,7 +31,7 @@
 ## Code Quality
 
 - Move some unit tests to e2e tests, especially in core
-    - Focus in good tests specs
+  - Focus in good tests specs
 - Avoid `acc[uiHandler.languageHandler.language.id] = uiHandler`)
 - Remove highlevel code (e.g. using the dictionary)
 - Add playwright

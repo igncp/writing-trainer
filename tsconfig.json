@@ -1,0 +1,53 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "declaration": true,
+    "esModuleInterop": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "lib": ["es7", "dom"],
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "outDir": "dist",
+    "paths": {
+      "#/*": ["src/*"],
+      "@/*": ["src/chrome-extension/*"]
+    },
+    "resolveJsonModule": true,
+    "rootDir": ".",
+    "skipLibCheck": true,
+    "sourceMap": false,
+    "strict": false,
+    "strictNullChecks": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types",
+      "src/chrome-extension/typings",
+      "src/react-ui/typings"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "gh_pages",
+    "storybook-static",
+    "coverage",
+    "coverage-ts",
+    ".next",
+    "out",
+    "dist"
+  ],
+  "include": [
+    "**/*.js",
+    "**/*.ts",
+    "**/*.tsx",
+    ".storybook/**/*.js",
+    ".eslintrc.js"
+  ]
+}

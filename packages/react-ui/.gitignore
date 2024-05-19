@@ -1,8 +1,0 @@
-.untracked
-dist
-out
-storybook-static
-coverage
-.scannerwork
-node_modules
-coverage-ts

@@ -3,6 +3,15 @@ on:
   push:
     branches:
       - main
+    paths:
+      - '.github/workflows/deploy-to-ghpages.yml'
+      - 'package-lock.json'
+      - 'package.json'
+      - 'src/core/**'
+      - 'src/pages/**'
+      - 'src/react-ui/**'
+      - 'src/web-app/**'
+      - 'tsconfig.json'
 
 jobs:
   build-and-deploy:
@@ -11,13 +20,21 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
 
+      - uses: cachix/install-nix-action@v22
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Install 🚧
         run: |
-          npm install
+          touch ./is-ci-nodejs
+          nix develop path:$(pwd) -c npm install
 
       - name: Build 🔧
         run: |
-          bash helpers/ci/gh_actions.sh
+          nix develop path:$(pwd) -c bash scripts/ci/gh_pages_action.sh
+        env:
+          NEXT_PUBLIC_BACKEND_URL: 'https://api.learn-languages-writing.com'
+          NEXT_PUBLIC_GOOGLE_CLIENT_ID: '128663644139-o8phiqm9vbn3onkrj0ehircqi59sm319.apps.googleusercontent.com'
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
