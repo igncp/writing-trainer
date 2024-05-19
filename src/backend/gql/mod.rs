@@ -1,5 +1,6 @@
 use jsonwebtoken::TokenData;
 use juniper::{EmptyMutation, EmptySubscription, FieldResult, GraphQLObject, RootNode};
+use tracing::debug;
 
 use crate::backend::{auth::TokenClaims, db::get_user};
 
@@ -34,6 +35,7 @@ impl QueryRoot {
 
     fn me(ctx: &GraphQLContext) -> FieldResult<Me> {
         if ctx.token.is_none() {
+            debug!("未提供token");
             return Err("Unauthorized".into());
         }
 

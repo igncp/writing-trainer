@@ -11,7 +11,7 @@ use jsonwebtoken::{
     decode, encode, Algorithm, DecodingKey, EncodingKey, Header, TokenData, Validation,
 };
 use juniper::http::{graphiql::graphiql_source, GraphQLRequest};
-use tracing::warn;
+use tracing::{debug, warn};
 use uuid::Uuid;
 
 use crate::backend::{
@@ -142,6 +142,8 @@ async fn graphql(
     let mut token: Option<TokenData<TokenClaims>> = None;
 
     if cookie_value.is_some() {
+        debug!("cookie 存在");
+
         let token_decoded = decode::<TokenClaims>(
             &cookie_value.unwrap(),
             &DecodingKey::from_secret(app_state.env.jwt_secret.as_ref()),
@@ -149,11 +151,14 @@ async fn graphql(
         );
 
         if token_decoded.is_ok() {
+            debug!("token 解碼成功");
             token = Some(token_decoded.unwrap());
         }
     }
 
     let ctx = GraphQLContext { token };
+
+    debug!("執行查詢");
 
     let res = data.execute(&st, &ctx).await;
 
