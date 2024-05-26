@@ -28,20 +28,51 @@ export type Scalars = {
   Float: { input: number; output: number }
 }
 
+export type AnkiGql = {
+  __typename?: 'AnkiGQL'
+  back: Scalars['String']['output']
+  front: Scalars['String']['output']
+  id: Scalars['String']['output']
+  language: Scalars['String']['output']
+}
+
 export type Me = {
   __typename?: 'Me'
   email: Scalars['String']['output']
   id: Scalars['String']['output']
 }
 
-export type Ping = {
-  __typename?: 'Ping'
-  pong: Scalars['String']['output']
-  pong2: Scalars['String']['output']
+export type MutationRoot = {
+  __typename?: 'MutationRoot'
+  saveText: TextGql
+}
+
+export type MutationRootSaveTextArgs = {
+  body: Scalars['String']['input']
+  id: Scalars['String']['input']
+  language: Scalars['String']['input']
+  title?: InputMaybe<Scalars['String']['input']>
+  url?: InputMaybe<Scalars['String']['input']>
 }
 
 export type QueryRoot = {
   __typename?: 'QueryRoot'
+  ankis: Array<AnkiGql>
   me: Me
-  ping: Ping
+  texts: Array<TextGql>
+  translationRequest: Scalars['String']['output']
+}
+
+export type QueryRootTranslationRequestArgs = {
+  content: Scalars['String']['input']
+  currentLanguage: Scalars['String']['input']
+}
+
+export type TextGql = {
+  __typename?: 'TextGQL'
+  body: Scalars['String']['output']
+  id: Scalars['String']['output']
+  language: Scalars['String']['output']
+  title?: Maybe<Scalars['String']['output']>
+  url?: Maybe<Scalars['String']['output']>
 }

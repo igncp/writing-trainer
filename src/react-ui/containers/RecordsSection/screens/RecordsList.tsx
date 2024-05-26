@@ -52,6 +52,7 @@ type 歌曲類型 = {
 }
 
 type 條目清單屬性 = {
+  disabled: boolean
   onRecordEdit: (r: Record) => void
   onRecordLoad: (r: Record) => void
   onRecordRemove: (r: Record) => void
@@ -61,6 +62,7 @@ type 條目清單屬性 = {
 }
 
 const RecordsList = ({
+  disabled,
   onRecordEdit,
   onRecordLoad,
   onRecordRemove,
@@ -114,6 +116,7 @@ const RecordsList = ({
                 </a>
               )}
               <按鈕
+                disabled={disabled}
                 onClick={() => {
                   onRecordLoad(過濾條目)
                 }}
@@ -121,6 +124,7 @@ const RecordsList = ({
                 Load
               </按鈕>
               <按鈕
+                disabled={disabled}
                 onClick={() => {
                   onRecordEdit(過濾條目)
                 }}
@@ -128,6 +132,7 @@ const RecordsList = ({
                 Edit
               </按鈕>
               <按鈕
+                disabled={disabled}
                 onClick={() => {
                   onRecordRemove(過濾條目)
                 }}
@@ -159,6 +164,7 @@ const RecordsList = ({
                 </a>
               )}
               <按鈕
+                disabled={disabled}
                 onClick={() => {
                   load().then(({ lyrics }) => {
                     onSongLoad(lyrics)

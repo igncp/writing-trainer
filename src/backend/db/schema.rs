@@ -1,8 +1,42 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
+    ankis (id) {
+        id -> Text,
+        user_id -> Text,
+        front -> Text,
+        back -> Text,
+        language -> Text,
+        created_at -> Timestamp,
+        updated_at -> Timestamp,
+    }
+}
+
+diesel::table! {
+    texts (id) {
+        id -> Text,
+        user_id -> Text,
+        title -> Nullable<Text>,
+        body -> Text,
+        language -> Text,
+        url -> Nullable<Text>,
+        created_at -> Timestamp,
+        updated_at -> Timestamp,
+    }
+}
+
+diesel::table! {
     users (id) {
         id -> Text,
         email -> Text,
     }
 }
+
+diesel::joinable!(ankis -> users (user_id));
+diesel::joinable!(texts -> users (user_id));
+
+diesel::allow_tables_to_appear_in_same_query!(
+    ankis,
+    texts,
+    users,
+);

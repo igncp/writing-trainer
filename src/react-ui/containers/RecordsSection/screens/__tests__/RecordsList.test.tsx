@@ -5,6 +5,7 @@ import { fireEvent, render } from '@testing-library/react'
 import RecordsList from '../RecordsList'
 
 const commonProps = {
+  disabled: false,
   onRecordEdit: jest.fn(),
   onRecordLoad: jest.fn(),
   onRecordRemove: jest.fn(),
@@ -12,7 +13,8 @@ const commonProps = {
   records: [
     new Record({
       createdOn: Date.now(),
-      id: 0,
+      id: '0',
+      isRemote: false,
       language: 'spanish',
       lastLoadedOn: Date.now(),
       link: 'link value',

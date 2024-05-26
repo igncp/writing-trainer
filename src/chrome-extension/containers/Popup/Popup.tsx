@@ -9,12 +9,29 @@ type onEnableOnceClickOpts = {
   setButtonOneEnabled: (v: boolean) => void
 }
 
+const defaultOnEnableOnceClick = ({
+  setButtonOneEnabled,
+}: onEnableOnceClickOpts) => {
+  sendTabsMessage({ type: MessageType.EnableOnce })
+    .then((received: boolean) => {
+      if (received) {
+        setButtonOneEnabled(false)
+      }
+    })
+    .catch((e: Error) => {
+      console.log(e)
+    })
+}
+
 type PopupProps = {
   onEnableOnceClick?: (opt: onEnableOnceClickOpts) => void
   onOptionsPageClick?: () => void
 }
 
-const Popup = ({ onEnableOnceClick, onOptionsPageClick }: PopupProps) => {
+const Popup = ({
+  onEnableOnceClick = defaultOnEnableOnceClick,
+  onOptionsPageClick = openOptionsPage,
+}: PopupProps) => {
   const [isButtonOneEnabled, setButtonOneEnabled] = useState<boolean>(true)
 
   return (
@@ -23,7 +40,7 @@ const Popup = ({ onEnableOnceClick, onOptionsPageClick }: PopupProps) => {
         <按鈕
           disabled={!isButtonOneEnabled}
           onClick={() => {
-            onEnableOnceClick?.({ setButtonOneEnabled })
+            onEnableOnceClick({ setButtonOneEnabled })
           }}
         >
           Enable one time
@@ -34,21 +51,6 @@ const Popup = ({ onEnableOnceClick, onOptionsPageClick }: PopupProps) => {
       </div>
     </div>
   )
-}
-
-Popup.defaultProps = {
-  onEnableOnceClick: ({ setButtonOneEnabled }: onEnableOnceClickOpts) => {
-    sendTabsMessage({ type: MessageType.EnableOnce })
-      .then((received: boolean) => {
-        if (received) {
-          setButtonOneEnabled(false)
-        }
-      })
-      .catch((e: Error) => {
-        console.log(e)
-      })
-  },
-  onOptionsPageClick: openOptionsPage,
 }
 
 export default Popup

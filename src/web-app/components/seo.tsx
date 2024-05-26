@@ -7,7 +7,7 @@ type IProps = {
   title: string
 }
 
-function SEO({ description, lang, meta, title }: IProps) {
+function SEO({ description = '', lang = 'en', meta = [], title }: IProps) {
   const metaDescription = description || ''
 
   return (
@@ -49,12 +49,6 @@ function SEO({ description, lang, meta, title }: IProps) {
       titleTemplate={`%s | Writing Trainer`}
     />
   )
-}
-
-SEO.defaultProps = {
-  description: ``,
-  lang: `en`,
-  meta: [],
 }
 
 export default SEO

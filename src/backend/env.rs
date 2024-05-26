@@ -8,3 +8,4 @@ pub const ENV_GOOGLE_CLIENT_SECRET: &str = "GOOGLE_CLIENT_SECRET";
 pub const ENV_JWT_SECRET: &str = "JWT_SECRET";
 pub const ENV_TOKEN_EXPIRED_IN: &str = "TOKEN_EXPIRED_IN";
 pub const ENV_TOKEN_MAXAGE: &str = "TOKEN_MAXAGE";
+pub const ENV_OPENAI_API_KEY: &str = "OPENAI_API_KEY";

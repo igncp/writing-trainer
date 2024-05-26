@@ -10,8 +10,8 @@ type IProps = InputHTMLAttributes<HTMLInputElement> & Props
 const TextInput = ({
   inputRef,
   onChange,
-  onEnterPress,
-  style,
+  onEnterPress = () => {},
+  style = {},
   value,
   ...props
 }: IProps) => {
@@ -38,11 +38,6 @@ const TextInput = ({
       {...props}
     />
   )
-}
-
-TextInput.defaultProps = {
-  onEnterPress: () => {},
-  style: {},
 }
 
 export default TextInput

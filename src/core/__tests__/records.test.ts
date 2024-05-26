@@ -16,7 +16,8 @@ const dummyRecords: Record[] = [
     new Record({
       ...semiRecord,
       createdOn: Date.now(),
-      id: semiRecordIdx,
+      id: semiRecordIdx.toString(),
+      isRemote: false,
       link: `linkValue-${semiRecordIdx}`,
       name: `nameValue-${semiRecordIdx}`,
       pronunciation: `pronunciationValue-${semiRecordIdx}`,

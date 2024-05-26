@@ -23,7 +23,8 @@ for (let x = 0; x <= 50; x++) {
   records.push(
     new Record({
       createdOn: Date.now() - HOURS_10_IN_MS,
-      id: x,
+      id: x.toString(),
+      isRemote: false,
       language: x % 2 ? 'mandarin' : 'cantonese',
       lastLoadedOn: Date.now() - HOURS_10_IN_MS * Math.random(),
       link: x % 2 ? 'https://google.com' : '',
@@ -37,6 +38,7 @@ for (let x = 0; x <= 50; x++) {
 const RecordsListStories = () => {
   return (
     <RecordsList
+      disabled={false}
       onRecordEdit={() => console.log('onRecordEdit')}
       onRecordLoad={() => console.log('onRecordLoad')}
       onRecordRemove={() => console.log('onRecordRemove')}

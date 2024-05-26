@@ -16,9 +16,9 @@
 
 ## Backend
 
-- Login with Google (OAuth)
-  - Sync stats
-  - Sync saved words
+- Add anki support
+- Sync stats
+- Remove offline records saving support
 
 ## Ideas
 

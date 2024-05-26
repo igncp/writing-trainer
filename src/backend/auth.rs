@@ -131,9 +131,11 @@ impl AppState {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct TokenClaims {
-    pub sub: String,
-    pub iat: usize,
+    pub access_token: String,
     pub exp: usize,
+    pub iat: usize,
+    pub id_token: String,
+    pub sub: String,
 }
 
 #[derive(Debug, Deserialize)]

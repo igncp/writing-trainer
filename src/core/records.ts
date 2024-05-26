@@ -3,7 +3,8 @@ import { LanguageDefinition } from './constants'
 // @TODO: refactor to have a private `data` property
 class Record {
   public createdOn: number
-  public id: number
+  public id: string
+  public isRemote: boolean
   public language: LanguageDefinition['id']
   public lastLoadedOn: number
   public link: string
@@ -14,6 +15,7 @@ class Record {
   public constructor(ops: {
     createdOn: Record['createdOn']
     id: Record['id']
+    isRemote: Record['isRemote']
     language: Record['language']
     lastLoadedOn: Record['lastLoadedOn']
     link: Record['link']
@@ -29,6 +31,7 @@ class Record {
     this.name = ops.name
     this.pronunciation = ops.pronunciation
     this.text = ops.text
+    this.isRemote = ops.isRemote
   }
 
   public static filterByText({
@@ -66,6 +69,7 @@ class Record {
     return {
       createdOn: this.createdOn,
       id: this.id,
+      isRemote: this.isRemote,
       language: this.language,
       lastLoadedOn: this.lastLoadedOn,
       link: this.link,

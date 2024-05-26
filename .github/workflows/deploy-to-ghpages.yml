@@ -15,6 +15,7 @@ on:
 
 jobs:
   build-and-deploy:
+    if: github.repository == 'igncp/writing-trainer' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️

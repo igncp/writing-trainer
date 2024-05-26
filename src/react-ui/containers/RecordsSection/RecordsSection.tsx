@@ -1,9 +1,13 @@
 import { LanguageDefinition, Record } from '#/core'
+import { TextGql } from '#/react-ui/graphql/graphql'
+import { backendClient } from '#/react-ui/lib/backendClient'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import { songs as cantoneseSongs } from '../../languages/cantonese/songs'
 import { songs as mandarinSongs } from '../../languages/mandarin/songs'
 import { T_Services } from '../../typings/mainTypes'
+import { useMainContext } from '../main-context'
 
 import RecordsWrapper from './RecordsWrapper'
 import RecordSave, { RecordToSave } from './screens/RecordSave'
@@ -17,9 +21,8 @@ export enum RecordsScreen {
 
 const RECORDS_STORAGE = 'records'
 
-const getMaxRecordId = (records: Record[]) => {
-  return records.length ? Math.max(...records.map(r => r.id)) : 0
-}
+const getMaxRecordId = (records: Record[]) =>
+  records.length ? Math.max(...records.map(r => Number(r.id) || 0)) : 0
 
 const getInitialRecord = ({
   editingRecordId,
@@ -55,6 +58,7 @@ type IProps = {
   text: string
 }
 
+// @TODO: Remove local/remote records and use a offline syncing librar
 const RecordsSection = ({
   initScreen,
   onRecordLoad,
@@ -71,21 +75,48 @@ const RecordsSection = ({
   )
   const [records, setRecords] = useState<Record[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const mainContext = useMainContext()
 
   const { storage } = services
 
   const retrieveRecords = async () => {
     setIsLoading(true)
 
-    const recordsStr = await storage.getValue(RECORDS_STORAGE)
+    const [dbTexts, recordsStr] = await Promise.all([
+      backendClient.getUserTexts().catch(() => [] as TextGql[]),
+      storage.getValue(RECORDS_STORAGE),
+    ])
 
-    if (recordsStr) {
-      const parsedRecords: Record[] = JSON.parse(recordsStr).map(
-        (recordObj: ReturnType<Record['toJson']>) => new Record(recordObj),
+    const recordsLocal = (() => {
+      if (recordsStr) {
+        const parsedRecords: Record[] = JSON.parse(recordsStr).map(
+          (recordObj: ReturnType<Record['toJson']>) => new Record(recordObj),
+        )
+
+        return parsedRecords
+      }
+
+      return []
+    })()
+
+    const allRecords = dbTexts
+      .map(
+        dbText =>
+          new Record({
+            createdOn: Date.now(),
+            id: dbText.id,
+            isRemote: true,
+            language: dbText.language,
+            lastLoadedOn: Date.now(),
+            link: '',
+            name: decodeURIComponent(dbText.title ?? ''),
+            pronunciation,
+            text: decodeURIComponent(dbText.body),
+          }),
       )
+      .concat(recordsLocal)
 
-      setRecords(parsedRecords)
-    }
+    setRecords(allRecords)
 
     setIsLoading(false)
   }
@@ -94,77 +125,115 @@ const RecordsSection = ({
     retrieveRecords().catch(() => {})
   }, [])
 
-  const saveRecords = (newRecords: Record[]) => {
-    const recordsStr = JSON.stringify(newRecords.map(record => record.toJson()))
+  const saveRecord = (newRecord: Record) => {
+    let newRecords = [...records]
+    const existingRecordIndex = newRecords.findIndex(r => r.id === newRecord.id)
+
+    if (existingRecordIndex !== -1) {
+      newRecords[existingRecordIndex] = newRecord
+    } else {
+      newRecords.unshift(newRecord)
+    }
+
+    newRecords = newRecords.filter(r => r.text.trim())
+
+    if (mainContext.state.isLoggedIn) {
+      newRecord.isRemote = true
+
+      setIsLoading(true)
+
+      backendClient
+        .saveText({
+          body: newRecord.text,
+          id: newRecord.id,
+          language: newRecord.language,
+          title: newRecord.name,
+          url: newRecord.link,
+        })
+        .then(({ id }) => {
+          newRecord.id = id
+
+          setRecords(newRecords)
+        })
+        .catch(() => {
+          toast.error('保存記錄失敗')
+        })
+        .finally(() => {
+          setIsLoading(false)
+        })
+    } else if (newRecord.isRemote) {
+      toast.error('您需要登入才能保存遠端記錄')
+    } else {
+      newRecord.id = (getMaxRecordId(records) + 1).toString()
+    }
+
+    const recordsStr = JSON.stringify(
+      newRecords.filter(r => !r.isRemote).map(record => record.toJson()),
+    )
     storage.setValue(RECORDS_STORAGE, recordsStr)
     setRecords(newRecords)
   }
 
   const handleRecordLoad = (record: Record) => {
-    const newRecords = [...records]
+    if (isLoading) return
 
-    newRecords.find(r => r.id === record.id)!.lastLoadedOn = Date.now()
-
-    saveRecords(newRecords)
+    record.lastLoadedOn = Date.now()
+    saveRecord(record)
     onRecordLoad(record)
   }
 
   const handleRecordEdit = (record: Record) => {
+    if (isLoading) return
+
     setEditingRecordId(record.id)
     setCurrentScreen(RecordsScreen.Edit)
   }
 
-  const handleRecordSave = (newRecord: RecordToSave) => {
-    const newRecords = records.concat([
-      new Record({
-        createdOn: Date.now(),
-        id: getMaxRecordId(records) + 1,
-        language: selectedLanguage,
-        lastLoadedOn: Date.now(),
-        link: newRecord.link,
-        name: newRecord.name,
-        pronunciation,
-        text,
-      }),
-    ])
+  const handleRecordSave = (newRecordSave: RecordToSave) => {
+    if (isLoading) return
 
-    saveRecords(newRecords)
+    const newRecord = new Record({
+      createdOn: Date.now(),
+      id: '',
+      isRemote: false,
+      language: selectedLanguage,
+      lastLoadedOn: Date.now(),
+      link: newRecordSave.link,
+      name: newRecordSave.name,
+      pronunciation,
+      text,
+    })
+
+    saveRecord(newRecord)
     setCurrentScreen(RecordsScreen.List)
   }
 
   const handleShowRecordsList = () => {
+    if (isLoading) return
+
     setEditingRecordId(null)
     setCurrentScreen(RecordsScreen.List)
   }
 
-  const handleRecordEdited = (newRecord: RecordToSave) => {
-    const newRecords = records.map(r =>
-      r.id === editingRecordId
-        ? new Record({
-            ...r.toJson(),
-            link: newRecord.link,
-            name: newRecord.name,
-          })
-        : r,
-    )
+  const handleRecordEdited = (newRecordSave: RecordToSave) => {
+    const existingRecord = records.find(r => r.id === editingRecordId)
 
-    saveRecords(newRecords)
+    if (!existingRecord) return
+    const newRecord = new Record({
+      ...existingRecord,
+      link: newRecordSave.link,
+      name: newRecordSave.name,
+    })
+
+    saveRecord(newRecord)
     setEditingRecordId(null)
     setCurrentScreen(RecordsScreen.List)
   }
 
   const handleRecordRemove = (record: Record) => {
-    const newRecords = records.filter(r => r.id !== record.id)
+    record.text = ''
 
-    saveRecords(newRecords)
-  }
-
-  if (isLoading) {
-    return (
-      <RecordsWrapper onRecordsClose={onRecordsClose}>
-        Loading...
-      </RecordsWrapper>
-    )
+    saveRecord(record)
   }
 
   const commonRecordsSaveProps = {
@@ -188,6 +257,7 @@ const RecordsSection = ({
     return (
       <RecordsWrapper onRecordsClose={onRecordsClose}>
         <RecordSave
+          disabled={isLoading}
           initialRecord={getInitialRecord({ editingRecordId, records })}
           onRecordSave={handleRecordEdited}
           {...commonRecordsSaveProps}
@@ -199,6 +269,7 @@ const RecordsSection = ({
   return (
     <RecordsWrapper onRecordsClose={onRecordsClose}>
       <RecordsList
+        disabled={isLoading}
         onRecordEdit={handleRecordEdit}
         onRecordLoad={handleRecordLoad}
         onRecordRemove={handleRecordRemove}

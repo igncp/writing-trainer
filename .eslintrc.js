@@ -100,8 +100,9 @@ module.exports = {
     'newline-before-return': 2,
     'no-console': 2,
     'no-extra-semi': 0,
-
     'no-useless-return': 2,
+    'object-shorthand': 2,
+
     'padding-line-between-statements': [
       'error',
       {

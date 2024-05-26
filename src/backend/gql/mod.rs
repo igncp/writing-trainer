@@ -1,68 +1,130 @@
-use jsonwebtoken::TokenData;
-use juniper::{EmptyMutation, EmptySubscription, FieldResult, GraphQLObject, RootNode};
+use self::context::GraphQLContext;
+use crate::backend::{
+    db::{Anki, Text},
+    gql::models::{AnkiGQL, Me, TextGQL, TranslationRequest},
+};
+use juniper::{EmptySubscription, FieldResult, RootNode};
 use tracing::debug;
 
-use crate::backend::{auth::TokenClaims, db::get_user};
-
-#[derive(GraphQLObject)]
-struct Ping {
-    pong: String,
-    pong2: String,
-}
-
-#[derive(GraphQLObject)]
-struct Me {
-    id: String,
-    email: String,
-}
+pub mod context;
+mod models;
 
 pub struct QueryRoot;
+pub struct MutationRoot;
 
-pub struct GraphQLContext {
-    pub token: Option<TokenData<TokenClaims>>,
+fn check_user(ctx: &GraphQLContext) -> FieldResult<()> {
+    if ctx.user.is_none() {
+        debug!("用戶不存在");
+        return Err("用戶不存在".into());
+    }
+
+    Ok(())
 }
-
-impl juniper::Context for GraphQLContext {}
 
 #[juniper::graphql_object(context = GraphQLContext)]
 impl QueryRoot {
-    fn ping() -> FieldResult<Ping> {
-        Ok(Ping {
-            pong: "Pong!".to_string(),
-            pong2: "Pong 2!".to_string(),
-        })
+    fn me(ctx: &GraphQLContext) -> FieldResult<Me> {
+        check_user(ctx)?;
+
+        let user = ctx.user.as_ref().unwrap();
+
+        Ok(Me::new(&user.id, &user.email))
     }
 
-    fn me(ctx: &GraphQLContext) -> FieldResult<Me> {
-        if ctx.token.is_none() {
-            debug!("未提供token");
-            return Err("Unauthorized".into());
-        }
+    fn texts(ctx: &GraphQLContext) -> FieldResult<Vec<TextGQL>> {
+        check_user(ctx)?;
 
-        let user_id = ctx.token.as_ref().unwrap().claims.sub.clone();
+        let user = ctx.user.as_ref().unwrap();
 
-        let user = get_user(user_id);
+        let texts = Text::get_all(user.id.to_string());
+        let texts_gql = texts
+            .iter()
+            .map(TextGQL::from_text)
+            .collect::<Vec<TextGQL>>();
 
-        if user.is_none() {
-            return Err("User not found".into());
-        }
+        Ok(texts_gql)
+    }
 
-        let user = user.unwrap();
+    fn ankis(ctx: &GraphQLContext) -> FieldResult<Vec<AnkiGQL>> {
+        check_user(ctx)?;
 
-        Ok(Me {
-            id: user.id.to_string(),
-            email: user.email.to_string(),
-        })
+        let user = ctx.user.as_ref().unwrap();
+
+        let ankis = Anki::get_all(user.id.to_string());
+        let ankis_gql = ankis.iter().map(AnkiGQL::from_db).collect::<Vec<AnkiGQL>>();
+
+        Ok(ankis_gql)
+    }
+
+    async fn translation_request(
+        ctx: &GraphQLContext,
+        content: String,
+        current_language: String,
+    ) -> FieldResult<String> {
+        check_user(ctx)?;
+
+        let translation_request = TranslationRequest::new(&content, &current_language);
+
+        let translation = translation_request.translate().await;
+
+        Ok(translation)
     }
 }
 
-pub type Schema =
-    RootNode<'static, QueryRoot, EmptyMutation<GraphQLContext>, EmptySubscription<GraphQLContext>>;
+#[juniper::graphql_object(context = GraphQLContext)]
+impl MutationRoot {
+    fn save_anki(
+        ctx: &GraphQLContext,
+        id: String,
+        front: String,
+        language: String,
+        back: String,
+    ) -> FieldResult<AnkiGQL> {
+        check_user(ctx)?;
+
+        let user = ctx.user.as_ref().unwrap();
+
+        let anki = Anki::new(Some(id), &user.id, &front, &language, &back);
+
+        if anki.front.is_empty() {
+            anki.delete();
+        } else {
+            anki.save();
+        }
+
+        Ok(AnkiGQL::from_db(&anki))
+    }
+
+    fn save_text(
+        ctx: &GraphQLContext,
+        id: String,
+        body: String,
+        language: String,
+        title: Option<String>,
+        url: Option<String>,
+    ) -> FieldResult<TextGQL> {
+        check_user(ctx)?;
+
+        let user = ctx.user.as_ref().unwrap();
+
+        let text = Text::new(Some(id), &user.id, title, &body, &language, url);
+
+        if text.body.is_empty() {
+            text.delete();
+        } else {
+            text.save();
+        }
+
+        Ok(TextGQL::from_text(&text))
+    }
+}
+
+pub type Schema = RootNode<'static, QueryRoot, MutationRoot, EmptySubscription<GraphQLContext>>;
 
 pub fn create_schema() -> Schema {
     Schema::new(
-        QueryRoot {},
-        EmptyMutation::<GraphQLContext>::new(),
+        QueryRoot,
+        MutationRoot,
         EmptySubscription::<GraphQLContext>::new(),
     )
 }

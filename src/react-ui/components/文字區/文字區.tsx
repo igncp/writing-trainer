@@ -8,11 +8,12 @@ type 特性 = TextareaHTMLAttributes<HTMLTextAreaElement> & {
 }
 
 const 文字區 = ({
+  className,
   onChange,
   setRef,
   style,
   無遊標,
-  自動捲動,
+  自動捲動 = false,
   ...特性
 }: 特性) => {
   const ref = useRef<HTMLTextAreaElement>(null)
@@ -36,12 +37,15 @@ const 文字區 = ({
 
   return (
     <textarea
+      className={[
+        'border-[1px] border-solid border-[var(--color-background)] p-2',
+        className,
+      ].join(' ')}
       data-gramm_editor={false}
       onChange={onChange}
       ref={ref}
       spellCheck={false}
       style={{
-        border: '1px solid var(--color-background)',
         outline: 0,
         resize: 'none',
         width: '100%',
@@ -52,10 +56,6 @@ const 文字區 = ({
       {...特性}
     />
   )
-}
-
-文字區.defaultProps = {
-  自動捲動: false,
 }
 
 export default 文字區

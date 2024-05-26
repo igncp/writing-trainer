@@ -9,9 +9,11 @@ on:
       - 'Cargo.toml'
       - 'scripts/ci/build_docker.sh'
       - 'src/backend/**'
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
+    if: github.repository == 'igncp/writing-trainer' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️

@@ -10,6 +10,7 @@ export interface RecordToSave {
 }
 
 type RecordSaveProps = {
+  disabled?: boolean
   initialRecord: RecordToSave | null
   onRecordSave: (r: RecordToSave) => void
   onShowRecordsList: () => void
@@ -17,6 +18,7 @@ type RecordSaveProps = {
 }
 
 const RecordSave = ({
+  disabled,
   initialRecord,
   onRecordSave,
   onShowRecordsList,
@@ -61,7 +63,9 @@ const RecordSave = ({
   return (
     <Fragment>
       <div>
-        <按鈕 onClick={onShowRecordsList}>List</按鈕>
+        <按鈕 disabled={disabled} onClick={onShowRecordsList}>
+          List
+        </按鈕>
       </div>
       <div>
         <div style={{ padding: 10 }}>
@@ -96,7 +100,10 @@ const RecordSave = ({
         </div>
       </div>
       <div>
-        <按鈕 disabled={isSaveButtonDisabled} onClick={handleRecordSave}>
+        <按鈕
+          disabled={isSaveButtonDisabled || disabled}
+          onClick={handleRecordSave}
+        >
           儲存
         </按鈕>
       </div>

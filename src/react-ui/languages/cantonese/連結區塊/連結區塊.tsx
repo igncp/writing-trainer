@@ -1,6 +1,7 @@
 import 按鈕 from '../../../components/按鈕/按鈕'
 import { 將文字複製到剪貼簿 } from '../../../utils/general'
 import GTButton from '../../common/Links/GoogleTranslateButton'
+import TranslateButton from '../../common/Links/TranslateButton'
 import 字元類型更改 from '../../common/字元類型更改/字元類型更改'
 import { 類型_連結區塊 } from '../../types'
 
@@ -33,6 +34,11 @@ const 連結區塊: 類型_連結區塊 = ({ 文字, 文字片段列表, 更改�
       <字元類型更改
         文字片段列表={文字片段列表}
         更改文字片段列表={更改文字片段列表}
+      />
+      <TranslateButton
+        language="zh-HK"
+        style={{ paddingLeft: 0 }}
+        text={文字}
       />
     </div>
   )

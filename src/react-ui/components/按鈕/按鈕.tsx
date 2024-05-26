@@ -18,6 +18,7 @@ export type T_ButtonProps = {
   onDoubleClick?: () => void
   shouldUseLink?: boolean
   style?: CSSProperties
+  title?: string
 }
 
 const 按鈕 = ({
@@ -29,6 +30,7 @@ const 按鈕 = ({
   onDoubleClick,
   shouldUseLink,
   style,
+  title,
 }: T_ButtonProps) => {
   const { bind, hovered } = useHover()
   const finalStyle = {
@@ -53,6 +55,7 @@ const 按鈕 = ({
         rel="noopener noreferrer"
         style={finalStyle}
         target="_blank"
+        title={title}
         {...bind}
       >
         {children}
@@ -67,6 +70,7 @@ const 按鈕 = ({
       onDoubleClick={disabled ? noop : onDoubleClick}
       role="button"
       style={finalStyle}
+      title={title}
     >
       {children}
     </div>

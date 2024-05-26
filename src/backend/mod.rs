@@ -7,17 +7,15 @@ use actix_web::{
 };
 use chrono::{Duration, Utc};
 use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
-use jsonwebtoken::{
-    decode, encode, Algorithm, DecodingKey, EncodingKey, Header, TokenData, Validation,
-};
+use jsonwebtoken::{encode, EncodingKey, Header};
 use juniper::http::{graphiql::graphiql_source, GraphQLRequest};
 use tracing::{debug, warn};
 use uuid::Uuid;
 
 use crate::backend::{
     auth::{get_google_user, request_token, AppState, AuthConfig, QueryCode, TokenClaims},
-    db::{get_user_by_email, save_user, User},
-    gql::{create_schema, GraphQLContext, Schema},
+    db::User,
+    gql::{context::GraphQLContext, create_schema, Schema},
 };
 
 use self::logs::setup_logs;
@@ -29,6 +27,7 @@ mod db;
 mod env;
 mod gql;
 mod logs;
+mod translation;
 
 #[get("/sessions/oauth/google")]
 async fn google_oauth_handler(
@@ -46,6 +45,7 @@ async fn google_oauth_handler(
     let token_response = request_token(code.as_str(), &data).await;
     if token_response.is_err() {
         let message = token_response.err().unwrap().to_string();
+        debug!("Error: {}", message);
         return HttpResponse::BadGateway()
             .json(serde_json::json!({"status": "fail2", "message": message}));
     }
@@ -54,6 +54,7 @@ async fn google_oauth_handler(
     let google_user = get_google_user(&token_response.access_token, &token_response.id_token).await;
     if google_user.is_err() {
         let message = google_user.err().unwrap().to_string();
+        debug!("Error2: {}", message);
         return HttpResponse::BadGateway()
             .json(serde_json::json!({"status": "fail3", "message": message}));
     }
@@ -62,7 +63,7 @@ async fn google_oauth_handler(
 
     let email = google_user.email.to_lowercase();
 
-    let user = get_user_by_email(email.to_owned());
+    let user = User::get_by_email(email.to_owned());
     let user_id: String;
 
     if user.is_none() {
@@ -74,7 +75,7 @@ async fn google_oauth_handler(
 
         user_id = user_data.id.to_string();
 
-        save_user(user_data);
+        user_data.save();
     } else {
         user_id = user.unwrap().id.to_owned();
     }
@@ -83,10 +84,13 @@ async fn google_oauth_handler(
     let now = Utc::now();
     let iat = now.timestamp() as usize;
     let exp = (now + Duration::minutes(data.env.jwt_max_age)).timestamp() as usize;
+
     let claims: TokenClaims = TokenClaims {
-        sub: user_id,
+        access_token: token_response.access_token,
         exp,
         iat,
+        id_token: token_response.id_token,
+        sub: user_id,
     };
 
     let token = encode(
@@ -96,15 +100,25 @@ async fn google_oauth_handler(
     )
     .unwrap();
 
-    let cookie = Cookie::build("token", token)
+    let cookie_secure = data.env.google_oauth_redirect_url.starts_with("https://");
+
+    let mut cookie_build = Cookie::build("token", token)
         .path("/")
-        .max_age(ActixWebDuration::new(60 * data.env.jwt_max_age, 0))
-        .secure(data.env.google_oauth_redirect_url.starts_with("https://"))
-        .same_site(actix_web::cookie::SameSite::None)
-        .http_only(true)
-        .finish();
+        .max_age(ActixWebDuration::new(60 * data.env.jwt_max_age, 0));
+
+    if cookie_secure {
+        cookie_build = cookie_build
+            .secure(true)
+            .same_site(actix_web::cookie::SameSite::None)
+            .http_only(true)
+    }
+
+    let cookie = cookie_build.finish();
 
     let frontend_origin = data.env.client_origin.to_owned();
+
+    debug!("重定向到前端: {}", frontend_origin);
+
     let mut response = HttpResponse::Found();
     response.append_header((LOCATION, frontend_origin.to_string()));
     response.cookie(cookie);
@@ -141,27 +155,9 @@ async fn graphql(
     app_state: web::Data<AppState>,
 ) -> impl Responder {
     let cookie_value = req.cookie("token").map(|cookie| cookie.value().to_owned());
-    let mut token: Option<TokenData<TokenClaims>> = None;
-
-    if cookie_value.is_some() {
-        debug!("cookie 存在");
-
-        let token_decoded = decode::<TokenClaims>(
-            &cookie_value.unwrap(),
-            &DecodingKey::from_secret(app_state.env.jwt_secret.as_ref()),
-            &Validation::new(Algorithm::HS256),
-        );
-
-        if token_decoded.is_ok() {
-            debug!("token 解碼成功");
-            token = Some(token_decoded.unwrap());
-        }
-    }
-
-    let ctx = GraphQLContext { token };
+    let ctx = GraphQLContext::new(cookie_value, app_state);
 
     debug!("執行查詢");
-
     let res = data.execute(&st, &ctx).await;
 
     HttpResponse::Ok().json(res)

@@ -21,7 +21,7 @@ const LoginWidget = () => {
         <>
           {isLoggedIn ? (
             <>
-              <span className="ml-[12px]">Logged in</span>
+              <span className="ml-[12px]">已經登入</span>
               <按鈕
                 className="ml-[12px]"
                 onClick={() => {
@@ -33,7 +33,7 @@ const LoginWidget = () => {
                   })
                 }}
               >
-                Log out
+                登出
               </按鈕>
             </>
           ) : (
@@ -42,7 +42,7 @@ const LoginWidget = () => {
                 backendClient.login()
               }}
             >
-              Log in
+              登入
             </按鈕>
           )}
         </>

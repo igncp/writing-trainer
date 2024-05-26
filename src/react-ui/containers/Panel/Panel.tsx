@@ -19,8 +19,10 @@ import {
   類型_文字片段列表,
 } from '../../languages/types'
 import { T_Services } from '../../typings/mainTypes'
+import { AnkisMode, AnkisSection } from '../AnkisSection/AnkisSection'
 import LoginWidget from '../LoginWidget/LoginWidget'
 import RecordsSection, { RecordsScreen } from '../RecordsSection/RecordsSection'
+import { useMainContext } from '../main-context'
 
 const STORAGE_LANGUAGE_KEY = 'selectedLanguage'
 
@@ -86,6 +88,9 @@ const Panel = ({
   關於改變主題,
 }: Props) => {
   const initialLanguageId = languageUIManager.getDefaultLanguage()
+  const {
+    state: { isLoggedIn },
+  } = useMainContext()
   const [, 觸發重新渲染] = useState<number>(0)
   const [stats, setStats] = useState<null | {
     correct: number
@@ -100,6 +105,7 @@ const Panel = ({
     索引: 0,
   })
 
+  const [showingAnkis, setShowingAnkis] = useState<AnkisMode | null>(null)
   const [showingRecordsInitScreen, setShowingRecordsInitScreen] = useState<
     RecordsScreen | ''
   >('')
@@ -395,6 +401,19 @@ const Panel = ({
     return null
   }
 
+  if (showingAnkis) {
+    return (
+      <AnkisSection
+        language={selectedLanguage}
+        mode={showingAnkis}
+        setMode={mode => {
+          setShowingAnkis(mode)
+        }}
+        字元對象列表={字元對象列表 ?? []}
+      />
+    )
+  }
+
   if (showingRecordsInitScreen) {
     return (
       <RecordsSection
@@ -447,6 +466,15 @@ const Panel = ({
       </按鈕>
       <按鈕 onClick={() => 設定有額外控件(!有額外的控制)}>X</按鈕>
       {有額外的控制 && <按鈕 onClick={listRecords}>已儲存和歌曲</按鈕>}
+      {有額外的控制 && isLoggedIn && (
+        <按鈕
+          onClick={() => {
+            setShowingAnkis(AnkisMode.Main)
+          }}
+        >
+          打開 Anki
+        </按鈕>
+      )}
       <按鈕
         onClick={() => {
           navigator.clipboard.writeText(originalTextValue)
@@ -454,6 +482,15 @@ const Panel = ({
       >
         複製
       </按鈕>
+      {isLoggedIn && !有額外的控制 && (
+        <按鈕
+          onClick={() => {
+            setShowingAnkis(AnkisMode.Add)
+          }}
+        >
+          添加 Ankis
+        </按鈕>
+      )}
       {isShowingEdition && (
         <>
           <label htmlFor="file-input" style={{ cursor: 'pointer' }}>
@@ -683,6 +720,7 @@ const Panel = ({
               字元對象列表={字元對象列表 ?? []}
               應該有不同的寬度={!語言UI處理程序.shouldAllCharsHaveSameWidth}
               應該隱藏發音={!isShowingPronunciation}
+              按一下該符號={() => setShowingPronunciation(false)}
               重點字元索引={currentDisplayCharIdx}
               重點字元顏色={重點字元顏色}
               顯示目前字元的發音={
