@@ -7,6 +7,9 @@ diesel::table! {
         front -> Text,
         back -> Text,
         language -> Text,
+        interval -> Integer,
+        correct -> Integer,
+        incorrect -> Integer,
         created_at -> Timestamp,
         updated_at -> Timestamp,
     }

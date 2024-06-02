@@ -50,6 +50,13 @@ const getGoogleUrl = (from: string) => {
   return `${rootUrl}?${qs.toString()}`
 }
 
+const decodeAnki = <T extends Partial<AnkiGql>>(anki: T): T => ({
+  ...anki,
+  ...('back' in anki && anki.back && { back: decodeURIComponent(anki.back) }),
+  ...('front' in anki &&
+    anki.front && { front: decodeURIComponent(anki.front) }),
+})
+
 const getHealth = () => fetchCommon('/health')
 
 const login = () => (window.location.href = getGoogleUrl(window.location.href))
@@ -64,15 +71,6 @@ const getInfo = () =>
     }
   `).then(({ me }) => me)
 
-const AnkiFragment = `
-  fragment AnkiFragment on AnkiGQL {
-    back
-    front
-    id
-    language
-  }
-`
-
 const TextFragment = `
   fragment TextFragment on TextGQL {
     body
@@ -82,15 +80,43 @@ const TextFragment = `
   }
 `
 
-const getUserAnkis = () =>
-  fetchGraphQL<{ ankis: AnkiGql[] }>(`#graphql
+const getUserAnkis = (items: number, offset: number) =>
+  fetchGraphQL<{
+    ankis: Array<
+      Pick<AnkiGql, 'id' | 'front' | 'language' | 'correct' | 'incorrect'>
+    >
+    ankisTotal: number
+  }>(`#graphql
     query {
-      ankis {
-        ...AnkiFragment
+      ankis(
+        itemsNum: ${items},
+        offset: ${offset}
+      ) {
+        correct
+        front
+        id
+        incorrect
+        language
+      }
+      ankisTotal
+    }
+  `).then(({ ankis, ankisTotal }) => ({
+    list: ankis.map(decodeAnki),
+    total: ankisTotal,
+  }))
+
+const getAnkisRound = () =>
+  fetchGraphQL<{
+    ankisRound: Array<Pick<AnkiGql, 'id' | 'front' | 'back'>>
+  }>(`#graphql
+    query {
+      ankisRound {
+        id
+        front
+        back
       }
     }
-    ${AnkiFragment}
-  `).then(({ ankis }) => ankis)
+  `).then(({ ankisRound }) => ankisRound.map(decodeAnki))
 
 const getUserTexts = () =>
   fetchGraphQL<{ texts: TextGql[] }>(`#graphql
@@ -113,19 +139,33 @@ const translateText = (content: string, currentLanguage: string) => {
   `).then(({ translationRequest }) => translationRequest)
 }
 
-const saveAnki = (anki: AnkiGql) =>
+const saveAnki = (anki: Pick<AnkiGql, 'front' | 'id' | 'back' | 'language'>) =>
   fetchGraphQL<{ saveAnki: { id: string } }>(`#graphql
     mutation {
       saveAnki(
         id: "${anki.id}",
-        front: "${anki.front}",
+        front: "${encodeURIComponent(anki.front)}",
         language: "${anki.language}",
-        back: "${anki.back}"
+        back: "${encodeURIComponent(anki.back)}"
       ) {
         id
       }
     }
   `).then(({ saveAnki: saveAnkiResult }) => saveAnkiResult)
+
+const saveReviewedAnki = (anki: { guessed: boolean; id: string }) =>
+  fetchGraphQL<{ saveReviewedAnki: { id: string } }>(`#graphql
+    mutation {
+      saveReviewedAnki(
+        guessed: ${anki.guessed},
+        id: "${anki.id}"
+      ) {
+        id
+      }
+    }
+  `).then(
+    ({ saveReviewedAnki: saveReviewedAnkiResult }) => saveReviewedAnkiResult,
+  )
 
 const saveText = (text: TextGql) =>
   fetchGraphQL<{ saveText: { id: string } }>(`#graphql
@@ -144,6 +184,7 @@ const saveText = (text: TextGql) =>
 const logout = () => fetchCommon('/auth/logout')
 
 export const backendClient = {
+  getAnkisRound,
   getHealth,
   getInfo,
   getUserAnkis,
@@ -151,6 +192,7 @@ export const backendClient = {
   login,
   logout,
   saveAnki,
+  saveReviewedAnki,
   saveText,
   translateText,
 }

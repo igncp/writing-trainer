@@ -23,7 +23,7 @@ export const useTextSelection = (
     return () => {
       document.body.removeEventListener('mouseup', listener)
     }
-  }, [isExtensionEnabled])
+  }, [isExtensionEnabled, fn])
 }
 
 // https://github.com/beizhedenglong/react-hooks-lib

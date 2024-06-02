@@ -21,10 +21,17 @@ pub struct TextGQL {
 
 #[derive(GraphQLObject)]
 pub struct AnkiGQL {
-    front: String,
     back: String,
+    correct: i32,
+    front: String,
     id: String,
+    incorrect: i32,
     language: String,
+}
+
+#[derive(GraphQLObject)]
+pub struct AnkiRoundGQL {
+    id: String,
 }
 
 #[derive(GraphQLObject)]
@@ -57,10 +64,12 @@ impl TextGQL {
 impl AnkiGQL {
     pub fn from_db(anki: &Anki) -> Self {
         Self {
+            back: anki.back.to_string(),
+            correct: anki.correct,
             front: anki.front.to_string(),
             id: anki.id.to_string(),
+            incorrect: anki.incorrect,
             language: anki.language.to_string(),
-            back: anki.back.to_string(),
         }
     }
 }

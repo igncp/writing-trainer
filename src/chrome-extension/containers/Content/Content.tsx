@@ -6,7 +6,7 @@ import {
   useBodyOverflowSwitch,
   useTextSelection,
 } from '#/react-ui'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import PanelTrigger from '@/components/PanelTrigger/PanelTrigger'
 
@@ -68,6 +68,7 @@ const Content = ({ onContentEnabledResult }: ContentProps) => {
     updateLanguageWithStorage().catch((e: Error) => {
       log('ERROR', e)
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -80,17 +81,23 @@ const Content = ({ onContentEnabledResult }: ContentProps) => {
 
       return false
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useBodyOverflowSwitch(shouldShowPanel)
 
-  useTextSelection(isExtensionEnabled, (textSelected: string) => {
-    const parsedText = textSelected.trim()
+  const onTextSelection = useCallback(
+    (textSelected: string) => {
+      const parsedText = textSelected.trim()
 
-    if (parsedText !== '' && !shouldShowPanel) {
-      setUsedText(parsedText)
-    }
-  })
+      if (parsedText !== '' && !shouldShowPanel) {
+        setUsedText(parsedText)
+      }
+    },
+    [shouldShowPanel],
+  )
+
+  useTextSelection(isExtensionEnabled, onTextSelection)
 
   if (!hasLoadedStorage || !isExtensionEnabled) {
     return null

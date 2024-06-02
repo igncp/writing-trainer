@@ -45,12 +45,41 @@ impl QueryRoot {
         Ok(texts_gql)
     }
 
-    fn ankis(ctx: &GraphQLContext) -> FieldResult<Vec<AnkiGQL>> {
+    fn ankis(
+        ctx: &GraphQLContext,
+        items_num: Option<i32>,
+        offset: Option<i32>,
+    ) -> FieldResult<Vec<AnkiGQL>> {
         check_user(ctx)?;
 
         let user = ctx.user.as_ref().unwrap();
 
-        let ankis = Anki::get_all(user.id.to_string());
+        let ankis = Anki::get_all(
+            user.id.to_string(),
+            items_num.unwrap_or(10),
+            offset.unwrap_or(0),
+        );
+        let ankis_gql = ankis.iter().map(AnkiGQL::from_db).collect::<Vec<AnkiGQL>>();
+
+        Ok(ankis_gql)
+    }
+
+    fn ankis_total(ctx: &GraphQLContext) -> FieldResult<i32> {
+        check_user(ctx)?;
+
+        let user = ctx.user.as_ref().unwrap();
+
+        let ankis_total = Anki::get_total(user.id.to_string());
+
+        Ok(ankis_total)
+    }
+
+    fn ankis_round(ctx: &GraphQLContext) -> FieldResult<Vec<AnkiGQL>> {
+        check_user(ctx)?;
+
+        let user = ctx.user.as_ref().unwrap();
+
+        let ankis = Anki::load_round(user.id.to_string());
         let ankis_gql = ankis.iter().map(AnkiGQL::from_db).collect::<Vec<AnkiGQL>>();
 
         Ok(ankis_gql)
@@ -91,6 +120,22 @@ impl MutationRoot {
         } else {
             anki.save();
         }
+
+        Ok(AnkiGQL::from_db(&anki))
+    }
+
+    fn save_reviewed_anki(ctx: &GraphQLContext, id: String, guessed: bool) -> FieldResult<AnkiGQL> {
+        check_user(ctx)?;
+
+        let user = ctx.user.as_ref().unwrap();
+
+        let anki = Anki::save_reviewed(&user.id, &id, guessed);
+
+        if anki.is_err() {
+            return Err(anki.err().unwrap().to_string().into());
+        }
+
+        let anki = anki.unwrap();
 
         Ok(AnkiGQL::from_db(&anki))
     }

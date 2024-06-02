@@ -65,7 +65,13 @@
             if system == "aarch64-darwin"
             then [
               libiconv
-              darwin.apple_sdk.frameworks.Security
+              pkg-config
+              cargo-watch
+              zlib
+              darwin.Security
+              darwin.apple_sdk.frameworks.AppKit
+              darwin.apple_sdk.frameworks.CoreServices
+              darwin.apple_sdk.frameworks.CoreFoundation
             ]
             else []
           );

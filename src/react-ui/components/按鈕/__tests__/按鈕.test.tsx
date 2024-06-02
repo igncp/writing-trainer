@@ -15,10 +15,10 @@ describe('按鈕', () => {
     expect(() => getByText('Test Content')).not.toThrow()
   })
 
-  it('renders a div by default', () => {
+  it('renders a button by default', () => {
     const { baseElement } = render(<按鈕 {...commonProps} />)
 
-    expect(baseElement.querySelectorAll('div').length).toEqual(2)
+    expect(baseElement.querySelectorAll('button').length).toEqual(1)
     expect(baseElement.querySelectorAll('a').length).toEqual(0)
   })
 

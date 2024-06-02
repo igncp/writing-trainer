@@ -1,14 +1,15 @@
-name: Deploy Backend
+name: Deploy Frontend
 on:
   push:
     branches:
       - main
     paths:
-      - '.github/workflows/deploy-backend.yml'
-      - 'Cargo.lock'
-      - 'Cargo.toml'
-      - 'scripts/ci/build_docker.sh'
-      - 'src/backend/**'
+      - 'packages.json'
+      - 'package-lock.json'
+      - 'src/react-ui/**'
+      - 'src/core/**'
+      - 'src/web-app/**'
+      - 'src/pages/**'
   workflow_dispatch:
 
 jobs:
@@ -31,13 +32,12 @@ jobs:
 
       - name: Install 🚧
         run: |
-          touch ./is-ci-rust
-          nix develop path:$(pwd) -c rustup install stable
-
-      - name: Check 🔧
-        run: |
-          nix develop path:$(pwd) -c bash -c 'cargo clippy --release'
+          touch ./is-ci-nodejs
+          nix develop path:$(pwd) -c npm install
 
       - name: Build and publish docker image
         run: |
-          nix develop path:$(pwd) -c bash -c scripts/ci/build_docker_backend.sh
+          cp .env.example .env
+          nix develop path:$(pwd) -c bash -c scripts/ci/build_docker_frontend.sh
+        env:
+          NEXT_PUBLIC_BACKEND_URL: 'https://api.learn-languages-writing.com'

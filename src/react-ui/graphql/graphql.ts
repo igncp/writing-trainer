@@ -31,8 +31,10 @@ export type Scalars = {
 export type AnkiGql = {
   __typename?: 'AnkiGQL'
   back: Scalars['String']['output']
+  correct: Scalars['Int']['output']
   front: Scalars['String']['output']
   id: Scalars['String']['output']
+  incorrect: Scalars['Int']['output']
   language: Scalars['String']['output']
 }
 
@@ -44,7 +46,21 @@ export type Me = {
 
 export type MutationRoot = {
   __typename?: 'MutationRoot'
+  saveAnki: AnkiGql
+  saveReviewedAnki: AnkiGql
   saveText: TextGql
+}
+
+export type MutationRootSaveAnkiArgs = {
+  back: Scalars['String']['input']
+  front: Scalars['String']['input']
+  id: Scalars['String']['input']
+  language: Scalars['String']['input']
+}
+
+export type MutationRootSaveReviewedAnkiArgs = {
+  guessed: Scalars['Boolean']['input']
+  id: Scalars['String']['input']
 }
 
 export type MutationRootSaveTextArgs = {
@@ -58,9 +74,16 @@ export type MutationRootSaveTextArgs = {
 export type QueryRoot = {
   __typename?: 'QueryRoot'
   ankis: Array<AnkiGql>
+  ankisRound: Array<AnkiGql>
+  ankisTotal: Scalars['Int']['output']
   me: Me
   texts: Array<TextGql>
   translationRequest: Scalars['String']['output']
+}
+
+export type QueryRootAnkisArgs = {
+  itemsNum?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
 }
 
 export type QueryRootTranslationRequestArgs = {

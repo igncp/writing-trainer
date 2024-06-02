@@ -6,6 +6,7 @@ import {
   useRef,
   useState,
 } from 'react'
+import { FaToolbox, FaTools } from 'react-icons/fa'
 
 import CharactersDisplay from '../../components/CharactersDisplay/CharactersDisplay'
 import ChooseLanguage from '../../components/ChooseLanguage/ChooseLanguage'
@@ -132,6 +133,9 @@ const Panel = ({
   const [有額外的控制, 設定有額外控件] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const writingArea = useRef<HTMLTextAreaElement | null>(null)
+  const [displayMobileTones, setDisplayMobileTones] = useState<boolean | null>(
+    null,
+  )
   const 語言選項 = _stories.語言選項 ?? 語言UI處理程序.取得語言選項()
 
   const langHandler = languageManager.getCurrentLanguageHandler()
@@ -207,6 +211,7 @@ const Panel = ({
     // eslint-disable-next-line
     ;(async () => {
       const savedFontSize = await storage.getValue('fontSize')
+      const savedDisplayTonesNum = await storage.getValue('displayTonesNum')
 
       if (savedFontSize) {
         const parsedFontSize = Number(savedFontSize)
@@ -215,8 +220,12 @@ const Panel = ({
           setFontSize(parsedFontSize)
         }
       }
+
+      if (savedDisplayTonesNum) {
+        setDisplayMobileTones(savedDisplayTonesNum === 'true')
+      }
     })()
-  }, [])
+  }, [storage])
 
   useEffect(() => {
     if (fontSize !== defaultFontSize) {
@@ -224,7 +233,13 @@ const Panel = ({
     } else {
       storage.setValue('fontSize', '')
     }
-  }, [fontSize])
+  }, [fontSize, storage])
+
+  useEffect(() => {
+    if (displayMobileTones === null) return
+
+    storage.setValue('displayTonesNum', displayMobileTones.toString())
+  }, [displayMobileTones, storage])
 
   useEffect(() => {
     if (!_stories.defaultLanguage) {
@@ -232,6 +247,7 @@ const Panel = ({
     }
 
     updateLanguage(_stories.defaultLanguage)
+    // eslint-disable-next-line
   }, [_stories.defaultLanguage])
 
   const updateLanguageWithStorage = async () => {
@@ -249,6 +265,7 @@ const Panel = ({
 
   useEffect(() => {
     updateLanguageWithStorage().catch(() => {})
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
@@ -267,7 +284,7 @@ const Panel = ({
         })
       }
     })()
-  }, [initialFragmentIndex])
+  }, [initialFragmentIndex, storage])
 
   const 特殊字元 = langHandler?.取得特殊字符()
   const 語言選項對象 = {
@@ -308,9 +325,12 @@ const Panel = ({
     if (practiceCharObj?.ch && practiceCharObj.ch.pronunciation !== '?') {
       setCurrentDisplayCharIdx(practiceCharObj.index)
     }
+    // eslint-disable-next-line
   }, [practiceValue, pronunciationValue])
 
   useEffect(() => {
+    if (showingAnkis) return
+
     const handleShortcuts = (e: KeyboardEvent) => {
       const value = e.key
 
@@ -331,7 +351,8 @@ const Panel = ({
     return () => {
       document.removeEventListener('keydown', handleShortcuts)
     }
-  }, [isShowingEdition, isShowingPronunciation, 文字片段列表])
+    // eslint-disable-next-line
+  }, [isShowingEdition, isShowingPronunciation, 文字片段列表, showingAnkis])
 
   const clearValues = () => {
     // eslint-disable-next-line no-extra-semi,padding-line-between-statements
@@ -356,7 +377,7 @@ const Panel = ({
 
   const 處理寫鍵按下 = (事件: ReactKeyboardEvent<HTMLTextAreaElement>) => {
     // 允許瀏覽器快捷鍵
-    if (事件.ctrlKey) return
+    if (事件.ctrlKey || 事件.metaKey) return
 
     if (事件.key === 'Enter') {
       setPractice(`${practiceValue}\n`)
@@ -459,13 +480,26 @@ const Panel = ({
     ? 語言UI處理程序.取得錯誤顏色?.(語言選項, getCurrentCharObjFromPractice())
     : undefined
 
+  const { tonesNumber } = 語言UI處理程序
+
   return (
     <>
       <按鈕 onClick={clearValues} style={{ paddingLeft: 0 }}>
         清除文字
       </按鈕>
-      <按鈕 onClick={() => 設定有額外控件(!有額外的控制)}>X</按鈕>
+      <按鈕 onClick={() => 設定有額外控件(!有額外的控制)}>
+        {有額外的控制 ? <FaTools /> : <FaToolbox />}
+      </按鈕>
       {有額外的控制 && <按鈕 onClick={listRecords}>已儲存和歌曲</按鈕>}
+      {有額外的控制 && isMobile && (
+        <按鈕
+          onClick={() => {
+            setDisplayMobileTones(!displayMobileTones)
+          }}
+        >
+          {displayMobileTones ? '隱藏' : '顯示'}音調
+        </按鈕>
+      )}
       {有額外的控制 && isLoggedIn && (
         <按鈕
           onClick={() => {
@@ -584,9 +618,9 @@ const Panel = ({
       {文字片段列表.列表.length > 1 && (
         <按鈕
           onClick={() => {
-            const newFragments = {
+            const newFragments: 類型_文字片段列表 = {
               ...文字片段列表,
-              index: (文字片段列表.索引 + 1) % 文字片段列表.列表.length,
+              索引: (文字片段列表.索引 + 1) % 文字片段列表.列表.length,
             }
             onPracticeSourceChange(newFragments)
           }}
@@ -599,7 +633,7 @@ const Panel = ({
           onClick={() => {
             const newFragments = {
               ...文字片段列表,
-              index:
+              索引:
                 文字片段列表.索引 <= 0
                   ? 文字片段列表.列表.length - 1
                   : 文字片段列表.索引 - 1,
@@ -720,7 +754,12 @@ const Panel = ({
               字元對象列表={字元對象列表 ?? []}
               應該有不同的寬度={!語言UI處理程序.shouldAllCharsHaveSameWidth}
               應該隱藏發音={!isShowingPronunciation}
-              按一下該符號={() => setShowingPronunciation(false)}
+              按一下該符號={() => {
+                setShowingEdition(false)
+                設定有額外控件(false)
+                setShowingPronunciation(false)
+                writingArea.current?.focus()
+              }}
               重點字元索引={currentDisplayCharIdx}
               重點字元顏色={重點字元顏色}
               顯示目前字元的發音={
@@ -754,7 +793,9 @@ const Panel = ({
             placeholder={practiceValue ? '' : '書寫區'}
             rows={1}
             setRef={ref => (writingArea.current = ref)}
-            style={{ borderWidth: writingBorder === 'bold' ? 2 : 1 }}
+            style={{
+              borderWidth: writingBorder === 'bold' ? 2 : 1,
+            }}
             value={writingValue}
             無遊標
           />
@@ -773,10 +814,31 @@ const Panel = ({
               }`,
               fontSize,
               lineHeight: `${fontSize + 10}px`,
+              maxHeight: isMobile ? '100px' : undefined,
             }}
             value={practiceValue}
             自動捲動
           />
+          {isMobile && displayMobileTones && tonesNumber && (
+            <div className="flex w-full flex-row justify-between bg-[black]">
+              {Array.from({ length: tonesNumber }).map((_, idx) => {
+                return (
+                  <按鈕
+                    key={idx}
+                    onClick={() => {
+                      處理寫鍵按下({
+                        key: (idx + 1).toString(),
+                        preventDefault: () => {},
+                      } as unknown as ReactKeyboardEvent<HTMLTextAreaElement>)
+                      writingArea.current?.focus()
+                    }}
+                  >
+                    {idx + 1}
+                  </按鈕>
+                )
+              })}
+            </div>
+          )}
         </div>
       </div>
       <連結區塊

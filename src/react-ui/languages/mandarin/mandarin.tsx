@@ -118,6 +118,7 @@ const 語言UI處理程序: 類型_語言UI處理程序 = {
   languageHandler: mandarinHandler,
   onBlur: chineseBlurHandler,
   shouldAllCharsHaveSameWidth: false,
+  tonesNumber: 4,
   儲存語言選項,
   取得語言選項,
   取得連結區塊: () => 連結區塊,

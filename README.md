@@ -5,7 +5,6 @@
 - [storybook](https://igncp.github.io/writing-trainer/storybook)
 - [types-coverage](https://igncp.github.io/writing-trainer/types-coverage)
 - [tests-coverage](https://igncp.github.io/writing-trainer/core-tests-coverage)
-- [web-app](https://igncp.github.io/writing-trainer/web-app)
 
 ## 設定
 

@@ -52,6 +52,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:jest/recommended',
+    'plugin:react-hooks/recommended',
     'plugin:@typescript-eslint/recommended',
   ],
   globals: {
@@ -132,7 +133,11 @@ module.exports = {
     'perfectionist/sort-objects': 2,
 
     'prefer-template': 2,
+
     'prettier/prettier': 'error',
+
+    'react-hooks/exhaustive-deps': 2,
+    'react-hooks/rules-of-hooks': 2,
 
     'react/jsx-no-target-blank': 0,
     'react/jsx-sort-props': 2,

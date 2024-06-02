@@ -43,7 +43,7 @@ const RecordSave = ({
       .catch((e: Error) => {
         console.log(e)
       })
-  }, [])
+  }, [services])
 
   if (!currentUrl) {
     return null

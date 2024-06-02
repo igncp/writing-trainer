@@ -1,1 +1,1 @@
-export const siteUrl = 'https://igncp.github.io/writing-trainer/web-app/'
+export const siteUrl = 'https://learn-languages-writing.com'

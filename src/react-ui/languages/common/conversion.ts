@@ -22,7 +22,7 @@ export const 繁體轉簡體 = 字典
     return 累積
   }, {})
 
-export const 簡體轉繁體例外: Record<string, string | undefined> = {
+const 簡體轉繁體例外: Record<string, string | undefined> = {
   个: '個',
   了: '了',
   出: '出',
@@ -31,3 +31,27 @@ export const 簡體轉繁體例外: Record<string, string | undefined> = {
   家: '家',
   巨: '巨',
 }
+
+const 簡體轉繁體 = Object.entries(繁體轉簡體).reduce<
+  Record<string, string | undefined>
+>((累積, [k, v]) => {
+  if (!v) return 累積
+
+  v.forEach(s => {
+    累積[s] = k
+  })
+
+  return 累積
+}, {})
+
+export const changeToSimplified = (文字: string) =>
+  文字
+    .split('')
+    .map(字元 => 繁體轉簡體[字元] ?? 字元)
+    .join('')
+
+export const changeToTraditional = (文字: string) =>
+  文字
+    .split(``)
+    .map(字元 => 簡體轉繁體例外[字元] ?? 簡體轉繁體[字元] ?? 字元)
+    .join('')

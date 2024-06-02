@@ -33,9 +33,6 @@ jobs:
       - name: Build 🔧
         run: |
           nix develop path:$(pwd) -c bash scripts/ci/gh_pages_action.sh
-        env:
-          NEXT_PUBLIC_BACKEND_URL: 'https://api.learn-languages-writing.com'
-          NEXT_PUBLIC_GOOGLE_CLIENT_ID: '128663644139-o8phiqm9vbn3onkrj0ehircqi59sm319.apps.googleusercontent.com'
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4

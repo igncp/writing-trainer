@@ -60,13 +60,22 @@ const CharactersDisplay = ({
   return (
     <div
       ref={wrapperRef as MutableRefObject<HTMLDivElement>}
-      style={{ maxHeight: MAX_HEIGHT, overflow: 'auto', position: 'relative' }}
+      style={{
+        display: 'inline-flex',
+        flexWrap: 'wrap',
+        gap: '4px',
+        maxHeight: MAX_HEIGHT,
+        overflow: 'auto',
+        position: 'relative',
+      }}
     >
       {字元對象列表.map((字元對象, 索引) => {
         const { pronunciation, word } = 字元對象
+        const shouldHidePronunciation =
+          !(顯示目前字元的發音 && 索引 === 重點字元索引) && 應該隱藏發音
 
         return (
-          <div
+          <span
             key={`${索引}${字元對象.word}`}
             onClick={e => {
               e.stopPropagation()
@@ -80,37 +89,34 @@ const CharactersDisplay = ({
             style={{
               color: 索引 === 重點字元索引 ? 重點字元顏色 : undefined,
               cursor: pronunciation && 按一下該符號 ? 'pointer' : 'default',
-              display: 'inline-block',
+              display: 'inline-flex',
+              flexDirection: 'column',
               marginBottom: 10,
               opacity: 索引 === 重點字元索引 ? 1 : 0.3,
             }}
           >
-            <div
+            <span
               style={{
                 fontSize: 13,
                 height: 10,
-                marginBottom: 1,
                 textAlign: 'center',
+                userSelect: 'none',
+                visibility: shouldHidePronunciation ? 'hidden' : undefined,
                 ...(應該有不同的寬度 ? {} : { width: charWidth }),
               }}
             >
-              {(() => {
-                if (顯示目前字元的發音 && 索引 === 重點字元索引)
-                  return pronunciation
-
-                return 應該隱藏發音 ? '' : pronunciation
-              })()}
-            </div>
-            <div
-              className="min-width-[10px] pt-[5px] text-center"
+              {pronunciation}
+            </span>
+            <span
+              className="min-width-[10px] inline pt-[5px] text-center"
               style={{
                 fontSize: usedFontSize + 10,
                 ...(應該有不同的寬度 ? {} : { width: charWidth }),
               }}
             >
               {word}
-            </div>
-          </div>
+            </span>
+          </span>
         )
       })}
     </div>

@@ -28,6 +28,9 @@ pub struct Anki {
     pub front: String,
     pub back: String,
     pub language: String,
+    pub interval: i32,
+    pub correct: i32,
+    pub incorrect: i32,
     pub created_at: chrono::NaiveDateTime,
     pub updated_at: chrono::NaiveDateTime,
 }

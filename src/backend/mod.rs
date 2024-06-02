@@ -179,12 +179,14 @@ pub async fn start_backend() -> std::io::Result<()> {
     let connection = &mut db::establish_connection();
     connection.run_pending_migrations(MIGRATIONS).unwrap();
 
-    warn!("Starting the Mahjong HTTP server on port http://{address}:{port}");
+    warn!("Starting the Writing Trainer HTTP server on port http://{address}:{port}");
 
     HttpServer::new(move || {
         let cors = Cors::default()
             .allowed_origin("http://localhost:3000")
+            .allowed_origin("http://localhost:9000")
             .allowed_origin("https://igncp.github.io")
+            .allowed_origin("https://learn-languages-writing.com")
             .allow_any_header()
             .allow_any_method()
             .expose_any_header()

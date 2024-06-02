@@ -1,7 +1,7 @@
 import { LanguageDefinition, Record } from '#/core'
 import { TextGql } from '#/react-ui/graphql/graphql'
 import { backendClient } from '#/react-ui/lib/backendClient'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { songs as cantoneseSongs } from '../../languages/cantonese/songs'
@@ -79,7 +79,7 @@ const RecordsSection = ({
 
   const { storage } = services
 
-  const retrieveRecords = async () => {
+  const retrieveRecords = useCallback(async () => {
     setIsLoading(true)
 
     const [dbTexts, recordsStr] = await Promise.all([
@@ -119,11 +119,11 @@ const RecordsSection = ({
     setRecords(allRecords)
 
     setIsLoading(false)
-  }
+  }, [pronunciation, storage])
 
   useEffect(() => {
     retrieveRecords().catch(() => {})
-  }, [])
+  }, [retrieveRecords])
 
   const saveRecord = (newRecord: Record) => {
     let newRecords = [...records]

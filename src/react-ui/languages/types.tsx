@@ -57,6 +57,7 @@ export interface 類型_語言UI處理程序 {
   languageHandler: LanguageHandler
   onBlur?: T_BlurHandler
   shouldAllCharsHaveSameWidth: boolean
+  tonesNumber?: number
   儲存語言選項: (o: 類型_語言選項) => void
   取得語言選項: () => 類型_語言選項
   取得連結區塊: () => 類型_連結區塊
