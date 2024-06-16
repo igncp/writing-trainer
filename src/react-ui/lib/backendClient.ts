@@ -1,6 +1,7 @@
 import { AnkiGql, Me, TextGql } from '../graphql/graphql'
 
-const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:9000'
+const baseURL =
+  process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:9000'
 const clientID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string
 
 const fetchCommon = (uri: string, options?: RequestInit) =>

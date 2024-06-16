@@ -1,0 +1,82 @@
+{
+  "anki": {
+    "correct": "Correcto",
+    "displayBack": "Mostrar la parte trasera",
+    "end": "Terminar",
+    "noMore": "No hay más tarjetas",
+    "num": "Número",
+    "round": "Ronda",
+    "toggleTypes": "Cambiar tipos",
+    "wrong": "Incorrecto"
+  },
+  "auth": {
+    "alreadyLoggedIn": "Conectado",
+    "backendActive": "Backend activo",
+    "login": "Autenticarse",
+    "logout": "Desconectarse"
+  },
+  "lang": {
+    "cantonese": "Cantonés",
+    "english": "Inglés",
+    "japanese": "Japonés",
+    "mandarin": "Mandarín"
+  },
+  "option": {
+    "automaticSplitText": "Dividir automáticamente el texto",
+    "changeToSimplified": "Caracteres simplificados",
+    "changeToTraditional": "Caracteres tradicionales",
+    "loginUse": "Iniciar sesión para utilizar esta función",
+    "noTones": "Sin tonos",
+    "pronunciation": "Pronunciación",
+    "reductive": "Reductivo",
+    "repetitive": "Repetitivo",
+    "translateAI": "Traducción AI",
+    "translateGoogle": "Traducción Google",
+    "useTones": "Utilizar tonos",
+    "useTonesColors": "Utilizar colores para los tonos"
+  },
+  "panel": {
+    "addAnkis": "Añadir tarjetas",
+    "changeTheme": "Cambiar tema",
+    "charSize": "Tamaño de los caracteres",
+    "clear": "Limpiar",
+    "closeRecord": "Cerrar",
+    "copy": "Copiar",
+    "correct": "Correcto",
+    "currentFragment": "Fragmento actual",
+    "deleteStats": "Eliminar estadísticas",
+    "displayTones": "Mostrar tonos",
+    "hide": "Ocultar",
+    "hideTones": "Ocultar tonos",
+    "importFile": "Importar archivo",
+    "lastSessionNotice": "Las estadísticas son hasta la última sesión",
+    "openAnki": "Abrir Anki",
+    "previousFragment": "Fragmento anterior",
+    "pronunciation": "Pronunciación",
+    "recordSongs": "Canciones y textos guardados",
+    "saveRecord": "Guardar",
+    "sourceText": "Texto original",
+    "specialChars": "Caracteres especiales",
+    "toggleEdition": "Alternar edición",
+    "togglePronunciation": "Alternar pronunciación",
+    "updateRecord": "Actualizar",
+    "writingArea": "Área de escritura",
+    "wrong": "Incorrecto"
+  },
+  "record": {
+    "artist": "Artista",
+    "close": "Cerrar",
+    "edit": "Editar",
+    "lang": "Idioma",
+    "link": "Enlace",
+    "list": "Lista",
+    "load": "Cargar",
+    "name": "Nombre",
+    "remove": "Eliminar",
+    "save": "Guardar",
+    "video": "Vídeo"
+  },
+  "site": {
+    "title": "Writing Trainer"
+  }
+}

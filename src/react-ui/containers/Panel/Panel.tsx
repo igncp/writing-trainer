@@ -6,18 +6,19 @@ import {
   useRef,
   useState,
 } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FaToolbox, FaTools } from 'react-icons/fa'
 
 import CharactersDisplay from '../../components/CharactersDisplay/CharactersDisplay'
 import ChooseLanguage from '../../components/ChooseLanguage/ChooseLanguage'
-import 按鈕 from '../../components/按鈕/按鈕'
+import Button from '../../components/button/button'
 import 文字區 from '../../components/文字區/文字區'
 import { 刪除資料庫, 取得字元數 } from '../../languages/common/統計'
 import { LanguageUIManager } from '../../languages/languageUIManager'
 import {
-  類型_語言選項,
+  T_LangOpts,
   T_getCurrentCharObjFromPractice,
-  類型_文字片段列表,
+  T_Fragments,
 } from '../../languages/types'
 import { T_Services } from '../../typings/mainTypes'
 import { AnkisMode, AnkisSection } from '../AnkisSection/AnkisSection'
@@ -36,26 +37,23 @@ const createInputSetterFn =
 const SHORTCUT_NEXT_FRAGMENT = 'Tab'
 const defaultFontSize = 30
 
-const PRACTICE_TEXT_PLACEHOLDER = `練習文本
-下一個片段: ${SHORTCUT_NEXT_FRAGMENT}`
-
 type Props = {
   _stories?: {
     defaultLanguage?: LanguageDefinition['id']
     defaultPractice?: string
     defaultPronunciation?: string
-    語言選項?: 類型_語言選項
+    langOpts?: T_LangOpts
   }
   initialFragmentIndex?: number
   languageManager: LanguageManager
   languageUIManager: LanguageUIManager
+  onChangeTheme?: () => void
   onHideRequest?: () => void
   services: T_Services
   text: string
   UI?: {
     noHideButton?: boolean
   }
-  關於改變主題?: () => void
 }
 
 const getLanguageDefinitions = (languageManager: LanguageManager) => {
@@ -82,12 +80,13 @@ const Panel = ({
   initialFragmentIndex,
   languageManager,
   languageUIManager,
+  onChangeTheme,
   onHideRequest,
   services,
   text,
   UI,
-  關於改變主題,
 }: Props) => {
+  const { t } = useTranslation()
   const initialLanguageId = languageUIManager.getDefaultLanguage()
   const {
     state: { isLoggedIn },
@@ -101,9 +100,9 @@ const Panel = ({
 
   const 語言UI處理程序 = languageUIManager.獲取語言UI處理程序()
 
-  const [文字片段列表, setFragments] = useState<類型_文字片段列表>({
-    列表: [text],
-    索引: 0,
+  const [fragments, setFragments] = useState<T_Fragments>({
+    index: 0,
+    list: [text],
   })
 
   const [showingAnkis, setShowingAnkis] = useState<AnkisMode | null>(null)
@@ -112,7 +111,7 @@ const Panel = ({
   >('')
   const [currentRecord, setCurrentRecord] = useState<Record['id'] | null>(null)
   const [currentText, setCurrentText] = useState<string>('')
-  const originalTextValue = currentText || 文字片段列表.列表[文字片段列表.索引]
+  const originalTextValue = currentText || fragments.list[fragments.index]
   const [pronunciationValue, setPronunciation] = useState<string>(
     _stories.defaultPronunciation ?? '',
   )
@@ -124,19 +123,19 @@ const Panel = ({
   const [fontSize, setFontSize] = useState<number>(defaultFontSize)
   const [isShowingPronunciation, setShowingPronunciation] = useState(true)
   const [isShowingEdition, setShowingEdition] = useState<boolean>(true)
-  const [練習有錯誤, 設定練習有錯誤] = useState<boolean>(false)
+  const [practiceHasError, setPracticeHasError] = useState<boolean>(false)
   const [selectedLanguage, setSelectedLanguage] =
     useState<LanguageDefinition['id']>(initialLanguageId)
   const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false)
   const [currentDisplayCharIdx, setCurrentDisplayCharIdx] = useState<number>(0)
   const [writingBorder, setWritingBorder] = useState<'bold' | 'normal'>('bold')
-  const [有額外的控制, 設定有額外控件] = useState(false)
+  const [hasExtraControls, setHasExtraControls] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const writingArea = useRef<HTMLTextAreaElement | null>(null)
   const [displayMobileTones, setDisplayMobileTones] = useState<boolean | null>(
     null,
   )
-  const 語言選項 = _stories.語言選項 ?? 語言UI處理程序.取得語言選項()
+  const langOpts = _stories.langOpts ?? 語言UI處理程序.getLangOpts()
 
   const langHandler = languageManager.getCurrentLanguageHandler()
 
@@ -158,14 +157,14 @@ const Panel = ({
       .catch(() => {})
   }, [])
 
-  const onPracticeSourceChange = (newFragments?: 類型_文字片段列表) => {
+  const onPracticeSourceChange = (newFragments?: T_Fragments) => {
     setCurrentText('')
     setPractice('')
     setWriting('')
 
-    設定練習有錯誤(false)
+    setPracticeHasError(false)
 
-    語言選項.錯誤的字符 = []
+    langOpts.charsWithMistakes = []
 
     if (newFragments) {
       setFragments(newFragments)
@@ -180,9 +179,9 @@ const Panel = ({
       .map(s => s.trim())
       .filter(Boolean)
 
-    const newFragments: 類型_文字片段列表 = {
-      列表: list.length ? list : [''],
-      索引: 0,
+    const newFragments: T_Fragments = {
+      index: 0,
+      list: list.length ? list : [''],
     }
 
     onPracticeSourceChange(newFragments)
@@ -287,17 +286,17 @@ const Panel = ({
   }, [initialFragmentIndex, storage])
 
   const 特殊字元 = langHandler?.取得特殊字符()
-  const 語言選項對象 = {
-    語言選項: {
+  const langOpts對象 = {
+    langOpts: {
       pronunciationInput: pronunciationValue,
-      ...((語言選項 as unknown as 類型_語言選項 | undefined) ?? {}),
+      ...((langOpts as unknown as T_LangOpts | undefined) ?? {}),
     },
   }
 
   const charsToRemove = specialCharsValue.split('').concat(特殊字元 ?? [])
 
-  const 字元對象列表 = langHandler?.轉換為字元對象列表({
-    ...語言選項對象,
+  const charsObjsList = langHandler?.轉換為字元對象列表({
+    ...langOpts對象,
     charsToRemove,
     text: originalTextValue,
   })
@@ -308,13 +307,13 @@ const Panel = ({
     if (!langHandler) return null
 
     const practiceCharsObjs = langHandler.轉換為字元對象列表({
-      ...語言選項對象,
+      ...langOpts對象,
       charsToRemove,
       text: practiceText,
     })
 
     return langHandler.getCurrentCharObj({
-      originalCharsObjs: 字元對象列表 ?? [],
+      originalCharsObjs: charsObjsList ?? [],
       practiceCharsObjs,
     })
   }
@@ -337,9 +336,9 @@ const Panel = ({
       if (value === SHORTCUT_NEXT_FRAGMENT) {
         e.preventDefault()
 
-        const newFragments: 類型_文字片段列表 = {
-          ...文字片段列表,
-          索引: (文字片段列表.索引 + 1) % 文字片段列表.列表.length,
+        const newFragments: T_Fragments = {
+          ...fragments,
+          index: (fragments.index + 1) % fragments.list.length,
         }
 
         onPracticeSourceChange(newFragments)
@@ -352,7 +351,7 @@ const Panel = ({
       document.removeEventListener('keydown', handleShortcuts)
     }
     // eslint-disable-next-line
-  }, [isShowingEdition, isShowingPronunciation, 文字片段列表, showingAnkis])
+  }, [isShowingEdition, isShowingPronunciation, fragments, showingAnkis])
 
   const clearValues = () => {
     // eslint-disable-next-line no-extra-semi,padding-line-between-statements
@@ -361,7 +360,7 @@ const Panel = ({
         fn('')
       },
     )
-    const newFragments: 類型_文字片段列表 = { 列表: [''], 索引: 0 }
+    const newFragments: T_Fragments = { index: 0, list: [''] }
     語言UI處理程序.處理清除事件?.(語言UI處理程序)
     storage.setValue('fragments', JSON.stringify(newFragments))
     setShowingPronunciation(true)
@@ -384,30 +383,30 @@ const Panel = ({
     }
 
     語言UI處理程序.處理寫鍵按下({
+      charsObjsList: charsObjsList ?? [],
       getCurrentCharObjFromPractice,
+      langOpts,
       originalTextValue,
       practiceValue,
       setCurrentDisplayCharIdx,
       setCurrentText,
       setPractice,
-      setPracticeHasError: 設定練習有錯誤,
+      setPracticeHasError,
       setWriting,
       specialCharsValue: charsToRemove.join(''),
       writingValue,
-      字元對象列表: 字元對象列表 ?? [],
       按鍵事件: 事件,
-      語言選項,
     })
 
-    語言UI處理程序.儲存語言選項(語言選項)
+    語言UI處理程序.saveLangOptss(langOpts)
   }
 
-  const 更改語言選項 = (選項: 類型_語言選項) => {
-    語言UI處理程序.儲存語言選項(選項)
+  const updateLangOpts = (選項: T_LangOpts) => {
+    語言UI處理程序.saveLangOptss(選項)
     觸發重新渲染(Math.random())
   }
 
-  const 連結區塊 = 語言UI處理程序.取得連結區塊()
+  const LinksBlock = 語言UI處理程序.getLinksBlock()
   const OptionsBlock = 語言UI處理程序.getOptionsBlock()
 
   const saveRecord = () => {
@@ -425,12 +424,12 @@ const Panel = ({
   if (showingAnkis) {
     return (
       <AnkisSection
+        charsObjsList={charsObjsList ?? []}
         language={selectedLanguage}
         mode={showingAnkis}
         setMode={mode => {
           setShowingAnkis(mode)
         }}
-        字元對象列表={字元對象列表 ?? []}
       />
     )
   }
@@ -449,9 +448,9 @@ const Panel = ({
           setShowingRecordsInitScreen('')
           setShowingEdition(false)
           setShowingPronunciation(false)
-          const newFragments: 類型_文字片段列表 = {
-            列表: record.text.split('\n'),
-            索引: 0,
+          const newFragments: T_Fragments = {
+            index: 0,
+            list: record.text.split('\n'),
           }
           onPracticeSourceChange(newFragments)
           setCurrentRecord(record.id)
@@ -461,9 +460,9 @@ const Panel = ({
           setShowingRecordsInitScreen('')
         }}
         onSongLoad={lyrics => {
-          const newFragments: 類型_文字片段列表 = {
-            列表: lyrics,
-            索引: 0,
+          const newFragments: T_Fragments = {
+            index: 0,
+            list: lyrics,
           }
           onPracticeSourceChange(newFragments)
           setShowingRecordsInitScreen('')
@@ -476,192 +475,211 @@ const Panel = ({
     )
   }
 
-  const 重點字元顏色 = 練習有錯誤
-    ? 語言UI處理程序.取得錯誤顏色?.(語言選項, getCurrentCharObjFromPractice())
+  const colorOfCurrentChar = practiceHasError
+    ? 語言UI處理程序.取得錯誤顏色?.(langOpts, getCurrentCharObjFromPractice())
     : undefined
 
   const { tonesNumber } = 語言UI處理程序
 
   return (
     <>
-      <按鈕 onClick={clearValues} style={{ paddingLeft: 0 }}>
-        清除文字
-      </按鈕>
-      <按鈕 onClick={() => 設定有額外控件(!有額外的控制)}>
-        {有額外的控制 ? <FaTools /> : <FaToolbox />}
-      </按鈕>
-      {有額外的控制 && <按鈕 onClick={listRecords}>已儲存和歌曲</按鈕>}
-      {有額外的控制 && isMobile && (
-        <按鈕
+      <div className="flex flex-row flex-wrap gap-[12px]">
+        <Button onClick={clearValues}>{t('panel.clear')}</Button>
+        <Button onClick={() => setHasExtraControls(!hasExtraControls)}>
+          {hasExtraControls ? <FaTools /> : <FaToolbox />}
+        </Button>
+        {hasExtraControls && (
+          <Button onClick={listRecords}>{t('panel.recordSongs')}</Button>
+        )}
+        {hasExtraControls && isMobile && (
+          <Button
+            onClick={() => {
+              setDisplayMobileTones(!displayMobileTones)
+            }}
+          >
+            {displayMobileTones
+              ? t('panel.hideTones')
+              : t('panel.displayTones')}
+          </Button>
+        )}
+        {hasExtraControls && isLoggedIn && (
+          <Button
+            onClick={() => {
+              setShowingAnkis(AnkisMode.Main)
+            }}
+          >
+            {t('panel.openAnki')}
+          </Button>
+        )}
+        <Button
           onClick={() => {
-            setDisplayMobileTones(!displayMobileTones)
+            navigator.clipboard.writeText(originalTextValue)
           }}
         >
-          {displayMobileTones ? '隱藏' : '顯示'}音調
-        </按鈕>
-      )}
-      {有額外的控制 && isLoggedIn && (
-        <按鈕
-          onClick={() => {
-            setShowingAnkis(AnkisMode.Main)
-          }}
-        >
-          打開 Anki
-        </按鈕>
-      )}
-      <按鈕
-        onClick={() => {
-          navigator.clipboard.writeText(originalTextValue)
-        }}
-      >
-        複製
-      </按鈕>
-      {isLoggedIn && !有額外的控制 && (
-        <按鈕
-          onClick={() => {
-            setShowingAnkis(AnkisMode.Add)
-          }}
-        >
-          添加 Ankis
-        </按鈕>
-      )}
-      {isShowingEdition && (
-        <>
-          <label htmlFor="file-input" style={{ cursor: 'pointer' }}>
-            <按鈕>上傳文件</按鈕>
-            <input
-              id="file-input"
-              onChange={() => {
-                const fileEl = document.getElementById(
-                  'file-input',
-                ) as HTMLInputElement | null
+          {t('panel.copy')}
+        </Button>
+        {isLoggedIn && !hasExtraControls && (
+          <Button
+            onClick={() => {
+              setShowingAnkis(AnkisMode.Add)
+            }}
+          >
+            {t('panel.addAnkis')}
+          </Button>
+        )}
+        {isShowingEdition && (
+          <>
+            <label htmlFor="file-input" style={{ cursor: 'pointer' }}>
+              <Button>{t('panel.importFile')}</Button>
+              <input
+                id="file-input"
+                onChange={() => {
+                  const fileEl = document.getElementById(
+                    'file-input',
+                  ) as HTMLInputElement | null
 
-                if (!fileEl) return
+                  if (!fileEl) return
 
-                const file = fileEl.files?.[0]
+                  const file = fileEl.files?.[0]
 
-                if (!file) {
-                  return
-                }
-
-                // eslint-disable-next-line
-                ;(async () => {
-                  let fileContent = await file.text()
-
-                  if (['.srt', '.vtt'].find(ext => file.name.endsWith(ext))) {
-                    fileContent = fileContent
-                      .split('\n')
-                      .map(line => line.trim())
-                      .filter(
-                        line =>
-                          !!line &&
-                          !line.includes('-->') &&
-                          !/^[0-9]*$/.test(line),
-                      )
-                      .join('\n')
+                  if (!file) {
+                    return
                   }
 
-                  const newFragments: 類型_文字片段列表 = {
-                    列表: fileContent.split('\n'),
-                    索引: 0,
-                  }
+                  // eslint-disable-next-line
+                  ;(async () => {
+                    let fileContent = await file.text()
 
-                  onPracticeSourceChange(newFragments)
-                  setShowingEdition(false)
-                  setShowingPronunciation(false)
-                })()
+                    if (['.srt', '.vtt'].find(ext => file.name.endsWith(ext))) {
+                      fileContent = fileContent
+                        .split('\n')
+                        .map(line => line.trim())
+                        .filter(
+                          line =>
+                            !!line &&
+                            !line.includes('-->') &&
+                            !/^[0-9]*$/.test(line),
+                        )
+                        .join('\n')
+                    }
+
+                    const newFragments: T_Fragments = {
+                      index: 0,
+                      list: fileContent.split('\n'),
+                    }
+
+                    onPracticeSourceChange(newFragments)
+                    setShowingEdition(false)
+                    setShowingPronunciation(false)
+                  })()
+                }}
+                style={{ display: 'none' }}
+                type="file"
+              />
+            </label>
+            <Button
+              onClick={() => {
+                setShowingPronunciation(!isShowingPronunciation)
+                writingArea.current?.focus()
               }}
-              style={{ display: 'none' }}
-              type="file"
+            >
+              {t('panel.togglePronunciation')}
+            </Button>
+          </>
+        )}
+        {hasExtraControls && (
+          <>
+            <LoginWidget />
+            <Button
+              onClick={() => {
+                setShowingEdition(!isShowingEdition)
+                writingArea.current?.focus()
+              }}
+            >
+              {t('panel.toggleEdition')}
+            </Button>
+            <ChooseLanguage
+              languages={getLanguageDefinitions(languageManager)}
+              onOptionsChange={handleLanguageChange}
+              selectedLanguage={selectedLanguage}
             />
-          </label>
-          <按鈕
-            onClick={() => {
-              setShowingPronunciation(!isShowingPronunciation)
-              writingArea.current?.focus()
-            }}
-          >
-            切換發音
-          </按鈕>
-        </>
-      )}
-      {有額外的控制 && (
-        <>
-          <LoginWidget />
-          <按鈕
-            onClick={() => {
-              setShowingEdition(!isShowingEdition)
-              writingArea.current?.focus()
-            }}
-          >
-            切換版本
-          </按鈕>
-          <ChooseLanguage
-            languages={getLanguageDefinitions(languageManager)}
-            onOptionsChange={handleLanguageChange}
-            selectedLanguage={selectedLanguage}
-          />
-          <按鈕 onClick={saveRecord}>
-            {currentRecord === null ? '儲存' : '更新'}
-          </按鈕>
-          {關於改變主題 && <按鈕 onClick={關於改變主題}>改變主題</按鈕>}
-          {!!stats && (
-            <div className="flex-colum mb-[10px] flex text-[#ccc]">
-              <div>截至上次會話的統計數據</div>
-              <div>
-                正確的: {stats.correct} ({stats.perc}%) / 失敗: {stats.fail}
+            <Button onClick={saveRecord}>
+              {currentRecord === null
+                ? t('panel.saveRecord')
+                : t('panel.updateRecord')}
+            </Button>
+            {onChangeTheme && (
+              <Button onClick={onChangeTheme}>{t('panel.changeTheme')}</Button>
+            )}
+            {!!stats && (
+              <div className="mb-[10px] flex flex-row items-center gap-[8px] text-[#ccc]">
+                <div>{t('panel.lastSessionNotice')}</div>
+                <div className="border-[1px] border-solid p-[4px]">
+                  {t('panel.correct')}: {stats.correct} ({stats.perc}%) /{' '}
+                  {t('panel.wrong')}: {stats.fail}
+                </div>
+                <Button
+                  onDoubleClick={() => {
+                    刪除資料庫().then(() => {
+                      setStats(null)
+                    })
+                  }}
+                >
+                  {t('panel.deleteStats')}
+                </Button>
               </div>
-            </div>
-          )}
-        </>
-      )}
-      {文字片段列表.列表.length > 1 && (
-        <按鈕
-          onClick={() => {
-            const newFragments: 類型_文字片段列表 = {
-              ...文字片段列表,
-              索引: (文字片段列表.索引 + 1) % 文字片段列表.列表.length,
-            }
-            onPracticeSourceChange(newFragments)
+            )}
+          </>
+        )}
+        {fragments.list.length > 1 && (
+          <Button
+            onClick={() => {
+              const newFragments: T_Fragments = {
+                ...fragments,
+                index: (fragments.index + 1) % fragments.list.length,
+              }
+              onPracticeSourceChange(newFragments)
+            }}
+          >
+            {t('panel.currentFragment')}: {fragments.index + 1} /{' '}
+            {fragments.list.length}
+          </Button>
+        )}
+        {fragments.list.length > 5 && (
+          <Button
+            onClick={() => {
+              const newFragments = {
+                ...fragments,
+                index:
+                  fragments.index <= 0
+                    ? fragments.list.length - 1
+                    : fragments.index - 1,
+              }
+              onPracticeSourceChange(newFragments)
+            }}
+          >
+            {t('panel.previousFragment')}
+          </Button>
+        )}
+        {currentRecord !== null && (
+          <Button
+            onClick={() => {
+              setCurrentRecord(null)
+            }}
+          >
+            {t('panel.closeRecord')}
+          </Button>
+        )}
+        <Button
+          onClick={onHideRequest ?? undefined}
+          style={{
+            display: UI?.noHideButton ? 'none' : 'block',
+            float: 'right',
           }}
         >
-          當前小文本: {文字片段列表.索引 + 1} / {文字片段列表.列表.length}
-        </按鈕>
-      )}
-      {文字片段列表.列表.length > 5 && (
-        <按鈕
-          onClick={() => {
-            const newFragments = {
-              ...文字片段列表,
-              索引:
-                文字片段列表.索引 <= 0
-                  ? 文字片段列表.列表.length - 1
-                  : 文字片段列表.索引 - 1,
-            }
-            onPracticeSourceChange(newFragments)
-          }}
-        >
-          之前的小文字
-        </按鈕>
-      )}
-      {currentRecord !== null && (
-        <按鈕
-          onClick={() => {
-            setCurrentRecord(null)
-          }}
-        >
-          關閉已儲存的文本
-        </按鈕>
-      )}
-      <按鈕
-        onClick={onHideRequest ?? undefined}
-        style={{
-          display: UI?.noHideButton ? 'none' : 'block',
-          float: 'right',
-        }}
-      >
-        隱藏
-      </按鈕>
+          {t('panel.hide')}
+        </Button>
+      </div>
       <div style={{ padding: '0 0 20px' }}>
         {isShowingEdition && (
           <div
@@ -675,13 +693,13 @@ const Panel = ({
               onBlur={() => {
                 if (語言UI處理程序.onBlur) {
                   const { newFragmentsList } = 語言UI處理程序.onBlur({
-                    fragmentsList: 文字片段列表.列表,
-                    語言選項,
+                    fragmentsList: fragments.list,
+                    langOpts,
                   })
 
                   if (newFragmentsList) {
                     const newFragments = {
-                      ...文字片段列表,
+                      ...fragments,
                       list: newFragmentsList,
                     }
 
@@ -694,32 +712,32 @@ const Panel = ({
                 writingArea.current?.focus()
               }}
               onChange={handleOriginalTextUpdate}
-              placeholder="原文"
+              placeholder={t('panel.sourceText')}
               rows={3}
-              value={文字片段列表.列表.join('\n')}
+              value={fragments.list.join('\n')}
             />
-            {有額外的控制 && (
+            {hasExtraControls && (
               <>
                 <文字區
                   onChange={createInputSetterFn(setPronunciation)}
-                  placeholder="發音"
+                  placeholder={t('panel.pronunciation')}
                   rows={2}
                   value={pronunciationValue}
                 />
                 {langHandler && (
                   <OptionsBlock
-                    更改語言選項={更改語言選項}
-                    語言選項={語言選項}
+                    langOpts={langOpts}
+                    updateLangOpts={updateLangOpts}
                   />
                 )}
                 <文字區
                   onChange={createInputSetterFn(setSpecialChars)}
-                  placeholder="特殊字元"
+                  placeholder={t('panel.specialChars')}
                   rows={1}
                   value={specialCharsValue}
                 />
                 <div style={{ fontSize: '12px' }}>
-                  字體大小:{' '}
+                  {t('panel.charSize')}:{' '}
                   <input
                     onChange={event => {
                       setFontSize(Number(event.target.value))
@@ -728,21 +746,15 @@ const Panel = ({
                     value={fontSize}
                   />
                 </div>
-                <按鈕
-                  onDoubleClick={() => {
-                    刪除資料庫().then(() => {
-                      setStats(null)
-                    })
-                  }}
-                >
-                  刪除資料庫
-                </按鈕>
               </>
             )}
             {/* This is necessary because the options block initialises some values*/}
             <div style={{ display: 'none' }}>
               {langHandler && (
-                <OptionsBlock 更改語言選項={更改語言選項} 語言選項={語言選項} />
+                <OptionsBlock
+                  langOpts={langOpts}
+                  updateLangOpts={updateLangOpts}
+                />
               )}
             </div>
           </div>
@@ -750,22 +762,22 @@ const Panel = ({
         <div>
           <div style={{ marginBottom: 10, marginTop: 5 }}>
             <CharactersDisplay
+              charsObjsList={charsObjsList ?? []}
+              colorOfCurrentChar={colorOfCurrentChar}
               fontSize={fontSize}
-              字元對象列表={字元對象列表 ?? []}
-              應該有不同的寬度={!語言UI處理程序.shouldAllCharsHaveSameWidth}
-              應該隱藏發音={!isShowingPronunciation}
-              按一下該符號={() => {
+              onSymbolClick={() => {
                 setShowingEdition(false)
-                設定有額外控件(false)
+                setHasExtraControls(false)
                 setShowingPronunciation(false)
                 writingArea.current?.focus()
               }}
+              應該有不同的寬度={!語言UI處理程序.shouldAllCharsHaveSameWidth}
+              應該隱藏發音={!isShowingPronunciation}
               重點字元索引={currentDisplayCharIdx}
-              重點字元顏色={重點字元顏色}
               顯示目前字元的發音={
-                練習有錯誤 &&
+                practiceHasError &&
                 [undefined, '還原論者'].includes(
-                  語言選項.遊戲模式值 as string | undefined,
+                  langOpts.遊戲模式值 as string | undefined,
                 )
               }
             />
@@ -790,7 +802,7 @@ const Panel = ({
             }}
             onFocus={() => setWritingBorder('bold')}
             onKeyDown={處理寫鍵按下}
-            placeholder={practiceValue ? '' : '書寫區'}
+            placeholder={practiceValue ? '' : t('panel.writingArea')}
             rows={1}
             setRef={ref => (writingArea.current = ref)}
             style={{
@@ -804,12 +816,12 @@ const Panel = ({
             onFocus={() => {
               writingArea.current?.focus()
             }}
-            placeholder={isMobile ? '...' : PRACTICE_TEXT_PLACEHOLDER}
+            placeholder=""
             rows={3}
             style={{
               border: `4px solid ${
-                練習有錯誤
-                  ? 重點字元顏色 ?? 'red'
+                practiceHasError
+                  ? colorOfCurrentChar ?? 'red'
                   : 'var(--color-background, "white")'
               }`,
               fontSize,
@@ -823,7 +835,7 @@ const Panel = ({
             <div className="flex w-full flex-row justify-between bg-[black]">
               {Array.from({ length: tonesNumber }).map((_, idx) => {
                 return (
-                  <按鈕
+                  <Button
                     key={idx}
                     onClick={() => {
                       處理寫鍵按下({
@@ -834,18 +846,20 @@ const Panel = ({
                     }}
                   >
                     {idx + 1}
-                  </按鈕>
+                  </Button>
                 )
               })}
             </div>
           )}
         </div>
       </div>
-      <連結區塊
-        文字={originalTextValue}
-        文字片段列表={文字片段列表}
-        更改文字片段列表={setFragments}
-      />
+      <div className="mb-[12px] flex flex-row flex-wrap justify-start gap-[12px]">
+        <LinksBlock
+          fragments={fragments}
+          文字={originalTextValue}
+          更改fragments={setFragments}
+        />
+      </div>
     </>
   )
 }

@@ -1,13 +1,13 @@
 import { LanguageDefinition } from '../constants'
-import { 字元對象類別, CurrentCharObj } from '../languageManager'
+import { T_CharObj, CurrentCharObj } from '../languageManager'
 
 import { 特殊字元 } from './_特殊字元'
 
 type 類型_轉換為字元對象列表 = (opts: {
   charsToRemove: string[]
+  langOpts?: { [k: string]: unknown }
   text: string
-  語言選項?: { [k: string]: unknown }
-}) => 字元對象類別[]
+}) => T_CharObj[]
 
 class LanguageHandler {
   private readonly extraSpecialChars: string[]
@@ -49,8 +49,8 @@ class LanguageHandler {
     originalCharsObjs,
     practiceCharsObjs,
   }: {
-    originalCharsObjs: 字元對象類別[]
-    practiceCharsObjs: 字元對象類別[]
+    originalCharsObjs: T_CharObj[]
+    practiceCharsObjs: T_CharObj[]
   }) {
     const originalCharsWithPronunciationObjs = originalCharsObjs
       .map((ch, idx) => ({ ch, idx }))

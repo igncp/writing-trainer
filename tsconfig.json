@@ -36,18 +36,10 @@
   "exclude": [
     "node_modules",
     "gh_pages",
-    "storybook-static",
-    "coverage",
     "coverage-ts",
     ".next",
     "out",
     "dist"
   ],
-  "include": [
-    "**/*.js",
-    "**/*.ts",
-    "**/*.tsx",
-    ".storybook/**/*.js",
-    ".eslintrc.js"
-  ]
+  "include": ["**/*.js", "**/*.ts", "**/*.tsx", ".eslintrc.js"]
 }

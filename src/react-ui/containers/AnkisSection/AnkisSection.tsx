@@ -1,4 +1,4 @@
-import { 字元對象類別 } from '#/core'
+import { T_CharObj } from '#/core'
 import CharactersDisplay from '#/react-ui/components/CharactersDisplay/CharactersDisplay'
 import { AnkiGql } from '#/react-ui/graphql/graphql'
 import {
@@ -7,10 +7,11 @@ import {
 } from '#/react-ui/languages/common/conversion'
 import { backendClient } from '#/react-ui/lib/backendClient'
 import { useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FaSpinner, FaTrashAlt } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 
-import 按鈕 from '../../components/按鈕/按鈕'
+import Button from '../../components/button/button'
 import 文字區 from '../../components/文字區/文字區'
 
 export enum AnkisMode {
@@ -21,10 +22,10 @@ export enum AnkisMode {
 type AnkiRoundItem = Pick<AnkiGql, 'id' | 'front' | 'back'>
 
 type Props = {
+  charsObjsList: T_CharObj[]
   language: string
   mode: AnkisMode
   setMode: (mode: AnkisMode | null) => void
-  字元對象列表: 字元對象類別[]
 }
 
 type AnkisRoundProps = {
@@ -33,6 +34,7 @@ type AnkisRoundProps = {
 }
 
 const AnkiRound = ({ ankisRound, setAnkisRound }: AnkisRoundProps) => {
+  const { t } = useTranslation()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isShowingBack, setIsShowingBack] = useState(false)
   const [showBothCharsTypes, setShowBothCharsTypes] = useState(true)
@@ -40,21 +42,21 @@ const AnkiRound = ({ ankisRound, setAnkisRound }: AnkisRoundProps) => {
 
   return (
     <div>
-      <div>回合</div>
-      <按鈕
+      <div>{t('anki.round')}</div>
+      <Button
         onClick={() => {
           setAnkisRound(null)
         }}
       >
-        結束
-      </按鈕>
-      <按鈕
+        {t('anki.end')}
+      </Button>
+      <Button
         onClick={() => {
           setShowBothCharsTypes(!showBothCharsTypes)
         }}
       >
-        切換顯示兩種字元類型
-      </按鈕>
+        {t('anki.toggleTypes')}
+      </Button>
       <div>
         {currentAnki ? (
           (() => {
@@ -92,7 +94,7 @@ const AnkiRound = ({ ankisRound, setAnkisRound }: AnkisRoundProps) => {
             return (
               <div className="flex flex-col gap-[24px]">
                 <div>
-                  第 {currentIndex + 1} / {ankisRound.length}
+                  {t('anki.num')} {currentIndex + 1} / {ankisRound.length}
                 </div>
                 <div className="whitespace-pre rounded-[4px] border-[1px] border-[white] p-[8px]">
                   {front}
@@ -103,20 +105,26 @@ const AnkiRound = ({ ankisRound, setAnkisRound }: AnkisRoundProps) => {
                       {currentAnki.back}
                     </div>
                     <div className="flex flex-row">
-                      <按鈕 onClick={() => onNext(true)}>Correct</按鈕>
-                      <按鈕 onClick={() => onNext(false)}>Wrong</按鈕>
+                      <Button onClick={() => onNext(true)}>
+                        {t('anki.correct')}
+                      </Button>
+                      <Button onClick={() => onNext(false)}>
+                        {t('anki.wrong')}
+                      </Button>
                     </div>
                   </>
                 ) : (
                   <div>
-                    <按鈕 onClick={() => setIsShowingBack(true)}>顯示背面</按鈕>
+                    <Button onClick={() => setIsShowingBack(true)}>
+                      {t('anki.displayBack')}
+                    </Button>
                   </div>
                 )}
               </div>
             )
           })()
         ) : (
-          <div>沒有更多了</div>
+          <div>{t('anki.noMore')}</div>
         )}
       </div>
     </div>
@@ -164,7 +172,7 @@ const AnkisMain = ({ setMode }: Props) => {
   return (
     <div>
       <div>清單{!!ankis?.total && ` (${ankis.total})`}</div>
-      <按鈕
+      <Button
         onClick={() => {
           setIsLoading(true)
 
@@ -182,8 +190,8 @@ const AnkisMain = ({ setMode }: Props) => {
         }}
       >
         開始 Anki 回合
-      </按鈕>
-      <按鈕 onClick={() => setMode(AnkisMode.Add)}>添新</按鈕>
+      </Button>
+      <Button onClick={() => setMode(AnkisMode.Add)}>添新</Button>
       {isLoading ? (
         <div>
           <span className="animate-spin">
@@ -237,45 +245,45 @@ const AnkisMain = ({ setMode }: Props) => {
 
           return (
             <div className="flex flex-row gap-[24px]">
-              <按鈕
+              <Button
                 disabled={isLoading || currentPage === 0}
                 onClick={() => {
                   setCurrentPage(currentPage - 1)
                 }}
               >
                 上一頁
-              </按鈕>
-              <按鈕
+              </Button>
+              <Button
                 disabled={isLoading || currentPage === 0}
                 onClick={() => {
                   setCurrentPage(0)
                 }}
               >
                 1
-              </按鈕>
+              </Button>
               {lastPage > 1 && (
                 <>
-                  {currentPage > 1 && currentPage < lastPage - 1 && (
-                    <div>{currentPage + 1}</div>
+                  {currentPage > 0 && currentPage < lastPage - 1 && (
+                    <Button>{currentPage + 1}</Button>
                   )}
-                  <按鈕
+                  <Button
                     disabled={isLoading || currentPage === lastPage - 1}
                     onClick={() => {
                       setCurrentPage(lastPage - 1)
                     }}
                   >
                     {lastPage}
-                  </按鈕>
+                  </Button>
                 </>
               )}
-              <按鈕
+              <Button
                 disabled={isLoading || currentPage === lastPage - 1}
                 onClick={() => {
                   setCurrentPage(currentPage + 1)
                 }}
               >
                 下一頁
-              </按鈕>
+              </Button>
             </div>
           )
         })()}
@@ -283,12 +291,13 @@ const AnkisMain = ({ setMode }: Props) => {
   )
 }
 
-const AnkisAdd = ({ language, setMode, 字元對象列表 }: Props) => {
+const AnkisAdd = ({ charsObjsList, language, setMode }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [frontVal, setFrontVal] = useState('')
   const [backVal, setBackVal] = useState('')
   const [showPronunciation, setShowPronunciation] = useState(true)
   const [frontRef, setFrontRef] = useState<HTMLTextAreaElement | null>(null)
+  const [backRef, setBackRef] = useState<HTMLTextAreaElement | null>(null)
 
   const clear = () => {
     setFrontVal('')
@@ -297,46 +306,59 @@ const AnkisAdd = ({ language, setMode, 字元對象列表 }: Props) => {
 
   return (
     <div>
-      <按鈕 onClick={() => setMode(AnkisMode.Main)}>顯示清單</按鈕>
-      <按鈕
+      <Button onClick={() => setMode(AnkisMode.Main)}>顯示清單</Button>
+      <Button
         onClick={() => {
           navigator.clipboard.writeText(
-            字元對象列表.map(字元對象 => 字元對象.word).join(''),
+            charsObjsList.map(charObj => charObj.word).join(''),
           )
         }}
       >
         複製文字字元
-      </按鈕>
-      <按鈕
+      </Button>
+      <Button
         onClick={() => {
           navigator.clipboard.writeText(
-            字元對象列表.map(字元對象 => 字元對象.pronunciation).join(' '),
+            charsObjsList.map(charObj => charObj.pronunciation).join(' '),
           )
         }}
       >
         複製文字發音
-      </按鈕>
+      </Button>
       <div className="my-[8px]">
         <CharactersDisplay
-          字元對象列表={字元對象列表}
-          應該隱藏發音={!showPronunciation}
-          按一下該符號={({ 字元對象 }) => {
-            setFrontVal(frontVal + 字元對象.word)
+          charsObjsList={charsObjsList}
+          onSymbolClick={({ charObj }) => {
+            setFrontVal(frontVal + charObj.word)
 
             setBackVal(
-              [backVal, 字元對象.pronunciation].filter(Boolean).join(' '),
+              `${backVal
+                .split('\n')
+                .map((line, idx) => {
+                  if (idx === 0)
+                    return [line, charObj.pronunciation]
+                      .filter(Boolean)
+                      .join(' ')
+
+                  return line
+                })
+                .join('\n')
+                .trim()}${backVal.split('\n').filter(Boolean).length === 1 ? '\n' : ''}`,
             )
+
+            backRef?.focus()
           }}
+          應該隱藏發音={!showPronunciation}
         />
       </div>
       <div className="flex flex-row gap-[4px]">
-        <按鈕
+        <Button
           onClick={() => {
             setShowPronunciation(!showPronunciation)
           }}
         >
           切換顯示發音
-        </按鈕>
+        </Button>
       </div>
       <form
         onSubmit={e => {
@@ -374,12 +396,13 @@ const AnkisAdd = ({ language, setMode, 字元對象列表 }: Props) => {
           className="border-[#777]"
           onChange={e => setBackVal(e.target.value)}
           placeholder="背面"
+          setRef={setBackRef}
           tabIndex={2}
           value={backVal}
         />
-        <按鈕 disabled={isLoading || !frontVal || !backVal} tabIndex={3}>
+        <Button disabled={isLoading || !frontVal || !backVal} tabIndex={3}>
           保存
-        </按鈕>
+        </Button>
       </form>
     </div>
   )
@@ -391,7 +414,7 @@ export const AnkisSection = (props: Props) => {
   return (
     <div>
       <h1>Ankis</h1>
-      <按鈕 onClick={() => setMode(null)}>關閉</按鈕>
+      <Button onClick={() => setMode(null)}>關閉</Button>
       {mode === AnkisMode.Main && <AnkisMain {...props} />}
       {mode === AnkisMode.Add && <AnkisAdd {...props} />}
     </div>

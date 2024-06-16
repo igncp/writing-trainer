@@ -9,9 +9,7 @@
     ...
   }:
     flake-utils.lib.eachDefaultSystem (system: let
-      is-ci-rust = builtins.pathExists ./is-ci-rust;
-      is-ci-nodejs = builtins.pathExists ./is-ci-nodejs;
-      is-ci = is-ci-rust || is-ci-nodejs;
+      is-ci = builtins.pathExists ./is-ci;
 
       pkgs = import unstable {
         inherit system;
@@ -35,29 +33,21 @@
             else dev-hook
           );
         packages = with pkgs;
-          []
-          ++ (
-            if ((is-ci == false) || (is-ci-nodejs == true))
-            then [nodejs_20]
-            else []
-          )
-          ++ (
-            if ((is-ci == false) || (is-ci-rust == true))
-            then [
-              openssl
-              patchelf
-              pkg-config
-              rustup
-              sqlite
-            ]
-            else []
-          )
+          [
+            nodejs_20
+            openssl
+            patchelf
+            pkg-config
+            rustup
+            sqlite
+          ]
           ++ (
             if (is-ci == false)
             then [
               curl
-              usql
               diesel-cli
+              gh
+              usql
             ]
             else []
           )

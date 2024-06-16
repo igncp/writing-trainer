@@ -1,13 +1,13 @@
 import { LanguageDefinition } from './constants'
 import { LanguageHandler } from './languageHandlers/_common'
 
-class 字元對象類別 {
+class T_CharObj {
   public readonly pronunciation: string
   public readonly word: string // @TODO: rename to "text"
 
   public constructor(opt: {
-    pronunciation: 字元對象類別['pronunciation']
-    word: 字元對象類別['word']
+    pronunciation: T_CharObj['pronunciation']
+    word: T_CharObj['word']
   }) {
     this.pronunciation = opt.pronunciation
     this.word = opt.word
@@ -15,9 +15,9 @@ class 字元對象類別 {
 }
 
 class CurrentCharObj {
-  public readonly ch: 字元對象類別
+  public readonly ch: T_CharObj
   public readonly index: number
-  public constructor(opts: { ch: 字元對象類別; index: number }) {
+  public constructor(opts: { ch: T_CharObj; index: number }) {
     this.ch = opts.ch
     this.index = opts.index
   }
@@ -69,4 +69,4 @@ class LanguageManager {
   }
 }
 
-export { CurrentCharObj, LanguageManager, 字元對象類別 }
+export { CurrentCharObj, LanguageManager, T_CharObj }

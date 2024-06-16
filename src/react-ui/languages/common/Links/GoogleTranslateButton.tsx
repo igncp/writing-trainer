@@ -1,4 +1,6 @@
-import 按鈕, { T_ButtonProps } from '../../../components/按鈕/按鈕'
+import { useTranslation } from 'react-i18next'
+
+import Button, { T_ButtonProps } from '../../../components/button/button'
 
 type Props = {
   language: string
@@ -6,6 +8,7 @@ type Props = {
 } & Omit<T_ButtonProps, 'children'>
 
 const GoogleTranslateButton = ({ language, text, ...rest }: Props) => {
+  const { t } = useTranslation()
   const hrefText = text
     .split('')
     .map(c => c.trim())
@@ -13,13 +16,13 @@ const GoogleTranslateButton = ({ language, text, ...rest }: Props) => {
     .join('')
 
   return (
-    <按鈕
+    <Button
       href={`https://translate.google.com/#${language}/en/${hrefText}`}
       shouldUseLink
       {...rest}
     >
-      Google Translate
-    </按鈕>
+      {t('option.translateGoogle')}
+    </Button>
   )
 }
 

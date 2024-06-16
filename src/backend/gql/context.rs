@@ -9,7 +9,6 @@ use crate::backend::{
 
 pub struct GraphQLContext {
     pub user: Option<User>,
-    pub token: Option<TokenData<TokenClaims>>,
 }
 
 impl juniper::Context for GraphQLContext {}
@@ -34,10 +33,7 @@ impl GraphQLContext {
         }
 
         if token.is_none() {
-            return Self {
-                user: None,
-                token: None,
-            };
+            return Self { user: None };
         }
 
         let user_id = token.as_ref().unwrap().claims.sub.clone();
@@ -46,17 +42,11 @@ impl GraphQLContext {
 
         if user.is_none() {
             debug!("用戶不存在");
-            return Self {
-                user: None,
-                token: None,
-            };
+            return Self { user: None };
         }
 
         let user = user.unwrap();
 
-        Self {
-            user: Some(user),
-            token,
-        }
+        Self { user: Some(user) }
     }
 }

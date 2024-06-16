@@ -1,21 +1,21 @@
-import { 字元對象類別, CurrentCharObj, LanguageHandler } from '#/core'
+import { T_CharObj, CurrentCharObj, LanguageHandler } from '#/core'
 import { ReactNode, KeyboardEvent } from 'react'
 
-export type 類型_文字片段列表 = { 列表: string[]; 索引: number }
+export type T_Fragments = { index: number; list: string[] }
 
-export type 類型_語言選項 = { [k: string]: unknown }
+export type T_LangOpts = { [k: string]: unknown }
 
-export type 類型_連結區塊 = (選項: {
+export type T_LinksBlock = (選項: {
   children?: ReactNode
+  fragments: T_Fragments
   文字: string
-  文字片段列表: 類型_文字片段列表
-  更改文字片段列表: (列表: 類型_文字片段列表) => void
+  更改fragments: (list: T_Fragments) => void
 }) => ReactNode
 
 export type T_OptionsBlock = (props: {
+  langOpts: T_LangOpts
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  更改語言選項: (...args: any[]) => void
-  語言選項: 類型_語言選項
+  updateLangOpts: (...args: any[]) => void
 }) => ReactNode
 
 export type T_getPronunciationOfText = (opts: {
@@ -28,7 +28,9 @@ export type T_getCurrentCharObjFromPractice = (
 ) => CurrentCharObj | null
 
 type T_處理寫鍵按下 = (opts: {
+  charsObjsList: T_CharObj[]
   getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice
+  langOpts: T_LangOpts
   originalTextValue: string
   practiceValue: string
   setCurrentDisplayCharIdx: (idx: number) => void
@@ -38,14 +40,12 @@ type T_處理寫鍵按下 = (opts: {
   setWriting: (o: string) => void
   specialCharsValue: string
   writingValue: string
-  字元對象列表: 字元對象類別[]
   按鍵事件: KeyboardEvent<HTMLTextAreaElement>
-  語言選項: 類型_語言選項
 }) => void
 
 type T_BlurHandlerOpts = {
   fragmentsList: string[]
-  語言選項: 類型_語言選項
+  langOpts: T_LangOpts
 }
 
 type T_BlurHandler = (opts: T_BlurHandlerOpts) => {
@@ -53,16 +53,16 @@ type T_BlurHandler = (opts: T_BlurHandlerOpts) => {
 }
 
 export interface 類型_語言UI處理程序 {
+  getLangOpts: () => T_LangOpts
+  getLinksBlock: () => T_LinksBlock
   getOptionsBlock: () => T_OptionsBlock
   languageHandler: LanguageHandler
   onBlur?: T_BlurHandler
+  saveLangOptss: (o: T_LangOpts) => void
   shouldAllCharsHaveSameWidth: boolean
   tonesNumber?: number
-  儲存語言選項: (o: 類型_語言選項) => void
-  取得語言選項: () => 類型_語言選項
-  取得連結區塊: () => 類型_連結區塊
   取得錯誤顏色?: (
-    選項: 類型_語言選項,
+    選項: T_LangOpts,
     字元: CurrentCharObj | null,
   ) => string | undefined
   處理寫鍵按下: T_處理寫鍵按下

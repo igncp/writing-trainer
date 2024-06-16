@@ -1,51 +1,56 @@
-import 按鈕 from '#/react-ui/components/按鈕/按鈕'
+import Button from '#/react-ui/components/button/button'
 import { backendClient } from '#/react-ui/lib/backendClient'
 import { memo } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { useMainContext } from '../main-context'
 
 const LoginWidget = () => {
   const mainContext = useMainContext()
+  const { t } = useTranslation()
 
   const { isBackendActive, isLoggedIn } = mainContext.state
+
+  if (!isBackendActive) return null
 
   return (
     <>
       <div
-        className={[
-          'ml-[12px] inline-block h-[15px] w-[15px] rounded-[50%]',
-          isBackendActive ? 'animate-pulse bg-[#125a12]' : 'bg-[#403e3e]',
-        ].join(' ')}
-      />
-      {isBackendActive && (
+        className="flex items-center justify-center"
+        title={t('auth.backendActive')}
+      >
+        <div
+          className={[
+            'ml-[12px] inline-block h-[15px] w-[15px] rounded-[50%]',
+            'animate-pulse bg-[#125a12]',
+          ].join(' ')}
+        />
+      </div>
+      {isLoggedIn ? (
         <>
-          {isLoggedIn ? (
-            <>
-              <span className="ml-[12px]">已經登入</span>
-              <按鈕
-                className="ml-[12px]"
-                onClick={() => {
-                  backendClient.logout().then(() => {
-                    mainContext.dispatch({
-                      payload: false,
-                      type: 'SET_IS_LOGGED_IN',
-                    })
-                  })
-                }}
-              >
-                登出
-              </按鈕>
-            </>
-          ) : (
-            <按鈕
-              onClick={() => {
-                backendClient.login()
-              }}
-            >
-              登入
-            </按鈕>
-          )}
+          <span className="ml-[12px]">{t('auth.alreadyLoggedIn')}</span>
+          <Button
+            className="ml-[12px]"
+            onClick={() => {
+              backendClient.logout().then(() => {
+                mainContext.dispatch({
+                  payload: false,
+                  type: 'SET_IS_LOGGED_IN',
+                })
+              })
+            }}
+          >
+            {t('auth.logout')}
+          </Button>
         </>
+      ) : (
+        <Button
+          onClick={() => {
+            backendClient.login()
+          }}
+        >
+          {t('auth.login')}
+        </Button>
       )}
     </>
   )

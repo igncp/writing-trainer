@@ -1,8 +1,9 @@
 import { Record } from '#/core'
 import { Fragment, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import TextInput from '../../../components/TextInput/TextInput'
-import 按鈕 from '../../../components/按鈕/按鈕'
+import Button from '../../../components/button/button'
 
 type CellProps = {
   bold?: boolean
@@ -70,6 +71,7 @@ const RecordsList = ({
   records,
   songs,
 }: 條目清單屬性) => {
+  const { t } = useTranslation()
   const [過濾內容, 更新過濾內容] = useState<string>('')
   const 過濾條目列表 = Record.filterByText({
     filterText: 過濾內容,
@@ -112,33 +114,33 @@ const RecordsList = ({
                   target="_blank"
                   title={過濾條目.link}
                 >
-                  Website
+                  {t('record.link')}
                 </a>
               )}
-              <按鈕
+              <Button
                 disabled={disabled}
                 onClick={() => {
                   onRecordLoad(過濾條目)
                 }}
               >
-                Load
-              </按鈕>
-              <按鈕
+                {t('record.load')}
+              </Button>
+              <Button
                 disabled={disabled}
                 onClick={() => {
                   onRecordEdit(過濾條目)
                 }}
               >
-                Edit
-              </按鈕>
-              <按鈕
+                {t('record.edit')}
+              </Button>
+              <Button
                 disabled={disabled}
                 onClick={() => {
                   onRecordRemove(過濾條目)
                 }}
               >
-                Remove
-              </按鈕>
+                {t('record.remove')}
+              </Button>
             </div>
           )
         })}
@@ -150,9 +152,9 @@ const RecordsList = ({
 
           return (
             <div key={name + artist} style={{ padding: 10 }}>
-              <Cell label="Name" value={name} />
-              <Cell title="Artist" value={artist} />
-              <Cell bold title="Language" value={lang} />
+              <Cell label={t('record.name')} value={name} />
+              <Cell title={t('record.artist')} value={artist} />
+              <Cell bold title={t('record.lang')} value={lang} />
               {video && (
                 <a
                   href={影片連結網址}
@@ -160,10 +162,10 @@ const RecordsList = ({
                   target="_blank"
                   title={影片連結網址}
                 >
-                  影片
+                  {t('record.video')}
                 </a>
               )}
-              <按鈕
+              <Button
                 disabled={disabled}
                 onClick={() => {
                   load().then(({ lyrics }) => {
@@ -171,8 +173,8 @@ const RecordsList = ({
                   })
                 }}
               >
-                載入
-              </按鈕>
+                {t('record.load')}
+              </Button>
             </div>
           )
         })}

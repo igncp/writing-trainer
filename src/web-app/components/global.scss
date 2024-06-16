@@ -1,5 +1,6 @@
 :root {
   --color-background: #f5f5f5;
+  --color-bg-dim: #ccc;
   --color-error-blue: #007bff;
   --color-error-green: #28a745;
   --color-error-orange: #ff8024;
@@ -12,8 +13,9 @@
 }
 
 body {
-  &[data-theme="dark"] {
+  &[data-theme='dark'] {
     --color-background: black;
+    --color-bg-dim: #222;
     --color-error-blue: #b9d5f4;
     --color-error-green: #7ceb95;
     --color-error-orange: #ffb27a;

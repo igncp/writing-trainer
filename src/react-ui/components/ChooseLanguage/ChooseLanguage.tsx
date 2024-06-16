@@ -1,5 +1,6 @@
 import { LanguageDefinition } from '#/core'
 import { ChangeEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { useHover } from '../../utils/hooks'
 import {
@@ -20,9 +21,17 @@ const ChooseLanguage = ({
   selectedLanguage,
 }: Props) => {
   const { bind, hovered } = useHover()
+  const { t } = useTranslation()
 
   const handleOptionChange = (事件: ChangeEvent<HTMLSelectElement>) => {
     onOptionsChange(事件.target.value)
+  }
+
+  const languageNames: Record<string, string | undefined> = {
+    'cantonese': t('lang.cantonese'),
+    'english': t('lang.english'),
+    'japanese': t('lang.japanese'),
+    'mandarin': t('lang.mandarin'),
   }
 
   return (
@@ -38,7 +47,7 @@ const ChooseLanguage = ({
       {languages.map(languageDefinition => {
         return (
           <option key={languageDefinition.id} value={languageDefinition.id}>
-            {languageDefinition.name}
+            {languageNames[languageDefinition.id] ?? languageDefinition.name}
           </option>
         )
       })}

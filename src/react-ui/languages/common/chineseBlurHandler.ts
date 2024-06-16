@@ -2,9 +2,9 @@ import { 類型_語言UI處理程序 } from '../types'
 
 export const chineseBlurHandler: 類型_語言UI處理程序['onBlur'] = ({
   fragmentsList,
-  語言選項,
+  langOpts,
 }) => {
-  if (語言選項.自動分割文字行) {
+  if (langOpts.自動分割文字行) {
     const splitChars = new Set(['。', '？', '！', '；', '，'])
     const splitLength = 20
     const newList = fragmentsList

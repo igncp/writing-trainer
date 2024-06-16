@@ -1,0 +1,82 @@
+{
+  "anki": {
+    "correct": "正しい",
+    "displayBack": "カードの裏面を表示する",
+    "end": "終了",
+    "noMore": "これ以上ありません",
+    "num": "番号",
+    "round": "ラウンド",
+    "toggleTypes": "カードのタイプを切り替える",
+    "wrong": "間違った"
+  },
+  "auth": {
+    "alreadyLoggedIn": "ログイン済み",
+    "backendActive": "バックエンドがアクティブです",
+    "login": "ログイン",
+    "logout": "ログアウト"
+  },
+  "lang": {
+    "cantonese": "広東語",
+    "english": "英語",
+    "japanese": "日本語",
+    "mandarin": "中国語"
+  },
+  "option": {
+    "automaticSplitText": "テストを自動的に分割する",
+    "changeToSimplified": "繁体字に変換する",
+    "changeToTraditional": "簡体字に変換する",
+    "loginUse": "ログインして使用する",
+    "noTones": "声調なし",
+    "pronunciation": "発音",
+    "reductive": "簡約的",
+    "repetitive": "繰り返し",
+    "translateAI": "AIを使って翻訳する",
+    "translateGoogle": "Googleを使って翻訳する",
+    "useTones": "声調を使用する",
+    "useTonesColors": "声調の色を使用する"
+  },
+  "panel": {
+    "addAnkis": "Ankiを追加",
+    "changeTheme": "テーマを変更",
+    "charSize": "文字サイズ",
+    "clear": "クリア",
+    "closeRecord": "閉じる",
+    "copy": "コピー",
+    "correct": "正しい",
+    "currentFragment": "現在の小文字",
+    "deleteStats": "統計を削除",
+    "displayTones": "声調を表示",
+    "hide": "隠す",
+    "hideTones": "声調を隠す",
+    "importFile": "ファイルをインポート",
+    "lastSessionNotice": "前回のセッションの統計",
+    "openAnki": "Ankiを開く",
+    "previousFragment": "前の小文字",
+    "pronunciation": "発音",
+    "recordSongs": "歌と音符",
+    "saveRecord": "保存",
+    "sourceText": "ソーステキスト",
+    "specialChars": "特殊文字",
+    "toggleEdition": "切り替え編集",
+    "togglePronunciation": "発音を切り替える",
+    "updateRecord": "更新",
+    "writingArea": "書き込みエリア",
+    "wrong": "間違った"
+  },
+  "record": {
+    "artist": "アーティスト",
+    "close": "閉じる",
+    "edit": "編集",
+    "lang": "言語",
+    "link": "リンク",
+    "list": "リスト",
+    "load": "読み込み",
+    "name": "名前",
+    "remove": "削除",
+    "save": "保存",
+    "video": "ビデオ"
+  },
+  "site": {
+    "title": "Writing Trainer"
+  }
+}

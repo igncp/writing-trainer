@@ -1,32 +1,32 @@
-import { 字元對象類別 } from '#/core'
+import { T_CharObj } from '#/core'
 import { MutableRefObject, useEffect, useRef } from 'react'
 
 const CHAR_WIDTH = 25
 const MAX_HEIGHT = 160
 
 type Props = {
+  charsObjsList: T_CharObj[]
+  colorOfCurrentChar?: string
   fontSize?: number
-  字元對象列表: 字元對象類別[]
+  onSymbolClick?: (o: {
+    charObj: T_CharObj
+    charsObjsList: T_CharObj[]
+    index: number
+  }) => void
   應該有不同的寬度?: boolean
   應該隱藏發音: boolean
-  按一下該符號?: (o: {
-    字元對象: 字元對象類別
-    字元對象列表: 字元對象類別[]
-    索引: number
-  }) => void
   重點字元索引?: number
-  重點字元顏色?: string
   顯示目前字元的發音?: boolean
 }
 
 const CharactersDisplay = ({
+  charsObjsList,
+  colorOfCurrentChar,
   fontSize,
-  字元對象列表,
+  onSymbolClick,
   應該有不同的寬度,
   應該隱藏發音,
-  按一下該符號,
   重點字元索引,
-  重點字元顏色,
   顯示目前字元的發音,
 }: Props) => {
   const usedFontSize = fontSize ?? 30
@@ -69,30 +69,30 @@ const CharactersDisplay = ({
         position: 'relative',
       }}
     >
-      {字元對象列表.map((字元對象, 索引) => {
-        const { pronunciation, word } = 字元對象
+      {charsObjsList.map((charObj, index) => {
+        const { pronunciation, word } = charObj
         const shouldHidePronunciation =
-          !(顯示目前字元的發音 && 索引 === 重點字元索引) && 應該隱藏發音
+          !(顯示目前字元的發音 && index === 重點字元索引) && 應該隱藏發音
 
         return (
           <span
-            key={`${索引}${字元對象.word}`}
+            key={`${index}${charObj.word}`}
             onClick={e => {
               e.stopPropagation()
 
-              按一下該符號?.({
-                字元對象,
-                字元對象列表,
-                索引,
+              onSymbolClick?.({
+                charObj,
+                charsObjsList,
+                index,
               })
             }}
             style={{
-              color: 索引 === 重點字元索引 ? 重點字元顏色 : undefined,
-              cursor: pronunciation && 按一下該符號 ? 'pointer' : 'default',
+              color: index === 重點字元索引 ? colorOfCurrentChar : undefined,
+              cursor: pronunciation && onSymbolClick ? 'pointer' : 'default',
               display: 'inline-flex',
               flexDirection: 'column',
               marginBottom: 10,
-              opacity: 索引 === 重點字元索引 ? 1 : 0.3,
+              opacity: index === 重點字元索引 ? 1 : 0.3,
             }}
           >
             <span

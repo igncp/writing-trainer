@@ -1,4 +1,4 @@
-import { 按鈕 } from '#/react-ui'
+import { Button } from '#/react-ui'
 import { useState } from 'react'
 
 import openOptionsPage from '@/services/openOptionsPage'
@@ -37,17 +37,17 @@ const Popup = ({
   return (
     <div style={{ width: 400 }}>
       <div>
-        <按鈕
+        <Button
           disabled={!isButtonOneEnabled}
           onClick={() => {
             onEnableOnceClick({ setButtonOneEnabled })
           }}
         >
           Enable one time
-        </按鈕>
+        </Button>
       </div>
       <div>
-        <按鈕 onClick={onOptionsPageClick}>Open Config</按鈕>
+        <Button onClick={onOptionsPageClick}>Open Config</Button>
       </div>
     </div>
   )

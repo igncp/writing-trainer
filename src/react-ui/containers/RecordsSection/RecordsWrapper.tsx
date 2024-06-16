@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import 按鈕 from '../../components/按鈕/按鈕'
+import Button from '../../components/button/button'
 
 type IProps = {
   children: ReactNode
@@ -8,9 +9,11 @@ type IProps = {
 }
 
 const RecordsWrapper = ({ children, onRecordsClose }: IProps) => {
+  const { t } = useTranslation()
+
   return (
     <div>
-      <按鈕 onClick={onRecordsClose}>關閉</按鈕>
+      <Button onClick={onRecordsClose}>{t('record.close')}</Button>
       <div>{children}</div>
     </div>
   )

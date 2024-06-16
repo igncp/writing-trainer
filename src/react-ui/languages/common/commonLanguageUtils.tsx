@@ -1,10 +1,10 @@
 import { unknownPronunciation } from '#/core'
 
-import { 類型_語言UI處理程序, 類型_語言選項 } from '../types'
+import { 類型_語言UI處理程序, T_LangOpts } from '../types'
 
 import { 儲存成功字元, 儲存失敗字元 } from './統計'
 
-type 類型_解析發音 = (文字: string, 語言選項?: 類型_語言選項) => string
+type 類型_解析發音 = (文字: string, langOpts?: T_LangOpts) => string
 type T_OnPracticeBackspaceFormat = (practiceValue: string) => string
 
 type T_CommonHandleWritingKeyDown = (
@@ -31,6 +31,7 @@ const onPracticeBackspaceFormatDefault: T_OnPracticeBackspaceFormat = (
 export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
   {
     getCurrentCharObjFromPractice,
+    langOpts,
     originalTextValue,
     practiceValue,
     setCurrentDisplayCharIdx,
@@ -41,7 +42,6 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     specialCharsValue = '',
     writingValue,
     按鍵事件,
-    語言選項,
   },
   {
     onPracticeBackspaceFormat = onPracticeBackspaceFormatDefault,
@@ -106,10 +106,10 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
       ? writingValue.slice(0, writingValue.length - 1)
       : writingValue + 解析按鍵
 
-  const correctPronunciationParsed = 解析發音(correctPronunciation, 語言選項)
+  const correctPronunciationParsed = 解析發音(correctPronunciation, langOpts)
 
   if (
-    correctPronunciationParsed === 解析發音(newWritingValue, 語言選項) ||
+    correctPronunciationParsed === 解析發音(newWritingValue, langOpts) ||
     correctPronunciationParsed === unknownPronunciation
   ) {
     const newPractice = practiceValue + currentCharObj.word
@@ -124,7 +124,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
 
     if (
       [undefined, '還原論者'].includes(
-        語言選項.遊戲模式值 as string | undefined,
+        langOpts.遊戲模式值 as string | undefined,
       )
     ) {
       const newPracticeText = (newPractice || '')
@@ -138,10 +138,12 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
         .join('')
 
       if (newPracticeText === originalText) {
-        const 錯誤的字符 = 語言選項.錯誤的字符 as string[] | undefined
+        const charsWithMistakes = langOpts.charsWithMistakes as
+          | string[]
+          | undefined
 
-        if ((錯誤的字符 ?? []).length) {
-          const chars = Array.from(new Set(錯誤的字符))
+        if ((charsWithMistakes ?? []).length) {
+          const chars = Array.from(new Set(charsWithMistakes))
           const fullChars = Array.from({ length: 3 })
             .map(() => {
               return chars.join('')
@@ -149,7 +151,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
             .join('')
 
           setCurrentText(fullChars)
-          語言選項.錯誤的字符 = []
+          langOpts.charsWithMistakes = []
         } else {
           setCurrentText('')
         }
@@ -166,10 +168,10 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
   const hasError = !correctPronunciation.startsWith(newWritingValue)
 
   if (hasError) {
-    語言選項.錯誤的字符 = 語言選項.錯誤的字符 || []
+    langOpts.charsWithMistakes = langOpts.charsWithMistakes || []
 
     if (
-      !(語言選項.錯誤的字符 as string[])
+      !(langOpts.charsWithMistakes as string[])
         .slice(0)
         .slice(-1)
         .includes(currentCharObj.word) &&
@@ -177,7 +179,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     ) {
       儲存失敗字元(currentCharObj.word)
     }
-    ;(語言選項.錯誤的字符 as string[]).push(currentCharObj.word)
+    ;(langOpts.charsWithMistakes as string[]).push(currentCharObj.word)
   }
 
   setPracticeHasError(hasError)

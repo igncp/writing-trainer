@@ -1,5 +1,5 @@
 import {
-  字元對象類別,
+  T_CharObj,
   englishHandler,
   japaneseHandler,
   mandarinHandler,
@@ -8,11 +8,11 @@ import {
 const HANDLERS = [japaneseHandler, englishHandler, mandarinHandler]
 
 const DUMMY_CHAR_OBJS = [
-  new 字元對象類別({
+  new T_CharObj({
     pronunciation: 'foo',
     word: 'a',
   }),
-  new 字元對象類別({
+  new T_CharObj({
     pronunciation: 'bar',
     word: 'b',
   }),
@@ -60,7 +60,7 @@ describe('getCurrentCharObj', () => {
       const result = handler.getCurrentCharObj({
         originalCharsObjs: DUMMY_CHAR_OBJS,
         practiceCharsObjs: [
-          new 字元對象類別({
+          new T_CharObj({
             pronunciation: 'invalidPronunciation',
             word: 'invalid',
           }),

@@ -6,11 +6,7 @@ import { cantoneseHandler } from '../languageHandlers/cantonese'
 import { englishHandler } from '../languageHandlers/english'
 import { japaneseHandler } from '../languageHandlers/japanese'
 import { mandarinHandler } from '../languageHandlers/mandarin'
-import {
-  LanguageManager,
-  字元對象類別,
-  CurrentCharObj,
-} from '../languageManager'
+import { LanguageManager, T_CharObj, CurrentCharObj } from '../languageManager'
 import { Record } from '../records'
 
 describe('interface', () => {
@@ -25,8 +21,8 @@ describe('interface', () => {
       LanguageManager,
       mandarinHandler,
       Record,
+      T_CharObj,
       unknownPronunciation,
-      字元對象類別,
       特殊字元,
     })
   })

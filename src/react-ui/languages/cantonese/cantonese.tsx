@@ -4,11 +4,11 @@ import OptionsBlock from '../common/CharsOptions/OptionsBlock'
 import { chineseBlurHandler } from '../common/chineseBlurHandler'
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
 import { 繁體轉簡體 } from '../common/conversion'
-import { 類型_語言UI處理程序, 類型_語言選項 } from '../types'
+import { 類型_語言UI處理程序, T_LangOpts } from '../types'
 
-import { 類型_廣東話的語言選項 } from './cantoneseTypes'
+import LinksBlock from './LinksBlock/LinksBlock'
+import { 類型_廣東話的langOpts } from './cantoneseTypes'
 import dictionary from './converted-list-jy.yml'
-import 連結區塊 from './連結區塊/連結區塊'
 
 const charToPronunciationMap: { [key: string]: string } = {}
 const pronunciationToCharMap: { [key: string]: string } = {}
@@ -48,11 +48,11 @@ Object.keys(dictionaryParsed).forEach(char => {
   pronunciationToCharMap[item[0]] = char
 })
 
-const 語言選項基礎: 類型_語言選項 = {
+const langOpts基礎: T_LangOpts = {
   dictionary: charToPronunciationMap,
 }
 
-const 取得語言選項 = () => {
+const getLangOpts = () => {
   if (typeof localStorage === 'undefined') {
     return {}
   }
@@ -60,12 +60,12 @@ const 取得語言選項 = () => {
   const rest = JSON.parse(localStorage.getItem('mandarinLangOpts') ?? '{}')
 
   return {
-    ...語言選項基礎,
+    ...langOpts基礎,
     ...rest,
-  } satisfies 類型_語言選項
+  } satisfies T_LangOpts
 }
 
-const 儲存語言選項 = (opts: 類型_語言選項) => {
+const saveLangOptss = (opts: T_LangOpts) => {
   if (typeof localStorage === 'undefined') {
     return
   }
@@ -77,10 +77,10 @@ const 儲存語言選項 = (opts: 類型_語言選項) => {
   localStorage.setItem('mandarinLangOpts', JSON.stringify(toSave))
 }
 
-const 解析發音 = (文字: string, 選項: 類型_語言選項) => {
+const 解析發音 = (文字: string, 選項: T_LangOpts) => {
   let 解析後的文本 = 文字.toLowerCase()
 
-  if ((選項.聲調值 as 類型_廣東話的語言選項['聲調值']) === '不要使用聲調') {
+  if ((選項.聲調值 as 類型_廣東話的langOpts['聲調值']) === '不要使用聲調') {
     解析後的文本 = 解析後的文本.replace(/[0-9]/g, '')
   }
 
@@ -93,7 +93,7 @@ const 處理寫鍵按下: 類型_語言UI處理程序['處理寫鍵按下'] = �
   })
 }
 
-const 取得錯誤顏色 = (選項: 類型_語言選項, 字元: CurrentCharObj | null) => {
+const 取得錯誤顏色 = (選項: T_LangOpts, 字元: CurrentCharObj | null) => {
   if (選項.使用聲調的顏色 === false || !字元?.ch.pronunciation) {
     return undefined
   }
@@ -115,18 +115,21 @@ const 取得錯誤顏色 = (選項: 類型_語言選項, 字元: CurrentCharObj 
 }
 
 const 語言UI處理程序: 類型_語言UI處理程序 = {
+  getLangOpts,
+  getLinksBlock: () => LinksBlock,
   getOptionsBlock: () => OptionsBlock,
   languageHandler: cantoneseHandler,
   onBlur: chineseBlurHandler,
+  saveLangOptss,
   shouldAllCharsHaveSameWidth: false,
   tonesNumber: 6,
-  儲存語言選項,
-  取得語言選項,
-  取得連結區塊: () => 連結區塊,
   取得錯誤顏色,
   處理寫鍵按下,
   處理清除事件: (處理程序: 類型_語言UI處理程序) => {
-    處理程序.儲存語言選項({ ...處理程序.取得語言選項(), 錯誤的字符: [] })
+    處理程序.saveLangOptss({
+      ...處理程序.getLangOpts(),
+      charsWithMistakes: [],
+    })
   },
 }
 

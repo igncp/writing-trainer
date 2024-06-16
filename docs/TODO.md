@@ -2,7 +2,8 @@
 
 ## Tasks
 
-- Convert UI handler type to class
+- Add tooltip
+- Add simplified chinese script
 - Pass manager via context
 - Persist config in records (which subpanels are displayed)
 - Support pronunciation with tones better

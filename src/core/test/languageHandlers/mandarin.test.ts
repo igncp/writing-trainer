@@ -71,13 +71,13 @@ describe('轉換為字元對象列表', () => {
     expect(
       mandarinHandler.轉換為字元對象列表({
         charsToRemove: [],
-        text: '你好嗎?我很好',
-        語言選項: {
+        langOpts: {
           dictionary: {
             ...fullDictionary,
             很: undefined,
           },
         },
+        text: '你好嗎?我很好',
       }),
     ).toEqual(
       correctResult.map(c =>
@@ -88,18 +88,7 @@ describe('轉換為字元對象列表', () => {
     expect(
       mandarinHandler.轉換為字元對象列表({
         charsToRemove: [],
-        text: '你好嗎?我很好',
-        語言選項: {},
-      }),
-    ).toEqual(
-      correctResult.map(c =>
-        c.pronunciation ? { ...c, pronunciation: '?' } : c,
-      ),
-    )
-
-    expect(
-      mandarinHandler.轉換為字元對象列表({
-        charsToRemove: [],
+        langOpts: {},
         text: '你好嗎?我很好',
       }),
     ).toEqual(
@@ -112,10 +101,21 @@ describe('轉換為字元對象列表', () => {
       mandarinHandler.轉換為字元對象列表({
         charsToRemove: [],
         text: '你好嗎?我很好',
-        語言選項: {
+      }),
+    ).toEqual(
+      correctResult.map(c =>
+        c.pronunciation ? { ...c, pronunciation: '?' } : c,
+      ),
+    )
+
+    expect(
+      mandarinHandler.轉換為字元對象列表({
+        charsToRemove: [],
+        langOpts: {
           dictionary: fullDictionary,
           pronunciationInput: 'foo bar',
         },
+        text: '你好嗎?我很好',
       }),
     ).toEqual(
       correctResult.map((c, cIdx) => ({

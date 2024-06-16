@@ -1,41 +1,41 @@
 import { englishHandler } from '#/core'
 
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
-import { 類型_語言UI處理程序, 類型_語言選項 } from '../types'
+import { 類型_語言UI處理程序, T_LangOpts } from '../types'
 
+import LinksBlock from './LinksBlock/LinksBlock'
 import OptionsBlock from './OptionsBlock'
-import 連結區塊 from './連結區塊/連結區塊'
 
 const 處理寫鍵按下: 類型_語言UI處理程序['處理寫鍵按下'] = params => {
   commonHandleWritingKeyDown(params, {})
 }
 
-const 語言選項: 類型_語言選項 = {}
+const langOpts: T_LangOpts = {}
 
-const 取得語言選項 = () => 語言選項
+const getLangOpts = () => langOpts
 
-const 儲存語言選項 = () => {}
+const saveLangOptss = () => {}
 
 const 語言UI處理程序: 類型_語言UI處理程序 = {
+  getLangOpts,
+  getLinksBlock: () => LinksBlock,
   getOptionsBlock: () => OptionsBlock,
   languageHandler: englishHandler,
+  saveLangOptss,
   shouldAllCharsHaveSameWidth: false,
-  儲存語言選項,
-  取得語言選項,
-  取得連結區塊: () => 連結區塊,
   處理寫鍵按下,
 }
 
 let _test:
   | {
-      語言選項: typeof 語言選項
+      langOpts: typeof langOpts
     }
   | undefined
 
 // istanbul ignore else
 if (__TEST__) {
   _test = {
-    語言選項,
+    langOpts,
   }
 }
 

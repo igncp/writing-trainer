@@ -19,10 +19,10 @@ describe('轉換為字元對象列表', () => {
     expect(
       japaneseHandler.轉換為字元對象列表({
         charsToRemove: [],
-        text: 'あい,うえお',
-        語言選項: {
+        langOpts: {
           pronunciationInput: 'ai2 ue2 o1',
         },
+        text: 'あい,うえお',
       }),
     ).toEqual([
       {
@@ -48,10 +48,10 @@ describe('轉換為字元對象列表', () => {
     expect(
       japaneseHandler.轉換為字元對象列表({
         charsToRemove: [],
-        text: 'あい,うえお',
-        語言選項: {
+        langOpts: {
           pronunciationInput: 'ai2 ue o1',
         },
+        text: 'あい,うえお',
       }),
     ).toEqual([
       {
@@ -99,10 +99,10 @@ describe('轉換為字元對象列表', () => {
     expect(
       japaneseHandler.轉換為字元對象列表({
         charsToRemove: [],
-        text: 'あい えう',
-        語言選項: {
+        langOpts: {
           pronunciationInput: 'ai0 eu1',
         },
+        text: 'あい えう',
       }),
     ).toEqual([
       {
@@ -128,10 +128,10 @@ describe('轉換為字元對象列表', () => {
     expect(
       japaneseHandler.轉換為字元對象列表({
         charsToRemove: [],
-        text: 'あい',
-        語言選項: {
+        langOpts: {
           pronunciationInput: 'fō2',
         },
+        text: 'あい',
       }),
     ).toEqual([
       {
@@ -145,10 +145,10 @@ describe('轉換為字元對象列表', () => {
     expect(
       japaneseHandler.轉換為字元對象列表({
         charsToRemove: [],
-        text: 'あい',
-        語言選項: {
+        langOpts: {
           pronunciationInput: 'AbCdE2',
         },
+        text: 'あい',
       }),
     ).toEqual([
       {

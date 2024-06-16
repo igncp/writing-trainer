@@ -1,19 +1,21 @@
 import { ChangeEvent, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { T_OptionsBlock } from '../../types'
 
-const OptionsBlock: T_OptionsBlock = ({ 更改語言選項, 語言選項 }) => {
+const OptionsBlock: T_OptionsBlock = ({ langOpts, updateLangOpts }) => {
+  const { t } = useTranslation()
   const [聲調值, 保存聲調值] = useState(
-    (語言選項.聲調值 as string) || '使用聲調',
+    (langOpts.聲調值 as string) || '使用聲調',
   )
   const [遊戲模式值, setPlaymodeValue] = useState(
-    (語言選項.遊戲模式值 as string) || '還原論者',
+    (langOpts.遊戲模式值 as string) || '還原論者',
   )
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleOptionsChange = (newValues: any) => {
-    更改語言選項({
-      ...語言選項,
+    updateLangOpts({
+      ...langOpts,
 
       聲調值,
       遊戲模式值,
@@ -41,22 +43,22 @@ const OptionsBlock: T_OptionsBlock = ({ 更改語言選項, 語言選項 }) => {
   return (
     <div>
       <select onChange={handleTonesChange} value={聲調值}>
-        <option value="不要使用聲調">不要使用聲調</option>
-        <option value="使用聲調">使用聲調</option>
+        <option value="不要使用聲調">{t('option.noTones')}</option>
+        <option value="使用聲調">{t('option.useTones')}</option>
       </select>
       <select onChange={handlePlaymodeChange} value={遊戲模式值}>
-        <option value="還原論者">還原論者</option>
-        <option value="重複的">重複的</option>
+        <option value="還原論者">{t('option.reductive')}</option>
+        <option value="重複的">{t('option.repetitive')}</option>
       </select>
       <span style={{ marginLeft: 10 }}>
         <label htmlFor="自動分割文字行">
-          自動分割文字行:
+          {t('option.automaticSplitText')}:
           <input
-            checked={!!語言選項.自動分割文字行}
+            checked={!!langOpts.自動分割文字行}
             id="自動分割文字行"
             onChange={() => {
               handleOptionsChange({
-                自動分割文字行: !語言選項.自動分割文字行,
+                自動分割文字行: !langOpts.自動分割文字行,
               })
             }}
             type="checkbox"
@@ -65,13 +67,13 @@ const OptionsBlock: T_OptionsBlock = ({ 更改語言選項, 語言選項 }) => {
       </span>
       <span style={{ marginLeft: 10 }}>
         <label htmlFor="使用聲調的顏色">
-          使用聲調的顏色:
+          {t('option.useTonesColors')}:
           <input
-            checked={語言選項.使用聲調的顏色 !== false}
+            checked={langOpts.使用聲調的顏色 !== false}
             id="使用聲調的顏色"
             onChange={() => {
               handleOptionsChange({
-                使用聲調的顏色: !語言選項.使用聲調的顏色,
+                使用聲調的顏色: !langOpts.使用聲調的顏色,
               })
             }}
             type="checkbox"

@@ -1,5 +1,5 @@
 import { LanguageDefinition, unknownPronunciation } from '../constants'
-import { 字元對象類別 } from '../languageManager'
+import { T_CharObj } from '../languageManager'
 
 import { LanguageHandler } from './_common'
 
@@ -7,11 +7,11 @@ type T_Dictionary = { [k: string]: string }
 
 const 轉換為字元對象列表: LanguageHandler['轉換為字元對象列表'] = ({
   charsToRemove,
+  langOpts = {},
   text,
-  語言選項 = {},
 }) => {
-  const dictionary: T_Dictionary = (語言選項.dictionary || {}) as T_Dictionary
-  const pronunciationInput: string = (語言選項.pronunciationInput ||
+  const dictionary: T_Dictionary = (langOpts.dictionary || {}) as T_Dictionary
+  const pronunciationInput: string = (langOpts.pronunciationInput ||
     '') as string
   const pronunciationInputArr = pronunciationInput.split(' ').filter(c => !!c)
 
@@ -20,29 +20,29 @@ const 轉換為字元對象列表: LanguageHandler['轉換為字元對象列表'
     .concat(charsToRemove)
     .concat([' '])
 
-  const 字元對象列表: 字元對象類別[] = []
+  const charsObjsList: T_CharObj[] = []
 
   text.split('').forEach((ch, chIdx) => {
     if (allCharsToRemove.includes(ch)) {
-      const 字元對象 = new 字元對象類別({
+      const charObj = new T_CharObj({
         pronunciation: '',
         word: ch,
       })
 
-      字元對象列表.push(字元對象)
+      charsObjsList.push(charObj)
     } else {
-      const 字元對象 = new 字元對象類別({
+      const charObj = new T_CharObj({
         pronunciation:
           pronunciationInputArr[chIdx] ||
           dictionary[ch] ||
           unknownPronunciation,
         word: ch,
       })
-      字元對象列表.push(字元對象)
+      charsObjsList.push(charObj)
     }
   })
 
-  return 字元對象列表
+  return charsObjsList
 }
 
 const language = new LanguageDefinition({

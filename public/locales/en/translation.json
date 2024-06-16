@@ -1,0 +1,82 @@
+{
+  "anki": {
+    "correct": "Correct",
+    "displayBack": "Show Back",
+    "end": "Finish",
+    "noMore": "There are no more",
+    "num": "Num.",
+    "round": "Anki Round",
+    "toggleTypes": "Toggle displaying both types",
+    "wrong": "Wrong"
+  },
+  "auth": {
+    "alreadyLoggedIn": "Logged In",
+    "backendActive": "The backend is active",
+    "login": "Log In",
+    "logout": "Log Out"
+  },
+  "lang": {
+    "cantonese": "Cantonese",
+    "english": "English",
+    "japanese": "Japanese",
+    "mandarin": "Manadarin"
+  },
+  "option": {
+    "automaticSplitText": "Automatically Split Text",
+    "changeToSimplified": "Change to Simplified Characters",
+    "changeToTraditional": "Change to Traditional Characters",
+    "loginUse": "Please log in to use this feature",
+    "noTones": "No Tones",
+    "pronunciation": "Pronunciation",
+    "reductive": "Reductive",
+    "repetitive": "Repetitive",
+    "translateAI": "Translate AI",
+    "translateGoogle": "Google Translate",
+    "useTones": "Use Tones",
+    "useTonesColors": "Use Tones Colors"
+  },
+  "panel": {
+    "addAnkis": "Add Ankis",
+    "changeTheme": "Change Theme",
+    "charSize": "Font Size",
+    "clear": "Clear",
+    "closeRecord": "Close Record",
+    "copy": "Copy",
+    "correct": "Correct",
+    "currentFragment": "Current Fragment",
+    "deleteStats": "Delete Stats",
+    "displayTones": "Display Tones",
+    "hide": "Hide",
+    "hideTones": "Hide Tones",
+    "importFile": "Import File",
+    "lastSessionNotice": "Displayed up to the last session",
+    "openAnki": "Open Ankis",
+    "previousFragment": "Previous Fragment",
+    "pronunciation": "Pronunciation",
+    "recordSongs": "Records and Songs",
+    "saveRecord": "Save",
+    "sourceText": "Source Text",
+    "specialChars": "Special Characters",
+    "toggleEdition": "Toggle Edition",
+    "togglePronunciation": "Toggle Pronunciation",
+    "updateRecord": "Update Record",
+    "writingArea": "Writing Area",
+    "wrong": "Wrong"
+  },
+  "record": {
+    "artist": "Artist",
+    "close": "Close",
+    "edit": "Edit",
+    "lang": "Language",
+    "link": "Link",
+    "list": "List",
+    "load": "Load",
+    "name": "Name",
+    "remove": "Remove",
+    "save": "Save",
+    "video": "Video"
+  },
+  "site": {
+    "title": "Writing Trainer"
+  }
+}

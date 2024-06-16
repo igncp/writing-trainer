@@ -1,19 +1,10 @@
 module.exports = {
-  collectCoverage: true,
+  collectCoverage: false,
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!**/__stories__/**',
     '!**/__tests__/**',
   ],
-  coverageReporters: ['json', 'lcov', 'text', 'cobertura'],
-  coverageThreshold: {
-    global: {
-      branches: 1,
-      functions: 1,
-      lines: 1,
-      statements: 1,
-    },
-  },
   globals: {
     __TEST__: true,
     __USE_CHROME_TABS_FEATURE__: true,

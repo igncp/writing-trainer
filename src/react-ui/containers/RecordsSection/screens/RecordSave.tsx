@@ -1,7 +1,8 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import TextInput from '../../../components/TextInput/TextInput'
-import 按鈕 from '../../../components/按鈕/按鈕'
+import Button from '../../../components/button/button'
 import { T_Services } from '../../../typings/mainTypes'
 
 export interface RecordToSave {
@@ -32,6 +33,7 @@ const RecordSave = ({
   )
   const [currentUrl, setCurrentUrl] = useState<string>('')
   const linkInputRef = useRef<HTMLInputElement>(null)
+  const { t } = useTranslation()
 
   useEffect(() => {
     services
@@ -63,13 +65,13 @@ const RecordSave = ({
   return (
     <Fragment>
       <div>
-        <按鈕 disabled={disabled} onClick={onShowRecordsList}>
-          List
-        </按鈕>
+        <Button disabled={disabled} onClick={onShowRecordsList}>
+          {t('record.list')}
+        </Button>
       </div>
       <div>
         <div style={{ padding: 10 }}>
-          Name:{' '}
+          {t('record.name')}:{' '}
           <span style={{ marginLeft: 10 }}>
             <TextInput
               autoFocus
@@ -86,7 +88,7 @@ const RecordSave = ({
           </span>
         </div>
         <div style={{ padding: 10 }}>
-          Link:{' '}
+          {t('record.link')}:{' '}
           <span style={{ marginLeft: 10 }}>
             <TextInput
               inputRef={linkInputRef}
@@ -100,12 +102,12 @@ const RecordSave = ({
         </div>
       </div>
       <div>
-        <按鈕
+        <Button
           disabled={isSaveButtonDisabled || disabled}
           onClick={handleRecordSave}
         >
-          儲存
-        </按鈕>
+          {t('record.save')}
+        </Button>
       </div>
     </Fragment>
   )
