@@ -7,13 +7,14 @@ import {
   useState,
 } from 'react'
 import { useTranslation } from 'react-i18next'
+import { CgSpinnerAlt } from 'react-icons/cg'
 import { FaToolbox, FaTools } from 'react-icons/fa'
 
 import CharactersDisplay from '../../components/CharactersDisplay/CharactersDisplay'
 import ChooseLanguage from '../../components/ChooseLanguage/ChooseLanguage'
+import TextArea from '../../components/TextArea/TextArea'
 import Button from '../../components/button/button'
-import 文字區 from '../../components/文字區/文字區'
-import { 刪除資料庫, 取得字元數 } from '../../languages/common/統計'
+import { deleteDatabase, getCharsCount } from '../../languages/common/統計'
 import { LanguageUIManager } from '../../languages/languageUIManager'
 import {
   T_LangOpts,
@@ -58,7 +59,7 @@ type Props = {
 
 const getLanguageDefinitions = (languageManager: LanguageManager) => {
   return languageManager
-    .取得可用語言()
+    .getAvailableLangs()
     .map(langId => {
       const languageHandler = languageManager.getLanguageHandler(langId)
 
@@ -98,7 +99,7 @@ const Panel = ({
     perc: number
   }>(null)
 
-  const 語言UI處理程序 = languageUIManager.獲取語言UI處理程序()
+  const languageUIController = languageUIManager.getLanguageUIController()
 
   const [fragments, setFragments] = useState<T_Fragments>({
     index: 0,
@@ -135,7 +136,7 @@ const Panel = ({
   const [displayMobileTones, setDisplayMobileTones] = useState<boolean | null>(
     null,
   )
-  const langOpts = _stories.langOpts ?? 語言UI處理程序.getLangOpts()
+  const langOpts = _stories.langOpts ?? languageUIController.getLangOpts()
 
   const langHandler = languageManager.getCurrentLanguageHandler()
 
@@ -144,7 +145,7 @@ const Panel = ({
   useEffect(() => {
     if (process.env.NODE_ENV === 'test') return
 
-    取得字元數()
+    getCharsCount()
       .then(({ failCount, successCount }) => {
         const total = (successCount ?? 0) + (failCount ?? 0)
 
@@ -285,7 +286,7 @@ const Panel = ({
     })()
   }, [initialFragmentIndex, storage])
 
-  const 特殊字元 = langHandler?.取得特殊字符()
+  const 特殊字元 = langHandler?.getSpecialChars()
   const langOpts對象 = {
     langOpts: {
       pronunciationInput: pronunciationValue,
@@ -361,7 +362,7 @@ const Panel = ({
       },
     )
     const newFragments: T_Fragments = { index: 0, list: [''] }
-    語言UI處理程序.處理清除事件?.(語言UI處理程序)
+    languageUIController.處理清除事件?.(languageUIController)
     storage.setValue('fragments', JSON.stringify(newFragments))
     setShowingPronunciation(true)
     setShowingEdition(true)
@@ -374,7 +375,7 @@ const Panel = ({
     updateLanguage(newSelectedLanguage)
   }
 
-  const 處理寫鍵按下 = (事件: ReactKeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (事件: ReactKeyboardEvent<HTMLTextAreaElement>) => {
     // 允許瀏覽器快捷鍵
     if (事件.ctrlKey || 事件.metaKey) return
 
@@ -382,7 +383,7 @@ const Panel = ({
       setPractice(`${practiceValue}\n`)
     }
 
-    語言UI處理程序.處理寫鍵按下({
+    languageUIController.handleKeyDown({
       charsObjsList: charsObjsList ?? [],
       getCurrentCharObjFromPractice,
       langOpts,
@@ -398,16 +399,16 @@ const Panel = ({
       按鍵事件: 事件,
     })
 
-    語言UI處理程序.saveLangOptss(langOpts)
+    languageUIController.saveLangOptss(langOpts)
   }
 
   const updateLangOpts = (選項: T_LangOpts) => {
-    語言UI處理程序.saveLangOptss(選項)
+    languageUIController.saveLangOptss(選項)
     觸發重新渲染(Math.random())
   }
 
-  const LinksBlock = 語言UI處理程序.getLinksBlock()
-  const OptionsBlock = 語言UI處理程序.getOptionsBlock()
+  const LinksBlock = languageUIController.getLinksBlock()
+  const OptionsBlock = languageUIController.getOptionsBlock()
 
   const saveRecord = () => {
     setShowingRecordsInitScreen(RecordsScreen.Save)
@@ -418,7 +419,13 @@ const Panel = ({
   }
 
   if (!hasLoadedStorage) {
-    return null
+    return (
+      <div className="flex w-full flex-row items-center justify-center">
+        <span className="mt-[48px] animate-spin text-[50px]">
+          <CgSpinnerAlt />
+        </span>
+      </div>
+    )
   }
 
   if (showingAnkis) {
@@ -476,10 +483,14 @@ const Panel = ({
   }
 
   const colorOfCurrentChar = practiceHasError
-    ? 語言UI處理程序.取得錯誤顏色?.(langOpts, getCurrentCharObjFromPractice())
+    ? languageUIController.getToneColor?.(
+        'current-error',
+        { ...langOpts, useTonesColors: 'current-error' },
+        getCurrentCharObjFromPractice()?.ch ?? null,
+      )
     : undefined
 
-  const { tonesNumber } = 語言UI處理程序
+  const { tonesNumber } = languageUIController
 
   return (
     <>
@@ -620,7 +631,7 @@ const Panel = ({
                 </div>
                 <Button
                   onDoubleClick={() => {
-                    刪除資料庫().then(() => {
+                    deleteDatabase().then(() => {
                       setStats(null)
                     })
                   }}
@@ -689,10 +700,10 @@ const Panel = ({
               gap: 10,
             }}
           >
-            <文字區
+            <TextArea
               onBlur={() => {
-                if (語言UI處理程序.onBlur) {
-                  const { newFragmentsList } = 語言UI處理程序.onBlur({
+                if (languageUIController.onBlur) {
+                  const { newFragmentsList } = languageUIController.onBlur({
                     fragmentsList: fragments.list,
                     langOpts,
                   })
@@ -718,7 +729,7 @@ const Panel = ({
             />
             {hasExtraControls && (
               <>
-                <文字區
+                <TextArea
                   onChange={createInputSetterFn(setPronunciation)}
                   placeholder={t('panel.pronunciation')}
                   rows={2}
@@ -730,7 +741,7 @@ const Panel = ({
                     updateLangOpts={updateLangOpts}
                   />
                 )}
-                <文字區
+                <TextArea
                   onChange={createInputSetterFn(setSpecialChars)}
                   placeholder={t('panel.specialChars')}
                   rows={1}
@@ -763,7 +774,23 @@ const Panel = ({
           <div style={{ marginBottom: 10, marginTop: 5 }}>
             <CharactersDisplay
               charsObjsList={charsObjsList ?? []}
-              colorOfCurrentChar={colorOfCurrentChar}
+              colorOfChar={(isCurrentChar, ch) =>
+                languageUIController.getToneColor?.(
+                  (() => {
+                    if (isCurrentChar) {
+                      if (practiceHasError) {
+                        return 'current-error'
+                      }
+
+                      return 'current'
+                    }
+
+                    return 'other'
+                  })(),
+                  langOpts,
+                  ch,
+                )
+              }
               fontSize={fontSize}
               onSymbolClick={() => {
                 setShowingEdition(false)
@@ -771,7 +798,9 @@ const Panel = ({
                 setShowingPronunciation(false)
                 writingArea.current?.focus()
               }}
-              應該有不同的寬度={!語言UI處理程序.shouldAllCharsHaveSameWidth}
+              應該有不同的寬度={
+                !languageUIController.shouldAllCharsHaveSameWidth
+              }
               應該隱藏發音={!isShowingPronunciation}
               重點字元索引={currentDisplayCharIdx}
               顯示目前字元的發音={
@@ -782,7 +811,7 @@ const Panel = ({
               }
             />
           </div>
-          <文字區
+          <TextArea
             autoFocus
             onBlur={() => setWritingBorder('normal')}
             onChange={e => {
@@ -797,11 +826,11 @@ const Panel = ({
                   preventDefault: () => {},
                 } as unknown as ReactKeyboardEvent<HTMLTextAreaElement>
 
-                處理寫鍵按下(mockEvent)
+                handleKeyDown(mockEvent)
               }
             }}
             onFocus={() => setWritingBorder('bold')}
-            onKeyDown={處理寫鍵按下}
+            onKeyDown={handleKeyDown}
             placeholder={practiceValue ? '' : t('panel.writingArea')}
             rows={1}
             setRef={ref => (writingArea.current = ref)}
@@ -811,7 +840,7 @@ const Panel = ({
             value={writingValue}
             無遊標
           />
-          <文字區
+          <TextArea
             onChange={createInputSetterFn(setPractice)}
             onFocus={() => {
               writingArea.current?.focus()
@@ -838,7 +867,7 @@ const Panel = ({
                   <Button
                     key={idx}
                     onClick={() => {
-                      處理寫鍵按下({
+                      handleKeyDown({
                         key: (idx + 1).toString(),
                         preventDefault: () => {},
                       } as unknown as ReactKeyboardEvent<HTMLTextAreaElement>)
@@ -856,8 +885,8 @@ const Panel = ({
       <div className="mb-[12px] flex flex-row flex-wrap justify-start gap-[12px]">
         <LinksBlock
           fragments={fragments}
+          updateFragments={setFragments}
           文字={originalTextValue}
-          更改fragments={setFragments}
         />
       </div>
     </>

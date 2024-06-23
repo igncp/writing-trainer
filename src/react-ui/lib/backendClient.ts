@@ -40,7 +40,7 @@ const getGoogleUrl = (from: string) => {
     access_type: 'offline',
     client_id: clientID,
     flowName: 'GeneralOAuthFlow',
-    redirect_uri: `${baseURL}/sessions/oauth/google`,
+    redirect_uri: `${baseURL.includes('http') ? baseURL : window.location.href.replace(/\/$/, '') + baseURL}/sessions/oauth/google`,
     response_type: 'code',
     scope: ['https://www.googleapis.com/auth/userinfo.email'].join(' '),
     state: from.replace(/\/$/g, ''),
@@ -68,6 +68,7 @@ const getInfo = () =>
       me {
         id
         email
+        canUseAI
       }
     }
   `).then(({ me }) => me)
@@ -81,7 +82,7 @@ const TextFragment = `
   }
 `
 
-const getUserAnkis = (items: number, offset: number) =>
+const getUserAnkis = (items: number, offset: number, query: string) =>
   fetchGraphQL<{
     ankis: Array<
       Pick<AnkiGql, 'id' | 'front' | 'language' | 'correct' | 'incorrect'>
@@ -92,6 +93,7 @@ const getUserAnkis = (items: number, offset: number) =>
       ankis(
         itemsNum: ${items},
         offset: ${offset}
+        query: ${query ? `"${query}"` : null}
       ) {
         correct
         front
@@ -99,19 +101,23 @@ const getUserAnkis = (items: number, offset: number) =>
         incorrect
         language
       }
-      ankisTotal
+      ankisTotal(
+        query: ${query ? `"${query}"` : null}
+      )
     }
   `).then(({ ankis, ankisTotal }) => ({
     list: ankis.map(decodeAnki),
     total: ankisTotal,
   }))
 
-const getAnkisRound = () =>
+const getAnkisRound = (query: string) =>
   fetchGraphQL<{
     ankisRound: Array<Pick<AnkiGql, 'id' | 'front' | 'back'>>
   }>(`#graphql
     query {
-      ankisRound {
+      ankisRound(
+        query: ${query ? `"${query}"` : null}
+      ) {
         id
         front
         back

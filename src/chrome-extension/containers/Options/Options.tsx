@@ -1,4 +1,4 @@
-import { Button, 文字區 } from '#/react-ui'
+import { Button, TextArea } from '#/react-ui'
 import { ChangeEvent, FC, ReactNode, useEffect, useState } from 'react'
 
 import storage from '@/services/storage'
@@ -53,7 +53,7 @@ const Options = () => {
         啟用它的頁面。 在每行上使用正規表示式。 <Wrapper>別忘了保存。</Wrapper>
       </p>
       <Button onClick={handleSave}>儲存</Button>
-      <文字區
+      <TextArea
         defaultValue={enabledPagesValue}
         onChange={handleEnabledPagesChange}
         rows={20}

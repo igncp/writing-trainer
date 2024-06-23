@@ -1,11 +1,27 @@
 {
   "anki": {
+    "addNew": "Añadir nueva tarjeta",
+    "backSide": "Parte trasera",
+    "close": "Cerrar",
+    "copyChars": "Copiar caracteres",
+    "copyPronunciations": "Copiar pronunciaciones",
     "correct": "Correcto",
+    "deleteFailed": "El borrado falló",
     "displayBack": "Mostrar la parte trasera",
+    "displayList": "Mostrar la lista",
     "end": "Terminar",
+    "frontSide": "Parte delantera",
+    "list": "Lista",
+    "loadFailed": "La carga falló",
+    "nextPage": "Siguiente página",
     "noMore": "No hay más tarjetas",
     "num": "Número",
+    "previousPage": "Página anterior",
     "round": "Ronda",
+    "save": "Guardar",
+    "saveFailed": "Failed to save anki",
+    "startRound": "Empezar ronda",
+    "togglePronunciation": "Alternar pronunciación",
     "toggleTypes": "Cambiar tipos",
     "wrong": "Incorrecto"
   },
@@ -14,6 +30,10 @@
     "backendActive": "Backend activo",
     "login": "Autenticarse",
     "logout": "Desconectarse"
+  },
+  "help": {
+    "how": "Cómo utilizar Writing Trainer?",
+    "howText1": "Writing Trainer te puede ayudar a mejorar tu escritura en idiomas extranjeros."
   },
   "lang": {
     "cantonese": "Cantonés",
@@ -25,7 +45,7 @@
     "automaticSplitText": "Dividir automáticamente el texto",
     "changeToSimplified": "Caracteres simplificados",
     "changeToTraditional": "Caracteres tradicionales",
-    "loginUse": "Iniciar sesión para utilizar esta función",
+    "contactUse": "Para utilizar esta aplicación, contacta con nosotros",
     "noTones": "Sin tonos",
     "pronunciation": "Pronunciación",
     "reductive": "Reductivo",
@@ -33,7 +53,10 @@
     "translateAI": "Traducción AI",
     "translateGoogle": "Traducción Google",
     "useTones": "Utilizar tonos",
-    "useTonesColors": "Utilizar colores para los tonos"
+    "useTonesColorsAlways": "Siempre usar colores de tonos",
+    "useTonesColorsCurrent": "Usar colores de tonos solo en el actual",
+    "useTonesColorsError": "Usar colores de tonos solo en caso de error",
+    "useTonesColorsNever": "Nunca usar colores de tonos"
   },
   "panel": {
     "addAnkis": "Añadir tarjetas",
@@ -66,17 +89,20 @@
   "record": {
     "artist": "Artista",
     "close": "Cerrar",
+    "created": "Creado",
     "edit": "Editar",
     "lang": "Idioma",
+    "language": "Idioma",
     "link": "Enlace",
     "list": "Lista",
     "load": "Cargar",
+    "loaded": "Cargado",
     "name": "Nombre",
     "remove": "Eliminar",
     "save": "Guardar",
     "video": "Vídeo"
   },
   "site": {
-    "title": "Writing Trainer"
+    "title": "Entrenador de Idiomas"
   }
 }

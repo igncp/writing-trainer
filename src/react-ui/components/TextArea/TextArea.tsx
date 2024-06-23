@@ -7,7 +7,7 @@ type 特性 = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   自動捲動?: boolean
 }
 
-const 文字區 = ({
+const TextArea = ({
   className,
   onChange,
   setRef,
@@ -58,4 +58,4 @@ const 文字區 = ({
   )
 }
 
-export default 文字區
+export default TextArea

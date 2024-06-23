@@ -30,6 +30,8 @@ const 簡體轉繁體例外: Record<string, string | undefined> = {
   回: '回',
   家: '家',
   巨: '巨',
+  真: '真',
+  致: '致',
 }
 
 const 簡體轉繁體 = Object.entries(繁體轉簡體).reduce<

@@ -15,7 +15,7 @@ const 轉換為字元對象列表: LanguageHandler['轉換為字元對象列表'
     '') as string
   const pronunciationInputArr = pronunciationInput.split(' ').filter(c => !!c)
 
-  const defaultSpecialChars = mandarinHandler.取得特殊字符() // eslint-disable-line @typescript-eslint/no-use-before-define
+  const defaultSpecialChars = mandarinHandler.getSpecialChars() // eslint-disable-line @typescript-eslint/no-use-before-define
   const allCharsToRemove = defaultSpecialChars
     .concat(charsToRemove)
     .concat([' '])

@@ -83,6 +83,7 @@ const RecordSave = ({
                   linkInputRef.current?.focus()
                 }
               }}
+              tabIndex={1}
               value={recordName}
             />
           </span>
@@ -96,6 +97,7 @@ const RecordSave = ({
                 setRecordLink(e.target.value)
               }}
               onEnterPress={handleRecordSave}
+              tabIndex={2}
               value={recordLink}
             />
           </span>
@@ -105,6 +107,7 @@ const RecordSave = ({
         <Button
           disabled={isSaveButtonDisabled || disabled}
           onClick={handleRecordSave}
+          tabIndex={3}
         >
           {t('record.save')}
         </Button>

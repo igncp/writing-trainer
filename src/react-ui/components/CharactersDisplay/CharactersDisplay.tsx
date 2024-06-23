@@ -6,7 +6,7 @@ const MAX_HEIGHT = 160
 
 type Props = {
   charsObjsList: T_CharObj[]
-  colorOfCurrentChar?: string
+  colorOfChar?: (isCurrentChar: boolean, c: T_CharObj) => string | undefined
   fontSize?: number
   onSymbolClick?: (o: {
     charObj: T_CharObj
@@ -21,7 +21,7 @@ type Props = {
 
 const CharactersDisplay = ({
   charsObjsList,
-  colorOfCurrentChar,
+  colorOfChar,
   fontSize,
   onSymbolClick,
   應該有不同的寬度,
@@ -87,7 +87,8 @@ const CharactersDisplay = ({
               })
             }}
             style={{
-              color: index === 重點字元索引 ? colorOfCurrentChar : undefined,
+              color:
+                colorOfChar?.(index === 重點字元索引, charObj) ?? undefined,
               cursor: pronunciation && onSymbolClick ? 'pointer' : 'default',
               display: 'inline-flex',
               flexDirection: 'column',

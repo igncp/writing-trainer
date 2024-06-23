@@ -10,7 +10,7 @@ import { T_LinksBlock } from '../../types'
 const MANDARIN_CONVERTER_LINK =
   'https://www.chineseconverter.com/en/convert/chinese-to-pinyin'
 
-const LinksBlock: T_LinksBlock = ({ fragments, 文字, 更改fragments }) => {
+const LinksBlock: T_LinksBlock = ({ fragments, updateFragments, 文字 }) => {
   const hrefText = 文字
     .split('')
     .map(c => c.trim())
@@ -29,7 +29,7 @@ const LinksBlock: T_LinksBlock = ({ fragments, 文字, 更改fragments }) => {
       >
         {t('option.pronunciation')}
       </Button>
-      <ChangeCharType fragments={fragments} 更改fragments={更改fragments} />
+      <ChangeCharType fragments={fragments} updateFragments={updateFragments} />
       <TranslateButton language="zh-HK" text={文字} />
     </>
   )

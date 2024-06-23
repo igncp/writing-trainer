@@ -9,7 +9,7 @@ const 轉換為字元對象列表: LanguageHandler['轉換為字元對象列表'
   text,
 }) => {
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  const defaultSpecialChars = japaneseHandler.取得特殊字符()
+  const defaultSpecialChars = japaneseHandler.getSpecialChars()
   const allCharsToRemove = defaultSpecialChars
     .concat(charsToRemove)
     .concat([' '])

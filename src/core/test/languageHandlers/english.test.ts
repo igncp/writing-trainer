@@ -7,10 +7,10 @@ describe('values', () => {
   })
 })
 
-describe('取得特殊字符', () => {
+describe('getSpecialChars', () => {
   it('returns the expected array', () => {
-    expect(englishHandler.取得特殊字符()).toEqual(特殊字元)
-    expect(englishHandler.取得特殊字符()).toEqual(特殊字元)
+    expect(englishHandler.getSpecialChars()).toEqual(特殊字元)
+    expect(englishHandler.getSpecialChars()).toEqual(特殊字元)
   })
 })
 

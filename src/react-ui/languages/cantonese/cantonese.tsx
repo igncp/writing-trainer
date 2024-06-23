@@ -1,10 +1,10 @@
-import { CurrentCharObj, cantoneseHandler } from '#/core'
+import { cantoneseHandler } from '#/core'
 
 import OptionsBlock from '../common/CharsOptions/OptionsBlock'
 import { chineseBlurHandler } from '../common/chineseBlurHandler'
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
 import { 繁體轉簡體 } from '../common/conversion'
-import { 類型_語言UI處理程序, T_LangOpts } from '../types'
+import { 類型_語言UI處理程序, T_LangOpts, T_GetToneColor } from '../types'
 
 import LinksBlock from './LinksBlock/LinksBlock'
 import { 類型_廣東話的langOpts } from './cantoneseTypes'
@@ -87,18 +87,25 @@ const 解析發音 = (文字: string, 選項: T_LangOpts) => {
   return 解析後的文本
 }
 
-const 處理寫鍵按下: 類型_語言UI處理程序['處理寫鍵按下'] = 參數 => {
+const handleKeyDown: 類型_語言UI處理程序['handleKeyDown'] = 參數 => {
   commonHandleWritingKeyDown(參數, {
     解析發音,
   })
 }
 
-const 取得錯誤顏色 = (選項: T_LangOpts, 字元: CurrentCharObj | null) => {
-  if (選項.使用聲調的顏色 === false || !字元?.ch.pronunciation) {
+const getToneColor: T_GetToneColor = (char, 選項, 字元) => {
+  if (
+    選項.useTonesColors === 'never' ||
+    !字元?.pronunciation ||
+    (選項.useTonesColors === 'current-error' && char !== 'current-error') ||
+    (選項.useTonesColors === 'current' &&
+      !['current', 'current-error'].includes(char)) ||
+    !選項.useTonesColors
+  ) {
     return undefined
   }
 
-  const 音數 = Number(字元.ch.pronunciation[字元.ch.pronunciation.length - 1])
+  const 音數 = Number(字元.pronunciation[字元.pronunciation.length - 1])
 
   if (Number.isNaN(音數)) {
     return undefined
@@ -114,17 +121,17 @@ const 取得錯誤顏色 = (選項: T_LangOpts, 字元: CurrentCharObj | null) =
   }[音數]
 }
 
-const 語言UI處理程序: 類型_語言UI處理程序 = {
+const languageUIController: 類型_語言UI處理程序 = {
   getLangOpts,
   getLinksBlock: () => LinksBlock,
   getOptionsBlock: () => OptionsBlock,
+  getToneColor,
+  handleKeyDown,
   languageHandler: cantoneseHandler,
   onBlur: chineseBlurHandler,
   saveLangOptss,
   shouldAllCharsHaveSameWidth: false,
   tonesNumber: 6,
-  取得錯誤顏色,
-  處理寫鍵按下,
   處理清除事件: (處理程序: 類型_語言UI處理程序) => {
     處理程序.saveLangOptss({
       ...處理程序.getLangOpts(),
@@ -133,4 +140,4 @@ const 語言UI處理程序: 類型_語言UI處理程序 = {
   },
 }
 
-export default 語言UI處理程序
+export default languageUIController

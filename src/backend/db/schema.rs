@@ -32,6 +32,7 @@ diesel::table! {
     users (id) {
         id -> Text,
         email -> Text,
+        can_use_ai -> Bool,
     }
 }
 

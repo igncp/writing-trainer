@@ -43,13 +43,41 @@ impl Anki {
         }
     }
 
-    pub fn get_all(usr_id: String, items_number: i32, offset: i32) -> Vec<Self> {
+    fn get_query_filter(
+        usr_id: &str,
+        query: &Option<String>,
+    ) -> Box<
+        dyn BoxableExpression<
+            super::schema::ankis::table,
+            diesel::sqlite::Sqlite,
+            SqlType = diesel::sql_types::Bool,
+        >,
+    > {
+        use super::schema::ankis::dsl::*;
+
+        if query.is_none() {
+            return Box::new(user_id.eq(usr_id.to_owned()));
+        }
+        let query = format!("%{}%", query.clone().unwrap());
+
+        let filter = front.like(query.clone()).or(back.like(query.clone()));
+
+        Box::new(filter)
+    }
+
+    pub fn get_all(
+        usr_id: String,
+        items_number: i32,
+        offset: i32,
+        query: Option<String>,
+    ) -> Vec<Self> {
         let connection = &mut establish_connection();
 
         use super::schema::ankis::dsl::*;
 
         ankis
-            .filter(user_id.eq(usr_id))
+            .filter(user_id.eq(&usr_id))
+            .filter(Self::get_query_filter(&usr_id, &query))
             .order(created_at.desc())
             .limit(items_number.into())
             .offset(offset.into())
@@ -57,13 +85,14 @@ impl Anki {
             .unwrap_or(Vec::new())
     }
 
-    pub fn get_total(usr_id: String) -> i32 {
+    pub fn get_total(usr_id: String, query: Option<String>) -> i32 {
         let connection = &mut establish_connection();
 
         use super::schema::ankis::dsl::*;
 
         ankis
-            .filter(user_id.eq(usr_id))
+            .filter(user_id.eq(&usr_id))
+            .filter(Self::get_query_filter(&usr_id, &query))
             .count()
             .get_result(connection)
             .unwrap_or(0) as i32
@@ -149,14 +178,15 @@ impl Anki {
         Self::get_by_id(anki_id).ok_or(diesel::result::Error::NotFound)
     }
 
-    pub fn load_round(usr_id: String) -> Vec<Self> {
+    pub fn load_round(usr_id: String, query: Option<String>) -> Vec<Self> {
         let connection = &mut establish_connection();
 
         use super::schema::ankis::dsl::*;
 
         ankis
-            .filter(user_id.eq(usr_id))
-            .order((interval.asc(), correct.asc()))
+            .filter(user_id.eq(&usr_id))
+            .filter(Self::get_query_filter(&usr_id, &query))
+            .order((interval.asc(), correct.asc(), incorrect.asc()))
             .limit(10)
             .load::<Self>(connection)
             .unwrap_or(Vec::new())

@@ -40,6 +40,7 @@ export type AnkiGql = {
 
 export type Me = {
   __typename?: 'Me'
+  canUseAI: Scalars['Boolean']['output']
   email: Scalars['String']['output']
   id: Scalars['String']['output']
 }
@@ -84,6 +85,15 @@ export type QueryRoot = {
 export type QueryRootAnkisArgs = {
   itemsNum?: InputMaybe<Scalars['Int']['input']>
   offset?: InputMaybe<Scalars['Int']['input']>
+  query?: InputMaybe<Scalars['String']['input']>
+}
+
+export type QueryRootAnkisRoundArgs = {
+  query?: InputMaybe<Scalars['String']['input']>
+}
+
+export type QueryRootAnkisTotalArgs = {
+  query?: InputMaybe<Scalars['String']['input']>
 }
 
 export type QueryRootTranslationRequestArgs = {

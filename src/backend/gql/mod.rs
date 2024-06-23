@@ -28,7 +28,7 @@ impl QueryRoot {
 
         let user = ctx.user.as_ref().unwrap();
 
-        Ok(Me::new(&user.id, &user.email))
+        Ok(Me::new(&user.id, &user.email, user.can_use_ai))
     }
 
     fn texts(ctx: &GraphQLContext) -> FieldResult<Vec<TextGQL>> {
@@ -49,6 +49,7 @@ impl QueryRoot {
         ctx: &GraphQLContext,
         items_num: Option<i32>,
         offset: Option<i32>,
+        query: Option<String>,
     ) -> FieldResult<Vec<AnkiGQL>> {
         check_user(ctx)?;
 
@@ -58,28 +59,29 @@ impl QueryRoot {
             user.id.to_string(),
             items_num.unwrap_or(10),
             offset.unwrap_or(0),
+            query,
         );
         let ankis_gql = ankis.iter().map(AnkiGQL::from_db).collect::<Vec<AnkiGQL>>();
 
         Ok(ankis_gql)
     }
 
-    fn ankis_total(ctx: &GraphQLContext) -> FieldResult<i32> {
+    fn ankis_total(ctx: &GraphQLContext, query: Option<String>) -> FieldResult<i32> {
         check_user(ctx)?;
 
         let user = ctx.user.as_ref().unwrap();
 
-        let ankis_total = Anki::get_total(user.id.to_string());
+        let ankis_total = Anki::get_total(user.id.to_string(), query);
 
         Ok(ankis_total)
     }
 
-    fn ankis_round(ctx: &GraphQLContext) -> FieldResult<Vec<AnkiGQL>> {
+    fn ankis_round(ctx: &GraphQLContext, query: Option<String>) -> FieldResult<Vec<AnkiGQL>> {
         check_user(ctx)?;
 
         let user = ctx.user.as_ref().unwrap();
 
-        let ankis = Anki::load_round(user.id.to_string());
+        let ankis = Anki::load_round(user.id.to_string(), query);
         let ankis_gql = ankis.iter().map(AnkiGQL::from_db).collect::<Vec<AnkiGQL>>();
 
         Ok(ankis_gql)
@@ -91,6 +93,10 @@ impl QueryRoot {
         current_language: String,
     ) -> FieldResult<String> {
         check_user(ctx)?;
+
+        if !ctx.user.as_ref().unwrap().can_use_ai {
+            return Err("用戶無法使用 AI".into());
+        }
 
         let translation_request = TranslationRequest::new(&content, &current_language);
 

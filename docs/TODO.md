@@ -2,7 +2,6 @@
 
 ## Tasks
 
-- Add tooltip
 - Add simplified chinese script
 - Pass manager via context
 - Persist config in records (which subpanels are displayed)
@@ -17,7 +16,6 @@
 
 ## Backend
 
-- Add anki support
 - Sync stats
 - Remove offline records saving support
 

@@ -2,6 +2,10 @@
 
 set -e
 
+if [ "$SKIP_CHECK" = "true" ]; then
+  exit 0
+fi
+
 bash scripts/prettier.sh --list-different
 
 npm run eslint

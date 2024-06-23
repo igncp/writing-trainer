@@ -8,12 +8,12 @@ type 類型_解析發音 = (文字: string, langOpts?: T_LangOpts) => string
 type T_OnPracticeBackspaceFormat = (practiceValue: string) => string
 
 type T_CommonHandleWritingKeyDown = (
-  opts: Parameters<類型_語言UI處理程序['處理寫鍵按下']>[0],
+  opts: Parameters<類型_語言UI處理程序['handleKeyDown']>[0],
   opts2: {
     onPracticeBackspaceFormat?: T_OnPracticeBackspaceFormat
     解析發音?: 類型_解析發音
   },
-) => ReturnType<類型_語言UI處理程序['處理寫鍵按下']>
+) => ReturnType<類型_語言UI處理程序['handleKeyDown']>
 
 const 預設解析發音: 類型_解析發音 = 文字 => 文字.toLowerCase()
 

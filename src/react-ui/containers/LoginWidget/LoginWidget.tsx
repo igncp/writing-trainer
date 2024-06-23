@@ -1,5 +1,6 @@
 import Button from '#/react-ui/components/button/button'
 import { backendClient } from '#/react-ui/lib/backendClient'
+import { TOOLTIP_ID } from '#/utils/tooltip'
 import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -17,7 +18,8 @@ const LoginWidget = () => {
     <>
       <div
         className="flex items-center justify-center"
-        title={t('auth.backendActive')}
+        data-tooltip-content={t('auth.backendActive')}
+        data-tooltip-id={TOOLTIP_ID}
       >
         <div
           className={[
@@ -28,7 +30,9 @@ const LoginWidget = () => {
       </div>
       {isLoggedIn ? (
         <>
-          <span className="ml-[12px]">{t('auth.alreadyLoggedIn')}</span>
+          <span className="ml-[12px] flex items-center justify-center">
+            {t('auth.alreadyLoggedIn')}
+          </span>
           <Button
             className="ml-[12px]"
             onClick={() => {

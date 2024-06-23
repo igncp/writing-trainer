@@ -1,5 +1,6 @@
 import { useMainContext } from '#/react-ui/containers/main-context'
 import { backendClient } from '#/react-ui/lib/backendClient'
+import { TOOLTIP_ID } from '#/utils/tooltip'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaSpinner } from 'react-icons/fa'
@@ -17,12 +18,14 @@ const TranslateButton = ({ language, text, ...rest }: Props) => {
   const [translation, setTranslation] = useState<[string, string] | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
-  const { isLoggedIn } = mainContext.state
+  const { canUseAI } = mainContext.state
 
   return (
     <>
       <Button
-        disabled={!isLoggedIn}
+        data-tooltip-content={canUseAI ? '' : t('option.contactUse')}
+        data-tooltip-id={TOOLTIP_ID}
+        disabled={!canUseAI}
         onClick={() => {
           setIsLoading(true)
 
@@ -35,7 +38,6 @@ const TranslateButton = ({ language, text, ...rest }: Props) => {
               setIsLoading(false)
             })
         }}
-        title={isLoggedIn ? '' : t('option.loginUse')}
         {...rest}
       >
         <span className="inline-flex flex-row items-center gap-[4px]">

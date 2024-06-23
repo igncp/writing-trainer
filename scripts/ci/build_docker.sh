@@ -3,6 +3,7 @@
 set -e
 
 if [ ! -d out ]; then
+  rm -rf .next
   NODE_ENV=production \
     npm run next:build
 fi

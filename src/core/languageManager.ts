@@ -25,11 +25,15 @@ class CurrentCharObj {
 
 class LanguageManager {
   private currentLanguageHandlerId: LanguageDefinition['id'] | null = null
-  private 語言列表: LanguageHandler[] = []
+  private langsList: LanguageHandler[] = []
 
   public clear() {
-    this.語言列表.length = 0
+    this.langsList.length = 0
     this.currentLanguageHandlerId = null
+  }
+
+  public getAvailableLangs() {
+    return this.getLangsIds()
   }
 
   public getCurrentLanguageHandler() {
@@ -37,19 +41,23 @@ class LanguageManager {
       return null
     }
 
-    const languagesIds = this.取得語言標識符()
+    const languagesIds = this.getLangsIds()
 
     const idx = languagesIds.indexOf(this.currentLanguageHandlerId)
 
-    return idx !== -1 ? this.語言列表[idx] : null
+    return idx !== -1 ? this.langsList[idx] : null
+  }
+
+  private getLangsIds() {
+    return this.langsList.map(語言 => 語言.getId())
   }
 
   public getLanguageHandler(id: string) {
-    return this.語言列表.find(語言 => 語言.getId() === id) ?? null
+    return this.langsList.find(語言 => 語言.getId() === id) ?? null
   }
 
   public registerLanguage(語言: LanguageHandler) {
-    this.語言列表.push(語言)
+    this.langsList.push(語言)
   }
 
   public setCurrentLanguageHandler(v: string) {
@@ -57,15 +65,7 @@ class LanguageManager {
   }
 
   public unregisterLanguage(langId: string) {
-    this.語言列表 = this.語言列表.filter(語言 => 語言.getId() !== langId)
-  }
-
-  public 取得可用語言() {
-    return this.取得語言標識符()
-  }
-
-  private 取得語言標識符() {
-    return this.語言列表.map(語言 => 語言.getId())
+    this.langsList = this.langsList.filter(語言 => 語言.getId() !== langId)
   }
 }
 

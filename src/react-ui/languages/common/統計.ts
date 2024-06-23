@@ -95,7 +95,7 @@ export const 儲存成功字元 = async (字元: string) =>
 export const 儲存失敗字元 = async (字元: string) =>
   儲存字元(字元, 字元類型.失敗)
 
-export const 取得字元數 = async () => {
+export const getCharsCount = async () => {
   const getCount = async (charType: 字元類型): Promise<number | undefined> => {
     const 資料庫 = await 取得資料庫()
 
@@ -129,7 +129,7 @@ export const 取得字元數 = async () => {
   }
 }
 
-export const 刪除資料庫 = async (): Promise<void> => {
+export const deleteDatabase = async (): Promise<void> => {
   await (async () => {
     const 資料庫 = await 取得資料庫()
 

@@ -8,6 +8,8 @@ use juniper::GraphQLObject;
 pub struct Me {
     id: String,
     email: String,
+    #[graphql(name = "canUseAI")]
+    can_use_ai: bool,
 }
 
 #[derive(GraphQLObject)]
@@ -41,10 +43,11 @@ pub struct TranslationRequest {
 }
 
 impl Me {
-    pub fn new(id: &str, email: &str) -> Self {
+    pub fn new(id: &str, email: &str, can_use_ai: bool) -> Self {
         Self {
             id: id.to_string(),
             email: email.to_string(),
+            can_use_ai,
         }
     }
 }

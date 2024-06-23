@@ -35,7 +35,7 @@ class LanguageHandler {
     charsToRemove: string[]
     text: string
   }) {
-    const specialChars = this.取得特殊字符()
+    const specialChars = this.getSpecialChars()
     const allCharsToRemove = charsToRemove.concat(specialChars)
 
     return text
@@ -105,7 +105,7 @@ class LanguageHandler {
     return this.language.name
   }
 
-  public 取得特殊字符() {
+  public getSpecialChars() {
     return 特殊字元.concat(this.extraSpecialChars)
   }
 }

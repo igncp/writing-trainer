@@ -71,6 +71,7 @@ async fn google_oauth_handler(
         let user_data = User {
             id: id.to_string(),
             email: email.to_owned(),
+            can_use_ai: false,
         };
 
         user_id = user_data.id.to_string();

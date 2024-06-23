@@ -1,4 +1,5 @@
 import { Record } from '#/core'
+import { TOOLTIP_ID } from '#/utils/tooltip'
 import { Fragment, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -7,20 +8,27 @@ import Button from '../../../components/button/button'
 
 type CellProps = {
   bold?: boolean
+  className?: string
   label?: string
-  title?: string
+  tooltip?: string
   value: string
 }
 
-const Cell = ({ bold, label, title, value }: CellProps) => {
+const Cell = ({ bold, className, label, tooltip, value }: CellProps) => {
   return (
     <div
+      className={className}
       style={{
         display: 'inline-block',
         marginRight: 30,
         ...(bold ? { fontWeight: 700 } : {}),
       }}
-      {...(title ? { title } : {})}
+      {...(tooltip
+        ? {
+            'data-tooltip-content': tooltip,
+            'data-tooltip-id': TOOLTIP_ID,
+          }
+        : {})}
     >
       {label && (
         <Fragment>
@@ -72,9 +80,9 @@ const RecordsList = ({
   songs,
 }: 條目清單屬性) => {
   const { t } = useTranslation()
-  const [過濾內容, 更新過濾內容] = useState<string>('')
-  const 過濾條目列表 = Record.filterByText({
-    filterText: 過濾內容,
+  const [filterText, setFilterText] = useState<string>('')
+  const filteredList = Record.filterByText({
+    filterText,
     records,
   })
 
@@ -85,11 +93,11 @@ const RecordsList = ({
           <TextInput
             autoFocus
             onChange={e => {
-              更新過濾內容(e.target.value)
+              setFilterText(e.target.value)
             }}
             onEnterPress={() => {
-              if (過濾條目列表.length > 0) {
-                onRecordLoad(過濾條目列表[0])
+              if (filteredList.length > 0) {
+                onRecordLoad(filteredList[0])
               }
             }}
             placeholder="Filter by name and language"
@@ -97,50 +105,69 @@ const RecordsList = ({
           />
         </div>
       )}
-      <div style={{ maxHeight: 300, overflow: 'auto' }}>
-        {過濾條目列表.map(過濾條目 => {
-          const { createdOn, id, lastLoadedOn, name } = 過濾條目
+      <div style={{ maxHeight: 'calc(100vh - 150px)', overflow: 'auto' }}>
+        {filteredList.map(filteredItem => {
+          const { createdOn, id, lastLoadedOn, name } = filteredItem
 
           return (
-            <div key={id} style={{ padding: 10 }}>
-              <Cell label="Name" value={name} />
-              <Cell title="Created" value={formatRecordDate(createdOn)} />
-              <Cell title="Loaded" value={formatRecordDate(lastLoadedOn)} />
-              <Cell bold title="Language" value={過濾條目.language} />
-              {過濾條目.link && (
+            <div
+              className="flex flex-row flex-wrap justify-between gap-[16px] odd:bg-[#333]"
+              key={id}
+              style={{ padding: 10 }}
+            >
+              <Cell label={t('record.name', 'Name')} value={name} />
+              <Cell
+                tooltip={t('record.created', 'Created')}
+                value={formatRecordDate(createdOn)}
+              />
+              <Cell
+                tooltip={t('record.loaded', 'Loaded')}
+                value={formatRecordDate(lastLoadedOn)}
+              />
+              <Cell
+                bold
+                tooltip={t('record.language', 'Language')}
+                value={filteredItem.language}
+              />
+              {filteredItem.link && (
                 <a
-                  href={過濾條目.link}
+                  href={filteredItem.link}
                   style={{ marginRight: 15 }}
                   target="_blank"
-                  title={過濾條目.link}
+                  {...(filteredItem.link && {
+                    'data-tooltip-content': filteredItem.link,
+                    'data-tooltip-id': TOOLTIP_ID,
+                  })}
                 >
                   {t('record.link')}
                 </a>
               )}
-              <Button
-                disabled={disabled}
-                onClick={() => {
-                  onRecordLoad(過濾條目)
-                }}
-              >
-                {t('record.load')}
-              </Button>
-              <Button
-                disabled={disabled}
-                onClick={() => {
-                  onRecordEdit(過濾條目)
-                }}
-              >
-                {t('record.edit')}
-              </Button>
-              <Button
-                disabled={disabled}
-                onClick={() => {
-                  onRecordRemove(過濾條目)
-                }}
-              >
-                {t('record.remove')}
-              </Button>
+              <div className="flex flex-row gap-[16px]">
+                <Button
+                  disabled={disabled}
+                  onClick={() => {
+                    onRecordLoad(filteredItem)
+                  }}
+                >
+                  {t('record.load')}
+                </Button>
+                <Button
+                  disabled={disabled}
+                  onClick={() => {
+                    onRecordEdit(filteredItem)
+                  }}
+                >
+                  {t('record.edit')}
+                </Button>
+                <Button
+                  disabled={disabled}
+                  onClick={() => {
+                    onRecordRemove(filteredItem)
+                  }}
+                >
+                  {t('record.remove')}
+                </Button>
+              </div>
             </div>
           )
         })}
@@ -151,16 +178,23 @@ const RecordsList = ({
             : `https://www.youtube.com/watch?v=${video}`
 
           return (
-            <div key={name + artist} style={{ padding: 10 }}>
+            <div
+              className="flex flex-row flex-wrap justify-between gap-[16px] odd:bg-[#333]"
+              key={name + artist}
+              style={{ padding: 10 }}
+            >
               <Cell label={t('record.name')} value={name} />
-              <Cell title={t('record.artist')} value={artist} />
-              <Cell bold title={t('record.lang')} value={lang} />
+              <Cell tooltip={t('record.artist')} value={artist} />
+              <Cell bold tooltip={t('record.lang')} value={lang} />
               {video && (
                 <a
                   href={影片連結網址}
                   style={{ marginRight: 15 }}
                   target="_blank"
-                  title={影片連結網址}
+                  {...(影片連結網址 && {
+                    'data-tooltip-content': 影片連結網址,
+                    'data-tooltip-id': TOOLTIP_ID,
+                  })}
                 >
                   {t('record.video')}
                 </a>

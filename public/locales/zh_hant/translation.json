@@ -1,11 +1,27 @@
 {
   "anki": {
+    "addNew": "添新",
+    "backSide": "背面",
+    "close": "關閉",
+    "copyChars": "複製文字字元",
+    "copyPronunciations": "複製文字發音",
     "correct": "正確的",
+    "deleteFailed": "刪除失敗",
     "displayBack": "顯示背面",
+    "displayList": "顯示清單",
     "end": "結束",
+    "frontSide": "前面",
+    "list": "清單",
+    "loadFailed": "載入失敗",
+    "nextPage": "下一頁",
     "noMore": "沒有更多了",
     "num": "第",
+    "previousPage": "上一頁",
     "round": "回合",
+    "save": "保存",
+    "saveFailed": "保存失敗",
+    "startRound": "開始 Anki 回合",
+    "togglePronunciation": "切換顯示發音",
     "toggleTypes": "切換顯示兩種字元類型",
     "wrong": "錯誤的"
   },
@@ -14,6 +30,10 @@
     "backendActive": "後端活動",
     "login": "登入",
     "logout": "登出"
+  },
+  "help": {
+    "how": "如何使用 Writing Trainer",
+    "howText1": "Writing Trainer 是一個幫助你學習外語的工具。"
   },
   "lang": {
     "cantonese": "廣東話",
@@ -25,7 +45,7 @@
     "automaticSplitText": "自動分割文字行",
     "changeToSimplified": "轉換為簡體字",
     "changeToTraditional": "轉換為繁體字",
-    "loginUse": "登入使用",
+    "contactUse": "聯繫我們",
     "noTones": "不要使用聲調",
     "pronunciation": "發音",
     "reductive": "還原論者",
@@ -33,7 +53,10 @@
     "translateAI": "AI 翻譯",
     "translateGoogle": "Google 翻譯",
     "useTones": "使用聲調",
-    "useTonesColors": "使用聲調的顏色"
+    "useTonesColorsAlways": "總是使用聲調顏色",
+    "useTonesColorsCurrent": "只在當前文本中使用聲調顏色",
+    "useTonesColorsError": "僅在錯誤時使用聲調顏色",
+    "useTonesColorsNever": "從不使用聲調顏色"
   },
   "panel": {
     "addAnkis": "添加 Ankis",
@@ -66,17 +89,20 @@
   "record": {
     "artist": "藝術家",
     "close": "關閉",
+    "created": "創建",
     "edit": "編輯",
     "lang": "語言",
+    "language": "語言",
     "link": "連結",
     "list": "列表",
     "load": "載入",
+    "loaded": "載入",
     "name": "名稱",
     "remove": "移除",
     "save": "儲存",
     "video": "視頻"
   },
   "site": {
-    "title": "Writing Trainer"
+    "title": "語言學習工具"
   }
 }

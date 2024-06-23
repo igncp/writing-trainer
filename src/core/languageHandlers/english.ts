@@ -7,7 +7,7 @@ const 轉換為字元對象列表: LanguageHandler['轉換為字元對象列表'
   charsToRemove,
   text,
 }) => {
-  const specialChars = englishHandler.取得特殊字符() // eslint-disable-line @typescript-eslint/no-use-before-define
+  const specialChars = englishHandler.getSpecialChars() // eslint-disable-line @typescript-eslint/no-use-before-define
   const allCharsToRemove = specialChars.concat(charsToRemove).concat([' '])
 
   const charsObjsList: T_CharObj[] = []

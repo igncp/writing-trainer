@@ -12,6 +12,8 @@ const noop = () => {}
 export type T_ButtonProps = {
   children: ReactNode
   className?: string
+  'data-tooltip-content'?: string
+  'data-tooltip-id'?: string
   disabled?: boolean
   href?: string
   onClick?: () => void
@@ -33,6 +35,7 @@ const Button = ({
   style,
   tabIndex,
   title,
+  ...props
 }: T_ButtonProps) => {
   const { bind, hovered } = useHover()
   const finalStyle = {
@@ -56,6 +59,8 @@ const Button = ({
     return (
       <a
         className={className}
+        data-tooltip-content={props['data-tooltip-content']}
+        data-tooltip-id={props['data-tooltip-id']}
         href={href}
         rel="noopener noreferrer"
         style={finalStyle}
@@ -72,6 +77,8 @@ const Button = ({
     <button
       {...bind}
       className={className}
+      data-tooltip-content={props['data-tooltip-content']}
+      data-tooltip-id={props['data-tooltip-id']}
       onClick={disabled ? noop : onClick}
       onDoubleClick={disabled ? noop : onDoubleClick}
       role="button"

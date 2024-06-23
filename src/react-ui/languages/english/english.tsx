@@ -6,7 +6,7 @@ import { 類型_語言UI處理程序, T_LangOpts } from '../types'
 import LinksBlock from './LinksBlock/LinksBlock'
 import OptionsBlock from './OptionsBlock'
 
-const 處理寫鍵按下: 類型_語言UI處理程序['處理寫鍵按下'] = params => {
+const handleKeyDown: 類型_語言UI處理程序['handleKeyDown'] = params => {
   commonHandleWritingKeyDown(params, {})
 }
 
@@ -16,14 +16,14 @@ const getLangOpts = () => langOpts
 
 const saveLangOptss = () => {}
 
-const 語言UI處理程序: 類型_語言UI處理程序 = {
+const languageUIController: 類型_語言UI處理程序 = {
   getLangOpts,
   getLinksBlock: () => LinksBlock,
   getOptionsBlock: () => OptionsBlock,
+  handleKeyDown,
   languageHandler: englishHandler,
   saveLangOptss,
   shouldAllCharsHaveSameWidth: false,
-  處理寫鍵按下,
 }
 
 let _test:
@@ -41,4 +41,4 @@ if (__TEST__) {
 
 export { _test }
 
-export default 語言UI處理程序
+export default languageUIController

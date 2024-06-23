@@ -1,11 +1,27 @@
 {
   "anki": {
+    "addNew": "新しい Anki カードを追加",
+    "backSide": "背面",
+    "close": "關閉",
+    "copyChars": "複製文字字元",
+    "copyPronunciations": "複製文字發音",
     "correct": "正しい",
+    "deleteFailed": "刪除失敗",
     "displayBack": "カードの裏面を表示する",
+    "displayList": "顯示清單",
     "end": "終了",
+    "frontSide": "前面",
+    "list": "清單",
+    "loadFailed": "載入失敗",
+    "nextPage": "次のページ",
     "noMore": "これ以上ありません",
     "num": "番号",
+    "previousPage": "前のページ",
     "round": "ラウンド",
+    "save": "保存",
+    "saveFailed": "保存失敗",
+    "startRound": "開始 Anki 回合",
+    "togglePronunciation": "切換顯示發音",
     "toggleTypes": "カードのタイプを切り替える",
     "wrong": "間違った"
   },
@@ -14,6 +30,10 @@
     "backendActive": "バックエンドがアクティブです",
     "login": "ログイン",
     "logout": "ログアウト"
+  },
+  "help": {
+    "how": "Writing Trainer の使い方",
+    "howText1": "Writing Trainer は、言語学習の向上に役立ちます。"
   },
   "lang": {
     "cantonese": "広東語",
@@ -25,7 +45,7 @@
     "automaticSplitText": "テストを自動的に分割する",
     "changeToSimplified": "繁体字に変換する",
     "changeToTraditional": "簡体字に変換する",
-    "loginUse": "ログインして使用する",
+    "contactUse": "お問い合わせ",
     "noTones": "声調なし",
     "pronunciation": "発音",
     "reductive": "簡約的",
@@ -33,7 +53,10 @@
     "translateAI": "AIを使って翻訳する",
     "translateGoogle": "Googleを使って翻訳する",
     "useTones": "声調を使用する",
-    "useTonesColors": "声調の色を使用する"
+    "useTonesColorsAlways": "常に色を使用する",
+    "useTonesColorsCurrent": "現在の色を使用する",
+    "useTonesColorsError": "間違いの色を使用する",
+    "useTonesColorsNever": "色を使用しない"
   },
   "panel": {
     "addAnkis": "Ankiを追加",
@@ -66,17 +89,20 @@
   "record": {
     "artist": "アーティスト",
     "close": "閉じる",
+    "created": "作成",
     "edit": "編集",
     "lang": "言語",
+    "language": "言語",
     "link": "リンク",
     "list": "リスト",
     "load": "読み込み",
+    "loaded": "読み込み済み",
     "name": "名前",
     "remove": "削除",
     "save": "保存",
     "video": "ビデオ"
   },
   "site": {
-    "title": "Writing Trainer"
+    "title": "言語学習者のためのウェブサイト"
   }
 }

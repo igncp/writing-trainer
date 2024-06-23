@@ -1,6 +1,6 @@
 module.exports = {
   contextSeparator: '_',
-  createOldCatalogs: true,
+  createOldCatalogs: false,
   customValueTemplate: null,
   defaultNamespace: 'translation',
   defaultValue: '',

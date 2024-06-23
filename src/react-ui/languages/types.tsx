@@ -8,9 +8,15 @@ export type T_LangOpts = { [k: string]: unknown }
 export type T_LinksBlock = (選項: {
   children?: ReactNode
   fragments: T_Fragments
+  updateFragments: (list: T_Fragments) => void
   文字: string
-  更改fragments: (list: T_Fragments) => void
 }) => ReactNode
+
+export type T_GetToneColor = (
+  char: 'current' | 'current-error' | 'other',
+  選項: T_LangOpts,
+  字元: T_CharObj | null,
+) => string | undefined
 
 export type T_OptionsBlock = (props: {
   langOpts: T_LangOpts
@@ -27,7 +33,7 @@ export type T_getCurrentCharObjFromPractice = (
   t?: string,
 ) => CurrentCharObj | null
 
-type T_處理寫鍵按下 = (opts: {
+type T_HandleKeyDown = (opts: {
   charsObjsList: T_CharObj[]
   getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice
   langOpts: T_LangOpts
@@ -56,15 +62,12 @@ export interface 類型_語言UI處理程序 {
   getLangOpts: () => T_LangOpts
   getLinksBlock: () => T_LinksBlock
   getOptionsBlock: () => T_OptionsBlock
+  getToneColor?: T_GetToneColor
+  handleKeyDown: T_HandleKeyDown
   languageHandler: LanguageHandler
   onBlur?: T_BlurHandler
   saveLangOptss: (o: T_LangOpts) => void
   shouldAllCharsHaveSameWidth: boolean
   tonesNumber?: number
-  取得錯誤顏色?: (
-    選項: T_LangOpts,
-    字元: CurrentCharObj | null,
-  ) => string | undefined
-  處理寫鍵按下: T_處理寫鍵按下
   處理清除事件?: (處理程序: 類型_語言UI處理程序) => void
 }

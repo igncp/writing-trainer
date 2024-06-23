@@ -34,11 +34,11 @@ beforeEach(() => {
 
 describe('registerLanguage', () => {
   it('sets a new language', () => {
-    expect(languageManager.取得可用語言()).toEqual([])
+    expect(languageManager.getAvailableLangs()).toEqual([])
 
     languageManager.registerLanguage(dummyHandlerA)
 
-    expect(languageManager.取得可用語言()).toEqual([dummyHandlerA.getId()])
+    expect(languageManager.getAvailableLangs()).toEqual([dummyHandlerA.getId()])
   })
 })
 
@@ -47,7 +47,7 @@ describe('clear', () => {
     languageManager.registerLanguage(dummyHandlerA)
     languageManager.setCurrentLanguageHandler(dummyHandlerA.getId())
 
-    expect(languageManager.取得可用語言()).toEqual([dummyHandlerA.getId()])
+    expect(languageManager.getAvailableLangs()).toEqual([dummyHandlerA.getId()])
 
     expect(languageManager.getCurrentLanguageHandler()!.getId()).toEqual(
       dummyHandlerA.getId(),
@@ -56,13 +56,13 @@ describe('clear', () => {
     languageManager.clear()
 
     expect(languageManager.getCurrentLanguageHandler()).toEqual(null)
-    expect(languageManager.取得可用語言()).toEqual([])
+    expect(languageManager.getAvailableLangs()).toEqual([])
   })
 })
 
 describe('getCurrentLanguageHandler', () => {
   it('returns null when no handlers', () => {
-    expect(languageManager.取得可用語言()).toEqual([])
+    expect(languageManager.getAvailableLangs()).toEqual([])
 
     expect(languageManager.getCurrentLanguageHandler()).toEqual(null)
   })
@@ -87,14 +87,14 @@ describe('unregisterLanguage', () => {
     languageManager.registerLanguage(dummyHandlerA)
     languageManager.registerLanguage(dummyHandlerB)
 
-    expect(languageManager.取得可用語言()).toEqual([
+    expect(languageManager.getAvailableLangs()).toEqual([
       dummyHandlerA.getId(),
       dummyHandlerB.getId(),
     ])
 
     languageManager.unregisterLanguage(dummyHandlerA.getId())
 
-    expect(languageManager.取得可用語言()).toEqual([dummyHandlerB.getId()])
+    expect(languageManager.getAvailableLangs()).toEqual([dummyHandlerB.getId()])
   })
 })
 

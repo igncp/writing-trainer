@@ -24,8 +24,8 @@ class LanguageUIManager {
 
     this.idToLanguageUIHandlerMap = this.handlers.reduce<
       LanguageUIManager['idToLanguageUIHandlerMap']
-    >((acc, 語言UI處理程序) => {
-      acc[語言UI處理程序.languageHandler.getId()] = 語言UI處理程序
+    >((acc, languageUIController) => {
+      acc[languageUIController.languageHandler.getId()] = languageUIController
 
       return acc
     }, {})
@@ -37,35 +37,35 @@ class LanguageUIManager {
     return this.handlers[0]!.languageHandler.getId()
   }
 
-  public init() {
-    this.manager.clear()
-
-    this.handlers.forEach(語言UI處理程序 => {
-      this.manager.registerLanguage(語言UI處理程序.languageHandler)
-    })
-
-    const defaultLanguage = this.getDefaultLanguage()
-
-    this.manager.setCurrentLanguageHandler(defaultLanguage)
-  }
-
-  public 獲取語言UI處理程序() {
+  public getLanguageUIController() {
     const languageHandler = this.manager.getCurrentLanguageHandler()
 
     if (!languageHandler) {
       throw new Error('No language handler set')
     }
 
-    const 語言UI處理程序 =
+    const languageUIController =
       this.idToLanguageUIHandlerMap[languageHandler.getId()]
 
-    if (!語言UI處理程序 as unknown) {
+    if (!languageUIController as unknown) {
       throw new Error(
         `No UI language handler for language: ${languageHandler.getId()}`,
       )
     }
 
-    return 語言UI處理程序
+    return languageUIController
+  }
+
+  public init() {
+    this.manager.clear()
+
+    this.handlers.forEach(languageUIController => {
+      this.manager.registerLanguage(languageUIController.languageHandler)
+    })
+
+    const defaultLanguage = this.getDefaultLanguage()
+
+    this.manager.setCurrentLanguageHandler(defaultLanguage)
   }
 }
 

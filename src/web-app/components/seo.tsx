@@ -1,5 +1,4 @@
 import { Helmet } from 'react-helmet'
-import { useTranslation } from 'react-i18next'
 
 type IProps = {
   description: string
@@ -10,7 +9,6 @@ type IProps = {
 
 function SEO({ description = '', lang = 'en', meta = [], title }: IProps) {
   const metaDescription = description || ''
-  const { t } = useTranslation()
 
   return (
     <Helmet
@@ -48,7 +46,7 @@ function SEO({ description = '', lang = 'en', meta = [], title }: IProps) {
         },
       ].concat(meta)}
       title={title}
-      titleTemplate={`%s | ${t('site.title', 'Writing Trainer')}`}
+      titleTemplate={`%s`}
     />
   )
 }

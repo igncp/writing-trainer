@@ -1,11 +1,27 @@
 {
   "anki": {
+    "addNew": "Add new",
+    "backSide": "Back",
+    "close": "Close",
+    "copyChars": "Copy Characters",
+    "copyPronunciations": "Copy Pronunciations",
     "correct": "Correct",
+    "deleteFailed": "Failed to delete anki",
     "displayBack": "Show Back",
+    "displayList": "Display List",
     "end": "Finish",
+    "frontSide": "Front",
+    "list": "List",
+    "loadFailed": "Failed to load anki",
+    "nextPage": "Next page",
     "noMore": "There are no more",
     "num": "Num.",
+    "previousPage": "Previous page",
     "round": "Anki Round",
+    "save": "Save",
+    "saveFailed": "Failed to save anki",
+    "startRound": "Start Round",
+    "togglePronunciation": "Toggle Pronunciation",
     "toggleTypes": "Toggle displaying both types",
     "wrong": "Wrong"
   },
@@ -15,6 +31,10 @@
     "login": "Log In",
     "logout": "Log Out"
   },
+  "help": {
+    "how": "How to use the Writing Trainer?",
+    "howText1": "The Writing Trainer can help you improve in learning languages."
+  },
   "lang": {
     "cantonese": "Cantonese",
     "english": "English",
@@ -23,9 +43,9 @@
   },
   "option": {
     "automaticSplitText": "Automatically Split Text",
-    "changeToSimplified": "Change to Simplified Characters",
-    "changeToTraditional": "Change to Traditional Characters",
-    "loginUse": "Please log in to use this feature",
+    "changeToSimplified": "Simplified Characters",
+    "changeToTraditional": "Traditional Characters",
+    "contactUse": "Contact us to use this feature.",
     "noTones": "No Tones",
     "pronunciation": "Pronunciation",
     "reductive": "Reductive",
@@ -33,7 +53,10 @@
     "translateAI": "Translate AI",
     "translateGoogle": "Google Translate",
     "useTones": "Use Tones",
-    "useTonesColors": "Use Tones Colors"
+    "useTonesColorsAlways": "Always use tones colors",
+    "useTonesColorsCurrent": "Use tones colors on current",
+    "useTonesColorsError": "Use tones colors on error",
+    "useTonesColorsNever": "Never use tones colors"
   },
   "panel": {
     "addAnkis": "Add Ankis",
@@ -66,11 +89,14 @@
   "record": {
     "artist": "Artist",
     "close": "Close",
+    "created": "Created",
     "edit": "Edit",
     "lang": "Language",
+    "language": "Language",
     "link": "Link",
     "list": "List",
     "load": "Load",
+    "loaded": "Loaded",
     "name": "Name",
     "remove": "Remove",
     "save": "Save",

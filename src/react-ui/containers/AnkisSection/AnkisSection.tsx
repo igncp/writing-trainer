@@ -6,13 +6,13 @@ import {
   changeToTraditional,
 } from '#/react-ui/languages/common/conversion'
 import { backendClient } from '#/react-ui/lib/backendClient'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaSpinner, FaTrashAlt } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 
+import TextArea from '../../components/TextArea/TextArea'
 import Button from '../../components/button/button'
-import 文字區 from '../../components/文字區/文字區'
 
 export enum AnkisMode {
   Add = 'add',
@@ -41,22 +41,24 @@ const AnkiRound = ({ ankisRound, setAnkisRound }: AnkisRoundProps) => {
   const currentAnki = ankisRound?.[currentIndex]
 
   return (
-    <div>
+    <div className="flex flex-col gap-[12px]">
       <div>{t('anki.round')}</div>
-      <Button
-        onClick={() => {
-          setAnkisRound(null)
-        }}
-      >
-        {t('anki.end')}
-      </Button>
-      <Button
-        onClick={() => {
-          setShowBothCharsTypes(!showBothCharsTypes)
-        }}
-      >
-        {t('anki.toggleTypes')}
-      </Button>
+      <div className="flex flex-row gap-[12px]">
+        <Button
+          onClick={() => {
+            setAnkisRound(null)
+          }}
+        >
+          {t('anki.end')}
+        </Button>
+        <Button
+          onClick={() => {
+            setShowBothCharsTypes(!showBothCharsTypes)
+          }}
+        >
+          {t('anki.toggleTypes')}
+        </Button>
+      </div>
       <div>
         {currentAnki ? (
           (() => {
@@ -76,7 +78,7 @@ const AnkiRound = ({ ankisRound, setAnkisRound }: AnkisRoundProps) => {
                   }
                 })
                 .catch(() => {
-                  toast.error('Failed to save anki')
+                  toast.error(t('anki.saveFailed'))
                 })
             }
 
@@ -96,15 +98,15 @@ const AnkiRound = ({ ankisRound, setAnkisRound }: AnkisRoundProps) => {
                 <div>
                   {t('anki.num')} {currentIndex + 1} / {ankisRound.length}
                 </div>
-                <div className="whitespace-pre rounded-[4px] border-[1px] border-[white] p-[8px]">
+                <div className="whitespace-pre rounded-[4px] border-[1px] border-[#777] p-[8px] text-[60px]">
                   {front}
                 </div>
                 {isShowingBack ? (
                   <>
-                    <div className="whitespace-pre rounded-[4px] border-[1px] border-[white] p-[8px]">
+                    <div className="overflow-auto whitespace-pre rounded-[4px] border-[1px] border-[#777] p-[8px] text-[30px]">
                       {currentAnki.back}
                     </div>
-                    <div className="flex flex-row">
+                    <div className="flex flex-row justify-start gap-[24px]">
                       <Button onClick={() => onNext(true)}>
                         {t('anki.correct')}
                       </Button>
@@ -133,65 +135,99 @@ const AnkiRound = ({ ankisRound, setAnkisRound }: AnkisRoundProps) => {
 
 const AnkisMain = ({ setMode }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
+  const { t } = useTranslation()
   const [ankis, setAnkis] = useState<Awaited<
     ReturnType<typeof backendClient.getUserAnkis>
   > | null>(null)
+  const timeoutRef = useRef<number | null>(null)
+  const [filter, setFilter] = useState('')
   const [ankisRound, setAnkisRound] = useState<AnkiRoundItem[] | null>(null)
   const [currentPage, setCurrentPage] = useState(0)
   const pageItems = 10
 
   const getAnkis = useCallback(
-    (pageNum: number = currentPage) => {
+    (pageNum: number, query: string, debounce: boolean) => {
       if (ankisRound) return
 
-      setIsLoading(true)
+      const fn = () => {
+        setIsLoading(true)
 
-      backendClient
-        .getUserAnkis(10, pageNum * pageItems)
-        .then(_ankis => {
-          setAnkis(_ankis)
-        })
-        .catch(() => {
-          toast.error('Failed to load ankis')
-        })
-        .finally(() => {
-          setIsLoading(false)
-        })
+        backendClient
+          .getUserAnkis(10, pageNum * pageItems, query)
+          .then(_ankis => {
+            setAnkis(_ankis)
+          })
+          .catch(() => {
+            toast.error(t('anki.loadFailed'))
+          })
+          .finally(() => {
+            setIsLoading(false)
+          })
+      }
+
+      if (debounce) {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current)
+
+        timeoutRef.current = window.setTimeout(fn, 500)
+      } else {
+        fn()
+      }
     },
-    [ankisRound, currentPage],
+    [ankisRound, t],
   )
 
   useEffect(() => {
-    getAnkis()
-  }, [getAnkis])
+    getAnkis(currentPage, filter, true)
+  }, [getAnkis, currentPage, filter])
 
   if (ankisRound) {
     return <AnkiRound ankisRound={ankisRound} setAnkisRound={setAnkisRound} />
   }
 
   return (
-    <div>
-      <div>清單{!!ankis?.total && ` (${ankis.total})`}</div>
-      <Button
-        onClick={() => {
-          setIsLoading(true)
+    <div className="flex flex-col gap-[16px]">
+      <div>
+        {t('anki.list')}
+        {!!ankis?.total && ` (${ankis.total})`}
+      </div>
+      <div className="flex flex-row items-center justify-start gap-[8px]">
+        <input
+          className="h-[24px w-[200px] rounded-[4px] border-[1px] border-[#777] p-[4px]"
+          onChange={e => setFilter(e.target.value)}
+          value={filter}
+        />
+        <button
+          onClick={() => {
+            setFilter('')
+          }}
+        >
+          X
+        </button>
+      </div>
+      <div className="flex flex-row gap-[12px]">
+        <Button
+          onClick={() => {
+            setIsLoading(true)
 
-          backendClient
-            .getAnkisRound()
-            .then(_ankisRound => {
-              setAnkisRound(_ankisRound)
-            })
-            .catch(() => {
-              toast.error('Failed to load ankis round')
-            })
-            .finally(() => {
-              setIsLoading(false)
-            })
-        }}
-      >
-        開始 Anki 回合
-      </Button>
-      <Button onClick={() => setMode(AnkisMode.Add)}>添新</Button>
+            backendClient
+              .getAnkisRound(filter)
+              .then(_ankisRound => {
+                setAnkisRound(_ankisRound)
+              })
+              .catch(() => {
+                toast.error('Failed to load ankis round')
+              })
+              .finally(() => {
+                setIsLoading(false)
+              })
+          }}
+        >
+          {t('anki.startRound')}
+        </Button>
+        <Button onClick={() => setMode(AnkisMode.Add)}>
+          {t('anki.addNew')}
+        </Button>
+      </div>
       {isLoading ? (
         <div>
           <span className="animate-spin">
@@ -224,9 +260,9 @@ const AnkisMain = ({ setMode }: Props) => {
                       id: anki.id,
                       language: '',
                     })
-                    .then(() => getAnkis())
+                    .then(() => getAnkis(currentPage, filter, false))
                     .catch(() => {
-                      toast.error('Failed to delete anki')
+                      toast.error(t('anki.deleteFailed'))
                     })
                     .finally(() => {
                       setIsLoading(false)
@@ -251,7 +287,7 @@ const AnkisMain = ({ setMode }: Props) => {
                   setCurrentPage(currentPage - 1)
                 }}
               >
-                上一頁
+                {t('anki.previousPage')}
               </Button>
               <Button
                 disabled={isLoading || currentPage === 0}
@@ -282,7 +318,7 @@ const AnkisMain = ({ setMode }: Props) => {
                   setCurrentPage(currentPage + 1)
                 }}
               >
-                下一頁
+                {t('anki.nextPage')}
               </Button>
             </div>
           )
@@ -292,6 +328,7 @@ const AnkisMain = ({ setMode }: Props) => {
 }
 
 const AnkisAdd = ({ charsObjsList, language, setMode }: Props) => {
+  const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
   const [frontVal, setFrontVal] = useState('')
   const [backVal, setBackVal] = useState('')
@@ -306,7 +343,9 @@ const AnkisAdd = ({ charsObjsList, language, setMode }: Props) => {
 
   return (
     <div>
-      <Button onClick={() => setMode(AnkisMode.Main)}>顯示清單</Button>
+      <Button onClick={() => setMode(AnkisMode.Main)}>
+        {t('anki.displayList')}
+      </Button>
       <Button
         onClick={() => {
           navigator.clipboard.writeText(
@@ -314,7 +353,7 @@ const AnkisAdd = ({ charsObjsList, language, setMode }: Props) => {
           )
         }}
       >
-        複製文字字元
+        {t('anki.copyChars')}
       </Button>
       <Button
         onClick={() => {
@@ -323,7 +362,7 @@ const AnkisAdd = ({ charsObjsList, language, setMode }: Props) => {
           )
         }}
       >
-        複製文字發音
+        {t('anki.copyPronunciations')}
       </Button>
       <div className="my-[8px]">
         <CharactersDisplay
@@ -357,7 +396,7 @@ const AnkisAdd = ({ charsObjsList, language, setMode }: Props) => {
             setShowPronunciation(!showPronunciation)
           }}
         >
-          切換顯示發音
+          {t('anki.togglePronunciation')}
         </Button>
       </div>
       <form
@@ -383,25 +422,25 @@ const AnkisAdd = ({ charsObjsList, language, setMode }: Props) => {
             })
         }}
       >
-        <文字區
+        <TextArea
           autoFocus
           className="border-[#777]"
           onChange={e => setFrontVal(e.target.value)}
-          placeholder="前面"
+          placeholder={t('anki.frontSide')}
           setRef={setFrontRef}
           tabIndex={1}
           value={frontVal}
         />
-        <文字區
+        <TextArea
           className="border-[#777]"
           onChange={e => setBackVal(e.target.value)}
-          placeholder="背面"
+          placeholder={t('anki.backSide')}
           setRef={setBackRef}
           tabIndex={2}
           value={backVal}
         />
         <Button disabled={isLoading || !frontVal || !backVal} tabIndex={3}>
-          保存
+          {t('anki.save')}
         </Button>
       </form>
     </div>
@@ -409,12 +448,15 @@ const AnkisAdd = ({ charsObjsList, language, setMode }: Props) => {
 }
 
 export const AnkisSection = (props: Props) => {
+  const { t } = useTranslation()
   const { mode, setMode } = props
 
   return (
-    <div>
+    <div className="flex flex-col gap-[12px]">
       <h1>Ankis</h1>
-      <Button onClick={() => setMode(null)}>關閉</Button>
+      <span>
+        <Button onClick={() => setMode(null)}>{t('anki.close')}</Button>
+      </span>
       {mode === AnkisMode.Main && <AnkisMain {...props} />}
       {mode === AnkisMode.Add && <AnkisAdd {...props} />}
     </div>

@@ -18,18 +18,18 @@ afterEach(() => {
 describe('constructor', () => {
   it('populates the language manager', () => {
     expect((languageManager.clear as any).mock.calls).toEqual([])
-    expect(languageManager.取得可用語言()).toEqual([])
+    expect(languageManager.getAvailableLangs()).toEqual([])
     expect(languageManager.getCurrentLanguageHandler()).toEqual(null)
 
     new LanguageUIManager(languageManager, 語言UI處理程序清單)
 
     expect((languageManager.clear as any).mock.calls).toEqual([[]])
-    expect(languageManager.取得可用語言()).not.toEqual([])
+    expect(languageManager.getAvailableLangs()).not.toEqual([])
     expect(languageManager.getCurrentLanguageHandler()).not.toEqual(null)
   })
 })
 
-describe('獲取語言UI處理程序', () => {
+describe('getLanguageUIController', () => {
   it('returns the UI handler with same id as the current language handler', () => {
     const languageUIManager = new LanguageUIManager(
       languageManager,
@@ -37,7 +37,7 @@ describe('獲取語言UI處理程序', () => {
     )
 
     expect(
-      languageUIManager.獲取語言UI處理程序().languageHandler.getId(),
+      languageUIManager.getLanguageUIController().languageHandler.getId(),
     ).toEqual(languageManager.getCurrentLanguageHandler()!.getId())
   })
 })

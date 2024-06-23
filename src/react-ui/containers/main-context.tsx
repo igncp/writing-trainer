@@ -11,11 +11,13 @@ import {
 import { backendClient } from '../lib/backendClient'
 
 type MainContextState = {
+  canUseAI: boolean
   isBackendActive: boolean
   isLoggedIn: boolean
 }
 
 const initialState: MainContextState = {
+  canUseAI: false,
   isBackendActive: false,
   isLoggedIn: false,
 }
@@ -28,6 +30,10 @@ type ContextAction =
   | {
       payload: boolean
       type: 'SET_IS_LOGGED_IN'
+    }
+  | {
+      payload: boolean
+      type: 'SET_CAN_USE_AI'
     }
 
 type MainContextType = readonly [
@@ -46,6 +52,8 @@ const reducer = (state: MainContextState, action: ContextAction) => {
       return { ...state, isBackendActive: action.payload }
     case 'SET_IS_LOGGED_IN':
       return { ...state, isLoggedIn: action.payload }
+    case 'SET_CAN_USE_AI':
+      return { ...state, canUseAI: action.payload }
     default:
       return state
   }
@@ -66,10 +74,15 @@ export const MainContextProvider = ({ children }: PropsWithChildren) => {
 
         return backendClient.getInfo()
       })
-      .then(() => {
+      .then(({ canUseAI }) => {
         setMainState({
           payload: true,
           type: 'SET_IS_LOGGED_IN',
+        })
+
+        setMainState({
+          payload: canUseAI,
+          type: 'SET_CAN_USE_AI',
         })
       })
       .catch(() => {

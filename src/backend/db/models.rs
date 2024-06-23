@@ -7,6 +7,7 @@ use super::schema::{ankis, texts, users};
 pub struct User {
     pub id: String,
     pub email: String,
+    pub can_use_ai: bool,
 }
 
 #[derive(Serialize, Queryable, Insertable, Debug)]

@@ -6,10 +6,10 @@ import { changeToSimplified, changeToTraditional } from '../conversion'
 
 type 類型 = {
   fragments: T_Fragments
-  更改fragments: (list: T_Fragments) => void
+  updateFragments: (list: T_Fragments) => void
 }
 
-const ChangeCharType = ({ fragments, 更改fragments }: 類型) => {
+const ChangeCharType = ({ fragments, updateFragments }: 類型) => {
   const { t } = useTranslation()
 
   return (
@@ -17,7 +17,7 @@ const ChangeCharType = ({ fragments, 更改fragments }: 類型) => {
       <span>
         <Button
           onClick={() => {
-            更改fragments({
+            updateFragments({
               ...fragments,
               list: fragments.list.map(changeToTraditional),
             })
@@ -29,7 +29,7 @@ const ChangeCharType = ({ fragments, 更改fragments }: 類型) => {
       <span>
         <Button
           onClick={() => {
-            更改fragments({
+            updateFragments({
               ...fragments,
               list: fragments.list.map(changeToSimplified),
             })

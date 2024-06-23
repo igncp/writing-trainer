@@ -3,6 +3,8 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { FaRegQuestionCircle } from 'react-icons/fa'
+import { FaLanguage } from 'react-icons/fa6'
 
 import {
   languageManager,
@@ -11,15 +13,24 @@ import {
   usedText,
 } from '../utils'
 
+import HelpModal from './help-modal'
+
 const PANEL_UI = {
   noHideButton: true,
 }
 
 const IndexPage = () => {
   const [theme, setTheme] = useState('dark')
+  const [showingLangs, setShowingLangs] = useState(false)
+  const [showingHelp, setShowingHelp] = useState(false)
   const { i18n, t } = useTranslation()
+  const [hasLoaded, setHasLoaded] = useState(false)
 
   const { query } = useRouter()
+
+  useEffect(() => {
+    setHasLoaded(true)
+  }, [])
 
   useEffect(() => {
     if (theme) {
@@ -38,10 +49,31 @@ const IndexPage = () => {
       <Head>
         <title>Writing Trainer</title>
       </Head>
-      <h1 className="mx-[0] my-[16px] flex flex-row items-center justify-center gap-[1rem] text-[10px] md:text-[20px]">
-        {t('site.title', 'Writing Trainer')}
+      <h1 className="relative mx-[0] my-[16px] flex flex-row items-center justify-center gap-[1rem] text-[10px] md:text-[20px]">
+        {hasLoaded && t('site.title')}
+        <div className="absolute right-[24px] flex flex-row gap-[24px] text-[24px]">
+          <button
+            onClick={() => {
+              setShowingHelp(!showingHelp)
+            }}
+          >
+            <FaRegQuestionCircle />
+          </button>
+          <button
+            onClick={() => {
+              setShowingLangs(!showingLangs)
+            }}
+          >
+            <FaLanguage />
+          </button>
+        </div>
       </h1>
-      <h2 className="mb-[12px] flex flex-row items-center justify-center gap-[24px]">
+      <h2
+        className={[
+          'mb-[12px] flex flex-row items-center justify-center gap-[24px]',
+          showingLangs ? 'block' : 'hidden',
+        ].join(' ')}
+      >
         <button
           className="cursor-pointer"
           onClick={() => {
@@ -89,6 +121,12 @@ const IndexPage = () => {
           services={panelServices}
           text={usedText}
         />
+        {showingHelp && (
+          <HelpModal
+            isOpen={showingHelp}
+            setIsOpen={val => setShowingHelp(val)}
+          />
+        )}
       </div>
     </div>
   )

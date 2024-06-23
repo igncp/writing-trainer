@@ -7,9 +7,9 @@ describe('values', () => {
   })
 })
 
-describe('取得特殊字符', () => {
+describe('getSpecialChars', () => {
   it('returns the expected array', () => {
-    expect(mandarinHandler.取得特殊字符()).toEqual(
+    expect(mandarinHandler.getSpecialChars()).toEqual(
       特殊字元.concat(
         'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(
           '',
@@ -17,7 +17,7 @@ describe('取得特殊字符', () => {
       ),
     )
 
-    expect(mandarinHandler.取得特殊字符()).toEqual(
+    expect(mandarinHandler.getSpecialChars()).toEqual(
       特殊字元.concat(
         'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(
           '',

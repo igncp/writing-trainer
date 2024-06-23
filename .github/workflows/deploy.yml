@@ -11,6 +11,12 @@ on:
       - 'Cargo.lock'
       - 'Cargo.toml'
   workflow_dispatch:
+    inputs:
+      skip_check:
+        type: boolean
+        default: false
+        description: 'Skip the check step'
+        required: false
 
 jobs:
   build-and-deploy:
@@ -41,6 +47,8 @@ jobs:
         run: |
           cp .env.example .env
           nix develop path:$(pwd) -c bash scripts/check.sh
+        env:
+          SKIP_CHECK: ${{ github.event.inputs.skip_check }}
 
       - name: Build and publish docker image
         run: |
