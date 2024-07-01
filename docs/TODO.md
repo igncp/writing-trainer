@@ -2,6 +2,7 @@
 
 ## Tasks
 
+- Add a check if anki front is repeated
 - Add simplified chinese script
 - Pass manager via context
 - Persist config in records (which subpanels are displayed)

@@ -22,16 +22,28 @@ export const 繁體轉簡體 = 字典
     return 累積
   }, {})
 
-const 簡體轉繁體例外: Record<string, string | undefined> = {
+const sameConversionSet: Set<string> = new Set([
+  '了',
+  '出',
+  '吃',
+  '合',
+  '同',
+  '向',
+  '回',
+  '家',
+  '巨',
+  '才',
+  '暗',
+  '玩',
+  '真',
+  '系',
+  '累',
+  '致',
+  '面',
+])
+
+const correctConversionObj: Record<string, string | undefined> = {
   个: '個',
-  了: '了',
-  出: '出',
-  向: '向',
-  回: '回',
-  家: '家',
-  巨: '巨',
-  真: '真',
-  致: '致',
 }
 
 const 簡體轉繁體 = Object.entries(繁體轉簡體).reduce<
@@ -55,5 +67,9 @@ export const changeToSimplified = (文字: string) =>
 export const changeToTraditional = (文字: string) =>
   文字
     .split(``)
-    .map(字元 => 簡體轉繁體例外[字元] ?? 簡體轉繁體[字元] ?? 字元)
+    .map(字元 => {
+      if (sameConversionSet.has(字元)) return 字元
+
+      return correctConversionObj[字元] ?? 簡體轉繁體[字元] ?? 字元
+    })
     .join('')
