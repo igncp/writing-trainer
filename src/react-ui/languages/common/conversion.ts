@@ -25,6 +25,8 @@ export const 繁體轉簡體 = 字典
 const sameConversionSet: Set<string> = new Set([
   '了',
   '出',
+  '别',
+  '千',
   '吃',
   '合',
   '同',
@@ -39,6 +41,7 @@ const sameConversionSet: Set<string> = new Set([
   '系',
   '累',
   '致',
+  '荐',
   '面',
 ])
 

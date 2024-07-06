@@ -445,6 +445,7 @@ const Panel = ({
     return (
       <RecordsSection
         initScreen={showingRecordsInitScreen}
+        language={selectedLanguage}
         onRecordLoad={(record: Record) => {
           clearValues()
 

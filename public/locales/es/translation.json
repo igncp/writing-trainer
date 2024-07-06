@@ -2,6 +2,7 @@
   "anki": {
     "addNew": "Añadir nueva tarjeta",
     "backSide": "Parte trasera",
+    "clear": "Limpiar",
     "close": "Cerrar",
     "copyChars": "Copiar caracteres",
     "copyPronunciations": "Copiar pronunciaciones",
@@ -19,6 +20,7 @@
     "previousPage": "Página anterior",
     "round": "Ronda",
     "save": "Guardar",
+    "saveCardFailed": "Error al guardar, probablemente ya existe",
     "saveFailed": "Failed to save anki",
     "startRound": "Empezar ronda",
     "togglePronunciation": "Alternar pronunciación",
@@ -91,6 +93,7 @@
     "close": "Cerrar",
     "created": "Creado",
     "edit": "Editar",
+    "filter": "Buscar canciones",
     "lang": "Idioma",
     "language": "Idioma",
     "link": "Enlace",

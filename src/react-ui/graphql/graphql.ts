@@ -78,6 +78,9 @@ export type QueryRoot = {
   ankisRound: Array<AnkiGql>
   ankisTotal: Scalars['Int']['output']
   me: Me
+  song?: Maybe<SongGql>
+  songs: Array<SongGql>
+  songsTotal: Scalars['Int']['output']
   texts: Array<TextGql>
   translationRequest: Scalars['String']['output']
 }
@@ -96,9 +99,35 @@ export type QueryRootAnkisTotalArgs = {
   query?: InputMaybe<Scalars['String']['input']>
 }
 
+export type QueryRootSongArgs = {
+  id: Scalars['Int']['input']
+}
+
+export type QueryRootSongsArgs = {
+  itemsNum?: InputMaybe<Scalars['Int']['input']>
+  lang: Scalars['String']['input']
+  offset?: InputMaybe<Scalars['Int']['input']>
+  query?: InputMaybe<Scalars['String']['input']>
+}
+
+export type QueryRootSongsTotalArgs = {
+  lang: Scalars['String']['input']
+  query?: InputMaybe<Scalars['String']['input']>
+}
+
 export type QueryRootTranslationRequestArgs = {
   content: Scalars['String']['input']
   currentLanguage: Scalars['String']['input']
+}
+
+export type SongGql = {
+  __typename?: 'SongGQL'
+  artist: Scalars['String']['output']
+  id: Scalars['Int']['output']
+  language: Scalars['String']['output']
+  lyrics: Scalars['String']['output']
+  title: Scalars['String']['output']
+  videoUrl: Scalars['String']['output']
 }
 
 export type TextGql = {

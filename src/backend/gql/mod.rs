@@ -1,7 +1,7 @@
 use self::context::GraphQLContext;
 use crate::backend::{
-    db::{Anki, Text},
-    gql::models::{AnkiGQL, Me, TextGQL, TranslationRequest},
+    db::{Anki, Song, Text},
+    gql::models::{AnkiGQL, Me, SongGQL, TextGQL, TranslationRequest},
 };
 use juniper::{EmptySubscription, FieldResult, RootNode};
 use tracing::debug;
@@ -87,6 +87,31 @@ impl QueryRoot {
         Ok(ankis_gql)
     }
 
+    fn songs(
+        lang: String,
+        items_num: Option<i32>,
+        offset: Option<i32>,
+        query: Option<String>,
+    ) -> FieldResult<Vec<SongGQL>> {
+        let songs = Song::get_all(lang, items_num.unwrap_or(10), offset.unwrap_or(0), query);
+        let songs_gql = songs.iter().map(SongGQL::from_db).collect::<Vec<SongGQL>>();
+
+        Ok(songs_gql)
+    }
+
+    fn song(id: i32) -> FieldResult<Option<SongGQL>> {
+        let song = Song::get_by_id(id);
+        let song_parsed = song.map(|s| SongGQL::from_db(&s));
+
+        Ok(song_parsed)
+    }
+
+    fn songs_total(lang: String, query: Option<String>) -> FieldResult<i32> {
+        let songs_total = Song::get_total(lang, query);
+
+        Ok(songs_total)
+    }
+
     async fn translation_request(
         ctx: &GraphQLContext,
         content: String,
@@ -124,7 +149,11 @@ impl MutationRoot {
         if anki.front.is_empty() {
             anki.delete();
         } else {
-            anki.save();
+            let result = anki.save();
+
+            if result.is_err() {
+                return Err("Could not save the record".into());
+            }
         }
 
         Ok(AnkiGQL::from_db(&anki))

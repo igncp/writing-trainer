@@ -16,6 +16,17 @@ diesel::table! {
 }
 
 diesel::table! {
+    songs (id) {
+        id -> Integer,
+        title -> Text,
+        artist -> Text,
+        language -> Text,
+        video_url -> Text,
+        lyrics -> Text,
+    }
+}
+
+diesel::table! {
     texts (id) {
         id -> Text,
         user_id -> Text,
@@ -41,6 +52,7 @@ diesel::joinable!(texts -> users (user_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
     ankis,
+    songs,
     texts,
     users,
 );

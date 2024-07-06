@@ -9,7 +9,7 @@ use chrono::{Duration, Utc};
 use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
 use jsonwebtoken::{encode, EncodingKey, Header};
 use juniper::http::{graphiql::graphiql_source, GraphQLRequest};
-use tracing::{debug, warn};
+use tracing::{debug, info, warn};
 use uuid::Uuid;
 
 use crate::backend::{
@@ -179,6 +179,7 @@ pub async fn start_backend() -> std::io::Result<()> {
 
     let connection = &mut db::establish_connection();
     connection.run_pending_migrations(MIGRATIONS).unwrap();
+    info!("Migrations completed");
 
     warn!("Starting the Writing Trainer HTTP server on port http://{address}:{port}");
 

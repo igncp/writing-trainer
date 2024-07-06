@@ -1,4 +1,4 @@
-import { AnkiGql, Me, TextGql } from '../graphql/graphql'
+import { AnkiGql, Me, SongGql, TextGql } from '../graphql/graphql'
 
 const baseURL =
   process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:9000'
@@ -110,6 +110,59 @@ const getUserAnkis = (items: number, offset: number, query: string) =>
     total: ankisTotal,
   }))
 
+export type SongItem = Pick<
+  SongGql,
+  'id' | 'artist' | 'language' | 'title' | 'lyrics' | 'videoUrl'
+>
+
+const getSongs = (
+  language: string,
+  query: string,
+  items: number,
+  offset: number,
+) =>
+  fetchGraphQL<{
+    songs: SongItem[]
+    songsTotal: number
+  }>(`#graphql
+    query {
+      songs(
+        itemsNum: ${items},
+        offset: ${offset},
+        lang: "${language}",
+        query: ${query ? `"${query}"` : null}
+      ) {
+        id
+        artist
+        language
+        videoUrl
+        title
+      }
+      songsTotal(
+        lang: "${language}",
+        query: ${query ? `"${query}"` : null}
+      )
+    }
+  `).then(({ songs, songsTotal }) => ({
+    list: songs,
+    total: songsTotal,
+  }))
+
+const getSongLyrics = (id: number) =>
+  fetchGraphQL<{
+    song: Pick<SongGql, 'lyrics'> | null
+  }>(`#graphql
+    query {
+      song(
+        id: ${id}
+      ) {
+        lyrics
+      }
+    }
+  `).then(({ song }) => ({
+    lyrics: song?.lyrics,
+  }))
+
 const getAnkisRound = (query: string) =>
   fetchGraphQL<{
     ankisRound: Array<Pick<AnkiGql, 'id' | 'front' | 'back'>>
@@ -194,6 +247,8 @@ export const backendClient = {
   getAnkisRound,
   getHealth,
   getInfo,
+  getSongLyrics,
+  getSongs,
   getUserAnkis,
   getUserTexts,
   login,

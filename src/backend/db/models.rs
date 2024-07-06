@@ -1,7 +1,7 @@
 use diesel::{deserialize::Queryable, Insertable};
 use serde::Serialize;
 
-use super::schema::{ankis, texts, users};
+use super::schema::{ankis, songs, texts, users};
 
 #[derive(Serialize, Queryable, Insertable, Debug)]
 pub struct User {
@@ -34,4 +34,14 @@ pub struct Anki {
     pub incorrect: i32,
     pub created_at: chrono::NaiveDateTime,
     pub updated_at: chrono::NaiveDateTime,
+}
+
+#[derive(Serialize, Queryable, Insertable, Debug)]
+pub struct Song {
+    pub id: i32,
+    pub title: String,
+    pub artist: String,
+    pub language: String,
+    pub video_url: String,
+    pub lyrics: String,
 }

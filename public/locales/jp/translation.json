@@ -2,6 +2,7 @@
   "anki": {
     "addNew": "新しい Anki カードを追加",
     "backSide": "背面",
+    "clear": "クリア",
     "close": "關閉",
     "copyChars": "複製文字字元",
     "copyPronunciations": "複製文字發音",
@@ -19,6 +20,7 @@
     "previousPage": "前のページ",
     "round": "ラウンド",
     "save": "保存",
+    "saveCardFailed": "保存失敗、おそらくすでに存在しています",
     "saveFailed": "保存失敗",
     "startRound": "開始 Anki 回合",
     "togglePronunciation": "切換顯示發音",
@@ -91,6 +93,7 @@
     "close": "閉じる",
     "created": "作成",
     "edit": "編集",
+    "filter": "フィルター",
     "lang": "言語",
     "language": "言語",
     "link": "リンク",

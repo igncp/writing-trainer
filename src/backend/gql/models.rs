@@ -1,5 +1,5 @@
 use crate::backend::{
-    db::{Anki, Text},
+    db::{Anki, Song, Text},
     translation::translate_text,
 };
 use juniper::GraphQLObject;
@@ -42,6 +42,16 @@ pub struct TranslationRequest {
     current_language: String,
 }
 
+#[derive(GraphQLObject)]
+pub struct SongGQL {
+    artist: String,
+    id: i32,
+    language: String,
+    lyrics: String,
+    title: String,
+    video_url: String,
+}
+
 impl Me {
     pub fn new(id: &str, email: &str, can_use_ai: bool) -> Self {
         Self {
@@ -73,6 +83,19 @@ impl AnkiGQL {
             id: anki.id.to_string(),
             incorrect: anki.incorrect,
             language: anki.language.to_string(),
+        }
+    }
+}
+
+impl SongGQL {
+    pub fn from_db(song: &Song) -> Self {
+        Self {
+            artist: song.artist.to_string(),
+            id: song.id,
+            language: song.language.to_string(),
+            lyrics: song.lyrics.to_string(),
+            title: song.title.to_string(),
+            video_url: song.video_url.to_string(),
         }
     }
 }

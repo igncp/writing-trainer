@@ -41,9 +41,9 @@ const AnkiRound = ({ ankisRound, setAnkisRound }: AnkisRoundProps) => {
   const currentAnki = ankisRound?.[currentIndex]
 
   return (
-    <div className="flex flex-col gap-[12px]">
+    <div className="flex flex-col gap-[16px]">
       <div>{t('anki.round')}</div>
-      <div className="flex flex-row gap-[12px]">
+      <div className="flex flex-row gap-[16px]">
         <Button
           onClick={() => {
             setAnkisRound(null)
@@ -343,27 +343,29 @@ const AnkisAdd = ({ charsObjsList, language, setMode }: Props) => {
 
   return (
     <div>
-      <Button onClick={() => setMode(AnkisMode.Main)}>
-        {t('anki.displayList')}
-      </Button>
-      <Button
-        onClick={() => {
-          navigator.clipboard.writeText(
-            charsObjsList.map(charObj => charObj.word).join(''),
-          )
-        }}
-      >
-        {t('anki.copyChars')}
-      </Button>
-      <Button
-        onClick={() => {
-          navigator.clipboard.writeText(
-            charsObjsList.map(charObj => charObj.pronunciation).join(' '),
-          )
-        }}
-      >
-        {t('anki.copyPronunciations')}
-      </Button>
+      <div className="flex flex-row gap-[16px]">
+        <Button onClick={() => setMode(AnkisMode.Main)}>
+          {t('anki.displayList')}
+        </Button>
+        <Button
+          onClick={() => {
+            navigator.clipboard.writeText(
+              charsObjsList.map(charObj => charObj.word).join(''),
+            )
+          }}
+        >
+          {t('anki.copyChars')}
+        </Button>
+        <Button
+          onClick={() => {
+            navigator.clipboard.writeText(
+              charsObjsList.map(charObj => charObj.pronunciation).join(' '),
+            )
+          }}
+        >
+          {t('anki.copyPronunciations')}
+        </Button>
+      </div>
       <div className="my-[8px]">
         <CharactersDisplay
           charsObjsList={charsObjsList}
@@ -390,7 +392,16 @@ const AnkisAdd = ({ charsObjsList, language, setMode }: Props) => {
           應該隱藏發音={!showPronunciation}
         />
       </div>
-      <div className="flex flex-row gap-[4px]">
+      <div className="flex flex-row gap-[16px]">
+        <Button
+          onClick={() => {
+            setFrontVal('')
+            setBackVal('')
+            frontRef?.focus()
+          }}
+        >
+          {t('anki.clear')}
+        </Button>
         <Button
           onClick={() => {
             setShowPronunciation(!showPronunciation)
@@ -416,6 +427,9 @@ const AnkisAdd = ({ charsObjsList, language, setMode }: Props) => {
             .then(() => {
               clear()
               frontRef?.focus()
+            })
+            .catch(() => {
+              toast.error(t('anki.saveCardFailed'))
             })
             .finally(() => {
               setIsLoading(false)
@@ -452,7 +466,7 @@ export const AnkisSection = (props: Props) => {
   const { mode, setMode } = props
 
   return (
-    <div className="flex flex-col gap-[12px]">
+    <div className="flex flex-col gap-[16px]">
       <h1>Ankis</h1>
       <span>
         <Button onClick={() => setMode(null)}>{t('anki.close')}</Button>

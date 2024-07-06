@@ -1,11 +1,9 @@
 import { LanguageDefinition, Record } from '#/core'
 import { TextGql } from '#/react-ui/graphql/graphql'
-import { backendClient } from '#/react-ui/lib/backendClient'
-import { useCallback, useEffect, useState } from 'react'
+import { backendClient, SongItem } from '#/react-ui/lib/backendClient'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 
-import { songs as cantoneseSongs } from '../../languages/cantonese/songs'
-import { songs as mandarinSongs } from '../../languages/mandarin/songs'
 import { T_Services } from '../../typings/mainTypes'
 import { useMainContext } from '../main-context'
 
@@ -49,6 +47,7 @@ const getInitialRecord = ({
 
 type IProps = {
   initScreen: RecordsScreen
+  language: string
   onRecordLoad: (r: Record) => void
   onRecordsClose: () => void
   onSongLoad: (s: string[]) => void
@@ -61,6 +60,7 @@ type IProps = {
 // @TODO: Remove local/remote records and use a offline syncing librar
 const RecordsSection = ({
   initScreen,
+  language,
   onRecordLoad,
   onRecordsClose,
   onSongLoad,
@@ -74,8 +74,17 @@ const RecordsSection = ({
     null,
   )
   const [records, setRecords] = useState<Record[]>([])
+  const [songs, setSongs] = useState<{ list: SongItem[]; total: number }>({
+    list: [],
+    total: 0,
+  })
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [songsFilter, setSongsFilter] = useState<string>('')
+
+  const songsDebounceRef = useRef<null | number>(null)
   const mainContext = useMainContext()
+
+  const { isBackendActive } = mainContext.state
 
   const { storage } = services
 
@@ -121,9 +130,39 @@ const RecordsSection = ({
     setIsLoading(false)
   }, [pronunciation, storage])
 
+  const retrieveSongs = useCallback(async () => {
+    if (!isBackendActive) return
+
+    if (songsDebounceRef.current) {
+      clearTimeout(songsDebounceRef.current)
+    }
+
+    songsDebounceRef.current = window.setTimeout(async () => {
+      const timeoutVal = songsDebounceRef.current
+      setIsLoading(true)
+
+      const newSongs = await backendClient
+        .getSongs(language, songsFilter, 100, 0)
+        .catch(() => ({ list: [], total: 0 }))
+
+      if (timeoutVal !== songsDebounceRef.current) {
+        return
+      }
+
+      setSongs(newSongs)
+
+      setIsLoading(false)
+      songsDebounceRef.current = null
+    }, 1000)
+  }, [language, songsFilter, isBackendActive])
+
   useEffect(() => {
     retrieveRecords().catch(() => {})
   }, [retrieveRecords])
+
+  useEffect(() => {
+    retrieveSongs().catch(() => {})
+  }, [retrieveSongs])
 
   const saveRecord = (newRecord: Record) => {
     let newRecords = [...records]
@@ -275,7 +314,9 @@ const RecordsSection = ({
         onRecordRemove={handleRecordRemove}
         onSongLoad={onSongLoad}
         records={records}
-        songs={cantoneseSongs.concat(mandarinSongs)}
+        setSongsFilter={setSongsFilter}
+        songs={songs}
+        songsFilter={songsFilter}
       />
     </RecordsWrapper>
   )

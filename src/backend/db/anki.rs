@@ -110,15 +110,18 @@ impl Anki {
             .unwrap_or(None)
     }
 
-    pub fn save(&self) {
+    pub fn save(&self) -> Result<(), ()> {
         let connection = &mut establish_connection();
 
         use super::schema::ankis::dsl::*;
 
-        diesel::insert_into(ankis)
-            .values(self)
-            .execute(connection)
-            .unwrap();
+        let result = diesel::insert_into(ankis).values(self).execute(connection);
+
+        if result.is_err() {
+            Err(())
+        } else {
+            Ok(())
+        }
     }
 
     pub fn delete(&self) {

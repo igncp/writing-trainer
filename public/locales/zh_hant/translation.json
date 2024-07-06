@@ -2,6 +2,7 @@
   "anki": {
     "addNew": "添新",
     "backSide": "背面",
+    "clear": "清除文字",
     "close": "關閉",
     "copyChars": "複製文字字元",
     "copyPronunciations": "複製文字發音",
@@ -19,6 +20,7 @@
     "previousPage": "上一頁",
     "round": "回合",
     "save": "保存",
+    "saveCardFailed": "保存失敗，可能已經存在",
     "saveFailed": "保存失敗",
     "startRound": "開始 Anki 回合",
     "togglePronunciation": "切換顯示發音",
@@ -91,6 +93,7 @@
     "close": "關閉",
     "created": "創建",
     "edit": "編輯",
+    "filter": "過濾",
     "lang": "語言",
     "language": "語言",
     "link": "連結",

@@ -2,6 +2,7 @@
   "anki": {
     "addNew": "Add new",
     "backSide": "Back",
+    "clear": "Clear",
     "close": "Close",
     "copyChars": "Copy Characters",
     "copyPronunciations": "Copy Pronunciations",
@@ -19,6 +20,7 @@
     "previousPage": "Previous page",
     "round": "Anki Round",
     "save": "Save",
+    "saveCardFailed": "Save failed, probably it already exists",
     "saveFailed": "Failed to save anki",
     "startRound": "Start Round",
     "togglePronunciation": "Toggle Pronunciation",
@@ -91,6 +93,7 @@
     "close": "Close",
     "created": "Created",
     "edit": "Edit",
+    "filter": "Filter songs",
     "lang": "Language",
     "language": "Language",
     "link": "Link",
