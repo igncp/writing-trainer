@@ -126,6 +126,7 @@ export type SongGql = {
   id: Scalars['Int']['output']
   language: Scalars['String']['output']
   lyrics: Scalars['String']['output']
+  pronunciation?: Maybe<Scalars['String']['output']>
   title: Scalars['String']['output']
   videoUrl: Scalars['String']['output']
 }

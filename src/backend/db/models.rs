@@ -44,4 +44,5 @@ pub struct Song {
     pub language: String,
     pub video_url: String,
     pub lyrics: String,
+    pub pronunciation: Option<String>,
 }

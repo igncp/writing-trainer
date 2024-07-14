@@ -16,6 +16,7 @@ const LinksBlock: T_LinksBlock = ({ fragments, updateFragments, 文字 }) => {
     .map(c => c.trim())
     .filter(c => !!c)
     .join('')
+
   const { t } = useTranslation()
 
   return (

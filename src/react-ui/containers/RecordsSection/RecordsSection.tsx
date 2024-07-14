@@ -48,6 +48,7 @@ const getInitialRecord = ({
 type IProps = {
   initScreen: RecordsScreen
   language: string
+  onPronunciationLoad: (p: string) => void
   onRecordLoad: (r: Record) => void
   onRecordsClose: () => void
   onSongLoad: (s: string[]) => void
@@ -61,6 +62,7 @@ type IProps = {
 const RecordsSection = ({
   initScreen,
   language,
+  onPronunciationLoad,
   onRecordLoad,
   onRecordsClose,
   onSongLoad,
@@ -70,14 +72,18 @@ const RecordsSection = ({
   text,
 }: IProps) => {
   const [currentScreen, setCurrentScreen] = useState<RecordsScreen>(initScreen)
+
   const [editingRecordId, setEditingRecordId] = useState<Record['id'] | null>(
     null,
   )
+
   const [records, setRecords] = useState<Record[]>([])
+
   const [songs, setSongs] = useState<{ list: SongItem[]; total: number }>({
     list: [],
     total: 0,
   })
+
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [songsFilter, setSongsFilter] = useState<string>('')
 
@@ -139,6 +145,7 @@ const RecordsSection = ({
 
     songsDebounceRef.current = window.setTimeout(async () => {
       const timeoutVal = songsDebounceRef.current
+
       setIsLoading(true)
 
       const newSongs = await backendClient
@@ -166,6 +173,7 @@ const RecordsSection = ({
 
   const saveRecord = (newRecord: Record) => {
     let newRecords = [...records]
+
     const existingRecordIndex = newRecords.findIndex(r => r.id === newRecord.id)
 
     if (existingRecordIndex !== -1) {
@@ -209,6 +217,7 @@ const RecordsSection = ({
     const recordsStr = JSON.stringify(
       newRecords.filter(r => !r.isRemote).map(record => record.toJson()),
     )
+
     storage.setValue(RECORDS_STORAGE, recordsStr)
     setRecords(newRecords)
   }
@@ -258,6 +267,7 @@ const RecordsSection = ({
     const existingRecord = records.find(r => r.id === editingRecordId)
 
     if (!existingRecord) return
+
     const newRecord = new Record({
       ...existingRecord,
       link: newRecordSave.link,
@@ -309,6 +319,7 @@ const RecordsSection = ({
     <RecordsWrapper onRecordsClose={onRecordsClose}>
       <RecordsList
         disabled={isLoading}
+        onPronunciationLoad={onPronunciationLoad}
         onRecordEdit={handleRecordEdit}
         onRecordLoad={handleRecordLoad}
         onRecordRemove={handleRecordRemove}

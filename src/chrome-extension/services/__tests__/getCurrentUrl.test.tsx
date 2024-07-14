@@ -2,13 +2,14 @@ import { MessageType } from '@/utils/constants'
 
 import { _test } from '../getCurrentUrl'
 
-const { getFromHref, getWithChrome } = _test!
+const { getWithChrome } = _test!
 
 const chrome: any = {
   runtime: {
     sendMessage: jest.fn<any, any>(),
   },
 }
+
 ;(global as any)['chrome'] = chrome
 
 beforeEach(() => {
@@ -26,14 +27,5 @@ describe('getWithChrome', () => {
     expect(chrome.runtime.sendMessage.mock.calls).toEqual([
       [{ type: MessageType.RequestUrl }, expect.any(Function)],
     ])
-  })
-})
-
-describe('getFromHref', () => {
-  it('returns the value from window', async () => {
-    const result = await getFromHref()
-
-    expect(result).toEqual(window.location.href)
-    expect(!!window.location.href).toEqual(true)
   })
 })

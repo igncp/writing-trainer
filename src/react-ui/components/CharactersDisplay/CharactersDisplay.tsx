@@ -71,6 +71,7 @@ const CharactersDisplay = ({
     >
       {charsObjsList.map((charObj, index) => {
         const { pronunciation, word } = charObj
+
         const shouldHidePronunciation =
           !(顯示目前字元的發音 && index === 重點字元索引) && 應該隱藏發音
 

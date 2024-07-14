@@ -8,4 +8,4 @@ elif [ -f ../../scripts/prettier.sh ]; then
   (bash ../../scripts/prettier.sh --write || true)
 fi
 
-(npm run eslint -- --fix || true)
+(bun run eslint -- --fix || true)

@@ -1,5 +1,3 @@
-import webpack from 'webpack'
-
 export default {
   output: 'export',
   eslint: {
@@ -9,12 +7,6 @@ export default {
     ignoreBuildErrors: true,
   },
   webpack: config => {
-    config.plugins.push(
-      new webpack.DefinePlugin({
-        __TEST__: false,
-      }),
-    )
-
     config.module.rules.push(
       {
         loader: 'csv-loader',

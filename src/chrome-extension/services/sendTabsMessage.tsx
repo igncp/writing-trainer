@@ -22,6 +22,7 @@ const sendFake: T_sendTabsMessage = () => {
   return Promise.resolve(true)
 }
 
-const sendTabsMessage = __USE_CHROME_TABS_FEATURE__ ? sendReal : sendFake
+const sendTabsMessage =
+  process.env.NODE_ENV === 'production' ? sendReal : sendFake
 
 export default sendTabsMessage

@@ -5,9 +5,11 @@ import { T_OptionsBlock } from '../../types'
 
 const OptionsBlock: T_OptionsBlock = ({ langOpts, updateLangOpts }) => {
   const { t } = useTranslation()
+
   const [聲調值, 保存聲調值] = useState(
     (langOpts.聲調值 as string) || '使用聲調',
   )
+
   const [遊戲模式值, setPlaymodeValue] = useState(
     (langOpts.遊戲模式值 as string) || '還原論者',
   )
@@ -82,12 +84,12 @@ const OptionsBlock: T_OptionsBlock = ({ langOpts, updateLangOpts }) => {
           }}
           value={(langOpts.useTonesColors as string) || 'error'}
         >
-          <option value={'always'}>{t('option.useTonesColorsAlways')}</option>
-          <option value={'never'}>{t('option.useTonesColorsNever')}</option>
-          <option value={'current-error'}>
+          <option value="always">{t('option.useTonesColorsAlways')}</option>
+          <option value="never">{t('option.useTonesColorsNever')}</option>
+          <option value="current-error">
             {t('option.useTonesColorsError')}
           </option>
-          <option value={'current'}>{t('option.useTonesColorsCurrent')}</option>
+          <option value="current">{t('option.useTonesColorsCurrent')}</option>
         </select>
       </span>
     </div>

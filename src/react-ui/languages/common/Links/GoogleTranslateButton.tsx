@@ -9,6 +9,7 @@ type Props = {
 
 const GoogleTranslateButton = ({ language, text, ...rest }: Props) => {
   const { t } = useTranslation()
+
   const hrefText = text
     .split('')
     .map(c => c.trim())

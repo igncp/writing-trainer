@@ -3,7 +3,7 @@ import { T_CharObj } from '../languageManager'
 
 import { LanguageHandler } from './_common'
 
-const 轉換為字元對象列表: LanguageHandler['轉換為字元對象列表'] = ({
+const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
   charsToRemove,
   text,
 }) => {
@@ -11,6 +11,7 @@ const 轉換為字元對象列表: LanguageHandler['轉換為字元對象列表'
   const allCharsToRemove = specialChars.concat(charsToRemove).concat([' '])
 
   const charsObjsList: T_CharObj[] = []
+
   let nextWord = ''
 
   const addWord = () => {
@@ -19,6 +20,7 @@ const 轉換為字元對象列表: LanguageHandler['轉換為字元對象列表'
         pronunciation: nextWord,
         word: nextWord,
       })
+
       charsObjsList.push(charObj)
 
       nextWord = ''
@@ -51,8 +53,8 @@ const language = new LanguageDefinition({
 })
 
 const englishHandler = new LanguageHandler({
+  convertToCharsObjs,
   language,
-  轉換為字元對象列表,
 })
 
 export { englishHandler }

@@ -2,6 +2,7 @@ import { AnkiGql, Me, SongGql, TextGql } from '../graphql/graphql'
 
 const baseURL =
   process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:9000'
+
 const clientID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string
 
 const fetchCommon = (uri: string, options?: RequestInit) =>
@@ -150,18 +151,17 @@ const getSongs = (
 
 const getSongLyrics = (id: number) =>
   fetchGraphQL<{
-    song: Pick<SongGql, 'lyrics'> | null
+    song: Pick<SongGql, 'lyrics' | 'pronunciation'> | null
   }>(`#graphql
     query {
       song(
         id: ${id}
       ) {
         lyrics
+        pronunciation
       }
     }
-  `).then(({ song }) => ({
-    lyrics: song?.lyrics,
-  }))
+  `).then(({ song }) => song ?? { lyrics: '', pronunciation: '' })
 
 const getAnkisRound = (query: string) =>
   fetchGraphQL<{

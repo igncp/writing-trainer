@@ -21,12 +21,14 @@ export enum AnkisMode {
 
 type AnkiRoundItem = Pick<AnkiGql, 'id' | 'front' | 'back'>
 
+/* eslint-disable react/no-unused-prop-types */
 type Props = {
   charsObjsList: T_CharObj[]
   language: string
   mode: AnkisMode
   setMode: (mode: AnkisMode | null) => void
 }
+/* eslint-enable react/no-unused-prop-types */
 
 type AnkisRoundProps = {
   ankisRound: AnkiRoundItem[] | null
@@ -136,9 +138,11 @@ const AnkiRound = ({ ankisRound, setAnkisRound }: AnkisRoundProps) => {
 const AnkisMain = ({ setMode }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const { t } = useTranslation()
+
   const [ankis, setAnkis] = useState<Awaited<
     ReturnType<typeof backendClient.getUserAnkis>
   > | null>(null)
+
   const timeoutRef = useRef<number | null>(null)
   const [filter, setFilter] = useState('')
   const [ankisRound, setAnkisRound] = useState<AnkiRoundItem[] | null>(null)

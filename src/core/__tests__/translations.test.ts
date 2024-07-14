@@ -19,11 +19,13 @@ const getNestedValue = (obj: any, key: string) => {
 describe('Translations', () => {
   it('no value is equal', () => {
     const langs = fs.readdirSync('public/locales/')
+
     const translationsFiles = langs.map(lang =>
       JSON.parse(
         fs.readFileSync(`public/locales/${lang}/translation.json`, 'utf8'),
       ),
     )
+
     const allKeys = Array.from(
       new Set(translationsFiles.map(f => getAllKeysFromObj(f)).flat()),
     ).sort()

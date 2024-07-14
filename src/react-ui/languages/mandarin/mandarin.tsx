@@ -4,49 +4,13 @@ import OptionsBlock from '../common/CharsOptions/OptionsBlock'
 import { chineseBlurHandler } from '../common/chineseBlurHandler'
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
 import { 繁體轉簡體 } from '../common/conversion'
-import { 類型_語言UI處理程序, T_LangOpts, T_GetToneColor } from '../types'
+import { T_LangUIController, T_LangOpts, T_GetToneColor } from '../types'
 
 import LinksBlock from './LinksBlock/LinksBlock'
-import dictionary from './converted-list-ma.yml'
 import { T_MandarinLangOpts } from './mandarinTypes'
 
 const charToPronunciationMap: { [key: string]: string } = {}
 const pronunciationToCharMap: { [key: string]: string } = {}
-
-const dictionaryParsed = (
-  dictionary as { dict: Array<undefined | string> }
-).dict.reduce<Record<string, [string, number] | undefined>>((acc, item) => {
-  const [char, pronunciation, perc] = item?.split('\t') ?? []
-
-  if (!char || !pronunciation) {
-    return acc
-  }
-
-  const finalPerc = perc ? parseFloat(perc.replace('%', '')) : 0
-  const existing = acc[char]
-
-  if (existing && existing[1] > finalPerc) {
-    return acc
-  }
-
-  acc[char] = [pronunciation, finalPerc]
-
-  if (繁體轉簡體[char]) {
-    繁體轉簡體[char]?.forEach(simplified => {
-      acc[simplified] = [pronunciation, finalPerc]
-    })
-  }
-
-  return acc
-}, {})
-
-Object.keys(dictionaryParsed).forEach(char => {
-  const item = dictionaryParsed[char]
-
-  if (!item) return
-  charToPronunciationMap[char] = item[0]
-  pronunciationToCharMap[item[0]] = char
-})
 
 const 解析發音 = (文字: string, 選項: T_LangOpts) => {
   let 解析後的文本 = 文字.toLowerCase()
@@ -58,13 +22,13 @@ const 解析發音 = (文字: string, 選項: T_LangOpts) => {
   return 解析後的文本
 }
 
-const handleKeyDown: 類型_語言UI處理程序['handleKeyDown'] = 參數 => {
+const handleKeyDown: T_LangUIController['handleKeyDown'] = 參數 => {
   commonHandleWritingKeyDown(參數, {
     解析發音,
   })
 }
 
-const langOpts基礎: T_LangOpts = {
+const langOptsBase: T_LangOpts = {
   dictionary: charToPronunciationMap,
 }
 
@@ -76,7 +40,7 @@ const getLangOpts = () => {
   const rest = JSON.parse(localStorage.getItem('mandarinLangOpts') ?? '{}')
 
   return {
-    ...langOpts基礎,
+    ...langOptsBase,
     ...rest,
   } satisfies T_LangOpts
 }
@@ -120,18 +84,63 @@ const getToneColor: T_GetToneColor = (char, 選項, 字元) => {
   }[音數]
 }
 
-const languageUIController: 類型_語言UI處理程序 = {
+const loadDictionary = async () => {
+  if (Object.keys(charToPronunciationMap).length) {
+    return
+  }
+
+  const dictionary = (await import('./converted-list-ma.yml')).default
+
+  const dictionaryParsed = (
+    dictionary as { dict: Array<undefined | string> }
+  ).dict.reduce<Record<string, [string, number] | undefined>>((acc, item) => {
+    const [char, pronunciation, perc] = item?.split('\t') ?? []
+
+    if (!char || !pronunciation) {
+      return acc
+    }
+
+    const finalPerc = perc ? parseFloat(perc.replace('%', '')) : 0
+    const existing = acc[char]
+
+    if (existing && existing[1] > finalPerc) {
+      return acc
+    }
+
+    acc[char] = [pronunciation, finalPerc]
+
+    if (繁體轉簡體[char]) {
+      繁體轉簡體[char]?.forEach(simplified => {
+        acc[simplified] = [pronunciation, finalPerc]
+      })
+    }
+
+    return acc
+  }, {})
+
+  Object.keys(dictionaryParsed).forEach(char => {
+    const item = dictionaryParsed[char]
+
+    if (!item) return
+
+    charToPronunciationMap[char] = item[0]
+    pronunciationToCharMap[item[0]] = char
+  })
+}
+
+const languageUIController: T_LangUIController = {
   getLangOpts,
   getLinksBlock: () => LinksBlock,
   getOptionsBlock: () => OptionsBlock,
   getToneColor,
   handleKeyDown,
   languageHandler: mandarinHandler,
+  loadDictionary,
   onBlur: chineseBlurHandler,
   saveLangOptss,
   shouldAllCharsHaveSameWidth: false,
   tonesNumber: 4,
-  處理清除事件: (處理程序: 類型_語言UI處理程序) => {
+  處理清除事件: (處理程序: T_LangUIController) => {
     處理程序.saveLangOptss({
       ...處理程序.getLangOpts(),
       charsWithMistakes: [],

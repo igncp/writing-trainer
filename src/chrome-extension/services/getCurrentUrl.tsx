@@ -19,7 +19,8 @@ const getFromHref: T_getCurrentUrl = () => {
   })
 }
 
-const getCurrentUrl = __USE_CHROME_TABS_FEATURE__ ? getWithChrome : getFromHref
+const getCurrentUrl =
+  process.env.NODE_ENV !== 'test' ? getWithChrome : getFromHref
 
 let _test:
   | {
@@ -28,8 +29,7 @@ let _test:
     }
   | undefined
 
-// istanbul ignore else
-if (__TEST__) {
+if (process.env.NODE_ENV === 'test') {
   _test = {
     getFromHref,
     getWithChrome,

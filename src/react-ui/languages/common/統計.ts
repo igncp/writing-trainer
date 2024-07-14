@@ -67,6 +67,7 @@ const 儲存字元 = async (char: string, charType: 字元類型) => {
 
     if (record) {
       record.count += 1
+
       const updateRequest = objectStore.put(record, key)
 
       updateRequest.onerror = 事件 => {
@@ -113,6 +114,7 @@ export const getCharsCount = async () => {
           (acc: number, record: DBRecord) => acc + record.count,
           0,
         )
+
         resolve(total)
       }
     })

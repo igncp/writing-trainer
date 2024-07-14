@@ -12,6 +12,7 @@ const BWrapper: T_Wrapper = ({ children }) => <b>{children}</b>
 const Options = () => {
   const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false)
   const [enabledPagesValue, setEnabledPagesValue] = useState<string>('')
+
   const [savedEnabledPagesValue, setSavedEnabledPagesValue] =
     useState<string>('')
 
@@ -22,6 +23,7 @@ const Options = () => {
       setEnabledPagesValue(enabledPages)
       setSavedEnabledPagesValue(enabledPages)
     }
+
     setHasLoadedStorage(true)
   }
 

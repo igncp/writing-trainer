@@ -18,6 +18,7 @@ const TextArea = ({
 }: 特性) => {
   const ref = useRef<HTMLTextAreaElement>(null)
   const 顏色 = 獲取(style, 'color', 'var(--color-text, "black")')
+
   const 遊標樣式 = 無遊標
     ? {
         color: 'transparent',

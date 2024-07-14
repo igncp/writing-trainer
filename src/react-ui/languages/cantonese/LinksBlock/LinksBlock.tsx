@@ -12,6 +12,7 @@ const CANTONESE_CONVERTER_LINK =
 
 const LinksBlock: T_LinksBlock = ({ fragments, updateFragments, 文字 }) => {
   const { t } = useTranslation()
+
   const hrefText = 文字
     .split('')
     .map(c => c.trim())

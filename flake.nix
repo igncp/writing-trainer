@@ -34,7 +34,8 @@
           );
         packages = with pkgs;
           [
-            nodejs_20
+            bun
+            nodejs_22
             openssl
             patchelf
             pkg-config

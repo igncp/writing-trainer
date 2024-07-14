@@ -1,3 +1,31 @@
+const paddingRule = [
+  'error',
+  { blankLine: 'always', next: 'return', prev: '*' },
+]
+  .concat(
+    [
+      'const',
+      'if',
+      'interface',
+      'multiline-block-like',
+      'multiline-const',
+      'multiline-expression',
+      'type',
+    ]
+      .map(item => [
+        { blankLine: 'always', next: '*', prev: item },
+        { blankLine: 'always', next: item, prev: '*' },
+      ])
+      .flat(),
+  )
+  .concat([
+    {
+      blankLine: 'any',
+      next: ['singleline-const'],
+      prev: ['singleline-const'],
+    },
+  ])
+
 const tsRules = {
   '@typescript-eslint/array-type': [2, { default: 'array-simple' }],
   '@typescript-eslint/explicit-member-accessibility': 2,
@@ -55,9 +83,6 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:@typescript-eslint/recommended',
   ],
-  globals: {
-    __TEST__: true,
-  },
   overrides: [
     {
       files: ['**/*.js'],
@@ -79,7 +104,7 @@ module.exports = {
 
         'no-console': 0,
         'require-atomic-updates': 0,
-        semi: 0,
+        'semi': 0,
       },
     },
     {
@@ -93,35 +118,31 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json',
   },
-  plugins: ['@typescript-eslint', 'prettier', 'perfectionist'],
+  plugins: [
+    '@stylistic',
+    '@typescript-eslint',
+    'import',
+    'perfectionist',
+    'prettier',
+    'react-hooks',
+  ],
   rules: {
     ...tsRules,
 
-    eqeqeq: 2,
-    'newline-before-return': 2,
-    'no-console': 2,
-    'no-extra-semi': 0,
-    'no-useless-return': 2,
-    'object-shorthand': 2,
+    '@stylistic/padding-line-between-statements': paddingRule,
 
-    'padding-line-between-statements': [
-      'error',
-      {
-        blankLine: 'always',
-        next: 'if',
-        prev: '*',
-      },
-      {
-        blankLine: 'always',
-        next: 'multiline-expression',
-        prev: '*',
-      },
-      {
-        blankLine: 'always',
-        next: 'block-like',
-        prev: '*',
-      },
-    ],
+    'eqeqeq': 2,
+
+    'import/no-duplicates': 'error',
+
+    'newline-before-return': 2,
+    'no-console': ['error', { allow: ['warn', 'error'] }],
+    'no-else-return': 'error',
+    'no-extra-semi': 'off',
+    'no-shadow': 'off',
+    'no-unused-vars': 'off',
+    'no-useless-return': 'error',
+    'object-shorthand': 'error',
 
     'perfectionist/sort-array-includes': 2,
     'perfectionist/sort-classes': 2,
@@ -132,18 +153,44 @@ module.exports = {
     'perfectionist/sort-object-types': 2,
     'perfectionist/sort-objects': 2,
 
-    'prefer-template': 2,
+    'prefer-const': 'error',
+    'prefer-destructuring': ['error', { array: false, object: true }],
+    'prefer-spread': 'error',
+    'prefer-template': 'error',
 
     'prettier/prettier': 'error',
 
-    'react-hooks/exhaustive-deps': 2,
-    'react-hooks/rules-of-hooks': 2,
+    'quote-props': ['error', 'consistent-as-needed'],
 
-    'react/jsx-no-target-blank': 0,
-    'react/jsx-sort-props': 2,
-    'react/no-unescaped-entities': 0,
-    'react/prop-types': 0,
-    'react/react-in-jsx-scope': 0,
+    'react-hooks/exhaustive-deps': 'error',
+    'react-hooks/rules-of-hooks': 'error',
+
+    'react/destructuring-assignment': [
+      'error',
+      'always',
+      { destructureInSignature: 'always' },
+    ],
+    'react/display-name': 'off',
+    'react/function-component-definition': 'off',
+    'react/jsx-boolean-value': 'error',
+    'react/jsx-curly-brace-presence': 'error',
+    'react/jsx-filename-extension': 'off',
+    'react/jsx-fragments': 'error',
+    'react/jsx-key': ['error', { warnOnDuplicates: true }],
+    'react/jsx-no-target-blank': 'off',
+    'react/jsx-no-useless-fragment': 'error',
+    'react/jsx-one-expression-per-line': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react/jsx-sort-props': 'error',
+    'react/no-array-index-key': 'off',
+    'react/no-unescaped-entities': 'off',
+    'react/no-unknown-property': 'off',
+    'react/no-unstable-nested-components': 'error',
+    'react/no-unused-prop-types': 'error',
+    'react/prop-types': 'off',
+    'react/react-in-jsx-scope': 'off',
+    'react/require-default-props': 'off',
+    'react/self-closing-comp': 'error',
   },
 
   settings: {
@@ -153,7 +200,7 @@ module.exports = {
         map: [['#', './src/']],
       },
     },
-    react: {
+    'react': {
       version: 'detect',
     },
   },

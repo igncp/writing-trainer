@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "npm run next:build && bash scripts/package_extension.sh",
+    "build": "bun run next:build && bash scripts/package_extension.sh",
     "check": "bash scripts/check.sh",
     "clean": "sh scripts/clean.sh",
     "eslint": "eslint . --ext ts --ext tsx --ext js",
@@ -12,15 +12,16 @@
     "next:build": "next build",
     "next:develop": "next dev",
     "parse-translations": "i18next 'src/**/*.{ts,tsx}'",
-    "prettier": "prettier \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "prettier:check": "npm run prettier -- --list-different",
-    "prettier:fix": "npm run prettier -- --write",
+    "prettier": "prettier '**/*.{js,jsx,ts,tsx,json,md}'",
+    "prettier:check": "bun run prettier -- --list-different",
+    "prettier:fix": "bun run prettier -- --write",
     "test": "jest",
     "type-coverage": "typescript-coverage-report --ignore-files '**/*.json'"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",
     "@graphql-codegen/client-preset": "^4.2.6",
+    "@stylistic/eslint-plugin": "^1.6.2",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/chrome": "^0.0.268",
     "@types/jest": "^29.5.12",
@@ -33,7 +34,6 @@
     "@typescript-eslint/parser": "^6.14.0",
     "autoprefixer": "^10.4.19",
     "babel-loader": "^8.0.6",
-    "csv-loader": "^3.0.3",
     "eslint": "^8.56.0",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-import": "^2.29.1",
@@ -65,6 +65,7 @@
     "yaml-loader": "^0.8.1"
   },
   "dependencies": {
+    "@stylistic/eslint-plugin": "^1.6.2",
     "@types/react-helmet": "^6.1.5",
     "csv-loader": "^3.0.3",
     "i18next": "^23.11.5",

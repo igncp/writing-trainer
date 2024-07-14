@@ -23,6 +23,7 @@ diesel::table! {
         language -> Text,
         video_url -> Text,
         lyrics -> Text,
+        pronunciation -> Nullable<Text>,
     }
 }
 

@@ -3,76 +3,112 @@ import { T_CharObj } from '../languageManager'
 
 import { LanguageHandler } from './_common'
 
-const 轉換為字元對象列表: LanguageHandler['轉換為字元對象列表'] = ({
+const MAX_CHARS_IN_WORD = 6
+
+const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
   charsToRemove,
-  langOpts = {},
+  langOpts,
   text,
 }) => {
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const defaultSpecialChars = japaneseHandler.getSpecialChars()
-  const allCharsToRemove = defaultSpecialChars
-    .concat(charsToRemove)
-    .concat([' '])
-  const pronunciationInput: string = (langOpts.pronunciationInput ||
-    '') as string
-  const pronunciationInputArr = pronunciationInput
-    .replace(/ō/g, 'ou')
-    .toLowerCase()
-    .split(' ')
-    .filter(c => !!c)
-    .map(segment => {
-      const numRegResul = /([a-z]+)([0-9]+)/.exec(segment)
 
-      if (!numRegResul?.[1] || !numRegResul[2]) {
-        return { num: 1, text: segment }
-      }
+  const allCharsToRemove = new Set(
+    defaultSpecialChars.concat(charsToRemove).concat([' ']),
+  )
 
-      return { num: Number(numRegResul[2]), text: numRegResul[1] }
-    })
+  const dictionary = langOpts?.dictionary as
+    | Record<string, string | undefined>
+    | undefined
 
-  const charsObjsList: T_CharObj[] = []
-  let nextWord = ''
+  const pronunciationInput = ((langOpts?.pronunciationInput as string) || '')
+    .split('\n')
+    .reduce<Record<string, string>>((acc, item) => {
+      const [char, pronunciationVal] = item.split(' ')
 
-  const addWord = () => {
-    if (!nextWord) {
-      return
-    }
+      acc[char] = pronunciationVal
 
-    const charObj = new T_CharObj({
-      pronunciation: pronunciationInputArr.length
-        ? pronunciationInputArr.shift()!.text
-        : '?',
-      word: nextWord,
-    })
-    charsObjsList.push(charObj)
+      return acc
+    }, {})
 
-    nextWord = ''
+  if (!dictionary) {
+    return []
   }
 
-  text.split('').forEach(ch => {
-    if (allCharsToRemove.includes(ch)) {
-      addWord()
+  const charsObjsList: T_CharObj[] = []
 
-      const charObj = new T_CharObj({
-        pronunciation: '',
-        word: ch,
-      })
-      charsObjsList.push(charObj)
+  let currentWord = ''
+
+  const addWords = (textToAdd: string): number => {
+    let charsAdded = 0
+
+    for (let i = textToAdd.length; i > 0; i--) {
+      const word = textToAdd.slice(0, i)
+      const pronunciation = pronunciationInput[word] || dictionary[word]
+
+      if (pronunciation) {
+        charsObjsList.push(
+          new T_CharObj({
+            pronunciation,
+            word,
+          }),
+        )
+
+        charsAdded = i
+        break
+      }
+    }
+
+    if (!charsAdded) {
+      charsObjsList.push(
+        new T_CharObj({
+          pronunciation: '',
+          word: textToAdd[0],
+        }),
+      )
+
+      charsAdded = 1
+    }
+
+    return charsAdded
+  }
+
+  text.split('').forEach((ch, idx) => {
+    if (allCharsToRemove.has(ch)) {
+      while (currentWord) {
+        const charsAdded = addWords(currentWord)
+
+        currentWord = currentWord.slice(charsAdded)
+      }
+
+      charsObjsList.push(
+        new T_CharObj({
+          pronunciation: '',
+          word: ch,
+        }),
+      )
+
+      currentWord = ''
 
       return
     }
 
-    if (
-      pronunciationInputArr.length &&
-      nextWord.length === pronunciationInputArr[0].num
-    ) {
-      addWord()
+    currentWord += ch
+
+    if (currentWord.length >= MAX_CHARS_IN_WORD || idx === text.length - 1) {
+      const charsAdded = addWords(currentWord)
+
+      currentWord = currentWord.slice(charsAdded)
+
+      if (idx === text.length - 1) {
+        while (currentWord) {
+          const charsAdded2 = addWords(currentWord)
+
+          currentWord = currentWord.slice(charsAdded2)
+        }
+      }
     }
-
-    nextWord += ch
   })
-
-  addWord()
 
   return charsObjsList
 }
@@ -83,8 +119,8 @@ const language = new LanguageDefinition({
 })
 
 const japaneseHandler = new LanguageHandler({
+  convertToCharsObjs,
   language,
-  轉換為字元對象列表,
 })
 
 export { japaneseHandler }

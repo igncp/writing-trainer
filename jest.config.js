@@ -5,10 +5,6 @@ module.exports = {
     '!**/__stories__/**',
     '!**/__tests__/**',
   ],
-  globals: {
-    __TEST__: true,
-    __USE_CHROME_TABS_FEATURE__: true,
-  },
   moduleNameMapper: {
     '@/(.*)$': '<rootDir>/src/chrome-extension/$1',
     '#/(.*)$': '<rootDir>/src/$1',

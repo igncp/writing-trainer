@@ -1,7 +1,7 @@
 import { LanguageDefinition } from '../constants'
 import { T_CharObj, CurrentCharObj } from '../languageManager'
 
-import { 特殊字元 } from './_特殊字元'
+import { specialChars } from './_特殊字元'
 
 type 類型_轉換為字元對象列表 = (opts: {
   charsToRemove: string[]
@@ -10,20 +10,20 @@ type 類型_轉換為字元對象列表 = (opts: {
 }) => T_CharObj[]
 
 class LanguageHandler {
+  public readonly convertToCharsObjs: 類型_轉換為字元對象列表
   private readonly extraSpecialChars: string[]
   private readonly language: LanguageDefinition
-  public readonly 轉換為字元對象列表: 類型_轉換為字元對象列表
 
   public constructor({
+    convertToCharsObjs,
     extraSpecialChars,
     language,
-    轉換為字元對象列表,
   }: {
+    convertToCharsObjs: LanguageHandler['convertToCharsObjs']
     extraSpecialChars?: string[]
     language: LanguageHandler['language']
-    轉換為字元對象列表: LanguageHandler['轉換為字元對象列表']
   }) {
-    this.轉換為字元對象列表 = 轉換為字元對象列表
+    this.convertToCharsObjs = convertToCharsObjs
     this.language = language
     this.extraSpecialChars = extraSpecialChars ?? []
   }
@@ -35,8 +35,8 @@ class LanguageHandler {
     charsToRemove: string[]
     text: string
   }) {
-    const specialChars = this.getSpecialChars()
-    const allCharsToRemove = charsToRemove.concat(specialChars)
+    const specialCharsList = this.getSpecialChars()
+    const allCharsToRemove = charsToRemove.concat(specialCharsList)
 
     return text
       .split('')
@@ -55,6 +55,7 @@ class LanguageHandler {
     const originalCharsWithPronunciationObjs = originalCharsObjs
       .map((ch, idx) => ({ ch, idx }))
       .filter(c => !!c.ch.pronunciation)
+
     const practiceCharsWithPronunciation = practiceCharsObjs.filter(
       c => !!c.pronunciation,
     )
@@ -106,7 +107,7 @@ class LanguageHandler {
   }
 
   public getSpecialChars() {
-    return 特殊字元.concat(this.extraSpecialChars)
+    return specialChars.concat(this.extraSpecialChars)
   }
 }
 

@@ -30,6 +30,7 @@ describe('Record.filterByText', () => {
     expect(
       Record.filterByText({ filterText: '', records: dummyRecords }),
     ).toEqual(dummyRecords)
+
     expect(Record.filterByText({ filterText: '', records: [] })).toEqual([])
   })
 

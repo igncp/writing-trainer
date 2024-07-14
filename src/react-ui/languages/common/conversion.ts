@@ -27,6 +27,7 @@ const sameConversionSet: Set<string> = new Set([
   '出',
   '别',
   '千',
+  '台',
   '吃',
   '合',
   '同',

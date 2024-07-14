@@ -1,19 +1,19 @@
 import { LanguageManager } from '#/core'
 
 import { 語言UI處理程序清單 as 預設語言UI處理程序清單 } from './handlers'
-import { 類型_語言UI處理程序 } from './types'
+import { T_LangUIController } from './types'
 
 class LanguageUIManager {
-  private readonly handlers: 類型_語言UI處理程序[]
+  private readonly handlers: T_LangUIController[]
   private readonly idToLanguageUIHandlerMap: {
-    [k: string]: 類型_語言UI處理程序
+    [k: string]: T_LangUIController
   } = {}
 
   private readonly manager: LanguageManager
 
   public constructor(
     manager: LanguageManager,
-    handlers?: 類型_語言UI處理程序[],
+    handlers?: T_LangUIController[],
   ) {
     this.manager = manager
     this.handlers = handlers ?? 預設語言UI處理程序清單

@@ -1,4 +1,4 @@
-import { englishHandler, 特殊字元 } from '../..'
+import { englishHandler, specialChars } from '../..'
 
 describe('values', () => {
   it('has the correct values', () => {
@@ -9,15 +9,15 @@ describe('values', () => {
 
 describe('getSpecialChars', () => {
   it('returns the expected array', () => {
-    expect(englishHandler.getSpecialChars()).toEqual(特殊字元)
-    expect(englishHandler.getSpecialChars()).toEqual(特殊字元)
+    expect(englishHandler.getSpecialChars()).toEqual(specialChars)
+    expect(englishHandler.getSpecialChars()).toEqual(specialChars)
   })
 })
 
-describe('轉換為字元對象列表', () => {
+describe('convertToCharsObjs', () => {
   it('returns the correct array', () => {
     expect(
-      englishHandler.轉換為字元對象列表({
+      englishHandler.convertToCharsObjs({
         charsToRemove: [],
         text: 'fo__o',
       }),
@@ -41,7 +41,7 @@ describe('轉換為字元對象列表', () => {
     ])
 
     expect(
-      englishHandler.轉換為字元對象列表({
+      englishHandler.convertToCharsObjs({
         charsToRemove: [],
         text: 'ab c',
       }),

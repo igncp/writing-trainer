@@ -58,16 +58,17 @@ type T_BlurHandler = (opts: T_BlurHandlerOpts) => {
   newFragmentsList: string[] | undefined
 }
 
-export interface 類型_語言UI處理程序 {
+export interface T_LangUIController {
   getLangOpts: () => T_LangOpts
   getLinksBlock: () => T_LinksBlock
   getOptionsBlock: () => T_OptionsBlock
   getToneColor?: T_GetToneColor
   handleKeyDown: T_HandleKeyDown
   languageHandler: LanguageHandler
+  loadDictionary: () => Promise<void>
   onBlur?: T_BlurHandler
   saveLangOptss: (o: T_LangOpts) => void
   shouldAllCharsHaveSameWidth: boolean
   tonesNumber?: number
-  處理清除事件?: (處理程序: 類型_語言UI處理程序) => void
+  處理清除事件?: (處理程序: T_LangUIController) => void
 }

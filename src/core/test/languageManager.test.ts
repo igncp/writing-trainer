@@ -10,18 +10,18 @@ const languageManager = new LanguageManager()
 const createDummyLanguageHandler = (
   id: LanguageDefinition['id'],
 ): LanguageHandler => {
-  const 轉換為字元對象列表 = () => {
+  const convertToCharsObjs = () => {
     const result: T_CharObj[] = []
 
     return result
   }
 
   return new LanguageHandler({
+    convertToCharsObjs,
     language: new LanguageDefinition({
       id,
       name: 'Some Name',
     }),
-    轉換為字元對象列表,
   })
 }
 
@@ -109,6 +109,7 @@ describe('getLanguageHandler', () => {
     expect(languageManager.getLanguageHandler(dummyHandlerA.getId())).toEqual(
       dummyHandlerA,
     )
+
     expect(languageManager.getLanguageHandler('foo')).toEqual(null)
 
     languageManager.unregisterLanguage(dummyHandlerA.getId())

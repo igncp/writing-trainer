@@ -1,4 +1,4 @@
-import { 特殊字元, cantoneseHandler } from '../..'
+import { specialChars, cantoneseHandler } from '../..'
 
 describe('values', () => {
   it('has the correct values', () => {
@@ -10,7 +10,7 @@ describe('values', () => {
 describe('getSpecialChars', () => {
   it('returns the expected array', () => {
     expect(cantoneseHandler.getSpecialChars()).toEqual(
-      特殊字元.concat(
+      specialChars.concat(
         'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(
           '',
         ),
@@ -18,7 +18,7 @@ describe('getSpecialChars', () => {
     )
 
     expect(cantoneseHandler.getSpecialChars()).toEqual(
-      特殊字元.concat(
+      specialChars.concat(
         'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(
           '',
         ),
@@ -27,7 +27,7 @@ describe('getSpecialChars', () => {
   })
 })
 
-describe('轉換為字元對象列表', () => {
+describe('convertToCharsObjs', () => {
   it('returns the correct arrays', () => {
     const correctResult = [
       {
@@ -69,7 +69,7 @@ describe('轉換為字元對象列表', () => {
     }
 
     expect(
-      cantoneseHandler.轉換為字元對象列表({
+      cantoneseHandler.convertToCharsObjs({
         charsToRemove: [],
         langOpts: {
           dictionary: {
@@ -86,7 +86,7 @@ describe('轉換為字元對象列表', () => {
     )
 
     expect(
-      cantoneseHandler.轉換為字元對象列表({
+      cantoneseHandler.convertToCharsObjs({
         charsToRemove: [],
         langOpts: {},
         text: '你好嗎?我很好',
@@ -98,7 +98,7 @@ describe('轉換為字元對象列表', () => {
     )
 
     expect(
-      cantoneseHandler.轉換為字元對象列表({
+      cantoneseHandler.convertToCharsObjs({
         charsToRemove: [],
         text: '你好嗎?我很好',
       }),
@@ -109,7 +109,7 @@ describe('轉換為字元對象列表', () => {
     )
 
     expect(
-      cantoneseHandler.轉換為字元對象列表({
+      cantoneseHandler.convertToCharsObjs({
         charsToRemove: [],
         langOpts: {
           dictionary: fullDictionary,

@@ -48,6 +48,7 @@ pub struct SongGQL {
     id: i32,
     language: String,
     lyrics: String,
+    pronunciation: Option<String>,
     title: String,
     video_url: String,
 }
@@ -96,6 +97,7 @@ impl SongGQL {
             lyrics: song.lyrics.to_string(),
             title: song.title.to_string(),
             video_url: song.video_url.to_string(),
+            pronunciation: song.pronunciation.clone(),
         }
     }
 }

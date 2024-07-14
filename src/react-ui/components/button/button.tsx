@@ -38,6 +38,7 @@ const Button = ({
   ...props
 }: T_ButtonProps) => {
   const { bind, hovered } = useHover()
+
   const finalStyle = {
     backgroundColor: 'var(--color-bg-dim)',
     border: '0',

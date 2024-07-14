@@ -1,12 +1,13 @@
-import { 類型_語言UI處理程序 } from '../types'
+import { T_LangUIController } from '../types'
 
-export const chineseBlurHandler: 類型_語言UI處理程序['onBlur'] = ({
+export const chineseBlurHandler: T_LangUIController['onBlur'] = ({
   fragmentsList,
   langOpts,
 }) => {
   if (langOpts.自動分割文字行) {
     const splitChars = new Set(['。', '？', '！', '；', '，'])
     const splitLength = 20
+
     const newList = fragmentsList
       .map(l => {
         if (l.startsWith('原文網址: ')) {

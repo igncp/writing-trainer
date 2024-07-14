@@ -28,10 +28,10 @@ const ChooseLanguage = ({
   }
 
   const languageNames: Record<string, string | undefined> = {
-    'cantonese': t('lang.cantonese'),
-    'english': t('lang.english'),
-    'japanese': t('lang.japanese'),
-    'mandarin': t('lang.mandarin'),
+    cantonese: t('lang.cantonese'),
+    english: t('lang.english'),
+    japanese: t('lang.japanese'),
+    mandarin: t('lang.mandarin'),
   }
 
   return (

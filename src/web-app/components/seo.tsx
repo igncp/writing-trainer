@@ -46,7 +46,7 @@ function SEO({ description = '', lang = 'en', meta = [], title }: IProps) {
         },
       ].concat(meta)}
       title={title}
-      titleTemplate={`%s`}
+      titleTemplate="%s"
     />
   )
 }

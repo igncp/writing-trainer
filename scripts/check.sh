@@ -8,15 +8,15 @@ fi
 
 bash scripts/prettier.sh --list-different
 
-npm run eslint
+bun run eslint
 
-npm run type-coverage -- \
+bun run type-coverage -- \
   --ignore-files 'src/react-ui/graphql/**/*'
 
 cargo clippy --release --all-targets --all-features -- -D warnings
 
 rm -rf .next out
 NODE_ENV=production \
-  npm run next:build
+  bun run next:build
 
 cargo build --release --target-dir target

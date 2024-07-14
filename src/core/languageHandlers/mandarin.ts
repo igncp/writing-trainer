@@ -5,17 +5,20 @@ import { LanguageHandler } from './_common'
 
 type T_Dictionary = { [k: string]: string }
 
-const 轉換為字元對象列表: LanguageHandler['轉換為字元對象列表'] = ({
+const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
   charsToRemove,
   langOpts = {},
   text,
 }) => {
   const dictionary: T_Dictionary = (langOpts.dictionary || {}) as T_Dictionary
+
   const pronunciationInput: string = (langOpts.pronunciationInput ||
     '') as string
+
   const pronunciationInputArr = pronunciationInput.split(' ').filter(c => !!c)
 
   const defaultSpecialChars = mandarinHandler.getSpecialChars() // eslint-disable-line @typescript-eslint/no-use-before-define
+
   const allCharsToRemove = defaultSpecialChars
     .concat(charsToRemove)
     .concat([' '])
@@ -38,6 +41,7 @@ const 轉換為字元對象列表: LanguageHandler['轉換為字元對象列表'
           unknownPronunciation,
         word: ch,
       })
+
       charsObjsList.push(charObj)
     }
   })
@@ -51,10 +55,10 @@ const language = new LanguageDefinition({
 })
 
 const mandarinHandler = new LanguageHandler({
+  convertToCharsObjs,
   extraSpecialChars:
     'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(''),
   language,
-  轉換為字元對象列表,
 })
 
 export { mandarinHandler }

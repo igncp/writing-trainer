@@ -15,6 +15,3 @@ declare module '*.txt' {
 
   export default value
 }
-
-declare let __USE_CHROME_TABS_FEATURE__: boolean
-declare let __TEST__: boolean

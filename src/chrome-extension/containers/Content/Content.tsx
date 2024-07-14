@@ -22,6 +22,7 @@ import {
 
 const languageManager = new LanguageManager()
 const languageUIManager = new LanguageUIManager(languageManager)
+
 languageUIManager.init()
 
 const panelServices = { getCurrentUrl, storage }
@@ -54,6 +55,7 @@ const Content = ({ onContentEnabledResult }: ContentProps) => {
       storage.getValue(STORAGE_ENABLED_PAGES_KEY),
       getCurrentUrl(),
     ])
+
     const isContentEnabled = getIsCurrentPageEnabled(currentUrl, enabledPages)
 
     setIsExtensionEnabled(isContentEnabled)
@@ -61,6 +63,7 @@ const Content = ({ onContentEnabledResult }: ContentProps) => {
     if (onContentEnabledResult) {
       onContentEnabledResult(isContentEnabled)
     }
+
     setHasLoadedStorage(true)
   }
 

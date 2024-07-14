@@ -1,19 +1,20 @@
 import { unknownPronunciation } from '#/core'
 
-import { 類型_語言UI處理程序, T_LangOpts } from '../types'
+import { T_LangUIController, T_LangOpts } from '../types'
 
 import { 儲存成功字元, 儲存失敗字元 } from './統計'
 
 type 類型_解析發音 = (文字: string, langOpts?: T_LangOpts) => string
+
 type T_OnPracticeBackspaceFormat = (practiceValue: string) => string
 
 type T_CommonHandleWritingKeyDown = (
-  opts: Parameters<類型_語言UI處理程序['handleKeyDown']>[0],
+  opts: Parameters<T_LangUIController['handleKeyDown']>[0],
   opts2: {
     onPracticeBackspaceFormat?: T_OnPracticeBackspaceFormat
     解析發音?: 類型_解析發音
   },
-) => ReturnType<類型_語言UI處理程序['handleKeyDown']>
+) => ReturnType<T_LangUIController['handleKeyDown']>
 
 const 預設解析發音: 類型_解析發音 = 文字 => 文字.toLowerCase()
 
@@ -52,6 +53,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     const newPracticeText = onPracticeBackspaceFormat(practiceValue)
 
     setPractice(newPracticeText)
+
     const langObj = getCurrentCharObjFromPractice(newPracticeText)
 
     if (langObj?.ch) {
@@ -144,6 +146,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
 
         if ((charsWithMistakes ?? []).length) {
           const chars = Array.from(new Set(charsWithMistakes))
+
           const fullChars = Array.from({ length: 3 })
             .map(() => {
               return chars.join('')
@@ -179,6 +182,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     ) {
       儲存失敗字元(currentCharObj.word)
     }
+
     ;(langOpts.charsWithMistakes as string[]).push(currentCharObj.word)
   }
 

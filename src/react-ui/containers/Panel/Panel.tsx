@@ -89,10 +89,13 @@ const Panel = ({
 }: Props) => {
   const { t } = useTranslation()
   const initialLanguageId = languageUIManager.getDefaultLanguage()
+
   const {
     state: { isLoggedIn },
   } = useMainContext()
+
   const [, 觸發重新渲染] = useState<number>(0)
+
   const [stats, setStats] = useState<null | {
     correct: number
     fail: number
@@ -107,35 +110,46 @@ const Panel = ({
   })
 
   const [showingAnkis, setShowingAnkis] = useState<AnkisMode | null>(null)
+
   const [showingRecordsInitScreen, setShowingRecordsInitScreen] = useState<
     RecordsScreen | ''
   >('')
+
   const [currentRecord, setCurrentRecord] = useState<Record['id'] | null>(null)
   const [currentText, setCurrentText] = useState<string>('')
   const originalTextValue = currentText || fragments.list[fragments.index]
+
   const [pronunciationValue, setPronunciation] = useState<string>(
     _stories.defaultPronunciation ?? '',
   )
+
   const [specialCharsValue, setSpecialChars] = useState<string>('')
   const [writingValue, setWriting] = useState<string>('')
+
   const [practiceValue, setPractice] = useState<string>(
     _stories.defaultPractice ?? '',
   )
+
   const [fontSize, setFontSize] = useState<number>(defaultFontSize)
   const [isShowingPronunciation, setShowingPronunciation] = useState(true)
   const [isShowingEdition, setShowingEdition] = useState<boolean>(true)
   const [practiceHasError, setPracticeHasError] = useState<boolean>(false)
+
   const [selectedLanguage, setSelectedLanguage] =
     useState<LanguageDefinition['id']>(initialLanguageId)
+
   const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false)
   const [currentDisplayCharIdx, setCurrentDisplayCharIdx] = useState<number>(0)
   const [writingBorder, setWritingBorder] = useState<'bold' | 'normal'>('bold')
   const [hasExtraControls, setHasExtraControls] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const writingArea = useRef<HTMLTextAreaElement | null>(null)
+
   const [displayMobileTones, setDisplayMobileTones] = useState<boolean | null>(
     null,
   )
+
+  const [, setDictionaryKey] = useState<number>(0)
   const langOpts = _stories.langOpts ?? languageUIController.getLangOpts()
 
   const langHandler = languageManager.getCurrentLanguageHandler()
@@ -175,6 +189,7 @@ const Panel = ({
 
   const handleOriginalTextUpdate = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const val = e.target.value
+
     const list = val
       .split('\n')
       .map(s => s.trim())
@@ -188,10 +203,26 @@ const Panel = ({
     onPracticeSourceChange(newFragments)
   }
 
+  const onDictionaryLoaded = () => {
+    setDictionaryKey(k => k + 1)
+  }
+
   const updateLanguage = (lang: LanguageDefinition['id']) => {
     languageManager.setCurrentLanguageHandler(lang)
     setSelectedLanguage(lang)
   }
+
+  useEffect(() => {
+    if (!hasLoadedStorage) return
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    selectedLanguage
+
+    const localLanguageUIController =
+      languageUIManager.getLanguageUIController()
+
+    localLanguageUIController.loadDictionary().then(onDictionaryLoaded)
+  }, [languageUIManager, selectedLanguage, hasLoadedStorage])
 
   useEffect(() => {
     const listener = () => {
@@ -260,6 +291,7 @@ const Panel = ({
     ) {
       updateLanguage(storageSelectedLanguage)
     }
+
     setHasLoadedStorage(true)
   }
 
@@ -286,18 +318,19 @@ const Panel = ({
     })()
   }, [initialFragmentIndex, storage])
 
-  const 特殊字元 = langHandler?.getSpecialChars()
-  const langOpts對象 = {
+  const specialChars = langHandler?.getSpecialChars()
+
+  const langOptsObj = {
     langOpts: {
       pronunciationInput: pronunciationValue,
       ...((langOpts as unknown as T_LangOpts | undefined) ?? {}),
     },
   }
 
-  const charsToRemove = specialCharsValue.split('').concat(特殊字元 ?? [])
+  const charsToRemove = specialCharsValue.split('').concat(specialChars ?? [])
 
-  const charsObjsList = langHandler?.轉換為字元對象列表({
-    ...langOpts對象,
+  const charsObjsList = langHandler?.convertToCharsObjs({
+    ...langOptsObj,
     charsToRemove,
     text: originalTextValue,
   })
@@ -307,8 +340,8 @@ const Panel = ({
   ) => {
     if (!langHandler) return null
 
-    const practiceCharsObjs = langHandler.轉換為字元對象列表({
-      ...langOpts對象,
+    const practiceCharsObjs = langHandler.convertToCharsObjs({
+      ...langOptsObj,
       charsToRemove,
       text: practiceText,
     })
@@ -355,13 +388,14 @@ const Panel = ({
   }, [isShowingEdition, isShowingPronunciation, fragments, showingAnkis])
 
   const clearValues = () => {
-    // eslint-disable-next-line no-extra-semi,padding-line-between-statements
-    ;[setPronunciation, setSpecialChars, setWriting, setPractice].forEach(
-      fn => {
-        fn('')
-      },
-    )
+    const valsFns = [setPronunciation, setSpecialChars, setWriting, setPractice]
+
+    valsFns.forEach(fn => {
+      fn('')
+    })
+
     const newFragments: T_Fragments = { index: 0, list: [''] }
+
     languageUIController.處理清除事件?.(languageUIController)
     storage.setValue('fragments', JSON.stringify(newFragments))
     setShowingPronunciation(true)
@@ -446,6 +480,7 @@ const Panel = ({
       <RecordsSection
         initScreen={showingRecordsInitScreen}
         language={selectedLanguage}
+        onPronunciationLoad={setPronunciation}
         onRecordLoad={(record: Record) => {
           clearValues()
 
@@ -456,10 +491,12 @@ const Panel = ({
           setShowingRecordsInitScreen('')
           setShowingEdition(false)
           setShowingPronunciation(false)
+
           const newFragments: T_Fragments = {
             index: 0,
             list: record.text.split('\n'),
           }
+
           onPracticeSourceChange(newFragments)
           setCurrentRecord(record.id)
           setPronunciation(record.pronunciation)
@@ -472,6 +509,7 @@ const Panel = ({
             index: 0,
             list: lyrics,
           }
+
           onPracticeSourceChange(newFragments)
           setShowingRecordsInitScreen('')
         }}
@@ -650,6 +688,7 @@ const Panel = ({
                 ...fragments,
                 index: (fragments.index + 1) % fragments.list.length,
               }
+
               onPracticeSourceChange(newFragments)
             }}
           >
@@ -667,6 +706,7 @@ const Panel = ({
                     ? fragments.list.length - 1
                     : fragments.index - 1,
               }
+
               onPracticeSourceChange(newFragments)
             }}
           >
@@ -872,6 +912,7 @@ const Panel = ({
                         key: (idx + 1).toString(),
                         preventDefault: () => {},
                       } as unknown as ReactKeyboardEvent<HTMLTextAreaElement>)
+
                       writingArea.current?.focus()
                     }}
                   >

@@ -8,6 +8,7 @@ const openReal: T_openOptionsPage = () => {
 
 const openFake: T_openOptionsPage = () => {}
 
-const openOptionsPage = __USE_CHROME_TABS_FEATURE__ ? openReal : openFake
+const openOptionsPage =
+  process.env.NODE_ENV === 'production' ? openReal : openFake
 
 export default openOptionsPage

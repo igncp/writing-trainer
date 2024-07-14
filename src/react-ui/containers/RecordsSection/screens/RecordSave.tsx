@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import TextInput from '../../../components/TextInput/TextInput'
@@ -28,9 +28,11 @@ const RecordSave = ({
   const [recordName, setRecordName] = useState<string>(
     initialRecord ? initialRecord.name : '',
   )
+
   const [recordLink, setRecordLink] = useState<string>(
     initialRecord ? initialRecord.link : '',
   )
+
   const [currentUrl, setCurrentUrl] = useState<string>('')
   const linkInputRef = useRef<HTMLInputElement>(null)
   const { t } = useTranslation()
@@ -63,7 +65,7 @@ const RecordSave = ({
   }
 
   return (
-    <Fragment>
+    <>
       <div>
         <Button disabled={disabled} onClick={onShowRecordsList}>
           {t('record.list')}
@@ -112,7 +114,7 @@ const RecordSave = ({
           {t('record.save')}
         </Button>
       </div>
-    </Fragment>
+    </>
   )
 }
 

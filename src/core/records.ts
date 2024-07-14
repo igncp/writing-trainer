@@ -46,6 +46,7 @@ class Record {
     }
 
     const lowercaseFilterValue = filterText.toLowerCase()
+
     const filterValueSegments = lowercaseFilterValue
       .split(' ')
       .map(s => s.trim())

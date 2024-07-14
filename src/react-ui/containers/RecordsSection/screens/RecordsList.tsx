@@ -1,7 +1,7 @@
 import { Record } from '#/core'
 import { backendClient, SongItem } from '#/react-ui/lib/backendClient'
 import { TOOLTIP_ID } from '#/utils/tooltip'
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import TextInput from '../../../components/TextInput/TextInput'
@@ -32,9 +32,9 @@ const Cell = ({ bold, className, label, tooltip, value }: CellProps) => {
         : {})}
     >
       {label && (
-        <Fragment>
+        <>
           <b>{label}</b>:{' '}
-        </Fragment>
+        </>
       )}
       {value}
     </div>
@@ -55,6 +55,7 @@ const formatRecordDate = (d: number): string => {
 
 type 條目清單屬性 = {
   disabled: boolean
+  onPronunciationLoad: (p: string) => void
   onRecordEdit: (r: Record) => void
   onRecordLoad: (r: Record) => void
   onRecordRemove: (r: Record) => void
@@ -67,6 +68,7 @@ type 條目清單屬性 = {
 
 const RecordsList = ({
   disabled,
+  onPronunciationLoad,
   onRecordEdit,
   onRecordLoad,
   onRecordRemove,
@@ -78,6 +80,7 @@ const RecordsList = ({
 }: 條目清單屬性) => {
   const { t } = useTranslation()
   const [filterText, setFilterText] = useState<string>('')
+
   const filteredList = Record.filterByText({
     filterText,
     records,
@@ -184,6 +187,7 @@ const RecordsList = ({
         />
         {songs.list.map(song => {
           const { artist, id: songId, title, videoUrl } = song
+
           const 影片連結網址 = videoUrl.startsWith('https://')
             ? videoUrl
             : `https://www.youtube.com/watch?v=${videoUrl}`
@@ -212,9 +216,15 @@ const RecordsList = ({
               <Button
                 disabled={disabled}
                 onClick={() => {
-                  backendClient.getSongLyrics(song.id).then(({ lyrics }) => {
-                    onSongLoad((lyrics ?? '').split('\n'))
-                  })
+                  backendClient
+                    .getSongLyrics(song.id)
+                    .then(({ lyrics, pronunciation }) => {
+                      onSongLoad((lyrics || '').split('\n'))
+
+                      if (pronunciation) {
+                        onPronunciationLoad(pronunciation)
+                      }
+                    })
                 }}
               >
                 {t('record.load')}

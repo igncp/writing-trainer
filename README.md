@@ -7,8 +7,9 @@
 要求:
 
 - Node.js LTS
+- Nix
 
 ```
-npm i
-npm run build
+bun i
+bun run build
 ```
