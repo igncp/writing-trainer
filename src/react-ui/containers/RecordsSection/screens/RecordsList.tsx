@@ -219,7 +219,9 @@ const RecordsList = ({
                   backendClient
                     .getSongLyrics(song.id)
                     .then(({ lyrics, pronunciation }) => {
-                      onSongLoad((lyrics || '').split('\n'))
+                      onSongLoad(
+                        [song.title].concat((lyrics || '').split('\n')),
+                      )
 
                       if (pronunciation) {
                         onPronunciationLoad(pronunciation)
