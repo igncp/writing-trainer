@@ -8,7 +8,7 @@ type Props = {
 } & Omit<T_ButtonProps, 'children'>
 
 const GoogleTranslateButton = ({ language, text, ...rest }: Props) => {
-  const { t } = useTranslation()
+  const { i18n, t } = useTranslation()
 
   const hrefText = text
     .split('')
@@ -16,9 +16,22 @@ const GoogleTranslateButton = ({ language, text, ...rest }: Props) => {
     .filter(c => !!c)
     .join('')
 
+  const hrefLang =
+    {
+      'zh-HK': 'yue',
+    }[language] ?? 'auto'
+
+  const intoLang =
+    {
+      en: 'en',
+      es: 'es',
+      jp: 'ja',
+      zh_hant: 'yue',
+    }[i18n.language] ?? 'en'
+
   return (
     <Button
-      href={`https://translate.google.com/#${language}/en/${hrefText}`}
+      href={`https://translate.google.com/?sl=${hrefLang}&tl=${intoLang}&text=${encodeURIComponent(hrefText)}`}
       shouldUseLink
       {...rest}
     >

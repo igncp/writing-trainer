@@ -1,4 +1,7 @@
 import { LanguageDefinition, LanguageManager, Record } from '#/core'
+import { useEffectLater } from '#/react-ui/lib/hooks'
+import { Paths } from '#/react-ui/lib/paths'
+import { TOOLTIP_ID } from '#/utils/tooltip'
 import {
   ChangeEvent,
   useEffect,
@@ -14,7 +17,7 @@ import CharactersDisplay from '../../components/CharactersDisplay/CharactersDisp
 import ChooseLanguage from '../../components/ChooseLanguage/ChooseLanguage'
 import TextArea from '../../components/TextArea/TextArea'
 import Button from '../../components/button/button'
-import { deleteDatabase, getCharsCount } from '../../languages/common/統計'
+import { deleteDatabase, getStats } from '../../languages/common/統計'
 import { LanguageUIManager } from '../../languages/languageUIManager'
 import {
   T_LangOpts,
@@ -45,11 +48,13 @@ type Props = {
     defaultPronunciation?: string
     langOpts?: T_LangOpts
   }
+  getPath: () => string
   initialFragmentIndex?: number
   languageManager: LanguageManager
   languageUIManager: LanguageUIManager
   onChangeTheme?: () => void
   onHideRequest?: () => void
+  replacePath: (path: string) => void
   services: T_Services
   text: string
   UI?: {
@@ -78,17 +83,20 @@ const getLanguageDefinitions = (languageManager: LanguageManager) => {
 
 const Panel = ({
   _stories = {},
+  getPath,
   initialFragmentIndex,
   languageManager,
   languageUIManager,
   onChangeTheme,
   onHideRequest,
+  replacePath,
   services,
   text,
   UI,
 }: Props) => {
   const { t } = useTranslation()
   const initialLanguageId = languageUIManager.getDefaultLanguage()
+  const path = getPath()
 
   const {
     state: { isLoggedIn },
@@ -97,6 +105,9 @@ const Panel = ({
   const [, 觸發重新渲染] = useState<number>(0)
 
   const [stats, setStats] = useState<null | {
+    allCharsCount: number
+    allCharsCountToday: number
+    charsToday: string
     correct: number
     fail: number
     perc: number
@@ -109,7 +120,9 @@ const Panel = ({
     list: [text],
   })
 
-  const [showingAnkis, setShowingAnkis] = useState<AnkisMode | null>(null)
+  const [showingAnkis, setShowingAnkis] = useState<AnkisMode | null>(
+    path === Paths.ankis.main ? AnkisMode.Main : null,
+  )
 
   const [showingRecordsInitScreen, setShowingRecordsInitScreen] = useState<
     RecordsScreen | ''
@@ -159,18 +172,40 @@ const Panel = ({
   useEffect(() => {
     if (process.env.NODE_ENV === 'test') return
 
-    getCharsCount()
-      .then(({ failCount, successCount }) => {
-        const total = (successCount ?? 0) + (failCount ?? 0)
+    getStats()
+      .then(
+        ({
+          allCharsCount,
+          allCharsCountToday,
+          charsToday,
+          failCount,
+          successCount,
+        }) => {
+          const total = (successCount || 0) + (failCount || 0)
 
-        setStats({
-          correct: successCount ?? 0,
-          fail: failCount ?? 0,
-          perc: total > 0 ? Math.round(((successCount ?? 0) / total) * 100) : 0,
-        })
+          setStats({
+            allCharsCount,
+            allCharsCountToday,
+            charsToday,
+            correct: successCount || 0,
+            fail: failCount || 0,
+            perc:
+              total > 0 ? Math.round(((successCount || 0) / total) * 100) : 0,
+          })
+        },
+      )
+      .catch(err => {
+        console.error('Error getting stats:', err)
       })
-      .catch(() => {})
   }, [])
+
+  useEffectLater(() => {
+    if (showingAnkis === AnkisMode.Main) {
+      replacePath(Paths.ankis.main)
+    } else {
+      replacePath('')
+    }
+  }, [showingAnkis, replacePath])
 
   const onPracticeSourceChange = (newFragments?: T_Fragments) => {
     setCurrentText('')
@@ -666,7 +701,16 @@ const Panel = ({
                 <div>{t('panel.lastSessionNotice')}</div>
                 <div className="border-[1px] border-solid p-[4px]">
                   {t('panel.correct')}: {stats.correct} ({stats.perc}%) /{' '}
-                  {t('panel.wrong')}: {stats.fail}
+                  {t('panel.wrong')}: {stats.fail} /{' '}
+                  {t('panel.allCharsCount', 'All chars')}: {stats.allCharsCount}{' '}
+                  /{' '}
+                  <span
+                    data-tooltip-content={stats.charsToday}
+                    data-tooltip-id={TOOLTIP_ID}
+                  >
+                    {t('panel.allCharsCountToday', 'All chars today')}:{' '}
+                    {stats.allCharsCountToday}
+                  </span>
                 </div>
                 <Button
                   onDoubleClick={() => {

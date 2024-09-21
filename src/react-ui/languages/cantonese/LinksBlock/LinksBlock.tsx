@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 
 import Button from '../../../components/button/button'
 import { 將文字複製到剪貼簿 } from '../../../utils/general'
+import CantoDictButton from '../../common/Links/CantoDictButton'
 import GTButton from '../../common/Links/GoogleTranslateButton'
 import TranslateButton from '../../common/Links/TranslateButton'
 import ChangeCharType from '../../common/change-char-type/change-char-type'
@@ -32,6 +33,7 @@ const LinksBlock: T_LinksBlock = ({ fragments, updateFragments, 文字 }) => {
       </Button>
       <ChangeCharType fragments={fragments} updateFragments={updateFragments} />
       <TranslateButton language="zh-HK" text={文字} />
+      <CantoDictButton language="zh-HK" text={文字} />
     </>
   )
 }

@@ -1,4 +1,10 @@
-import { AnkiGql, Me, SongGql, TextGql } from '../graphql/graphql'
+import {
+  AnkiGql,
+  CantoDictWordGql,
+  Me,
+  SongGql,
+  TextGql,
+} from '../graphql/graphql'
 
 const baseURL =
   process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:9000'
@@ -111,6 +117,20 @@ const getUserAnkis = (items: number, offset: number, query: string) =>
     total: ankisTotal,
   }))
 
+const getUserAnki = (id: string) =>
+  fetchGraphQL<{ anki: AnkiGql }>(`#graphql
+    query {
+      anki(
+        id: "${id}"
+      ) {
+        back
+        front
+        id
+        language
+      }
+    }
+  `).then(({ anki }) => decodeAnki(anki))
+
 export type SongItem = Pick<
   SongGql,
   'id' | 'artist' | 'language' | 'title' | 'lyrics' | 'videoUrl'
@@ -188,6 +208,19 @@ const getUserTexts = () =>
     ${TextFragment}
   `).then(({ texts }) => texts)
 
+const queryCantodict = (sentence: string) => {
+  return fetchGraphQL<{ cantodictSentence: CantoDictWordGql[] }>(`#graphql
+    query {
+      cantodictSentence(
+        sentence: "${sentence}",
+      ) {
+        word
+        meaning
+      }
+    }
+  `).then(({ cantodictSentence }) => cantodictSentence)
+}
+
 const translateText = (content: string, currentLanguage: string) => {
   return fetchGraphQL<{ translationRequest: string }>(`#graphql
     query {
@@ -249,10 +282,12 @@ export const backendClient = {
   getInfo,
   getSongLyrics,
   getSongs,
+  getUserAnki,
   getUserAnkis,
   getUserTexts,
   login,
   logout,
+  queryCantodict,
   saveAnki,
   saveReviewedAnki,
   saveText,

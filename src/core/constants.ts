@@ -17,3 +17,6 @@ export interface T_Storage {
   getValue: (key: string) => Promise<string>
   setValue: (key: string, value: string) => void
 }
+
+export const EXTRA_SPECIAL_CHARS =
+  'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split('')

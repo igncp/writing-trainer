@@ -23,6 +23,7 @@ use self::logs::setup_logs;
 pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!("migrations");
 
 mod auth;
+mod cantodict;
 mod db;
 mod env;
 mod gql;

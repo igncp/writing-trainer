@@ -2,7 +2,7 @@ import { unknownPronunciation } from '#/core'
 
 import { T_LangUIController, T_LangOpts } from '../types'
 
-import { 儲存成功字元, 儲存失敗字元 } from './統計'
+import { saveSuccessChar, saveFailChar } from './統計'
 
 type 類型_解析發音 = (文字: string, langOpts?: T_LangOpts) => string
 
@@ -121,7 +121,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     setPractice(`${newPractice} `)
 
     if (process.env.NODE_ENV !== 'test') {
-      儲存成功字元(currentCharObj.word)
+      saveSuccessChar(currentCharObj.word)
     }
 
     if (
@@ -180,7 +180,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
         .includes(currentCharObj.word) &&
       process.env.NODE_ENV !== 'test'
     ) {
-      儲存失敗字元(currentCharObj.word)
+      saveFailChar(currentCharObj.word)
     }
 
     ;(langOpts.charsWithMistakes as string[]).push(currentCharObj.word)

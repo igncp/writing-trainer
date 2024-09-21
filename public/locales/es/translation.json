@@ -62,6 +62,8 @@
   },
   "panel": {
     "addAnkis": "Añadir tarjetas",
+    "allCharsCount": "Todos los caracteres",
+    "allCharsCountToday": "Todos los caracteres de hoy",
     "changeTheme": "Cambiar tema",
     "charSize": "Tamaño de los caracteres",
     "clear": "Limpiar",
@@ -94,7 +96,6 @@
     "created": "Creado",
     "edit": "Editar",
     "filter": "Buscar canciones",
-    "lang": "Idioma",
     "language": "Idioma",
     "link": "Enlace",
     "list": "Lista",

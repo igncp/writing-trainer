@@ -22,7 +22,7 @@ pub struct Text {
     pub updated_at: chrono::NaiveDateTime,
 }
 
-#[derive(Serialize, Queryable, Insertable, Debug)]
+#[derive(Serialize, Queryable, Insertable, Debug, Clone)]
 pub struct Anki {
     pub id: String,
     pub user_id: String,

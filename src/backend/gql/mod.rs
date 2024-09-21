@@ -4,6 +4,7 @@ use crate::backend::{
     gql::models::{AnkiGQL, Me, SongGQL, TextGQL, TranslationRequest},
 };
 use juniper::{EmptySubscription, FieldResult, RootNode};
+use models::CantoDictWordGQL;
 use tracing::debug;
 
 pub mod context;
@@ -66,6 +67,15 @@ impl QueryRoot {
         Ok(ankis_gql)
     }
 
+    fn anki(ctx: &GraphQLContext, id: String) -> FieldResult<Option<AnkiGQL>> {
+        check_user(ctx)?;
+
+        let anki = Anki::get_by_id(&id);
+        let anki_gql = anki.map(|anki_val| AnkiGQL::from_db(&anki_val));
+
+        Ok(anki_gql)
+    }
+
     fn ankis_total(ctx: &GraphQLContext, query: Option<String>) -> FieldResult<i32> {
         check_user(ctx)?;
 
@@ -85,6 +95,30 @@ impl QueryRoot {
         let ankis_gql = ankis.iter().map(AnkiGQL::from_db).collect::<Vec<AnkiGQL>>();
 
         Ok(ankis_gql)
+    }
+
+    async fn cantodict_sentence(
+        ctx: &GraphQLContext,
+        sentence: String,
+    ) -> FieldResult<Vec<CantoDictWordGQL>> {
+        check_user(ctx)?;
+
+        let result = crate::backend::cantodict::query_cantodict_sentence(&sentence).await;
+        let words: Vec<CantoDictWordGQL> = result
+            .iter()
+            .filter_map(|(word, definition)| {
+                if word.is_empty() || definition.is_empty() {
+                    return None;
+                }
+
+                Some(CantoDictWordGQL {
+                    word: word.to_string(),
+                    meaning: definition.to_string(),
+                })
+            })
+            .collect();
+
+        Ok(words)
     }
 
     fn songs(

@@ -8,7 +8,7 @@ import {
 import { backendClient } from '#/react-ui/lib/backendClient'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FaSpinner, FaTrashAlt } from 'react-icons/fa'
+import { FaEye, FaSpinner, FaTrashAlt } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 
 import TextArea from '../../components/TextArea/TextArea'
@@ -145,8 +145,10 @@ const AnkisMain = ({ setMode }: Props) => {
 
   const timeoutRef = useRef<number | null>(null)
   const [filter, setFilter] = useState('')
+  const [ankiDetail, setAnkiDetail] = useState<AnkiGql | null>(null)
   const [ankisRound, setAnkisRound] = useState<AnkiRoundItem[] | null>(null)
   const [currentPage, setCurrentPage] = useState(0)
+  const [loadedPage, setLoadedPage] = useState(0)
   const pageItems = 10
 
   const getAnkis = useCallback(
@@ -154,17 +156,21 @@ const AnkisMain = ({ setMode }: Props) => {
       if (ankisRound) return
 
       const fn = () => {
-        setIsLoading(true)
+        const loadingTimeout = setTimeout(() => {
+          setIsLoading(true)
+        }, 1000)
 
         backendClient
-          .getUserAnkis(10, pageNum * pageItems, query)
+          .getUserAnkis(pageItems, pageNum * pageItems, query)
           .then(_ankis => {
             setAnkis(_ankis)
+            setLoadedPage(pageNum)
           })
           .catch(() => {
             toast.error(t('anki.loadFailed'))
           })
           .finally(() => {
+            clearTimeout(loadingTimeout)
             setIsLoading(false)
           })
       }
@@ -179,6 +185,11 @@ const AnkisMain = ({ setMode }: Props) => {
     },
     [ankisRound, t],
   )
+
+  useEffect(() => {
+    setCurrentPage(0)
+    setLoadedPage(0)
+  }, [filter])
 
   useEffect(() => {
     getAnkis(currentPage, filter, true)
@@ -200,13 +211,15 @@ const AnkisMain = ({ setMode }: Props) => {
           onChange={e => setFilter(e.target.value)}
           value={filter}
         />
-        <button
-          onClick={() => {
-            setFilter('')
-          }}
-        >
-          X
-        </button>
+        {filter && (
+          <button
+            onClick={() => {
+              setFilter('')
+            }}
+          >
+            X
+          </button>
+        )}
       </div>
       <div className="flex flex-row gap-[12px]">
         <Button
@@ -245,12 +258,48 @@ const AnkisMain = ({ setMode }: Props) => {
               className="flex flex-1 flex-row py-[3px] even:bg-[#333]"
               key={anki.id}
             >
-              - ({ankis.total - (currentPage * pageItems + ankiItemIdx)}):{' '}
+              ({ankis.total - (loadedPage * pageItems + ankiItemIdx)}):{' '}
               <span className="ml-[4px] flex-1">{anki.front}</span>{' '}
+              {ankiDetail?.id === anki.id && (
+                <div className="flex-[10]">
+                  <br />
+                  <div className="flex flex-col gap-[8px] whitespace-pre-line">
+                    <div>{ankiDetail.back}</div>
+                  </div>
+                </div>
+              )}
               <span className="mx-[12px]">{anki.language}</span>{' '}
               <span className="mx-[12px]">
                 ({anki.correct}/{anki.correct + anki.incorrect})
               </span>{' '}
+              <button
+                className="mr-[8px]"
+                disabled={isLoading}
+                onClick={() => {
+                  if (ankiDetail?.id === anki.id) {
+                    setAnkiDetail(null)
+
+                    return
+                  }
+
+                  const timeout = setTimeout(() => {
+                    setIsLoading(true)
+                  }, 1000)
+
+                  backendClient
+                    .getUserAnki(anki.id)
+                    .then(_ankiDetail => setAnkiDetail(_ankiDetail))
+                    .catch(() => {
+                      toast.error(t('anki.loadFailed'))
+                    })
+                    .finally(() => {
+                      clearTimeout(timeout)
+                      setIsLoading(false)
+                    })
+                }}
+              >
+                <FaEye />
+              </button>
               <button
                 className="mr-[8px]"
                 disabled={isLoading}

@@ -62,6 +62,8 @@
   },
   "panel": {
     "addAnkis": "Add Ankis",
+    "allCharsCount": "All chars",
+    "allCharsCountToday": "All chars today",
     "changeTheme": "Change Theme",
     "charSize": "Font Size",
     "clear": "Clear",
@@ -94,7 +96,6 @@
     "created": "Created",
     "edit": "Edit",
     "filter": "Filter songs",
-    "lang": "Language",
     "language": "Language",
     "link": "Link",
     "list": "List",

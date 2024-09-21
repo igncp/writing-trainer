@@ -1,16 +1,25 @@
-FROM debian:12-slim
-USER root
-
-# Required for using the correct GLIBC (v2.38)
-RUN echo 'deb http://deb.debian.org/debian unstable main' >> /etc/apt/sources.list \
-  && apt-get update \
-  && apt-get install -y libssl-dev ca-certificates sqlite3 glibc-doc nginx
-
+FROM rust:1-alpine3.20 AS chef
+RUN apk update && apk upgrade
+RUN apk add --no-cache libressl-dev ca-certificates musl-dev alpine-sdk libffi-dev bash sqlite sqlite-dev
+RUN cargo install cargo-chef
 WORKDIR /app
 
-COPY target/release/writing-trainer-backend .
-COPY scripts/docker_run.sh scripts/docker_run.sh
-COPY out out
-COPY nginx.conf /etc/nginx/nginx.conf
+FROM chef AS planner
+COPY . .
+RUN cargo chef prepare  --recipe-path recipe.json
 
-CMD bash scripts/docker_run.sh
+FROM chef AS builder
+COPY --from=planner /app/recipe.json recipe.json
+RUN rustup target add $(uname -m)-unknown-linux-musl
+RUN cargo chef cook --release --recipe-path recipe.json --target $(uname -m)-unknown-linux-musl
+COPY . .
+RUN bash scripts/build_docker.sh
+
+FROM alpine:3.20.2
+WORKDIR /app
+RUN apk add --no-cache openssl-dev ca-certificates sqlite nginx bash
+COPY --from=builder /app/scripts scripts
+COPY --from=builder /app/writing-trainer .
+COPY out static
+COPY nginx.conf /etc/nginx/nginx.conf
+CMD ["bash", "scripts/docker_run.sh"]

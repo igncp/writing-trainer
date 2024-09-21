@@ -1,41 +1,43 @@
-const 成功收集字符 = 'successChars'
-const 資料庫名稱 = 'WritingTrainer'
+const successCharsKey = 'successChars'
 
-enum 字元類型 {
-  失敗 = 'fail',
-  成功 = 'success',
+const dbNameAllTime = 'WritingTrainerAllTime'
+const dbNameToday = 'WritingTrainerToday'
+
+enum CharResult {
+  Fail = 'fail',
+  Success = 'success',
 }
 
-const 取得資料庫 = () => {
-  return new Promise<IDBDatabase>((解決, 拒絕) => {
-    const 開放請求 = window.indexedDB.open(資料庫名稱, 2)
+const getDB = (dbName: string) => {
+  return new Promise<IDBDatabase>((resolve, reject) => {
+    const dbOpenRequest = window.indexedDB.open(dbName, 2)
 
-    開放請求.onerror = 事件 => {
-      console.log('開放請求錯誤:', 事件)
-      拒絕(事件)
+    dbOpenRequest.onerror = ev => {
+      console.log('開放請求錯誤:', ev)
+      reject(ev)
     }
 
-    開放請求.onupgradeneeded = 事件 => {
-      const 資料庫 = (事件.target as unknown as { result: IDBDatabase }).result
+    dbOpenRequest.onupgradeneeded = ev => {
+      const db = (ev.target as unknown as { result: IDBDatabase }).result
 
-      const 物件儲存 = 資料庫.createObjectStore(成功收集字符, {
+      const dbObjStore = db.createObjectStore(successCharsKey, {
         autoIncrement: false,
       })
 
-      物件儲存.createIndex('name', 'name', { unique: false })
-      物件儲存.createIndex('type', 'type', { unique: false })
-      物件儲存.createIndex('count', 'count', { unique: false })
-      物件儲存.createIndex('nametype', ['name', 'type'], { unique: false })
+      dbObjStore.createIndex('name', 'name', { unique: false })
+      dbObjStore.createIndex('type', 'type', { unique: false })
+      dbObjStore.createIndex('count', 'count', { unique: false })
+      dbObjStore.createIndex('nametype', ['name', 'type'], { unique: false })
     }
 
-    開放請求.onsuccess = 事件 => {
-      const 資料庫 = (事件.target as unknown as { result: IDBDatabase }).result
+    dbOpenRequest.onsuccess = ev => {
+      const db = (ev.target as unknown as { result: IDBDatabase }).result
 
-      資料庫.onerror = 資料庫事件 => {
-        console.error(`資料庫錯誤:`, 資料庫事件)
+      db.onerror = dbEvent => {
+        console.error(`資料庫錯誤:`, dbEvent)
       }
 
-      解決(資料庫)
+      resolve(db)
     }
   })
 }
@@ -43,65 +45,104 @@ const 取得資料庫 = () => {
 type DBRecord = {
   count: number
   name: string
-  type: 字元類型
+  type: CharResult
 }
 
-const 儲存字元 = async (char: string, charType: 字元類型) => {
-  const 資料庫 = await 取得資料庫()
+const allDBs = [dbNameAllTime, dbNameToday]
 
-  const transaction = 資料庫.transaction([成功收集字符], 'readwrite')
+const saveChar = async (char: string, charType: CharResult) => {
+  allDBs.forEach(async dbName => {
+    const db = await getDB(dbName)
 
-  transaction.onerror = 事件 => {
-    console.error(`Transaction error`, 事件)
-  }
+    const transaction = db.transaction([successCharsKey], 'readwrite')
 
-  const objectStore = transaction.objectStore(成功收集字符)
-  const searchIndex = objectStore.index('nametype')
-  const key = [char, charType]
-  const query = searchIndex.get(key)
+    transaction.onerror = ev => {
+      console.error(`Transaction error`, ev)
+    }
 
-  query.onsuccess = result => {
-    const record = (
-      result.target as unknown as { result: DBRecord | undefined }
-    ).result
+    const objectStore = transaction.objectStore(successCharsKey)
+    const searchIndex = objectStore.index('nametype')
+    const key = [char, charType]
+    const query = searchIndex.get(key)
 
-    if (record) {
-      record.count += 1
+    query.onsuccess = result => {
+      const record = (
+        result.target as unknown as { result: DBRecord | undefined }
+      ).result
 
-      const updateRequest = objectStore.put(record, key)
+      if (record) {
+        record.count += 1
 
-      updateRequest.onerror = 事件 => {
-        console.error('Update error', 事件)
-      }
-    } else {
-      const addRequest = objectStore.add(
-        {
-          count: 1,
-          name: char,
-          type: charType,
-        },
-        key,
-      )
+        const updateRequest = objectStore.put(record, key)
 
-      addRequest.onerror = 事件 => {
-        console.error('Add error', 事件)
+        updateRequest.onerror = ev => {
+          console.error('Update error', ev)
+        }
+      } else {
+        const addRequest = objectStore.add(
+          {
+            count: 1,
+            name: char,
+            type: charType,
+          },
+          key,
+        )
+
+        addRequest.onerror = ev => {
+          console.error('Add error', ev)
+        }
       }
     }
-  }
+  })
 }
 
-export const 儲存成功字元 = async (字元: string) =>
-  儲存字元(字元, 字元類型.成功)
+export const saveSuccessChar = async (char: string) =>
+  saveChar(char, CharResult.Success)
 
-export const 儲存失敗字元 = async (字元: string) =>
-  儲存字元(字元, 字元類型.失敗)
+export const saveFailChar = async (char: string) =>
+  saveChar(char, CharResult.Fail)
 
-export const getCharsCount = async () => {
-  const getCount = async (charType: 字元類型): Promise<number | undefined> => {
-    const 資料庫 = await 取得資料庫()
+const deleteSingleDB = async (dbName: string) => {
+  await (async () => {
+    const db = await getDB(dbName)
 
-    const transaction = 資料庫.transaction([成功收集字符], 'readonly')
-    const objectStore = transaction.objectStore(成功收集字符)
+    db.close()
+  })()
+
+  return new Promise<void>(resolve => {
+    const deleteRequest = window.indexedDB.deleteDatabase(dbName)
+
+    deleteRequest.onblocked = () => {
+      window.location.reload()
+    }
+
+    deleteRequest.onerror = () => {
+      console.error('Error deleting database')
+    }
+
+    deleteRequest.onsuccess = () => {
+      resolve()
+    }
+  })
+}
+
+export const getStats = async () => {
+  const today = new Date().toLocaleDateString()
+  const lastSavedDB = localStorage.getItem('lastSavedTodayDB')
+
+  if (lastSavedDB && lastSavedDB !== today) {
+    await deleteSingleDB(dbNameToday)
+  }
+
+  localStorage.setItem('lastSavedTodayDB', today)
+
+  const getCount = async (
+    charType: CharResult,
+  ): Promise<number | undefined> => {
+    const db = await getDB(dbNameAllTime)
+
+    const transaction = db.transaction([successCharsKey], 'readonly')
+    const objectStore = transaction.objectStore(successCharsKey)
 
     const index = objectStore.index('type')
     const keyRange = IDBKeyRange.only(charType)
@@ -120,37 +161,83 @@ export const getCharsCount = async () => {
     })
   }
 
-  const [successCount, failCount] = await Promise.all([
-    getCount(字元類型.成功),
-    getCount(字元類型.失敗),
-  ])
+  const getAllCharsCount = async (): Promise<[number, number]> =>
+    allDBs.reduce(
+      async (p, dbName) => {
+        const existing = await p
+
+        const db = await getDB(dbName)
+
+        const transaction = db.transaction([successCharsKey], 'readonly')
+        const objectStore = transaction.objectStore(successCharsKey)
+
+        const index = objectStore.index('type')
+        const keyRange = IDBKeyRange.only(CharResult.Success)
+
+        return new Promise<number[]>(resolve => {
+          const request = index.getAll(keyRange)
+
+          request.onsuccess = () => {
+            const total = request.result.length
+
+            resolve(existing.concat(total))
+          }
+        })
+      },
+      Promise.resolve([] as number[]),
+    ) as Promise<[number, number]>
+
+  const getTodayChars = async (): Promise<string> => {
+    const db = await getDB(dbNameToday)
+
+    const transaction = db.transaction([successCharsKey], 'readonly')
+    const objectStore = transaction.objectStore(successCharsKey)
+
+    const index = objectStore.index('type')
+    const keyRange = IDBKeyRange.only(CharResult.Success)
+
+    return new Promise<string>(resolve => {
+      const request = index.getAll(keyRange)
+
+      request.onsuccess = () => {
+        const chars = request.result
+          .map((record: DBRecord) => record.name)
+          .sort()
+
+        resolve(chars.join(' '))
+      }
+    })
+  }
+
+  const [
+    successCount,
+    failCount,
+    [allCharsCount, allCharsCountToday],
+    charsToday,
+  ] = (await [
+    getCount(CharResult.Success),
+    getCount(CharResult.Fail),
+    getAllCharsCount(),
+    getTodayChars(),
+  ].reduce(
+    async (p, operation) => {
+      const existing = await p
+
+      existing.push(await operation)
+
+      return existing
+    },
+    Promise.resolve([] as unknown[]),
+  )) as [number, number, [number, number], string]
 
   return {
+    allCharsCount,
+    allCharsCountToday,
+    charsToday,
     failCount,
     successCount,
   }
 }
 
-export const deleteDatabase = async (): Promise<void> => {
-  await (async () => {
-    const 資料庫 = await 取得資料庫()
-
-    資料庫.close()
-  })()
-
-  return new Promise(resolve => {
-    const deleteRequest = window.indexedDB.deleteDatabase(資料庫名稱)
-
-    deleteRequest.onblocked = () => {
-      window.location.reload()
-    }
-
-    deleteRequest.onerror = () => {
-      console.error('Error deleting database')
-    }
-
-    deleteRequest.onsuccess = () => {
-      resolve()
-    }
-  })
-}
+export const deleteDatabase = async (): Promise<void> =>
+  Promise.all(allDBs.map(deleteSingleDB)).then(() => {})

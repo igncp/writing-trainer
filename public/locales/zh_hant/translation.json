@@ -62,6 +62,8 @@
   },
   "panel": {
     "addAnkis": "添加 Ankis",
+    "allCharsCount": "所有字元數",
+    "allCharsCountToday": "今天所有字元數",
     "changeTheme": "改變主題",
     "charSize": "字體大小",
     "clear": "清除文字",
@@ -94,7 +96,6 @@
     "created": "創建",
     "edit": "編輯",
     "filter": "過濾",
-    "lang": "語言",
     "language": "語言",
     "link": "連結",
     "list": "列表",

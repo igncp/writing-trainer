@@ -1,0 +1,26 @@
+{
+  "background_color": "#000000",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/pwa_icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "manifest_version": 2,
+  "name": "Learn Languages Writing",
+  "screenshots": [
+    {
+      "src": "/pwa_screenshot_wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Homescreen of Learn Languages Writing"
+    }
+  ],
+  "short_name": "LLW",
+  "start_url": ".",
+  "theme_color": "#ffffff",
+  "version": "1.0"
+}

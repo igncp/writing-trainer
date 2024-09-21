@@ -1,7 +1,9 @@
-import { LanguageDefinition } from '../constants'
+import { LanguageDefinition, unknownPronunciation } from '../constants'
 import { T_CharObj, CurrentCharObj } from '../languageManager'
 
 import { specialChars } from './_特殊字元'
+
+type T_Dictionary = { [k: string]: string }
 
 type 類型_轉換為字元對象列表 = (opts: {
   charsToRemove: string[]
@@ -9,7 +11,7 @@ type 類型_轉換為字元對象列表 = (opts: {
   text: string
 }) => T_CharObj[]
 
-class LanguageHandler {
+export class LanguageHandler {
   public readonly convertToCharsObjs: 類型_轉換為字元對象列表
   private readonly extraSpecialChars: string[]
   private readonly language: LanguageDefinition
@@ -111,4 +113,49 @@ class LanguageHandler {
   }
 }
 
-export { LanguageHandler }
+export const convertToCharsObjsCommon =
+  (handler: LanguageHandler): LanguageHandler['convertToCharsObjs'] =>
+  ({ charsToRemove, langOpts = {}, text }) => {
+    const dictionary: T_Dictionary = (langOpts.dictionary || {}) as T_Dictionary
+
+    const pronunciationInput: string = (langOpts.pronunciationInput ||
+      '') as string
+
+    const pronunciationInputArr = pronunciationInput.split(' ').filter(c => !!c)
+
+    const defaultSpecialChars = handler.getSpecialChars()
+
+    const allCharsToRemove = defaultSpecialChars
+      .concat(charsToRemove)
+      .concat([' '])
+
+    const charsObjsList: T_CharObj[] = []
+
+    // @ts-expect-error 這裡的 segment 是實驗性功能
+    const segmented = [...new Intl.Segmenter().segment(text)].map(
+      s => s.segment,
+    )
+
+    segmented.forEach((ch, chIdx) => {
+      if (allCharsToRemove.includes(ch)) {
+        const charObj = new T_CharObj({
+          pronunciation: '',
+          word: ch,
+        })
+
+        charsObjsList.push(charObj)
+      } else {
+        const charObj = new T_CharObj({
+          pronunciation:
+            pronunciationInputArr[chIdx] ||
+            dictionary[ch] ||
+            unknownPronunciation,
+          word: ch,
+        })
+
+        charsObjsList.push(charObj)
+      }
+    })
+
+    return charsObjsList
+  }

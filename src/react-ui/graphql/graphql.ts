@@ -38,6 +38,12 @@ export type AnkiGql = {
   language: Scalars['String']['output']
 }
 
+export type CantoDictWordGql = {
+  __typename?: 'CantoDictWordGQL'
+  meaning: Scalars['String']['output']
+  word: Scalars['String']['output']
+}
+
 export type Me = {
   __typename?: 'Me'
   canUseAI: Scalars['Boolean']['output']
@@ -74,15 +80,21 @@ export type MutationRootSaveTextArgs = {
 
 export type QueryRoot = {
   __typename?: 'QueryRoot'
+  anki?: Maybe<AnkiGql>
   ankis: Array<AnkiGql>
   ankisRound: Array<AnkiGql>
   ankisTotal: Scalars['Int']['output']
+  cantodictSentence: Array<CantoDictWordGql>
   me: Me
   song?: Maybe<SongGql>
   songs: Array<SongGql>
   songsTotal: Scalars['Int']['output']
   texts: Array<TextGql>
   translationRequest: Scalars['String']['output']
+}
+
+export type QueryRootAnkiArgs = {
+  id: Scalars['String']['input']
 }
 
 export type QueryRootAnkisArgs = {
@@ -97,6 +109,10 @@ export type QueryRootAnkisRoundArgs = {
 
 export type QueryRootAnkisTotalArgs = {
   query?: InputMaybe<Scalars['String']['input']>
+}
+
+export type QueryRootCantodictSentenceArgs = {
+  sentence: Scalars['String']['input']
 }
 
 export type QueryRootSongArgs = {

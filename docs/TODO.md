@@ -14,6 +14,7 @@
 - Find parts of the extension that could be moved to the core
   - commonLanguageUtils
 - Code TODOs
+- Move stats to the backend
 
 ## Backend
 
@@ -53,5 +54,4 @@
 - Decouple code to have a core (and plugins?) to be able to support:
   - Mobile app (react native, capacitor, ...)
 - Remove dictionary for Japanese (support a different approach when looking for pronunciation, like suggestions)
-- Introduce Anki approach?
 - New package to export the current content? Other options: Files, S3, etc.

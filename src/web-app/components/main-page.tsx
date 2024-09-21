@@ -1,7 +1,7 @@
 import { Panel } from '#/react-ui'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaRegQuestionCircle } from 'react-icons/fa'
 import { FaLanguage } from 'react-icons/fa6'
@@ -27,6 +27,10 @@ const IndexPage = () => {
   const [hasLoaded, setHasLoaded] = useState(false)
 
   const { query } = useRouter()
+
+  const replacePath = useCallback((path: string) => {
+    window.location.replace(`/#${path}`)
+  }, [])
 
   useEffect(() => {
     setHasLoaded(true)
@@ -110,6 +114,11 @@ const IndexPage = () => {
       <div className="relative px-[8px] md:px-[16px]">
         <Panel
           UI={PANEL_UI}
+          getPath={() => {
+            if (typeof window === 'undefined') return ''
+
+            return window.location.hash.replace(/^#/, '')
+          }}
           initialFragmentIndex={
             query.fragmentIndex ? Number(query.fragmentIndex) : undefined
           }
@@ -118,6 +127,7 @@ const IndexPage = () => {
           onChangeTheme={() => {
             setTheme(theme === 'light' ? 'dark' : 'light')
           }}
+          replacePath={replacePath}
           services={panelServices}
           text={usedText}
         />

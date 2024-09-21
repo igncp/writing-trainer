@@ -22,6 +22,13 @@ const NoSSR = ({ children }: PropsWithChildren) => {
 }
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+      console.log('Service worker registered')
+    }
+  }, [])
+
   return (
     <MainContextProvider>
       <LangProvider>
@@ -29,7 +36,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       </LangProvider>
       <NoSSR>
         <ToastContainer theme="dark" />
-        <Tooltip id={TOOLTIP_ID} />
+        <Tooltip
+          id={TOOLTIP_ID}
+          style={{ lineBreak: 'anywhere', maxWidth: '60vw' }}
+        />
       </NoSSR>
     </MainContextProvider>
   )

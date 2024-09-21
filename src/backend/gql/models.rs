@@ -32,6 +32,12 @@ pub struct AnkiGQL {
 }
 
 #[derive(GraphQLObject)]
+pub struct CantoDictWordGQL {
+    pub word: String,
+    pub meaning: String,
+}
+
+#[derive(GraphQLObject)]
 pub struct AnkiRoundGQL {
     id: String,
 }

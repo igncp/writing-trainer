@@ -1,15 +1,5 @@
 name: Deploy
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/deploy.yml'
-      - 'packages.json'
-      - 'package-lock.json'
-      - 'src/**'
-      - 'Cargo.lock'
-      - 'Cargo.toml'
   workflow_dispatch:
     inputs:
       skip_check:
@@ -36,15 +26,9 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Install 🚧
-        run: |
-          touch ./is-ci
-          nix develop path:$(pwd) -c rustup install stable
-          nix develop path:$(pwd) -c cargo build --release # This speeds up the next steps
-          nix develop path:$(pwd) -c bun install
-
       - name: Check 🔧
         run: |
+          touch ./is-ci
           cp .env.example .env
           nix develop path:$(pwd) -c bash scripts/check.sh
         env:
@@ -52,5 +36,7 @@ jobs:
 
       - name: Build and publish docker image
         run: |
-          cp .env.example .env
           nix develop path:$(pwd) -c bash -c scripts/ci/build_docker.sh
+        env:
+          DEPLOYMENT_LOCATION: ${{ secrets.DEPLOYMENT_LOCATION }}
+          DEPLOYMENT_TOKEN: ${{ secrets.DEPLOYMENT_TOKEN }}

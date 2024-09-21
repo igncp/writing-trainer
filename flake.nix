@@ -36,8 +36,8 @@
           [
             bun
             nodejs_22
-            openssl
             patchelf
+            openssl
             pkg-config
             rustup
             sqlite

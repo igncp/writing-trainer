@@ -62,6 +62,8 @@
   },
   "panel": {
     "addAnkis": "Ankiを追加",
+    "allCharsCount": "All chars",
+    "allCharsCountToday": "All chars today",
     "changeTheme": "テーマを変更",
     "charSize": "文字サイズ",
     "clear": "クリア",
@@ -94,7 +96,6 @@
     "created": "作成",
     "edit": "編集",
     "filter": "フィルター",
-    "lang": "言語",
     "language": "言語",
     "link": "リンク",
     "list": "リスト",
