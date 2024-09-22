@@ -3,7 +3,7 @@ import HttpApi from 'i18next-http-backend'
 import { PropsWithChildren } from 'react'
 import { I18nextProvider, initReactI18next } from 'react-i18next'
 
-const defaultLang = 'zh_hant'
+const defaultLang = 'en'
 
 let instance = undefined
 

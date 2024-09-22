@@ -2,7 +2,7 @@ import { unknownPronunciation } from '#/core'
 
 import { T_LangUIController, T_LangOpts } from '../types'
 
-import { saveSuccessChar, saveFailChar } from './統計'
+import { saveSuccessChar, saveFailChar, saveSentenceStats } from './stats'
 
 type 類型_解析發音 = (文字: string, langOpts?: T_LangOpts) => string
 
@@ -31,6 +31,8 @@ const onPracticeBackspaceFormatDefault: T_OnPracticeBackspaceFormat = (
 
 export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
   {
+    charsObjsList,
+    currentText,
     getCurrentCharObjFromPractice,
     langOpts,
     originalTextValue,
@@ -120,9 +122,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     setPracticeHasError(false)
     setPractice(`${newPractice} `)
 
-    if (process.env.NODE_ENV !== 'test') {
-      saveSuccessChar(currentCharObj.word)
-    }
+    saveSuccessChar(currentCharObj.word)
 
     if (
       [undefined, '還原論者'].includes(
@@ -144,14 +144,18 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
           | string[]
           | undefined
 
-        if ((charsWithMistakes ?? []).length) {
-          const chars = Array.from(new Set(charsWithMistakes))
+        if (!currentText) {
+          saveSentenceStats(
+            charsObjsList.length,
+            (charsObjsList.length - (charsWithMistakes?.length ?? 0)) /
+              charsObjsList.length,
+          )
+        }
 
-          const fullChars = Array.from({ length: 3 })
-            .map(() => {
-              return chars.join('')
-            })
+        if ((charsWithMistakes ?? []).length) {
+          const fullChars = Array.from(new Set(charsWithMistakes))
             .join('')
+            .repeat(3)
 
           setCurrentText(fullChars)
           langOpts.charsWithMistakes = []
@@ -177,8 +181,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
       !(langOpts.charsWithMistakes as string[])
         .slice(0)
         .slice(-1)
-        .includes(currentCharObj.word) &&
-      process.env.NODE_ENV !== 'test'
+        .includes(currentCharObj.word)
     ) {
       saveFailChar(currentCharObj.word)
     }

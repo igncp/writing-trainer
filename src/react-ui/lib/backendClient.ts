@@ -47,7 +47,11 @@ const getGoogleUrl = (from: string) => {
     access_type: 'offline',
     client_id: clientID,
     flowName: 'GeneralOAuthFlow',
-    redirect_uri: `${baseURL.includes('http') ? baseURL : window.location.href.replace(/\/$/, '') + baseURL}/sessions/oauth/google`,
+    redirect_uri: `${
+      baseURL.includes('http')
+        ? baseURL
+        : `${window.location.protocol}//${window.location.host}${baseURL}`
+    }/sessions/oauth/google`,
     response_type: 'code',
     scope: ['https://www.googleapis.com/auth/userinfo.email'].join(' '),
     state: from.replace(/\/$/g, ''),
@@ -76,6 +80,7 @@ const getInfo = () =>
         id
         email
         canUseAI
+        canUseCantodict
       }
     }
   `).then(({ me }) => me)

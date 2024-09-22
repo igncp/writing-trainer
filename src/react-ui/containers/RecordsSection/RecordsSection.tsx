@@ -1,6 +1,7 @@
-import { LanguageDefinition, Record } from '#/core'
+import { LanguageDefinition, Record as CoreRecord } from '#/core'
 import { TextGql } from '#/react-ui/graphql/graphql'
 import { backendClient, SongItem } from '#/react-ui/lib/backendClient'
+import { Paths } from '#/react-ui/lib/paths'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 
@@ -17,17 +18,23 @@ export enum RecordsScreen {
   Save = 'save',
 }
 
+export const recordsModeToPath: Record<RecordsScreen, string> = {
+  [RecordsScreen.Edit]: Paths.records.edit,
+  [RecordsScreen.List]: Paths.records.list,
+  [RecordsScreen.Save]: Paths.records.save,
+}
+
 const RECORDS_STORAGE = 'records'
 
-const getMaxRecordId = (records: Record[]) =>
+const getMaxRecordId = (records: CoreRecord[]) =>
   records.length ? Math.max(...records.map(r => Number(r.id) || 0)) : 0
 
 const getInitialRecord = ({
   editingRecordId,
   records,
 }: {
-  editingRecordId: Record['id'] | null
-  records: Record[]
+  editingRecordId: CoreRecord['id'] | null
+  records: CoreRecord[]
 }) => {
   if (editingRecordId === null) {
     return null
@@ -49,7 +56,7 @@ type IProps = {
   initScreen: RecordsScreen
   language: string
   onPronunciationLoad: (p: string) => void
-  onRecordLoad: (r: Record) => void
+  onRecordLoad: (r: CoreRecord) => void
   onRecordsClose: () => void
   onSongLoad: (s: string[]) => void
   pronunciation: string
@@ -73,11 +80,11 @@ const RecordsSection = ({
 }: IProps) => {
   const [currentScreen, setCurrentScreen] = useState<RecordsScreen>(initScreen)
 
-  const [editingRecordId, setEditingRecordId] = useState<Record['id'] | null>(
-    null,
-  )
+  const [editingRecordId, setEditingRecordId] = useState<
+    CoreRecord['id'] | null
+  >(null)
 
-  const [records, setRecords] = useState<Record[]>([])
+  const [records, setRecords] = useState<CoreRecord[]>([])
 
   const [songs, setSongs] = useState<{ list: SongItem[]; total: number }>({
     list: [],
@@ -104,8 +111,9 @@ const RecordsSection = ({
 
     const recordsLocal = (() => {
       if (recordsStr) {
-        const parsedRecords: Record[] = JSON.parse(recordsStr).map(
-          (recordObj: ReturnType<Record['toJson']>) => new Record(recordObj),
+        const parsedRecords: CoreRecord[] = JSON.parse(recordsStr).map(
+          (recordObj: ReturnType<CoreRecord['toJson']>) =>
+            new CoreRecord(recordObj),
         )
 
         return parsedRecords
@@ -117,7 +125,7 @@ const RecordsSection = ({
     const allRecords = dbTexts
       .map(
         dbText =>
-          new Record({
+          new CoreRecord({
             createdOn: Date.now(),
             id: dbText.id,
             isRemote: true,
@@ -171,7 +179,7 @@ const RecordsSection = ({
     retrieveSongs().catch(() => {})
   }, [retrieveSongs])
 
-  const saveRecord = (newRecord: Record) => {
+  const saveRecord = (newRecord: CoreRecord) => {
     let newRecords = [...records]
 
     const existingRecordIndex = newRecords.findIndex(r => r.id === newRecord.id)
@@ -222,7 +230,7 @@ const RecordsSection = ({
     setRecords(newRecords)
   }
 
-  const handleRecordLoad = (record: Record) => {
+  const handleRecordLoad = (record: CoreRecord) => {
     if (isLoading) return
 
     record.lastLoadedOn = Date.now()
@@ -230,7 +238,7 @@ const RecordsSection = ({
     onRecordLoad(record)
   }
 
-  const handleRecordEdit = (record: Record) => {
+  const handleRecordEdit = (record: CoreRecord) => {
     if (isLoading) return
 
     setEditingRecordId(record.id)
@@ -240,7 +248,7 @@ const RecordsSection = ({
   const handleRecordSave = (newRecordSave: RecordToSave) => {
     if (isLoading) return
 
-    const newRecord = new Record({
+    const newRecord = new CoreRecord({
       createdOn: Date.now(),
       id: '',
       isRemote: false,
@@ -268,7 +276,7 @@ const RecordsSection = ({
 
     if (!existingRecord) return
 
-    const newRecord = new Record({
+    const newRecord = new CoreRecord({
       ...existingRecord,
       link: newRecordSave.link,
       name: newRecordSave.name,
@@ -279,7 +287,7 @@ const RecordsSection = ({
     setCurrentScreen(RecordsScreen.List)
   }
 
-  const handleRecordRemove = (record: Record) => {
+  const handleRecordRemove = (record: CoreRecord) => {
     record.text = ''
 
     saveRecord(record)

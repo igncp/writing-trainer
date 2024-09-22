@@ -10,7 +10,7 @@
     "dev:fe": "next dev",
     "eslint": "eslint . --ext ts --ext tsx --ext js",
     "format": "bash scripts/format.sh",
-    "gen:gql": "graphql-codegen",
+    "gen:gql": "graphql-codegen && bun run prettier:fix",
     "next:build": "next build",
     "parse-translations": "i18next 'src/**/*.{ts,tsx}'",
     "prettier": "prettier '**/*.{js,jsx,ts,tsx,json,md}'",

@@ -45,6 +45,7 @@ diesel::table! {
         id -> Text,
         email -> Text,
         can_use_ai -> Bool,
+        can_use_cantodict -> Bool,
     }
 }
 

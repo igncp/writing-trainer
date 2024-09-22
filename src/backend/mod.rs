@@ -73,6 +73,7 @@ async fn google_oauth_handler(
             id: id.to_string(),
             email: email.to_owned(),
             can_use_ai: false,
+            can_use_cantodict: false,
         };
 
         user_id = user_data.id.to_string();

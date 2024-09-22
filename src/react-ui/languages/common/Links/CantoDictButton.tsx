@@ -1,4 +1,6 @@
+import { useMainContext } from '#/react-ui/containers/main-context'
 import { backendClient } from '#/react-ui/lib/backendClient'
+import { TOOLTIP_ID } from '#/utils/tooltip'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaSpinner } from 'react-icons/fa'
@@ -13,10 +15,16 @@ const CantoDictButton = ({ text, ...rest }: Props) => {
   const { t } = useTranslation()
   const [translation, setTranslation] = useState<[string, string] | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const mainContext = useMainContext()
+
+  const { canUseCantodict } = mainContext.state
 
   return (
     <>
       <Button
+        data-tooltip-content={canUseCantodict ? '' : t('option.contactUse')}
+        data-tooltip-id={TOOLTIP_ID}
+        disabled={!canUseCantodict}
         onClick={() => {
           setIsLoading(true)
 

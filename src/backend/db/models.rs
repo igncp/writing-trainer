@@ -8,6 +8,7 @@ pub struct User {
     pub id: String,
     pub email: String,
     pub can_use_ai: bool,
+    pub can_use_cantodict: bool,
 }
 
 #[derive(Serialize, Queryable, Insertable, Debug)]

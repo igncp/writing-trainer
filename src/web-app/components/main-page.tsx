@@ -19,17 +19,25 @@ const PANEL_UI = {
   noHideButton: true,
 }
 
+const getPath = () => {
+  if (typeof window === 'undefined') return ''
+
+  return window.location.hash.replace(/^#/, '')
+}
+
 const IndexPage = () => {
   const [theme, setTheme] = useState('dark')
   const [showingLangs, setShowingLangs] = useState(false)
   const [showingHelp, setShowingHelp] = useState(false)
   const { i18n, t } = useTranslation()
   const [hasLoaded, setHasLoaded] = useState(false)
+  const [currentPath, setCurrentPath] = useState(getPath())
 
   const { query } = useRouter()
 
   const replacePath = useCallback((path: string) => {
     window.location.replace(`/#${path}`)
+    setCurrentPath(path)
   }, [])
 
   useEffect(() => {
@@ -114,11 +122,7 @@ const IndexPage = () => {
       <div className="relative px-[8px] md:px-[16px]">
         <Panel
           UI={PANEL_UI}
-          getPath={() => {
-            if (typeof window === 'undefined') return ''
-
-            return window.location.hash.replace(/^#/, '')
-          }}
+          getPath={() => currentPath}
           initialFragmentIndex={
             query.fragmentIndex ? Number(query.fragmentIndex) : undefined
           }

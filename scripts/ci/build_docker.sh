@@ -16,6 +16,8 @@ if [ ! -d out ]; then
 fi
 
 if [ -z "$DOCKER_NO_PUSH" ]; then
+  echo "Building and pushing Docker image"
+
   docker buildx build \
     --progress=plain \
     --platform linux/amd64 \
@@ -28,6 +30,7 @@ if [ -z "$DOCKER_NO_PUSH" ]; then
 else
   docker build \
     --progress=plain \
+    --platform linux/amd64 \
     -t igncp/writing-trainer:1.0.0 \
     -t igncp/writing-trainer:latest \
     .

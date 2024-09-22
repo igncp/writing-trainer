@@ -12,12 +12,14 @@ import { backendClient } from '../lib/backendClient'
 
 type MainContextState = {
   canUseAI: boolean
+  canUseCantodict: boolean
   isBackendActive: boolean
   isLoggedIn: boolean
 }
 
 const initialState: MainContextState = {
   canUseAI: false,
+  canUseCantodict: false,
   isBackendActive: false,
   isLoggedIn: false,
 }
@@ -34,6 +36,10 @@ type ContextAction =
   | {
       payload: boolean
       type: 'SET_CAN_USE_AI'
+    }
+  | {
+      payload: boolean
+      type: 'SET_CAN_USE_CANTODICT'
     }
 
 type MainContextType = readonly [
@@ -54,6 +60,8 @@ const reducer = (state: MainContextState, action: ContextAction) => {
       return { ...state, isLoggedIn: action.payload }
     case 'SET_CAN_USE_AI':
       return { ...state, canUseAI: action.payload }
+    case 'SET_CAN_USE_CANTODICT':
+      return { ...state, canUseCantodict: action.payload }
     default:
       return state
   }
@@ -74,7 +82,7 @@ export const MainContextProvider = ({ children }: PropsWithChildren) => {
 
         return backendClient.getInfo()
       })
-      .then(({ canUseAI }) => {
+      .then(({ canUseAI, canUseCantodict }) => {
         setMainState({
           payload: true,
           type: 'SET_IS_LOGGED_IN',
@@ -83,6 +91,11 @@ export const MainContextProvider = ({ children }: PropsWithChildren) => {
         setMainState({
           payload: canUseAI,
           type: 'SET_CAN_USE_AI',
+        })
+
+        setMainState({
+          payload: canUseCantodict,
+          type: 'SET_CAN_USE_CANTODICT',
         })
       })
       .catch(() => {

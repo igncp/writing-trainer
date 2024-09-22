@@ -10,6 +10,8 @@ pub struct Me {
     email: String,
     #[graphql(name = "canUseAI")]
     can_use_ai: bool,
+    #[graphql(name = "canUseCantodict")]
+    can_use_cantodict: bool,
 }
 
 #[derive(GraphQLObject)]
@@ -60,11 +62,12 @@ pub struct SongGQL {
 }
 
 impl Me {
-    pub fn new(id: &str, email: &str, can_use_ai: bool) -> Self {
+    pub fn new(id: &str, email: &str, can_use_ai: bool, can_use_cantodict: bool) -> Self {
         Self {
             id: id.to_string(),
             email: email.to_string(),
             can_use_ai,
+            can_use_cantodict,
         }
     }
 }

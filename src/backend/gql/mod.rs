@@ -29,7 +29,12 @@ impl QueryRoot {
 
         let user = ctx.user.as_ref().unwrap();
 
-        Ok(Me::new(&user.id, &user.email, user.can_use_ai))
+        Ok(Me::new(
+            &user.id,
+            &user.email,
+            user.can_use_ai,
+            user.can_use_cantodict,
+        ))
     }
 
     fn texts(ctx: &GraphQLContext) -> FieldResult<Vec<TextGQL>> {
@@ -102,6 +107,10 @@ impl QueryRoot {
         sentence: String,
     ) -> FieldResult<Vec<CantoDictWordGQL>> {
         check_user(ctx)?;
+
+        if !ctx.user.as_ref().unwrap().can_use_cantodict {
+            return Err("用戶無法使用 Cantodict".into());
+        }
 
         let result = crate::backend::cantodict::query_cantodict_sentence(&sentence).await;
         let words: Vec<CantoDictWordGQL> = result

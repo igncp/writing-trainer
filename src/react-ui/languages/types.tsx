@@ -35,6 +35,7 @@ export type T_getCurrentCharObjFromPractice = (
 
 type T_HandleKeyDown = (opts: {
   charsObjsList: T_CharObj[]
+  currentText: string
   getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice
   langOpts: T_LangOpts
   originalTextValue: string

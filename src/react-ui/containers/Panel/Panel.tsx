@@ -1,7 +1,9 @@
-import { LanguageDefinition, LanguageManager, Record } from '#/core'
-import { useEffectLater } from '#/react-ui/lib/hooks'
+import {
+  LanguageDefinition,
+  LanguageManager,
+  Record as CoreRecord,
+} from '#/core'
 import { Paths } from '#/react-ui/lib/paths'
-import { TOOLTIP_ID } from '#/utils/tooltip'
 import {
   ChangeEvent,
   useEffect,
@@ -17,7 +19,6 @@ import CharactersDisplay from '../../components/CharactersDisplay/CharactersDisp
 import ChooseLanguage from '../../components/ChooseLanguage/ChooseLanguage'
 import TextArea from '../../components/TextArea/TextArea'
 import Button from '../../components/button/button'
-import { deleteDatabase, getStats } from '../../languages/common/統計'
 import { LanguageUIManager } from '../../languages/languageUIManager'
 import {
   T_LangOpts,
@@ -25,9 +26,17 @@ import {
   T_Fragments,
 } from '../../languages/types'
 import { T_Services } from '../../typings/mainTypes'
-import { AnkisMode, AnkisSection } from '../AnkisSection/AnkisSection'
+import {
+  ankiModeToPath,
+  AnkisMode,
+  AnkisSection,
+} from '../AnkisSection/AnkisSection'
 import LoginWidget from '../LoginWidget/LoginWidget'
-import RecordsSection, { RecordsScreen } from '../RecordsSection/RecordsSection'
+import RecordsSection, {
+  recordsModeToPath,
+  RecordsScreen,
+} from '../RecordsSection/RecordsSection'
+import { StatsSection } from '../StatsSection/StatsSection'
 import { useMainContext } from '../main-context'
 
 const STORAGE_LANGUAGE_KEY = 'selectedLanguage'
@@ -104,15 +113,6 @@ const Panel = ({
 
   const [, 觸發重新渲染] = useState<number>(0)
 
-  const [stats, setStats] = useState<null | {
-    allCharsCount: number
-    allCharsCountToday: number
-    charsToday: string
-    correct: number
-    fail: number
-    perc: number
-  }>(null)
-
   const languageUIController = languageUIManager.getLanguageUIController()
 
   const [fragments, setFragments] = useState<T_Fragments>({
@@ -120,15 +120,20 @@ const Panel = ({
     list: [text],
   })
 
-  const [showingAnkis, setShowingAnkis] = useState<AnkisMode | null>(
-    path === Paths.ankis.main ? AnkisMode.Main : null,
+  const showingAnkis = (Object.entries(ankiModeToPath).find(
+    ([, value]) => value === path,
+  )?.[0] ?? null) as AnkisMode | null
+
+  const showingRecordsInitScreen = (Object.entries(recordsModeToPath).find(
+    ([, value]) => value === path,
+  )?.[0] ?? null) as RecordsScreen | null
+
+  const showingStatsSection = path === Paths.stats.main
+
+  const [currentRecord, setCurrentRecord] = useState<CoreRecord['id'] | null>(
+    null,
   )
 
-  const [showingRecordsInitScreen, setShowingRecordsInitScreen] = useState<
-    RecordsScreen | ''
-  >('')
-
-  const [currentRecord, setCurrentRecord] = useState<Record['id'] | null>(null)
   const [currentText, setCurrentText] = useState<string>('')
   const originalTextValue = currentText || fragments.list[fragments.index]
 
@@ -168,44 +173,6 @@ const Panel = ({
   const langHandler = languageManager.getCurrentLanguageHandler()
 
   const { storage } = services
-
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'test') return
-
-    getStats()
-      .then(
-        ({
-          allCharsCount,
-          allCharsCountToday,
-          charsToday,
-          failCount,
-          successCount,
-        }) => {
-          const total = (successCount || 0) + (failCount || 0)
-
-          setStats({
-            allCharsCount,
-            allCharsCountToday,
-            charsToday,
-            correct: successCount || 0,
-            fail: failCount || 0,
-            perc:
-              total > 0 ? Math.round(((successCount || 0) / total) * 100) : 0,
-          })
-        },
-      )
-      .catch(err => {
-        console.error('Error getting stats:', err)
-      })
-  }, [])
-
-  useEffectLater(() => {
-    if (showingAnkis === AnkisMode.Main) {
-      replacePath(Paths.ankis.main)
-    } else {
-      replacePath('')
-    }
-  }, [showingAnkis, replacePath])
 
   const onPracticeSourceChange = (newFragments?: T_Fragments) => {
     setCurrentText('')
@@ -454,6 +421,7 @@ const Panel = ({
 
     languageUIController.handleKeyDown({
       charsObjsList: charsObjsList ?? [],
+      currentText,
       getCurrentCharObjFromPractice,
       langOpts,
       originalTextValue,
@@ -480,11 +448,11 @@ const Panel = ({
   const OptionsBlock = languageUIController.getOptionsBlock()
 
   const saveRecord = () => {
-    setShowingRecordsInitScreen(RecordsScreen.Save)
+    replacePath(Paths.records.save)
   }
 
   const listRecords = () => {
-    setShowingRecordsInitScreen(RecordsScreen.List)
+    replacePath(Paths.records.list)
   }
 
   if (!hasLoadedStorage) {
@@ -504,7 +472,7 @@ const Panel = ({
         language={selectedLanguage}
         mode={showingAnkis}
         setMode={mode => {
-          setShowingAnkis(mode)
+          replacePath(mode ? ankiModeToPath[mode] : '')
         }}
       />
     )
@@ -516,14 +484,14 @@ const Panel = ({
         initScreen={showingRecordsInitScreen}
         language={selectedLanguage}
         onPronunciationLoad={setPronunciation}
-        onRecordLoad={(record: Record) => {
+        onRecordLoad={(record: CoreRecord) => {
           clearValues()
 
           if (record.language !== selectedLanguage) {
             handleLanguageChange(record.language)
           }
 
-          setShowingRecordsInitScreen('')
+          replacePath('')
           setShowingEdition(false)
           setShowingPronunciation(false)
 
@@ -537,7 +505,7 @@ const Panel = ({
           setPronunciation(record.pronunciation)
         }}
         onRecordsClose={() => {
-          setShowingRecordsInitScreen('')
+          replacePath('')
         }}
         onSongLoad={lyrics => {
           const newFragments: T_Fragments = {
@@ -546,12 +514,22 @@ const Panel = ({
           }
 
           onPracticeSourceChange(newFragments)
-          setShowingRecordsInitScreen('')
+          replacePath('')
         }}
         pronunciation={pronunciationValue}
         selectedLanguage={selectedLanguage}
         services={services}
         text={originalTextValue}
+      />
+    )
+  }
+
+  if (showingStatsSection) {
+    return (
+      <StatsSection
+        onClose={() => {
+          replacePath('')
+        }}
       />
     )
   }
@@ -576,6 +554,15 @@ const Panel = ({
         {hasExtraControls && (
           <Button onClick={listRecords}>{t('panel.recordSongs')}</Button>
         )}
+        {hasExtraControls && (
+          <Button
+            onClick={() => {
+              replacePath(Paths.stats.main)
+            }}
+          >
+            {t('panel.stats', 'Stats')}
+          </Button>
+        )}
         {hasExtraControls && isMobile && (
           <Button
             onClick={() => {
@@ -590,7 +577,7 @@ const Panel = ({
         {hasExtraControls && isLoggedIn && (
           <Button
             onClick={() => {
-              setShowingAnkis(AnkisMode.Main)
+              replacePath(ankiModeToPath[AnkisMode.Main])
             }}
           >
             {t('panel.openAnki')}
@@ -606,7 +593,7 @@ const Panel = ({
         {isLoggedIn && !hasExtraControls && (
           <Button
             onClick={() => {
-              setShowingAnkis(AnkisMode.Add)
+              replacePath(ankiModeToPath[AnkisMode.Main])
             }}
           >
             {t('panel.addAnkis')}
@@ -695,33 +682,6 @@ const Panel = ({
             </Button>
             {onChangeTheme && (
               <Button onClick={onChangeTheme}>{t('panel.changeTheme')}</Button>
-            )}
-            {!!stats && (
-              <div className="mb-[10px] flex flex-row items-center gap-[8px] text-[#ccc]">
-                <div>{t('panel.lastSessionNotice')}</div>
-                <div className="border-[1px] border-solid p-[4px]">
-                  {t('panel.correct')}: {stats.correct} ({stats.perc}%) /{' '}
-                  {t('panel.wrong')}: {stats.fail} /{' '}
-                  {t('panel.allCharsCount', 'All chars')}: {stats.allCharsCount}{' '}
-                  /{' '}
-                  <span
-                    data-tooltip-content={stats.charsToday}
-                    data-tooltip-id={TOOLTIP_ID}
-                  >
-                    {t('panel.allCharsCountToday', 'All chars today')}:{' '}
-                    {stats.allCharsCountToday}
-                  </span>
-                </div>
-                <Button
-                  onDoubleClick={() => {
-                    deleteDatabase().then(() => {
-                      setStats(null)
-                    })
-                  }}
-                >
-                  {t('panel.deleteStats')}
-                </Button>
-              </div>
             )}
           </>
         )}

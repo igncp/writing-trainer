@@ -47,6 +47,7 @@ export type CantoDictWordGql = {
 export type Me = {
   __typename?: 'Me'
   canUseAI: Scalars['Boolean']['output']
+  canUseCantodict: Scalars['Boolean']['output']
   email: Scalars['String']['output']
   id: Scalars['String']['output']
 }

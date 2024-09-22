@@ -6,6 +6,7 @@ import {
   changeToTraditional,
 } from '#/react-ui/languages/common/conversion'
 import { backendClient } from '#/react-ui/lib/backendClient'
+import { Paths } from '#/react-ui/lib/paths'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaEye, FaSpinner, FaTrashAlt } from 'react-icons/fa'
@@ -17,6 +18,11 @@ import Button from '../../components/button/button'
 export enum AnkisMode {
   Add = 'add',
   Main = 'main',
+}
+
+export const ankiModeToPath: Record<AnkisMode, string> = {
+  [AnkisMode.Add]: Paths.ankis.add,
+  [AnkisMode.Main]: Paths.ankis.main,
 }
 
 type AnkiRoundItem = Pick<AnkiGql, 'id' | 'front' | 'back'>
