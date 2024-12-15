@@ -1,5 +1,5 @@
 import Button from '#/react-ui/components/button/button'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -10,12 +10,13 @@ import {
 
 type Props = {
   onClose: () => void
+  selectedLanguage: string
 }
 
 const rowClasses = 'border-b-[1px] border-[#ccc] even:bg-[#222]'
 const cellClasses = 'p-[8px]'
 
-export const StatsSection = ({ onClose }: Props) => {
+export const StatsSection = ({ onClose, selectedLanguage }: Props) => {
   const { t } = useTranslation()
 
   const [isShowingChars, setIsShowingChars] = useState(false)
@@ -24,21 +25,21 @@ export const StatsSection = ({ onClose }: Props) => {
 
   const [stats, setStats] = useState<null | StatsResult>(null)
 
-  const retrieveStats = async () => {
+  const retrieveStats = useCallback(async () => {
     if (process.env.NODE_ENV === 'test') return
 
-    getStats()
+    getStats(selectedLanguage)
       .then(result => {
         setStats(result)
       })
       .catch(err => {
         console.error('Error getting stats:', err)
       })
-  }
+  }, [selectedLanguage])
 
   useEffect(() => {
     retrieveStats()
-  }, [])
+  }, [retrieveStats])
 
   const displayPerc = (perc: number | undefined) => {
     if (perc === undefined) return '-'
@@ -80,7 +81,7 @@ export const StatsSection = ({ onClose }: Props) => {
               </tr>
               <tr className={rowClasses}>
                 <td className={cellClasses}>
-                  {t('stats.successCount', 'Fail Count')}
+                  {t('stats.failCount', 'Fail Count')}
                 </td>
                 <td className={cellClasses}>{stats.failCount.allTime}</td>
                 <td className={cellClasses}>{stats.failCount.today}</td>
@@ -98,8 +99,12 @@ export const StatsSection = ({ onClose }: Props) => {
                 <td className={cellClasses}>
                   {t('stats.sentenceLength', 'Sentence Length')}
                 </td>
-                <td className={cellClasses}>{stats.sentenceLength.allTime}</td>
-                <td className={cellClasses}>{stats.sentenceLength.today}</td>
+                <td className={cellClasses}>
+                  {(stats.sentenceLength.allTime || 0).toFixed(2)}
+                </td>
+                <td className={cellClasses}>
+                  {(stats.sentenceLength.today || 0).toFixed(2)}
+                </td>
               </tr>
               <tr className={rowClasses}>
                 <td className={cellClasses}>

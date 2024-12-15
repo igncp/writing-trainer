@@ -53,6 +53,7 @@
     "reductive": "簡約的",
     "repetitive": "繰り返し",
     "translateAI": "AIを使って翻訳する",
+    "translateCantodict": "Use cantodict",
     "translateGoogle": "Googleを使って翻訳する",
     "useTones": "声調を使用する",
     "useTonesColorsAlways": "常に色を使用する",
@@ -62,21 +63,20 @@
   },
   "panel": {
     "addAnkis": "Ankiを追加",
-    "allCharsCount": "All chars",
-    "allCharsCountToday": "All chars today",
+    "allTime": "All Time",
     "changeTheme": "テーマを変更",
     "charSize": "文字サイズ",
     "clear": "クリア",
     "closeRecord": "閉じる",
+    "confirm": "Confirm",
     "copy": "コピー",
-    "correct": "正しい",
     "currentFragment": "現在の小文字",
     "deleteStats": "統計を削除",
+    "deleteStatsConfirmation": "Input \"confirm\" and click the button",
     "displayTones": "声調を表示",
     "hide": "隠す",
     "hideTones": "声調を隠す",
     "importFile": "ファイルをインポート",
-    "lastSessionNotice": "前回のセッションの統計",
     "openAnki": "Ankiを開く",
     "previousFragment": "前の小文字",
     "pronunciation": "発音",
@@ -84,11 +84,13 @@
     "saveRecord": "保存",
     "sourceText": "ソーステキスト",
     "specialChars": "特殊文字",
+    "stats": "Stats",
+    "title": "Metric",
+    "today": "Today",
     "toggleEdition": "切り替え編集",
     "togglePronunciation": "発音を切り替える",
     "updateRecord": "更新",
-    "writingArea": "書き込みエリア",
-    "wrong": "間違った"
+    "writingArea": "書き込みエリア"
   },
   "record": {
     "artist": "アーティスト",
@@ -108,5 +110,15 @@
   },
   "site": {
     "title": "言語学習者のためのウェブサイト"
+  },
+  "stats": {
+    "failCount": "Fail Count",
+    "sentenceCount": "Sentence Count",
+    "sentenceLength": "Sentence Length",
+    "sentencePerc": "Sentence Percentage",
+    "showChars": "Show unique chars today",
+    "successCount": "Success Count",
+    "successPerc": "Success Percentage",
+    "uniqueCharsCount": "Unique Chars Count"
   }
 }

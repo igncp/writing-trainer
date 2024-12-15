@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode } from 'react'
+import { CSSProperties, ReactNode, useState } from 'react'
 
 import { useHover } from '../../utils/hooks'
 import {
@@ -7,16 +7,19 @@ import {
   HOVERED_COMP_OPACITY,
 } from '../../utils/ui'
 
+import classes from './button.module.scss'
+
 const noop = () => {}
 
 export type T_ButtonProps = {
   children: ReactNode
   className?: string
+  clickEffect?: boolean
   'data-tooltip-content'?: string
   'data-tooltip-id'?: string
   disabled?: boolean
   href?: string
-  onClick?: () => void
+  onClick?: (e?: unknown) => void
   onDoubleClick?: () => void
   shouldUseLink?: boolean
   style?: CSSProperties
@@ -27,6 +30,7 @@ export type T_ButtonProps = {
 const Button = ({
   children,
   className,
+  clickEffect,
   disabled,
   href,
   onClick,
@@ -38,9 +42,10 @@ const Button = ({
   ...props
 }: T_ButtonProps) => {
   const { bind, hovered } = useHover()
+  const [isClicked, setIsAnimating] = useState(false)
 
   const finalStyle = {
-    backgroundColor: 'var(--color-bg-dim)',
+    backgroundColor: clickEffect ? undefined : 'var(--color-bg-dim)',
     border: '0',
     boxShadow: '0 0 5px 0.1px var(--color-text)',
     color: 'var(--color-text, "black")',
@@ -56,10 +61,17 @@ const Button = ({
     ...style,
   } as const
 
+  const fullClassName = [
+    className,
+    clickEffect && isClicked ? classes.animation : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   if (shouldUseLink) {
     return (
       <a
-        className={className}
+        className={fullClassName}
         data-tooltip-content={props['data-tooltip-content']}
         data-tooltip-id={props['data-tooltip-id']}
         href={href}
@@ -77,10 +89,22 @@ const Button = ({
   return (
     <button
       {...bind}
-      className={className}
+      className={fullClassName}
       data-tooltip-content={props['data-tooltip-content']}
       data-tooltip-id={props['data-tooltip-id']}
-      onClick={disabled ? noop : onClick}
+      disabled={disabled}
+      onAnimationEnd={() => {
+        setIsAnimating(false)
+      }}
+      onClick={
+        disabled
+          ? noop
+          : e => {
+              setIsAnimating(false)
+              setTimeout(() => setIsAnimating(true), 10)
+              onClick?.(e)
+            }
+      }
       onDoubleClick={disabled ? noop : onDoubleClick}
       role="button"
       style={finalStyle}

@@ -53,6 +53,7 @@
     "reductive": "還原論者",
     "repetitive": "重複的",
     "translateAI": "AI 翻譯",
+    "translateCantodict": "Use cantodict",
     "translateGoogle": "Google 翻譯",
     "useTones": "使用聲調",
     "useTonesColorsAlways": "總是使用聲調顏色",
@@ -62,21 +63,20 @@
   },
   "panel": {
     "addAnkis": "添加 Ankis",
-    "allCharsCount": "所有字元數",
-    "allCharsCountToday": "今天所有字元數",
+    "allTime": "所有時間",
     "changeTheme": "改變主題",
     "charSize": "字體大小",
     "clear": "清除文字",
     "closeRecord": "關閉已儲存的文本",
+    "confirm": "確認",
     "copy": "複製",
-    "correct": "正確的",
     "currentFragment": "當前小文本",
     "deleteStats": "刪除資料庫",
+    "deleteStatsConfirmation": "Input \"confirm\" and click the button",
     "displayTones": "顯示音調",
     "hide": "隱藏",
     "hideTones": "隱藏音調",
     "importFile": "上傳文件",
-    "lastSessionNotice": "截至上次會話的統計數據",
     "openAnki": "打開 Anki",
     "previousFragment": "之前的小文字",
     "pronunciation": "發音",
@@ -84,11 +84,13 @@
     "saveRecord": "儲存",
     "sourceText": "原文",
     "specialChars": "特殊字元",
+    "stats": "統計",
+    "title": "標題",
+    "today": "今天",
     "toggleEdition": "切換版本",
     "togglePronunciation": "切換發音",
     "updateRecord": "更新",
-    "writingArea": "書寫區",
-    "wrong": "失敗"
+    "writingArea": "書寫區"
   },
   "record": {
     "artist": "藝術家",
@@ -108,5 +110,15 @@
   },
   "site": {
     "title": "語言學習工具"
+  },
+  "stats": {
+    "failCount": "失敗次數",
+    "sentenceCount": "句子數量",
+    "sentenceLength": "句子長度",
+    "sentencePerc": "句子百分比",
+    "showChars": "顯示字元今天",
+    "successCount": "成功次數",
+    "successPerc": "成功百分比",
+    "uniqueCharsCount": "獨特字元數量"
   }
 }

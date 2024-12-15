@@ -17,7 +17,8 @@
     "prettier:check": "bun run prettier -- --list-different",
     "prettier:fix": "bun run prettier -- --write",
     "test": "jest",
-    "type-coverage": "typescript-coverage-report --ignore-files '**/*.json'"
+    "type-coverage": "typescript-coverage-report --ignore-files '**/*.json'",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",

@@ -33,7 +33,7 @@ const LinksBlock: T_LinksBlock = ({ fragments, updateFragments, 文字 }) => {
       </Button>
       <ChangeCharType fragments={fragments} updateFragments={updateFragments} />
       <TranslateButton language="zh-HK" text={文字} />
-      <CantoDictButton language="zh-HK" text={文字} />
+      <CantoDictButton text={文字} />
     </>
   )
 }

@@ -125,9 +125,11 @@ const Content = ({ onContentEnabledResult }: ContentProps) => {
   return (
     <面板基本 覆蓋點擊={hidePanel}>
       <Panel
+        getPath={() => ''}
         languageManager={languageManager}
         languageUIManager={languageUIManager}
         onHideRequest={hidePanel}
+        replacePath={() => {}}
         services={panelServices}
         text={usedText}
       />

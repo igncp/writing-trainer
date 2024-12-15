@@ -15,23 +15,14 @@ if [ ! -d out ]; then
     bun run next:build
 fi
 
-if [ -z "$DOCKER_NO_PUSH" ]; then
-  echo "Building and pushing Docker image"
+echo "Building and pushing Docker image"
 
-  docker buildx build \
-    --progress=plain \
-    --platform linux/amd64 \
-    --push \
-    -t igncp/writing-trainer:1.0.0 \
-    -t igncp/writing-trainer:latest \
-    .
+docker buildx build \
+  --progress=plain \
+  --platform linux/arm64 \
+  --push \
+  -t igncp/writing-trainer:1.0.0 \
+  -t igncp/writing-trainer:latest \
+  .
 
-  bash scripts/redeploy.sh
-else
-  docker build \
-    --progress=plain \
-    --platform linux/amd64 \
-    -t igncp/writing-trainer:1.0.0 \
-    -t igncp/writing-trainer:latest \
-    .
-fi
+# bash scripts/redeploy.sh

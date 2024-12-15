@@ -3,6 +3,10 @@ import {
   LanguageManager,
   Record as CoreRecord,
 } from '#/core'
+import {
+  doStatsCheck,
+  getMostFailures,
+} from '#/react-ui/languages/common/stats'
 import { Paths } from '#/react-ui/lib/paths'
 import {
   ChangeEvent,
@@ -10,6 +14,7 @@ import {
   KeyboardEvent as ReactKeyboardEvent,
   useRef,
   useState,
+  Fragment,
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CgSpinnerAlt } from 'react-icons/cg'
@@ -149,8 +154,8 @@ const Panel = ({
   )
 
   const [fontSize, setFontSize] = useState<number>(defaultFontSize)
-  const [isShowingPronunciation, setShowingPronunciation] = useState(true)
-  const [isShowingEdition, setShowingEdition] = useState<boolean>(true)
+  const [isShowingPronunciation, setShowingPronunciation] = useState(false)
+  const [isShowingEdition, setShowingEdition] = useState<boolean>(false)
   const [practiceHasError, setPracticeHasError] = useState<boolean>(false)
 
   const [selectedLanguage, setSelectedLanguage] =
@@ -163,9 +168,9 @@ const Panel = ({
   const [isMobile, setIsMobile] = useState(false)
   const writingArea = useRef<HTMLTextAreaElement | null>(null)
 
-  const [displayMobileTones, setDisplayMobileTones] = useState<boolean | null>(
-    null,
-  )
+  const [displayMobileKeyboard, setDisplayMobileKeyboard] = useState<
+    boolean | null
+  >(null)
 
   const [, setDictionaryKey] = useState<number>(0)
   const langOpts = _stories.langOpts ?? languageUIController.getLangOpts()
@@ -215,6 +220,10 @@ const Panel = ({
   }
 
   useEffect(() => {
+    doStatsCheck()
+  }, [])
+
+  useEffect(() => {
     if (!hasLoadedStorage) return
 
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -255,7 +264,7 @@ const Panel = ({
       }
 
       if (savedDisplayTonesNum) {
-        setDisplayMobileTones(savedDisplayTonesNum === 'true')
+        setDisplayMobileKeyboard(savedDisplayTonesNum === 'true')
       }
     })()
   }, [storage])
@@ -269,10 +278,10 @@ const Panel = ({
   }, [fontSize, storage])
 
   useEffect(() => {
-    if (displayMobileTones === null) return
+    if (displayMobileKeyboard === null) return
 
-    storage.setValue('displayTonesNum', displayMobileTones.toString())
-  }, [displayMobileTones, storage])
+    storage.setValue('displayTonesNum', displayMobileKeyboard.toString())
+  }, [displayMobileKeyboard, storage])
 
   useEffect(() => {
     if (!_stories.defaultLanguage) {
@@ -426,6 +435,7 @@ const Panel = ({
       langOpts,
       originalTextValue,
       practiceValue,
+      selectedLanguage,
       setCurrentDisplayCharIdx,
       setCurrentText,
       setPractice,
@@ -530,6 +540,7 @@ const Panel = ({
         onClose={() => {
           replacePath('')
         }}
+        selectedLanguage={selectedLanguage}
       />
     )
   }
@@ -542,7 +553,7 @@ const Panel = ({
       )
     : undefined
 
-  const { tonesNumber } = languageUIController
+  const { mobileKeyboard } = languageUIController
 
   return (
     <>
@@ -566,12 +577,12 @@ const Panel = ({
         {hasExtraControls && isMobile && (
           <Button
             onClick={() => {
-              setDisplayMobileTones(!displayMobileTones)
+              setDisplayMobileKeyboard(!displayMobileKeyboard)
             }}
           >
-            {displayMobileTones
-              ? t('panel.hideTones')
-              : t('panel.displayTones')}
+            {displayMobileKeyboard
+              ? t('panel.hideMobileKeyboard', 'Hide Mobile Keyboard')
+              : t('panel.displayMobileKeyboard', 'Display Mobile Keyboard')}
           </Button>
         )}
         {hasExtraControls && isLoggedIn && (
@@ -661,6 +672,18 @@ const Panel = ({
         )}
         {hasExtraControls && (
           <>
+            <Button
+              onClick={async () => {
+                const newText = await getMostFailures(selectedLanguage, 50)
+
+                onPracticeSourceChange({
+                  index: 0,
+                  list: [newText],
+                })
+              }}
+            >
+              {t('panel.mostFailures', 'Most Failures Round')}
+            </Button>
             <LoginWidget />
             <Button
               onClick={() => {
@@ -841,7 +864,10 @@ const Panel = ({
                 setShowingEdition(false)
                 setHasExtraControls(false)
                 setShowingPronunciation(false)
-                writingArea.current?.focus()
+
+                if (!displayMobileKeyboard) {
+                  writingArea.current?.focus()
+                }
               }}
               應該有不同的寬度={
                 !languageUIController.shouldAllCharsHaveSameWidth
@@ -905,23 +931,61 @@ const Panel = ({
             value={practiceValue}
             自動捲動
           />
-          {isMobile && displayMobileTones && tonesNumber && (
-            <div className="flex w-full flex-row justify-between bg-[black]">
-              {Array.from({ length: tonesNumber }).map((_, idx) => {
-                return (
-                  <Button
-                    key={idx}
-                    onClick={() => {
-                      handleKeyDown({
-                        key: (idx + 1).toString(),
-                        preventDefault: () => {},
-                      } as unknown as ReactKeyboardEvent<HTMLTextAreaElement>)
+          {isMobile && mobileKeyboard && (
+            <div className="flex w-full flex-col justify-between gap-[24px]">
+              {mobileKeyboard.map((row, rowIdx) => {
+                // Display first row (numbers) even if the keyboard is hidden
+                if (rowIdx !== 0 && !displayMobileKeyboard) return null
 
-                      writingArea.current?.focus()
-                    }}
-                  >
-                    {idx + 1}
-                  </Button>
+                return (
+                  <div className="flex flex-row justify-between" key={rowIdx}>
+                    {row.map((key, keyIdx) => {
+                      const commonProps = {
+                        clickEffect: true,
+                        style: {
+                          padding: '16px',
+                        },
+                      }
+
+                      return (
+                        <Fragment key={key}>
+                          <Button
+                            onClick={e => {
+                              if (!displayMobileKeyboard) {
+                                // eslint-disable-next-line
+                                ;(e as any).preventDefault()
+                                // eslint-disable-next-line
+                                ;(e as any).stopPropagation()
+                                writingArea.current?.focus()
+                              }
+
+                              handleKeyDown({
+                                key,
+                                preventDefault: () => {},
+                              } as unknown as ReactKeyboardEvent<HTMLTextAreaElement>)
+                            }}
+                            {...commonProps}
+                          >
+                            {key}
+                          </Button>
+                          {rowIdx === mobileKeyboard.length - 1 &&
+                            keyIdx === row.length - 1 && (
+                              <Button
+                                onClick={() => {
+                                  handleKeyDown({
+                                    key: 'Backspace',
+                                    preventDefault: () => {},
+                                  } as unknown as ReactKeyboardEvent<HTMLTextAreaElement>)
+                                }}
+                                {...commonProps}
+                              >
+                                {'<'}
+                              </Button>
+                            )}
+                        </Fragment>
+                      )
+                    })}
+                  </div>
                 )
               })}
             </div>

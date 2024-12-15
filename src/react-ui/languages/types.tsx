@@ -40,6 +40,7 @@ type T_HandleKeyDown = (opts: {
   langOpts: T_LangOpts
   originalTextValue: string
   practiceValue: string
+  selectedLanguage: string
   setCurrentDisplayCharIdx: (idx: number) => void
   setCurrentText: (text: string) => void
   setPractice: (o: string) => void
@@ -67,9 +68,9 @@ export interface T_LangUIController {
   handleKeyDown: T_HandleKeyDown
   languageHandler: LanguageHandler
   loadDictionary: () => Promise<void>
+  mobileKeyboard?: string[][]
   onBlur?: T_BlurHandler
   saveLangOptss: (o: T_LangOpts) => void
   shouldAllCharsHaveSameWidth: boolean
-  tonesNumber?: number
   處理清除事件?: (處理程序: T_LangUIController) => void
 }

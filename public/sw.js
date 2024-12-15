@@ -10,7 +10,7 @@ self.addEventListener('install', function () {
 
 console.log('debug: sw.js: Loaded')
 
-self.addEventListener('fetch', event => {
+self.addEventListener('fetch', async event => {
   if (
     event.request.url.includes('/api') ||
     event.request.url.includes('/graphql') ||
@@ -19,6 +19,19 @@ self.addEventListener('fetch', event => {
     event.request.url.includes('sw.js')
   ) {
     return
+  }
+
+  // This is the chunk format which is used in the dictionaries
+  if (/\/[0-9]{3}\.[a-z0-9]/.match(event.request.url)) {
+    console.log('Trying cached chunk', event.request.url)
+
+    const cached = await caches.match(event.request.url).catch(() => null)
+
+    if (cached) {
+      event.respondWith(cached)
+
+      return
+    }
   }
 
   event.respondWith(

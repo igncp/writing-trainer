@@ -24,6 +24,7 @@ export const 繁體轉簡體 = 字典
 
 const sameConversionSet: Set<string> = new Set([
   '了',
+  '伙',
   '出',
   '别',
   '千',
@@ -48,6 +49,7 @@ const sameConversionSet: Set<string> = new Set([
 
 const correctConversionObj: Record<string, string | undefined> = {
   个: '個',
+  发: '發',
 }
 
 const 簡體轉繁體 = Object.entries(繁體轉簡體).reduce<

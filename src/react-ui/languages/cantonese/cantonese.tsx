@@ -1,6 +1,8 @@
 import { cantoneseHandler } from '#/core'
 
-import OptionsBlock from '../common/CharsOptions/OptionsBlock'
+import OptionsBlock, {
+  defaultUseTonesColors,
+} from '../common/CharsOptions/OptionsBlock'
 import { chineseBlurHandler } from '../common/chineseBlurHandler'
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
 import { 繁體轉簡體 } from '../common/conversion'
@@ -58,13 +60,14 @@ const handleKeyDown: T_LangUIController['handleKeyDown'] = 參數 => {
 }
 
 const getToneColor: T_GetToneColor = (char, 選項, 字元) => {
+  const useTonesColors = 選項.useTonesColors || defaultUseTonesColors
+
   if (
-    選項.useTonesColors === 'never' ||
+    useTonesColors === 'never' ||
     !字元?.pronunciation ||
-    (選項.useTonesColors === 'current-error' && char !== 'current-error') ||
-    (選項.useTonesColors === 'current' &&
-      !['current', 'current-error'].includes(char)) ||
-    !選項.useTonesColors
+    (useTonesColors === 'current-error' && char !== 'current-error') ||
+    (useTonesColors === 'current' &&
+      !['current', 'current-error'].includes(char))
   ) {
     return undefined
   }
@@ -139,10 +142,15 @@ const languageUIController: T_LangUIController = {
   handleKeyDown,
   languageHandler: cantoneseHandler,
   loadDictionary,
+  mobileKeyboard: [
+    Array.from({ length: 6 }).map((_, i) => `${i + 1}`),
+    ['w', 'e', 't', 'y', 'u', 'i', 'o', 'p'],
+    ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+    ['z', 'c', 'b', 'n', 'm'],
+  ],
   onBlur: chineseBlurHandler,
   saveLangOptss,
   shouldAllCharsHaveSameWidth: false,
-  tonesNumber: 6,
   處理清除事件: (處理程序: T_LangUIController) => {
     處理程序.saveLangOptss({
       ...處理程序.getLangOpts(),

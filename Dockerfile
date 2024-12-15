@@ -12,7 +12,13 @@ FROM chef AS builder
 COPY --from=planner /app/recipe.json recipe.json
 RUN rustup target add $(uname -m)-unknown-linux-musl
 RUN cargo chef cook --release --recipe-path recipe.json --target $(uname -m)-unknown-linux-musl
-COPY . .
+# Copy all rust directories
+COPY scripts scripts
+COPY src/backend src/backend
+COPY src/main.rs src/main.rs
+COPY migrations migrations
+COPY .cargo .cargo
+COPY Cargo.toml Cargo.lock diesel.toml ./
 RUN bash scripts/build_docker.sh
 
 FROM alpine:3.20.2

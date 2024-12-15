@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 
 import { T_OptionsBlock } from '../../types'
 
+export const defaultUseTonesColors = 'current'
+
 const OptionsBlock: T_OptionsBlock = ({ langOpts, updateLangOpts }) => {
   const { t } = useTranslation()
 
@@ -82,7 +84,7 @@ const OptionsBlock: T_OptionsBlock = ({ langOpts, updateLangOpts }) => {
               useTonesColors: e.target.value,
             })
           }}
-          value={(langOpts.useTonesColors as string) || 'error'}
+          value={(langOpts.useTonesColors as string) || defaultUseTonesColors}
         >
           <option value="always">{t('option.useTonesColorsAlways')}</option>
           <option value="never">{t('option.useTonesColorsNever')}</option>

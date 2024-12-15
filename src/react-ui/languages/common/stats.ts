@@ -32,9 +32,11 @@ enum CharResult {
 
 type StatsPair = [number, number]
 
+const langFilter = (lang: string) => (r: { lang: string }) => r.lang === lang
+
 const getDB = () =>
   new Promise<IDBDatabase>((resolve, reject) => {
-    const dbOpenRequest = window.indexedDB.open(dbName, 4)
+    const dbOpenRequest = window.indexedDB.open(dbName, 5)
 
     dbOpenRequest.onerror = ev => {
       console.log('開放請求錯誤:', ev)
@@ -43,9 +45,9 @@ const getDB = () =>
 
     // For now just clear the previous data, this should be removed in the
     // future
-    const deleteStore = (storeName: string) => {
+    const deleteStore = (db: IDBDatabase, storeName: string) => {
       try {
-        dbOpenRequest.result.deleteObjectStore(storeName)
+        db.deleteObjectStore(storeName)
       } catch {
         // Do nothing
       }
@@ -55,36 +57,42 @@ const getDB = () =>
       const db = (ev.target as unknown as { result: IDBDatabase }).result
 
       objStoresChars.forEach(objStoreName => {
-        deleteStore(objStoreName)
+        deleteStore(db, objStoreName)
 
         const dbObjStore = db.createObjectStore(objStoreName, {
           autoIncrement: false,
         })
 
+        dbObjStore.createIndex('lang', 'lang', { unique: false })
         dbObjStore.createIndex('name', 'name', { unique: false })
         dbObjStore.createIndex('type', 'type', { unique: false })
         dbObjStore.createIndex('count', 'count', { unique: false })
-        dbObjStore.createIndex('nametype', ['name', 'type'], { unique: false })
+
+        dbObjStore.createIndex('nametype', ['lang', 'name', 'type'], {
+          unique: false,
+        })
       })
 
       objStoresSentencesSuccess.forEach(objStoreName => {
-        deleteStore(objStoreName)
+        deleteStore(db, objStoreName)
 
         const dbObjStore = db.createObjectStore(objStoreName, {
           autoIncrement: true,
         })
 
+        dbObjStore.createIndex('lang', 'lang', { unique: false })
         dbObjStore.createIndex('percentage', 'percentage', { unique: false })
       })
 
       objStoresSentencesLength.forEach(objStoreName => {
-        deleteStore(objStoreName)
+        deleteStore(db, objStoreName)
 
         const dbObjStore = db.createObjectStore(objStoreName, {
           autoIncrement: true,
         })
 
         dbObjStore.createIndex('length', 'length', { unique: false })
+        dbObjStore.createIndex('lang', 'lang', { unique: false })
       })
     }
 
@@ -114,13 +122,7 @@ const getStore = async (
   return transaction.objectStore(objStoreName)
 }
 
-type DBRecord = {
-  count: number
-  name: string
-  type: CharResult
-}
-
-const saveChar = async (char: string, charType: CharResult) => {
+const saveChar = async (lang: string, char: string, charType: CharResult) => {
   if (process.env.NODE_ENV === 'test') {
     return
   }
@@ -130,13 +132,13 @@ const saveChar = async (char: string, charType: CharResult) => {
 
     const objectStore = await getStore(objStoreName, 'readwrite')
     const searchIndex = objectStore.index('nametype')
-    const key = [char, charType]
+    const key = [lang, char, charType]
     const query = searchIndex.get(key)
 
     query.onsuccess = result => {
-      const record = (
-        result.target as unknown as { result: DBRecord | undefined }
-      ).result
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const record = (result.target as unknown as { result: any | undefined })
+        .result
 
       if (record) {
         record.count += 1
@@ -150,6 +152,7 @@ const saveChar = async (char: string, charType: CharResult) => {
         const addRequest = objectStore.add(
           {
             count: 1,
+            lang,
             name: char,
             type: charType,
           },
@@ -164,13 +167,13 @@ const saveChar = async (char: string, charType: CharResult) => {
   }, Promise.resolve())
 }
 
-export const saveSuccessChar = async (char: string) =>
-  saveChar(char, CharResult.Success)
+export const saveSuccessChar = async (lang: string, char: string) =>
+  saveChar(lang, char, CharResult.Success)
 
-export const saveFailChar = async (char: string) =>
-  saveChar(char, CharResult.Fail)
+export const saveFailChar = async (lang: string, char: string) =>
+  saveChar(lang, char, CharResult.Fail)
 
-const getSentencePercentages = async (): Promise<StatsPair> =>
+const getSentencePercentages = async (lang: string): Promise<StatsPair> =>
   objStoresSentencesSuccess.reduce(
     async (p, objStoreName) => {
       const existing = await p
@@ -182,9 +185,10 @@ const getSentencePercentages = async (): Promise<StatsPair> =>
         request.onsuccess = () => {
           const results =
             request.result
+              .filter(langFilter(lang))
               .map((record: { count: number }) => record.count)
               .reduce((acc: number, count: number) => acc + count, 0) /
-            (request.result.length || 1)
+            (request.result.filter(langFilter(lang)).length || 1)
 
           resolve(existing.concat([results]) as StatsPair)
         }
@@ -193,7 +197,7 @@ const getSentencePercentages = async (): Promise<StatsPair> =>
     Promise.resolve([] as unknown as StatsPair),
   )
 
-const getSentenceCounts = async (): Promise<StatsPair> =>
+const getSentenceCounts = async (lang: string): Promise<StatsPair> =>
   objStoresSentencesSuccess.reduce(
     async (p, objStoreName) => {
       const existing = await p
@@ -203,14 +207,18 @@ const getSentenceCounts = async (): Promise<StatsPair> =>
 
       return new Promise(resolve => {
         request.onsuccess = () => {
-          resolve(existing.concat([request.result.length]) as StatsPair)
+          resolve(
+            existing.concat([
+              request.result.filter(langFilter(lang)).length,
+            ]) as StatsPair,
+          )
         }
       })
     },
     Promise.resolve([] as unknown as StatsPair),
   )
 
-const getSentenceLength = async (): Promise<StatsPair> =>
+const getSentenceLength = async (lang: string): Promise<StatsPair> =>
   objStoresSentencesLength.reduce(
     async (p, objStoreName) => {
       const existing = await p
@@ -222,9 +230,10 @@ const getSentenceLength = async (): Promise<StatsPair> =>
         request.onsuccess = () => {
           const results =
             request.result
+              .filter(langFilter(lang))
               .map((record: { length: number }) => record.length)
               .reduce((acc: number, count: number) => acc + count, 0) /
-            (request.result.length || 1)
+            (request.result.filter(langFilter(lang)).length || 1)
 
           resolve(existing.concat([results]) as StatsPair)
         }
@@ -234,6 +243,7 @@ const getSentenceLength = async (): Promise<StatsPair> =>
   )
 
 export const saveSentenceStats = async (
+  lang: string,
   length: number,
   correctRatio: number,
 ) => {
@@ -244,6 +254,7 @@ export const saveSentenceStats = async (
 
     const request = objectStore.add({
       count: correctRatio,
+      lang,
     })
 
     request.onerror = () => {
@@ -257,6 +268,7 @@ export const saveSentenceStats = async (
     const objectStore = await getStore(objStoreName, 'readwrite')
 
     const request = objectStore.add({
+      lang,
       length,
     })
 
@@ -303,6 +315,7 @@ type HistoricStat = {
 export type StatsResult = {
   charsToday: string
   failCount: HistoricStat
+  lang: string
   sentenceLength: HistoricStat
   sentencePercentage: HistoricStat
   sentencesCompleted: HistoricStat
@@ -311,20 +324,24 @@ export type StatsResult = {
   uniqueCharsCount: HistoricStat
 }
 
-export const getStats = async (): Promise<StatsResult> => {
+export const doStatsCheck = async () => {
   const today = new Date().toLocaleDateString()
   const lastSavedDB = localStorage.getItem('lastSavedTodayDB')
 
   if (lastSavedDB && lastSavedDB !== today) {
-    const db = await getDB()
+    await objStoreToday.reduce(async (acc, objStoreName) => {
+      await acc
 
-    objStoreToday.forEach(objStoreName => {
-      db.deleteObjectStore(objStoreName)
-    })
+      const objStore = await getStore(objStoreName, 'readwrite')
+
+      objStore.clear()
+    }, Promise.resolve())
   }
 
   localStorage.setItem('lastSavedTodayDB', today)
+}
 
+export const getStats = async (lang: string): Promise<StatsResult> => {
   const getCount = async (charType: CharResult): Promise<StatsPair> =>
     objStoresChars.reduce(
       async (p, objStoreName) => {
@@ -338,10 +355,9 @@ export const getStats = async (): Promise<StatsResult> => {
           const request = index.getAll(keyRange)
 
           request.onsuccess = () => {
-            const total = request.result.reduce(
-              (acc: number, record: DBRecord) => acc + record.count,
-              0,
-            )
+            const total = request.result
+              .filter(langFilter(lang))
+              .reduce((acc: number, record) => acc + record.count, 0)
 
             resolve(existing.concat([total]) as StatsPair)
           }
@@ -363,7 +379,7 @@ export const getStats = async (): Promise<StatsResult> => {
           const request = index.getAll(keyRange)
 
           request.onsuccess = () => {
-            const total = request.result.length
+            const total = request.result.filter(langFilter(lang)).length
 
             resolve(existing.concat(total))
           }
@@ -383,7 +399,8 @@ export const getStats = async (): Promise<StatsResult> => {
 
       request.onsuccess = () => {
         const chars = request.result
-          .map((record: DBRecord) => record.name)
+          .filter(langFilter(lang))
+          .map(record => record.name)
           .sort()
 
         resolve(chars.join(' '))
@@ -396,9 +413,9 @@ export const getStats = async (): Promise<StatsResult> => {
     getCount(CharResult.Fail),
     getUniqueCharsCount(),
     getTodayChars(),
-    getSentencePercentages(),
-    getSentenceCounts(),
-    getSentenceLength(),
+    getSentencePercentages(lang),
+    getSentenceCounts(lang),
+    getSentenceLength(lang),
   ] as const
 
   type Tuple = typeof promises
@@ -470,6 +487,7 @@ export const getStats = async (): Promise<StatsResult> => {
   return {
     charsToday,
     failCount,
+    lang,
     sentenceLength,
     sentencePercentage,
     sentencesCompleted,
@@ -481,3 +499,53 @@ export const getStats = async (): Promise<StatsResult> => {
 
 export const deleteDatabase = async (): Promise<void> =>
   deleteSingleDB().then(() => {})
+
+export const getMostFailures = async (
+  lang: string,
+  count: number,
+): Promise<string> => {
+  const objectStore = await getStore(objStoreCharsAllTime)
+
+  return new Promise<string>(resolve => {
+    const request = objectStore.getAll()
+
+    request.onsuccess = () => {
+      const [success, fail] = request.result.filter(langFilter(lang)).reduce(
+        (acc: [Record<string, number>, Record<string, number>], record) => {
+          acc[record.type === CharResult.Fail ? 1 : 0][record.name] =
+            record.count
+
+          return acc
+        },
+        [{}, {}],
+      )
+
+      const allChars = Array.from(
+        new Set(Object.keys(success).concat(Object.keys(fail))),
+      )
+
+      const getSortValue = (char: string) => {
+        const successCount = success[char] || 0
+        const failCount = fail[char] || 0
+        const total = successCount + failCount
+
+        if (total === 0) {
+          return 0
+        }
+
+        // This formula aims to give a higher value to characters that have
+        // more failures and less successes
+        return (
+          ((failCount / (successCount + failCount)) * (failCount + 1)) /
+          (successCount + 1)
+        )
+      }
+
+      const chars = allChars
+        .sort((a, b) => getSortValue(b) - getSortValue(a))
+        .slice(0, count)
+
+      resolve(chars.join(''))
+    }
+  })
+}

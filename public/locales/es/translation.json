@@ -53,6 +53,7 @@
     "reductive": "Reductivo",
     "repetitive": "Repetitivo",
     "translateAI": "Traducción AI",
+    "translateCantodict": "Use cantodict",
     "translateGoogle": "Traducción Google",
     "useTones": "Utilizar tonos",
     "useTonesColorsAlways": "Siempre usar colores de tonos",
@@ -62,21 +63,20 @@
   },
   "panel": {
     "addAnkis": "Añadir tarjetas",
-    "allCharsCount": "Todos los caracteres",
-    "allCharsCountToday": "Todos los caracteres de hoy",
+    "allTime": "All Time",
     "changeTheme": "Cambiar tema",
     "charSize": "Tamaño de los caracteres",
     "clear": "Limpiar",
     "closeRecord": "Cerrar",
+    "confirm": "Confirm",
     "copy": "Copiar",
-    "correct": "Correcto",
     "currentFragment": "Fragmento actual",
     "deleteStats": "Eliminar estadísticas",
+    "deleteStatsConfirmation": "Input \"confirm\" and click the button",
     "displayTones": "Mostrar tonos",
     "hide": "Ocultar",
     "hideTones": "Ocultar tonos",
     "importFile": "Importar archivo",
-    "lastSessionNotice": "Las estadísticas son hasta la última sesión",
     "openAnki": "Abrir Anki",
     "previousFragment": "Fragmento anterior",
     "pronunciation": "Pronunciación",
@@ -84,11 +84,13 @@
     "saveRecord": "Guardar",
     "sourceText": "Texto original",
     "specialChars": "Caracteres especiales",
+    "stats": "Stats",
+    "title": "Metric",
+    "today": "Today",
     "toggleEdition": "Alternar edición",
     "togglePronunciation": "Alternar pronunciación",
     "updateRecord": "Actualizar",
-    "writingArea": "Área de escritura",
-    "wrong": "Incorrecto"
+    "writingArea": "Área de escritura"
   },
   "record": {
     "artist": "Artista",
@@ -108,5 +110,15 @@
   },
   "site": {
     "title": "Entrenador de Idiomas"
+  },
+  "stats": {
+    "failCount": "Fail Count",
+    "sentenceCount": "Sentence Count",
+    "sentenceLength": "Sentence Length",
+    "sentencePerc": "Sentence Percentage",
+    "showChars": "Show unique chars today",
+    "successCount": "Success Count",
+    "successPerc": "Success Percentage",
+    "uniqueCharsCount": "Unique Chars Count"
   }
 }

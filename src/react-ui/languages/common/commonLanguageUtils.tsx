@@ -37,6 +37,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     langOpts,
     originalTextValue,
     practiceValue,
+    selectedLanguage,
     setCurrentDisplayCharIdx,
     setCurrentText,
     setPractice,
@@ -111,6 +112,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
       : writingValue + 解析按鍵
 
   const correctPronunciationParsed = 解析發音(correctPronunciation, langOpts)
+  const isDuringReduction = !!currentText
 
   if (
     correctPronunciationParsed === 解析發音(newWritingValue, langOpts) ||
@@ -122,7 +124,9 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     setPracticeHasError(false)
     setPractice(`${newPractice} `)
 
-    saveSuccessChar(currentCharObj.word)
+    if (!isDuringReduction) {
+      saveSuccessChar(selectedLanguage, currentCharObj.word)
+    }
 
     if (
       [undefined, '還原論者'].includes(
@@ -144,10 +148,13 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
           | string[]
           | undefined
 
-        if (!currentText) {
+        if (!isDuringReduction) {
+          const uniqueMistakes = Array.from(new Set(charsWithMistakes ?? []))
+
           saveSentenceStats(
+            selectedLanguage,
             charsObjsList.length,
-            (charsObjsList.length - (charsWithMistakes?.length ?? 0)) /
+            (charsObjsList.length - uniqueMistakes.length) /
               charsObjsList.length,
           )
         }
@@ -178,12 +185,12 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     langOpts.charsWithMistakes = langOpts.charsWithMistakes || []
 
     if (
+      !isDuringReduction &&
       !(langOpts.charsWithMistakes as string[])
-        .slice(0)
         .slice(-1)
         .includes(currentCharObj.word)
     ) {
-      saveFailChar(currentCharObj.word)
+      saveFailChar(selectedLanguage, currentCharObj.word)
     }
 
     ;(langOpts.charsWithMistakes as string[]).push(currentCharObj.word)

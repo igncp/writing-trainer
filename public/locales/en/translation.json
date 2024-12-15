@@ -53,6 +53,7 @@
     "reductive": "Reductive",
     "repetitive": "Repetitive",
     "translateAI": "Translate AI",
+    "translateCantodict": "Use cantodict",
     "translateGoogle": "Google Translate",
     "useTones": "Use Tones",
     "useTonesColorsAlways": "Always use tones colors",
@@ -62,21 +63,20 @@
   },
   "panel": {
     "addAnkis": "Add Ankis",
-    "allCharsCount": "All chars",
-    "allCharsCountToday": "All chars today",
+    "allTime": "All Time",
     "changeTheme": "Change Theme",
     "charSize": "Font Size",
     "clear": "Clear",
     "closeRecord": "Close Record",
+    "confirm": "Confirm",
     "copy": "Copy",
-    "correct": "Correct",
     "currentFragment": "Current Fragment",
     "deleteStats": "Delete Stats",
+    "deleteStatsConfirmation": "Input \"confirm\" and click the button",
     "displayTones": "Display Tones",
     "hide": "Hide",
     "hideTones": "Hide Tones",
     "importFile": "Import File",
-    "lastSessionNotice": "Displayed up to the last session",
     "openAnki": "Open Ankis",
     "previousFragment": "Previous Fragment",
     "pronunciation": "Pronunciation",
@@ -84,11 +84,13 @@
     "saveRecord": "Save",
     "sourceText": "Source Text",
     "specialChars": "Special Characters",
+    "stats": "Stats",
+    "title": "Metric",
+    "today": "Today",
     "toggleEdition": "Toggle Edition",
     "togglePronunciation": "Toggle Pronunciation",
     "updateRecord": "Update Record",
-    "writingArea": "Writing Area",
-    "wrong": "Wrong"
+    "writingArea": "Writing Area"
   },
   "record": {
     "artist": "Artist",
@@ -108,5 +110,15 @@
   },
   "site": {
     "title": "Writing Trainer"
+  },
+  "stats": {
+    "failCount": "Fail Count",
+    "sentenceCount": "Sentence Count",
+    "sentenceLength": "Sentence Length",
+    "sentencePerc": "Sentence Percentage",
+    "showChars": "Show unique chars today",
+    "successCount": "Success Count",
+    "successPerc": "Success Percentage",
+    "uniqueCharsCount": "Unique Chars Count"
   }
 }
