@@ -33,6 +33,14 @@
     "login": "ログイン",
     "logout": "ログアウト"
   },
+  "dict": {
+    "clear": "クリア",
+    "displayOneWord": "一文字の単語を表示",
+    "hideAll": "すべてを隠す",
+    "hideOneWord": "一文字の単語を表示しない",
+    "showAll": "すべてを表示",
+    "total": "合計"
+  },
   "help": {
     "how": "Writing Trainer の使い方",
     "howText1": "Writing Trainer は、言語学習の向上に役立ちます。"
@@ -48,13 +56,14 @@
     "changeToSimplified": "繁体字に変換する",
     "changeToTraditional": "簡体字に変換する",
     "contactUse": "お問い合わせ",
+    "needLoggedIn": "この機能を使用するにはログインする必要があります",
     "noTones": "声調なし",
-    "pronunciation": "発音",
     "reductive": "簡約的",
     "repetitive": "繰り返し",
     "translateAI": "AIを使って翻訳する",
     "translateCantodict": "Use cantodict",
     "translateGoogle": "Googleを使って翻訳する",
+    "useDict": "Use Dictionary",
     "useTones": "声調を使用する",
     "useTonesColorsAlways": "常に色を使用する",
     "useTonesColorsCurrent": "現在の色を使用する",
@@ -72,11 +81,12 @@
     "copy": "コピー",
     "currentFragment": "現在の小文字",
     "deleteStats": "統計を削除",
-    "deleteStatsConfirmation": "Input \"confirm\" and click the button",
-    "displayTones": "声調を表示",
+    "deleteStatsConfirmation": "「confirm」と入力してボタンをクリック",
+    "displayMobileKeyboard": "モバイルキーボードを表示",
     "hide": "隠す",
-    "hideTones": "声調を隠す",
+    "hideMobileKeyboard": "Hide Mobile Keyboard",
     "importFile": "ファイルをインポート",
+    "mostFailures": "Most Failures Round",
     "openAnki": "Ankiを開く",
     "previousFragment": "前の小文字",
     "pronunciation": "発音",
@@ -89,6 +99,7 @@
     "today": "Today",
     "toggleEdition": "切り替え編集",
     "togglePronunciation": "発音を切り替える",
+    "trim": "トリム",
     "updateRecord": "更新",
     "writingArea": "書き込みエリア"
   },
@@ -112,13 +123,13 @@
     "title": "言語学習者のためのウェブサイト"
   },
   "stats": {
-    "failCount": "Fail Count",
-    "sentenceCount": "Sentence Count",
-    "sentenceLength": "Sentence Length",
-    "sentencePerc": "Sentence Percentage",
-    "showChars": "Show unique chars today",
-    "successCount": "Success Count",
-    "successPerc": "Success Percentage",
-    "uniqueCharsCount": "Unique Chars Count"
+    "failCount": "失敗回数",
+    "sentenceCount": "文の数",
+    "sentenceLength": "文の長さ",
+    "sentencePerc": "文の割合",
+    "showChars": "今日の一意の文字を表示",
+    "successCount": "成功回数",
+    "successPerc": "成功率",
+    "uniqueCharsCount": "一意の文字数"
   }
 }

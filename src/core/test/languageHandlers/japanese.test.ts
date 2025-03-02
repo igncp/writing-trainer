@@ -21,8 +21,8 @@ describe('convertToCharsObjs', () => {
         charsToRemove: [],
         langOpts: {
           dictionary: {
-            は: 'ha',
             約束: 'yakusoku',
+            は: 'ha',
           },
         },
         text: '約束 は ',

@@ -33,6 +33,14 @@
     "login": "Autenticarse",
     "logout": "Desconectarse"
   },
+  "dict": {
+    "clear": "Limpiar",
+    "displayOneWord": "Mostrar palabras con un solo carácter",
+    "hideAll": "Ocultar todo",
+    "hideOneWord": "No mostrar palabras con un solo carácter",
+    "showAll": "Mostrar todo",
+    "total": "Total"
+  },
   "help": {
     "how": "Cómo utilizar Writing Trainer?",
     "howText1": "Writing Trainer te puede ayudar a mejorar tu escritura en idiomas extranjeros."
@@ -48,13 +56,14 @@
     "changeToSimplified": "Caracteres simplificados",
     "changeToTraditional": "Caracteres tradicionales",
     "contactUse": "Para utilizar esta aplicación, contacta con nosotros",
+    "needLoggedIn": "Necesitas estar conectado para utilizar esta función",
     "noTones": "Sin tonos",
-    "pronunciation": "Pronunciación",
     "reductive": "Reductivo",
     "repetitive": "Repetitivo",
     "translateAI": "Traducción AI",
-    "translateCantodict": "Use cantodict",
+    "translateCantodict": "Usar cantodict",
     "translateGoogle": "Traducción Google",
+    "useDict": "Usar diccionario",
     "useTones": "Utilizar tonos",
     "useTonesColorsAlways": "Siempre usar colores de tonos",
     "useTonesColorsCurrent": "Usar colores de tonos solo en el actual",
@@ -72,11 +81,12 @@
     "copy": "Copiar",
     "currentFragment": "Fragmento actual",
     "deleteStats": "Eliminar estadísticas",
-    "deleteStatsConfirmation": "Input \"confirm\" and click the button",
-    "displayTones": "Mostrar tonos",
+    "deleteStatsConfirmation": "Introduce \"confir\" y haz clic en el botón",
+    "displayMobileKeyboard": "Mostrar teclado móvil",
     "hide": "Ocultar",
-    "hideTones": "Ocultar tonos",
+    "hideMobileKeyboard": "Ocultar teclado móvil",
     "importFile": "Importar archivo",
+    "mostFailures": "Ronda con más fallos",
     "openAnki": "Abrir Anki",
     "previousFragment": "Fragmento anterior",
     "pronunciation": "Pronunciación",
@@ -84,11 +94,12 @@
     "saveRecord": "Guardar",
     "sourceText": "Texto original",
     "specialChars": "Caracteres especiales",
-    "stats": "Stats",
-    "title": "Metric",
-    "today": "Today",
+    "stats": "Estadísticas",
+    "title": "Métrica",
+    "today": "Hoy",
     "toggleEdition": "Alternar edición",
     "togglePronunciation": "Alternar pronunciación",
+    "trim": "Recortar",
     "updateRecord": "Actualizar",
     "writingArea": "Área de escritura"
   },
@@ -112,13 +123,13 @@
     "title": "Entrenador de Idiomas"
   },
   "stats": {
-    "failCount": "Fail Count",
-    "sentenceCount": "Sentence Count",
-    "sentenceLength": "Sentence Length",
-    "sentencePerc": "Sentence Percentage",
-    "showChars": "Show unique chars today",
-    "successCount": "Success Count",
-    "successPerc": "Success Percentage",
-    "uniqueCharsCount": "Unique Chars Count"
+    "failCount": "Número de fallos",
+    "sentenceCount": "Número de oraciones",
+    "sentenceLength": "Longitud de la oración",
+    "sentencePerc": "Porcentaje de oraciones",
+    "showChars": "Mostrar caracteres únicos hoy",
+    "successCount": "Número de aciertos",
+    "successPerc": "Porcentaje de aciertos",
+    "uniqueCharsCount": "Número de caracteres únicos"
   }
 }

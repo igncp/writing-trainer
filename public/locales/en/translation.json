@@ -33,6 +33,14 @@
     "login": "Log In",
     "logout": "Log Out"
   },
+  "dict": {
+    "clear": "Clear",
+    "displayOneWord": "Show words with one character",
+    "hideAll": "Hide all",
+    "hideOneWord": "Don't show words with one character",
+    "showAll": "Show all",
+    "total": "Total"
+  },
   "help": {
     "how": "How to use the Writing Trainer?",
     "howText1": "The Writing Trainer can help you improve in learning languages."
@@ -48,13 +56,14 @@
     "changeToSimplified": "Simplified Characters",
     "changeToTraditional": "Traditional Characters",
     "contactUse": "Contact us to use this feature.",
+    "needLoggedIn": "You need to be logged in to use this feature.",
     "noTones": "No Tones",
-    "pronunciation": "Pronunciation",
     "reductive": "Reductive",
     "repetitive": "Repetitive",
     "translateAI": "Translate AI",
     "translateCantodict": "Use cantodict",
     "translateGoogle": "Google Translate",
+    "useDict": "Use Dictionary",
     "useTones": "Use Tones",
     "useTonesColorsAlways": "Always use tones colors",
     "useTonesColorsCurrent": "Use tones colors on current",
@@ -73,10 +82,11 @@
     "currentFragment": "Current Fragment",
     "deleteStats": "Delete Stats",
     "deleteStatsConfirmation": "Input \"confirm\" and click the button",
-    "displayTones": "Display Tones",
+    "displayMobileKeyboard": "Display Mobile Keyboard",
     "hide": "Hide",
-    "hideTones": "Hide Tones",
+    "hideMobileKeyboard": "Hide Mobile Keyboard",
     "importFile": "Import File",
+    "mostFailures": "Most Failures Round",
     "openAnki": "Open Ankis",
     "previousFragment": "Previous Fragment",
     "pronunciation": "Pronunciation",
@@ -89,6 +99,7 @@
     "today": "Today",
     "toggleEdition": "Toggle Edition",
     "togglePronunciation": "Toggle Pronunciation",
+    "trim": "Trim",
     "updateRecord": "Update Record",
     "writingArea": "Writing Area"
   },

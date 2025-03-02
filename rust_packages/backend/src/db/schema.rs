@@ -28,6 +28,16 @@ diesel::table! {
 }
 
 diesel::table! {
+    stats_sentence_correct (id) {
+        count -> Float,
+        id -> Text,
+        is_today -> Bool,
+        lang -> Text,
+        user_id -> Text,
+    }
+}
+
+diesel::table! {
     texts (id) {
         id -> Text,
         user_id -> Text,
@@ -50,11 +60,13 @@ diesel::table! {
 }
 
 diesel::joinable!(ankis -> users (user_id));
+diesel::joinable!(stats_sentence_correct -> users (user_id));
 diesel::joinable!(texts -> users (user_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
     ankis,
     songs,
+    stats_sentence_correct,
     texts,
     users,
 );

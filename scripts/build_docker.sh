@@ -7,7 +7,7 @@ PLATFORM=$(uname -m)
 echo "PLATFORM: $PLATFORM"
 
 CARGO_BUILD_TARGET=$PLATFORM-unknown-linux-musl \
-  cargo build --release --target $PLATFORM-unknown-linux-musl
+  cargo build --release --target $PLATFORM-unknown-linux-musl -p writing-trainer-backend
 
 mv \
   target/$PLATFORM-unknown-linux-musl/release/writing-trainer-backend \

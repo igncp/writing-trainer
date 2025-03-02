@@ -1,37 +1,23 @@
-import { useTranslation } from 'react-i18next'
-
-import Button from '../../../components/button/button'
-import { 將文字複製到剪貼簿 } from '../../../utils/general'
+import { DictContent, useDictState } from '../../common/Links/DictButton'
 import GTButton from '../../common/Links/GoogleTranslateButton'
 import TranslateButton from '../../common/Links/TranslateButton'
 import ChangeCharType from '../../common/change-char-type/change-char-type'
 import { T_LinksBlock } from '../../types'
 
-const MANDARIN_CONVERTER_LINK =
-  'https://www.chineseconverter.com/en/convert/chinese-to-pinyin'
-
-const LinksBlock: T_LinksBlock = ({ fragments, updateFragments, 文字 }) => {
-  const hrefText = 文字
-    .split('')
-    .map(c => c.trim())
-    .filter(c => !!c)
-    .join('')
-
-  const { t } = useTranslation()
+const LinksBlock: T_LinksBlock = ({ 文字, fragments, updateFragments }) => {
+  const dictState = useDictState()
 
   return (
     <>
-      <GTButton language="zh-CN" text={文字} />
-      <Button
-        onClick={() => {
-          將文字複製到剪貼簿(hrefText)
-          window.open(MANDARIN_CONVERTER_LINK)
-        }}
-      >
-        {t('option.pronunciation')}
-      </Button>
-      <ChangeCharType fragments={fragments} updateFragments={updateFragments} />
-      <TranslateButton language="zh-HK" text={文字} />
+      <div className="inline-flex flex-row flex-wrap gap-[12px]">
+        <GTButton language="zh-CN" text={文字} />
+        <ChangeCharType
+          fragments={fragments}
+          updateFragments={updateFragments}
+        />
+        <TranslateButton language="zh-HK" text={文字} />
+      </div>
+      <DictContent {...dictState} text={文字} />
     </>
   )
 }

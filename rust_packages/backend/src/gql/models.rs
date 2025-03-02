@@ -1,5 +1,6 @@
-use crate::backend::{
+use crate::{
     db::{Anki, Song, Text},
+    dict::{use_dict, DictMatches},
     translation::translate_text,
 };
 use juniper::GraphQLObject;
@@ -51,6 +52,23 @@ pub struct TranslationRequest {
 }
 
 #[derive(GraphQLObject)]
+pub struct DictRequest {
+    content: String,
+    current_language: String,
+}
+
+#[derive(GraphQLObject)]
+pub struct DictResponseItem {
+    word: String,
+    meaning: String,
+}
+
+#[derive(GraphQLObject)]
+pub struct DictResponse {
+    words: Vec<DictResponseItem>,
+}
+
+#[derive(GraphQLObject)]
 pub struct SongGQL {
     artist: String,
     id: i32,
@@ -59,6 +77,15 @@ pub struct SongGQL {
     pronunciation: Option<String>,
     title: String,
     video_url: String,
+}
+
+#[derive(GraphQLObject)]
+pub struct StatSentenceCorrectGQL {
+    count: f64,
+    id: String,
+    is_today: bool,
+    lang: String,
+    user_id: String,
 }
 
 impl Me {
@@ -123,5 +150,36 @@ impl TranslationRequest {
         translate_text(&self.content, &self.current_language)
             .await
             .unwrap()
+    }
+}
+
+impl DictRequest {
+    pub fn new(content: &str, current_language: &str) -> Self {
+        Self {
+            content: content.to_string(),
+            current_language: current_language.to_string(),
+        }
+    }
+
+    pub async fn translate(&self) -> DictResponse {
+        let result = use_dict(&self.content, &self.current_language)
+            .await
+            .unwrap();
+
+        result.into()
+    }
+}
+
+impl From<DictMatches> for DictResponse {
+    fn from(words: DictMatches) -> Self {
+        Self {
+            words: words
+                .into_iter()
+                .map(|word| DictResponseItem {
+                    word: word.word,
+                    meaning: word.meaning,
+                })
+                .collect(),
+        }
     }
 }

@@ -1,3 +1,5 @@
+import webpack from 'webpack'
+
 export default {
   output: 'export',
   eslint: {
@@ -6,7 +8,18 @@ export default {
   typescript: {
     ignoreBuildErrors: true,
   },
-  webpack: config => {
+  webpack: (config, { isServer }) => {
+    config.experiments = { ...config.experiments, asyncWebAssembly: true }
+
+    if (isServer) {
+      config.plugins.push(
+        new webpack.NormalModuleReplacementPlugin(
+          /writing-trainer-wasm*/,
+          'src/pkg_mock.js',
+        ),
+      )
+    }
+
     config.module.rules.push(
       {
         loader: 'csv-loader',

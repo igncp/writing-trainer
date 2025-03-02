@@ -5,6 +5,10 @@ set -e
 DEPLOYMENT_NAME="writing-trainer"
 MISSING_ENVS=""
 
+if [ -f .env ]; then
+  export $(cat .env | xargs)
+fi
+
 if [ -z "$DEPLOYMENT_LOCATION" ]; then
   echo "DEPLOYMENT_LOCATION is not set"
   MISSING_ENVS="true"
@@ -42,4 +46,5 @@ curl "$DEPLOYMENT_LOCATION/apis/apps/v1/namespaces/default/deployments/$DEPLOYME
 }
 EOF
 
+echo ""
 echo "Redeployed $DEPLOYMENT_NAME"

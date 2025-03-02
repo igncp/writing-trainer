@@ -1,3 +1,7 @@
+## Doing
+
+- Wasm module for stats, save them locally first, then sync when logged in
+
 ## Code revamp
 
 ## Tasks
@@ -14,11 +18,9 @@
 - Find parts of the extension that could be moved to the core
   - commonLanguageUtils
 - Code TODOs
-- Move stats to the backend
 
 ## Backend
 
-- Sync stats
 - Remove offline records saving support
 
 ## Ideas

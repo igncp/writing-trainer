@@ -1,11 +1,11 @@
 import { ReactNode } from 'react'
 
 type 特性 = {
-  children: ReactNode
   覆蓋點擊: () => void
+  children: ReactNode
 }
 
-const 面板基本 = ({ children, 覆蓋點擊 }: 特性) => {
+const 面板基本 = ({ 覆蓋點擊, children }: 特性) => {
   return (
     <div
       style={{

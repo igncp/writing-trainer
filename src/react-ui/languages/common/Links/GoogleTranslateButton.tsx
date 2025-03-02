@@ -18,6 +18,7 @@ const GoogleTranslateButton = ({ language, text, ...rest }: Props) => {
 
   const hrefLang =
     {
+      'zh_hant': 'yue',
       'zh-HK': 'yue',
     }[language] ?? 'auto'
 

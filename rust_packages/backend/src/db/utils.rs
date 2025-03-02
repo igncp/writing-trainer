@@ -1,7 +1,7 @@
 use diesel::prelude::*;
 use std::env;
 
-use crate::backend::env::ENV_DATABASE_URL;
+use crate::env::ENV_DATABASE_URL;
 
 pub fn establish_connection() -> SqliteConnection {
     let database_url = env::var(ENV_DATABASE_URL).expect("DATABASE_URL must be set");

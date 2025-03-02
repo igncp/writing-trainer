@@ -1,8 +1,9 @@
 /* eslint-disable */
 import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core'
 
-const documents: unknown[] = []
+import * as types from './graphql'
 
+const documents = []
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  *

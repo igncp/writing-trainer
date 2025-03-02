@@ -429,6 +429,7 @@ const Panel = ({
     }
 
     languageUIController.handleKeyDown({
+      按鍵事件: 事件,
       charsObjsList: charsObjsList ?? [],
       currentText,
       getCurrentCharObjFromPractice,
@@ -443,7 +444,6 @@ const Panel = ({
       setWriting,
       specialCharsValue: charsToRemove.join(''),
       writingValue,
-      按鍵事件: 事件,
     })
 
     languageUIController.saveLangOptss(langOpts)
@@ -608,6 +608,42 @@ const Panel = ({
             }}
           >
             {t('panel.addAnkis')}
+          </Button>
+        )}
+        {!hasExtraControls && fragments.list.length > 1 && (
+          <Button
+            onClick={() => {
+              setPractice('')
+              setWriting('')
+              setPracticeHasError(false)
+
+              langOpts.charsWithMistakes = []
+
+              const newFragments: T_Fragments = {
+                index: 0,
+                list: [
+                  fragments.list.reduce((acc, fragmentText) => {
+                    const lastChar = acc[acc.length - 1] || ''
+
+                    const separator =
+                      acc &&
+                      !['!', '！', '?', '？', '.', '。', '》', '」'].includes(
+                        lastChar,
+                      )
+                        ? '. '
+                        : ' '
+
+                    return `${acc}${separator}${fragmentText}`
+                  }, ''),
+                ],
+              }
+
+              setFragments(newFragments)
+              storage.setValue('fragments', JSON.stringify(newFragments))
+              writingArea.current?.focus()
+            }}
+          >
+            {t('panel.trim', 'Trim')}
           </Button>
         )}
         {isShowingEdition && (
@@ -860,6 +896,9 @@ const Panel = ({
                 )
               }
               fontSize={fontSize}
+              hasCantodict={['cantonese', 'mandarin'].includes(
+                languageManager.currentLanguageHandlerId as string,
+              )}
               onSymbolClick={() => {
                 setShowingEdition(false)
                 setHasExtraControls(false)
@@ -876,7 +915,7 @@ const Panel = ({
               重點字元索引={currentDisplayCharIdx}
               顯示目前字元的發音={
                 practiceHasError &&
-                [undefined, '還原論者'].includes(
+                ['還原論者', undefined].includes(
                   langOpts.遊戲模式值 as string | undefined,
                 )
               }

@@ -21,8 +21,8 @@ const OptionsBlock: T_OptionsBlock = ({ langOpts, updateLangOpts }) => {
     updateLangOpts({
       ...langOpts,
 
-      聲調值,
       遊戲模式值,
+      聲調值,
 
       ...newValues,
     })

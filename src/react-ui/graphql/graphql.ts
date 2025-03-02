@@ -44,6 +44,17 @@ export type CantoDictWordGql = {
   word: Scalars['String']['output']
 }
 
+export type DictResponse = {
+  __typename?: 'DictResponse'
+  words: Array<DictResponseItem>
+}
+
+export type DictResponseItem = {
+  __typename?: 'DictResponseItem'
+  meaning: Scalars['String']['output']
+  word: Scalars['String']['output']
+}
+
 export type Me = {
   __typename?: 'Me'
   canUseAI: Scalars['Boolean']['output']
@@ -86,6 +97,7 @@ export type QueryRoot = {
   ankisRound: Array<AnkiGql>
   ankisTotal: Scalars['Int']['output']
   cantodictSentence: Array<CantoDictWordGql>
+  dictText: DictResponse
   me: Me
   song?: Maybe<SongGql>
   songs: Array<SongGql>
@@ -114,6 +126,11 @@ export type QueryRootAnkisTotalArgs = {
 
 export type QueryRootCantodictSentenceArgs = {
   sentence: Scalars['String']['input']
+}
+
+export type QueryRootDictTextArgs = {
+  content: Scalars['String']['input']
+  currentLanguage: Scalars['String']['input']
 }
 
 export type QueryRootSongArgs = {

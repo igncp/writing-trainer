@@ -12,7 +12,7 @@ use juniper::http::{graphiql::graphiql_source, GraphQLRequest};
 use tracing::{debug, info, warn};
 use uuid::Uuid;
 
-use crate::backend::{
+use crate::{
     auth::{get_google_user, request_token, AppState, AuthConfig, QueryCode, TokenClaims},
     db::User,
     gql::{context::GraphQLContext, create_schema, Schema},
@@ -20,11 +20,12 @@ use crate::backend::{
 
 use self::logs::setup_logs;
 
-pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!("migrations");
+const MIGRATIONS: EmbeddedMigrations = embed_migrations!("migrations");
 
 mod auth;
 mod cantodict;
 mod db;
+mod dict;
 mod env;
 mod gql;
 mod logs;
@@ -171,7 +172,7 @@ async fn get_health() -> impl Responder {
     HttpResponse::Ok().json("OK")
 }
 
-pub async fn start_backend() -> std::io::Result<()> {
+async fn start_backend() -> std::io::Result<()> {
     dotenv::dotenv().ok();
 
     setup_logs();
@@ -214,4 +215,9 @@ pub async fn start_backend() -> std::io::Result<()> {
     .bind((address, port))?
     .run()
     .await
+}
+
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    start_backend().await
 }

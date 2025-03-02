@@ -135,6 +135,12 @@ const loadDictionary = async () => {
 }
 
 const languageUIController: T_LangUIController = {
+  處理清除事件: (處理程序: T_LangUIController) => {
+    處理程序.saveLangOptss({
+      ...處理程序.getLangOpts(),
+      charsWithMistakes: [],
+    })
+  },
   getLangOpts,
   getLinksBlock: () => LinksBlock,
   getOptionsBlock: () => OptionsBlock,
@@ -151,12 +157,6 @@ const languageUIController: T_LangUIController = {
   onBlur: chineseBlurHandler,
   saveLangOptss,
   shouldAllCharsHaveSameWidth: false,
-  處理清除事件: (處理程序: T_LangUIController) => {
-    處理程序.saveLangOptss({
-      ...處理程序.getLangOpts(),
-      charsWithMistakes: [],
-    })
-  },
 }
 
 export default languageUIController

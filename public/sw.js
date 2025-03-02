@@ -22,7 +22,7 @@ self.addEventListener('fetch', async event => {
   }
 
   // This is the chunk format which is used in the dictionaries
-  if (/\/[0-9]{3}\.[a-z0-9]/.match(event.request.url)) {
+  if (/\/[0-9]{3}\.[a-z0-9]/.test(event.request.url)) {
     console.log('Trying cached chunk', event.request.url)
 
     const cached = await caches.match(event.request.url).catch(() => null)

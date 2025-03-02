@@ -2,7 +2,7 @@ use actix_web::web;
 use jsonwebtoken::{decode, Algorithm, DecodingKey, TokenData, Validation};
 use tracing::debug;
 
-use crate::backend::{
+use crate::{
     auth::{AppState, TokenClaims},
     db::User,
 };

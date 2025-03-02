@@ -61,11 +61,11 @@ describe('convertToCharsObjs', () => {
     ]
 
     const fullDictionary = {
-      你: 'ni',
-      嗎: 'ma',
       好: 'hao',
-      很: 'hen',
+      你: 'ni',
       我: 'wo',
+      很: 'hen',
+      嗎: 'ma',
     }
 
     expect(

@@ -36,15 +36,17 @@
           [
             bun
             nodejs_22
-            patchelf
             openssl
+            patchelf
             pkg-config
             rustup
             sqlite
+            wasm-pack
           ]
           ++ (
             if (is-ci == false)
             then [
+              cargo-watch
               curl
               diesel-cli
               gh

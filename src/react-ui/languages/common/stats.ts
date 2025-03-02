@@ -1,4 +1,12 @@
-const dbName = 'WritingTrainerDB'
+import {
+  CharType,
+  CharsStats,
+  SentencesCorrectStats,
+  SentencesLengthStats,
+  get_db_name,
+} from 'writing-trainer-wasm/writing_trainer_wasm'
+
+const DBNAME = get_db_name()
 
 const objStoreCharsAllTime = 'charsAllTime'
 const objStoreCharsToday = 'charsToday'
@@ -32,11 +40,9 @@ enum CharResult {
 
 type StatsPair = [number, number]
 
-const langFilter = (lang: string) => (r: { lang: string }) => r.lang === lang
-
 const getDB = () =>
   new Promise<IDBDatabase>((resolve, reject) => {
-    const dbOpenRequest = window.indexedDB.open(dbName, 5)
+    const dbOpenRequest = window.indexedDB.open(DBNAME, 5)
 
     dbOpenRequest.onerror = ev => {
       console.log('開放請求錯誤:', ev)
@@ -183,14 +189,15 @@ const getSentencePercentages = async (lang: string): Promise<StatsPair> =>
 
       return new Promise(resolve => {
         request.onsuccess = () => {
-          const results =
-            request.result
-              .filter(langFilter(lang))
-              .map((record: { count: number }) => record.count)
-              .reduce((acc: number, count: number) => acc + count, 0) /
-            (request.result.filter(langFilter(lang)).length || 1)
+          const stats = new SentencesCorrectStats()
 
-          resolve(existing.concat([results]) as StatsPair)
+          request.result.forEach(record => {
+            stats.add_stat(record.lang, Number(record.count))
+          })
+
+          resolve(
+            existing.concat([stats.get_correct_percentage(lang)]) as StatsPair,
+          )
         }
       })
     },
@@ -207,11 +214,13 @@ const getSentenceCounts = async (lang: string): Promise<StatsPair> =>
 
       return new Promise(resolve => {
         request.onsuccess = () => {
-          resolve(
-            existing.concat([
-              request.result.filter(langFilter(lang)).length,
-            ]) as StatsPair,
-          )
+          const stats = new SentencesCorrectStats()
+
+          request.result.forEach(record => {
+            stats.add_stat(record.lang, Number(record.count))
+          })
+
+          resolve(existing.concat([stats.get_total(lang)]) as StatsPair)
         }
       })
     },
@@ -228,19 +237,124 @@ const getSentenceLength = async (lang: string): Promise<StatsPair> =>
 
       return new Promise(resolve => {
         request.onsuccess = () => {
-          const results =
-            request.result
-              .filter(langFilter(lang))
-              .map((record: { length: number }) => record.length)
-              .reduce((acc: number, count: number) => acc + count, 0) /
-            (request.result.filter(langFilter(lang)).length || 1)
+          const stats = new SentencesLengthStats()
 
-          resolve(existing.concat([results]) as StatsPair)
+          request.result.forEach(record => {
+            stats.add_stat(record.lang, Number(record.length))
+          })
+
+          resolve(
+            existing.concat([stats.get_length_average(lang)]) as StatsPair,
+          )
         }
       })
     },
     Promise.resolve([] as unknown as StatsPair),
   )
+
+const getCount = async (
+  lang: string,
+  charType: CharResult,
+): Promise<StatsPair> =>
+  objStoresChars.reduce(
+    async (p, objStoreName) => {
+      const existing = await p
+
+      const objectStore = await getStore(objStoreName)
+      const index = objectStore.index('type')
+      const keyRange = IDBKeyRange.only(charType)
+
+      return new Promise(resolve => {
+        const request = index.getAll(keyRange)
+
+        request.onsuccess = () => {
+          const stats = new CharsStats()
+
+          request.result.forEach(record => {
+            const statType =
+              record.type === CharResult.Success
+                ? CharType.Success
+                : CharType.Fail
+
+            stats.add_stat(
+              record.lang,
+              Number(record.count),
+              statType,
+              record.name || '',
+            )
+          })
+
+          resolve(existing.concat([stats.get_total(lang)]) as StatsPair)
+        }
+      })
+    },
+    Promise.resolve([] as unknown as StatsPair),
+  )
+
+const getUniqueCharsCount = async (lang: string): Promise<StatsPair> =>
+  objStoresChars.reduce(
+    async (p, objStoreName) => {
+      const existing = await p
+
+      const objectStore = await getStore(objStoreName)
+      const index = objectStore.index('type')
+      const keyRange = IDBKeyRange.only(CharResult.Success)
+
+      return new Promise<number[]>(resolve => {
+        const request = index.getAll(keyRange)
+
+        request.onsuccess = () => {
+          const stats = new CharsStats()
+
+          request.result.forEach(record => {
+            const statType =
+              record.type === CharResult.Success
+                ? CharType.Success
+                : CharType.Fail
+
+            stats.add_stat(
+              record.lang,
+              Number(record.count),
+              statType,
+              record.name || '',
+            )
+          })
+
+          resolve(existing.concat(stats.get_unique_chars(lang)))
+        }
+      })
+    },
+    Promise.resolve([] as number[]),
+  ) as Promise<StatsPair>
+
+const getTodayChars = async (lang: string): Promise<string> => {
+  const objectStore = await getStore(objStoreCharsToday)
+
+  const index = objectStore.index('type')
+  const keyRange = IDBKeyRange.only(CharResult.Success)
+
+  return new Promise<string>(resolve => {
+    const request = index.getAll(keyRange)
+
+    request.onsuccess = () => {
+      const stats = new CharsStats()
+
+      request.result.forEach(record => {
+        const statType =
+          record.type === CharResult.Success ? CharType.Success : CharType.Fail
+
+        stats.add_stat(
+          record.lang,
+          Number(record.count),
+          statType,
+          record.name || '',
+        )
+      })
+
+      resolve(stats.get_names(lang))
+    }
+  })
+}
 
 export const saveSentenceStats = async (
   lang: string,
@@ -290,7 +404,7 @@ const deleteSingleDB = async () => {
   return new Promise<void>(resolve => {
     console.log('Deleting database')
 
-    const deleteRequest = window.indexedDB.deleteDatabase(dbName)
+    const deleteRequest = window.indexedDB.deleteDatabase(DBNAME)
 
     deleteRequest.onblocked = () => {
       window.location.reload()
@@ -342,77 +456,11 @@ export const doStatsCheck = async () => {
 }
 
 export const getStats = async (lang: string): Promise<StatsResult> => {
-  const getCount = async (charType: CharResult): Promise<StatsPair> =>
-    objStoresChars.reduce(
-      async (p, objStoreName) => {
-        const existing = await p
-
-        const objectStore = await getStore(objStoreName)
-        const index = objectStore.index('type')
-        const keyRange = IDBKeyRange.only(charType)
-
-        return new Promise(resolve => {
-          const request = index.getAll(keyRange)
-
-          request.onsuccess = () => {
-            const total = request.result
-              .filter(langFilter(lang))
-              .reduce((acc: number, record) => acc + record.count, 0)
-
-            resolve(existing.concat([total]) as StatsPair)
-          }
-        })
-      },
-      Promise.resolve([] as unknown as StatsPair),
-    )
-
-  const getUniqueCharsCount = async (): Promise<StatsPair> =>
-    objStoresChars.reduce(
-      async (p, objStoreName) => {
-        const existing = await p
-
-        const objectStore = await getStore(objStoreName)
-        const index = objectStore.index('type')
-        const keyRange = IDBKeyRange.only(CharResult.Success)
-
-        return new Promise<number[]>(resolve => {
-          const request = index.getAll(keyRange)
-
-          request.onsuccess = () => {
-            const total = request.result.filter(langFilter(lang)).length
-
-            resolve(existing.concat(total))
-          }
-        })
-      },
-      Promise.resolve([] as number[]),
-    ) as Promise<StatsPair>
-
-  const getTodayChars = async (): Promise<string> => {
-    const objectStore = await getStore(objStoreCharsToday)
-
-    const index = objectStore.index('type')
-    const keyRange = IDBKeyRange.only(CharResult.Success)
-
-    return new Promise<string>(resolve => {
-      const request = index.getAll(keyRange)
-
-      request.onsuccess = () => {
-        const chars = request.result
-          .filter(langFilter(lang))
-          .map(record => record.name)
-          .sort()
-
-        resolve(chars.join(' '))
-      }
-    })
-  }
-
   const promises = [
-    getCount(CharResult.Success),
-    getCount(CharResult.Fail),
-    getUniqueCharsCount(),
-    getTodayChars(),
+    getCount(lang, CharResult.Success),
+    getCount(lang, CharResult.Fail),
+    getUniqueCharsCount(lang),
+    getTodayChars(lang),
     getSentencePercentages(lang),
     getSentenceCounts(lang),
     getSentenceLength(lang),
@@ -510,42 +558,21 @@ export const getMostFailures = async (
     const request = objectStore.getAll()
 
     request.onsuccess = () => {
-      const [success, fail] = request.result.filter(langFilter(lang)).reduce(
-        (acc: [Record<string, number>, Record<string, number>], record) => {
-          acc[record.type === CharResult.Fail ? 1 : 0][record.name] =
-            record.count
+      const stats = new CharsStats()
 
-          return acc
-        },
-        [{}, {}],
-      )
+      request.result.forEach(record => {
+        const statType =
+          record.type === CharResult.Success ? CharType.Success : CharType.Fail
 
-      const allChars = Array.from(
-        new Set(Object.keys(success).concat(Object.keys(fail))),
-      )
-
-      const getSortValue = (char: string) => {
-        const successCount = success[char] || 0
-        const failCount = fail[char] || 0
-        const total = successCount + failCount
-
-        if (total === 0) {
-          return 0
-        }
-
-        // This formula aims to give a higher value to characters that have
-        // more failures and less successes
-        return (
-          ((failCount / (successCount + failCount)) * (failCount + 1)) /
-          (successCount + 1)
+        stats.add_stat(
+          record.lang,
+          Number(record.count),
+          statType,
+          record.name || '',
         )
-      }
+      })
 
-      const chars = allChars
-        .sort((a, b) => getSortValue(b) - getSortValue(a))
-        .slice(0, count)
-
-      resolve(chars.join(''))
+      resolve(stats.prepare_failure_sentence(lang, count))
     }
   })
 }

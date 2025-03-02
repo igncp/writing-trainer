@@ -2,18 +2,18 @@ import 獲取 from 'lodash/get'
 import { TextareaHTMLAttributes, useEffect, useRef } from 'react'
 
 type 特性 = TextareaHTMLAttributes<HTMLTextAreaElement> & {
-  setRef?: (ref: HTMLTextAreaElement | null) => void
-  無遊標?: boolean
   自動捲動?: boolean
+  無遊標?: boolean
+  setRef?: (ref: HTMLTextAreaElement | null) => void
 }
 
 const TextArea = ({
+  自動捲動 = false,
+  無遊標,
   className,
   onChange,
   setRef,
   style,
-  無遊標,
-  自動捲動 = false,
   ...特性
 }: 特性) => {
   const ref = useRef<HTMLTextAreaElement>(null)

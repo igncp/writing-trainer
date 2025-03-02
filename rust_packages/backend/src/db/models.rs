@@ -1,7 +1,7 @@
 use diesel::{deserialize::Queryable, Insertable};
 use serde::Serialize;
 
-use super::schema::{ankis, songs, texts, users};
+use super::schema::{ankis, songs, stats_sentence_correct, texts, users};
 
 #[derive(Serialize, Queryable, Insertable, Debug)]
 pub struct User {
@@ -46,4 +46,14 @@ pub struct Song {
     pub video_url: String,
     pub lyrics: String,
     pub pronunciation: Option<String>,
+}
+
+#[derive(Serialize, Queryable, Insertable, Debug)]
+#[table_name = "stats_sentence_correct"]
+pub struct StatSentenceCorrect {
+    pub count: f32,
+    pub id: String,
+    pub is_today: bool,
+    pub lang: String,
+    pub user_id: String,
 }

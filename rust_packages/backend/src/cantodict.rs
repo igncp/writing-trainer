@@ -107,7 +107,7 @@ fn get_word_url(search_word: &str, page_html: &str) -> Option<String> {
                         word_link = link.get(cell_parser).unwrap().as_tag().map(|tag| {
                             let href_attr = tag.attributes().get("href").flatten().unwrap();
 
-                            return href_attr.as_utf8_str().to_string();
+                            href_attr.as_utf8_str().to_string()
                         });
                     }
                 }
@@ -127,16 +127,19 @@ fn get_definitions(page_html: &str) -> Option<String> {
         .query_selector(".wordmeaning")
         .expect("Failed to find element");
 
+    let re1 = Regex::new(r"Level: .*").unwrap();
+    let re2 = Regex::new(r"Google Frequency: .*").unwrap();
+
     for definition in definitions {
         let mut inner_str = result.as_ref().unwrap_or(&"".to_string()).clone();
         let definition_text = definition.get(parser).unwrap().inner_text(parser);
         let definition_text = definition_text.replace("\n", "");
-        let definition_text = definition_text.replace("\\n", "");
+        let definition_text = definition_text
+            .replace("\\n", "")
+            .replace("Additional PoS:", "");
         let definition_text = definition_text.trim();
-        let re = Regex::new(r"Level: .*").unwrap();
-        let definition_text = re.replace_all(definition_text, "");
-        let re = Regex::new(r"Google Frequency: .*").unwrap();
-        let definition_text = re.replace_all(&definition_text, "");
+        let definition_text = re1.replace_all(definition_text, "");
+        let definition_text = re2.replace_all(&definition_text, "");
 
         inner_str.push_str(&definition_text);
         result = Some(inner_str);

@@ -5,15 +5,20 @@ set -e
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 cd $SCRIPT_DIR/../..
 
-if [ ! -d out ]; then
-  if [ ! -d node_modules ]; then
-    bun i
-  fi
-
-  rm -rf .next
-  NODE_ENV=production \
-    bun run next:build
+if [ ! -f .env ]; then
+  echo "Please copy .env.example to .env and fill in the required environment variables"
+  exit 1
 fi
+
+if [ ! -d node_modules ]; then
+  bun i
+fi
+
+rm -rf .next out
+NODE_ENV=production \
+  bun run next:build
+
+git rev-parse HEAD >out/commit.html
 
 echo "Building and pushing Docker image"
 
@@ -25,4 +30,4 @@ docker buildx build \
   -t igncp/writing-trainer:latest \
   .
 
-# bash scripts/redeploy.sh
+bash scripts/redeploy.sh

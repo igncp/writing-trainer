@@ -1,6 +1,7 @@
 import {
   AnkiGql,
   CantoDictWordGql,
+  DictResponse,
   Me,
   SongGql,
   TextGql,
@@ -237,6 +238,22 @@ const translateText = (content: string, currentLanguage: string) => {
   `).then(({ translationRequest }) => translationRequest)
 }
 
+const useDict = (content: string, currentLanguage: string) => {
+  return fetchGraphQL<{ dictText: DictResponse }>(`#graphql
+    query {
+      dictText(
+        content: "${content}",
+        currentLanguage: "${currentLanguage}"
+      ) {
+        words {
+          word
+          meaning
+        }
+      }
+    }
+  `).then(({ dictText }) => dictText)
+}
+
 const saveAnki = (anki: Pick<AnkiGql, 'front' | 'id' | 'back' | 'language'>) =>
   fetchGraphQL<{ saveAnki: { id: string } }>(`#graphql
     mutation {
@@ -297,4 +314,5 @@ export const backendClient = {
   saveReviewedAnki,
   saveText,
   translateText,
+  useDict,
 }

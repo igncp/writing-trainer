@@ -11,8 +11,8 @@ type T_OnPracticeBackspaceFormat = (practiceValue: string) => string
 type T_CommonHandleWritingKeyDown = (
   opts: Parameters<T_LangUIController['handleKeyDown']>[0],
   opts2: {
-    onPracticeBackspaceFormat?: T_OnPracticeBackspaceFormat
     解析發音?: 類型_解析發音
+    onPracticeBackspaceFormat?: T_OnPracticeBackspaceFormat
   },
 ) => ReturnType<T_LangUIController['handleKeyDown']>
 
@@ -31,6 +31,7 @@ const onPracticeBackspaceFormatDefault: T_OnPracticeBackspaceFormat = (
 
 export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
   {
+    按鍵事件,
     charsObjsList,
     currentText,
     getCurrentCharObjFromPractice,
@@ -45,11 +46,10 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     setWriting,
     specialCharsValue = '',
     writingValue,
-    按鍵事件,
   },
   {
-    onPracticeBackspaceFormat = onPracticeBackspaceFormatDefault,
     解析發音 = 預設解析發音,
+    onPracticeBackspaceFormat = onPracticeBackspaceFormatDefault,
   },
 ) => {
   if (按鍵事件.key === 'Backspace' && writingValue.length === 0) {
@@ -129,7 +129,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     }
 
     if (
-      [undefined, '還原論者'].includes(
+      ['還原論者', undefined].includes(
         langOpts.遊戲模式值 as string | undefined,
       )
     ) {

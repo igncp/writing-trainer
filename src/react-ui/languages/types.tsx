@@ -6,10 +6,10 @@ export type T_Fragments = { index: number; list: string[] }
 export type T_LangOpts = { [k: string]: unknown }
 
 export type T_LinksBlock = (選項: {
+  文字: string
   children?: ReactNode
   fragments: T_Fragments
   updateFragments: (list: T_Fragments) => void
-  文字: string
 }) => ReactNode
 
 export type T_GetToneColor = (
@@ -34,6 +34,7 @@ export type T_getCurrentCharObjFromPractice = (
 ) => CurrentCharObj | null
 
 type T_HandleKeyDown = (opts: {
+  按鍵事件: KeyboardEvent<HTMLTextAreaElement>
   charsObjsList: T_CharObj[]
   currentText: string
   getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice
@@ -48,7 +49,6 @@ type T_HandleKeyDown = (opts: {
   setWriting: (o: string) => void
   specialCharsValue: string
   writingValue: string
-  按鍵事件: KeyboardEvent<HTMLTextAreaElement>
 }) => void
 
 type T_BlurHandlerOpts = {
@@ -61,6 +61,7 @@ type T_BlurHandler = (opts: T_BlurHandlerOpts) => {
 }
 
 export interface T_LangUIController {
+  處理清除事件?: (處理程序: T_LangUIController) => void
   getLangOpts: () => T_LangOpts
   getLinksBlock: () => T_LinksBlock
   getOptionsBlock: () => T_OptionsBlock
@@ -72,5 +73,4 @@ export interface T_LangUIController {
   onBlur?: T_BlurHandler
   saveLangOptss: (o: T_LangOpts) => void
   shouldAllCharsHaveSameWidth: boolean
-  處理清除事件?: (處理程序: T_LangUIController) => void
 }

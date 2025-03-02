@@ -1,10 +1,10 @@
 use self::context::GraphQLContext;
-use crate::backend::{
+use crate::{
     db::{Anki, Song, Text},
     gql::models::{AnkiGQL, Me, SongGQL, TextGQL, TranslationRequest},
 };
 use juniper::{EmptySubscription, FieldResult, RootNode};
-use models::CantoDictWordGQL;
+use models::{CantoDictWordGQL, DictRequest, DictResponse};
 use tracing::debug;
 
 pub mod context;
@@ -112,7 +112,7 @@ impl QueryRoot {
             return Err("用戶無法使用 Cantodict".into());
         }
 
-        let result = crate::backend::cantodict::query_cantodict_sentence(&sentence).await;
+        let result = crate::cantodict::query_cantodict_sentence(&sentence).await;
         let words: Vec<CantoDictWordGQL> = result
             .iter()
             .filter_map(|(word, definition)| {
@@ -171,6 +171,20 @@ impl QueryRoot {
         let translation = translation_request.translate().await;
 
         Ok(translation)
+    }
+
+    async fn dict_text(
+        ctx: &GraphQLContext,
+        content: String,
+        current_language: String,
+    ) -> FieldResult<DictResponse> {
+        check_user(ctx)?;
+
+        let dict_request = DictRequest::new(&content, &current_language);
+
+        let response = dict_request.translate().await;
+
+        Ok(response)
     }
 }
 

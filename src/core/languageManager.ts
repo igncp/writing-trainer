@@ -24,7 +24,7 @@ class CurrentCharObj {
 }
 
 class LanguageManager {
-  private currentLanguageHandlerId: LanguageDefinition['id'] | null = null
+  public currentLanguageHandlerId: LanguageDefinition['id'] | null = null
   private langsList: LanguageHandler[] = []
 
   public clear() {
