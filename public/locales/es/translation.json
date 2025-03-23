@@ -100,9 +100,11 @@
     "toggleEdition": "Alternar edición",
     "togglePronunciation": "Alternar pronunciación",
     "trim": "Recortar",
+    "trim50": "Recortar por 50",
     "updateRecord": "Actualizar",
     "writingArea": "Área de escritura"
   },
+  "progressStr": "Progreso",
   "record": {
     "artist": "Artista",
     "close": "Cerrar",

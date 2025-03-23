@@ -10,3 +10,4 @@ dist
 .env
 writing-trainer.db
 cedict_ts.u8
+*.vtt

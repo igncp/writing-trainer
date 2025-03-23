@@ -100,9 +100,11 @@
     "toggleEdition": "切り替え編集",
     "togglePronunciation": "発音を切り替える",
     "trim": "トリム",
+    "trim50": "トリム 50",
     "updateRecord": "更新",
     "writingArea": "書き込みエリア"
   },
+  "progressStr": "進捗",
   "record": {
     "artist": "アーティスト",
     "close": "閉じる",

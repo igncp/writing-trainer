@@ -5,6 +5,10 @@ set -e
 DEPLOYMENT_NAME="writing-trainer"
 MISSING_ENVS=""
 
+# 擷取 DEPLOYMENT_TOKEN 嘅步驟:
+# k get serviceaccounts # 呢個會顯示秘密名稱
+# k get secret SECRET_NAME -o jsonpath='{.data.token}' | base64 -d
+
 if [ -f .env ]; then
   export $(cat .env | xargs)
 fi

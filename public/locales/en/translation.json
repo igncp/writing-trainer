@@ -100,9 +100,11 @@
     "toggleEdition": "Toggle Edition",
     "togglePronunciation": "Toggle Pronunciation",
     "trim": "Trim",
+    "trim50": "Trim by 50",
     "updateRecord": "Update Record",
     "writingArea": "Writing Area"
   },
+  "progressStr": "Progress",
   "record": {
     "artist": "Artist",
     "close": "Close",

@@ -100,9 +100,11 @@
     "toggleEdition": "切換版本",
     "togglePronunciation": "切換發音",
     "trim": "修剪",
+    "trim50": "修剪 50",
     "updateRecord": "更新",
     "writingArea": "書寫區"
   },
+  "progressStr": "進度",
   "record": {
     "artist": "藝術家",
     "close": "關閉",

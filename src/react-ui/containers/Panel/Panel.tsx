@@ -119,6 +119,7 @@ const Panel = ({
   const [, 觸發重新渲染] = useState<number>(0)
 
   const languageUIController = languageUIManager.getLanguageUIController()
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const [fragments, setFragments] = useState<T_Fragments>({
     index: 0,
@@ -304,6 +305,44 @@ const Panel = ({
     }
 
     setHasLoadedStorage(true)
+  }
+
+  const trimByChunks = (chunks: number) => {
+    setPractice('')
+    setWriting('')
+    setPracticeHasError(false)
+
+    langOpts.charsWithMistakes = []
+
+    const newFragments: T_Fragments = {
+      index: 0,
+      list: fragments.list.reduce<string[]>((acc, fragmentText, idx) => {
+        if (idx % chunks === 0) {
+          acc.push(fragmentText)
+
+          return acc
+        }
+
+        const lastFragment = acc[acc.length - 1] || ''
+        const lastChar = lastFragment[lastFragment.length - 1] || ''
+
+        const separator =
+          !!lastFragment &&
+          !['!', '！', '?', '？', '.', '。', '》', '」'].includes(lastChar)
+            ? '. '
+            : ' '
+
+        const newFragment = `${lastFragment}${separator}${fragmentText}`
+
+        acc[acc.length - 1] = newFragment
+
+        return acc
+      }, []),
+    }
+
+    setFragments(newFragments)
+    storage.setValue('fragments', JSON.stringify(newFragments))
+    writingArea.current?.focus()
   }
 
   useEffect(() => {
@@ -555,11 +594,27 @@ const Panel = ({
 
   const { mobileKeyboard } = languageUIController
 
+  const progressStr = (() => {
+    if (!charsObjsList) return `${t('progressStr', 'Progress')}: 0%`
+
+    return `Progress: ${Math.round(
+      (currentDisplayCharIdx / charsObjsList.length) * 100,
+    )}% (${currentDisplayCharIdx}/${charsObjsList.length})`
+  })()
+
   return (
     <>
       <div className="flex flex-row flex-wrap gap-[12px]">
         <Button onClick={clearValues}>{t('panel.clear')}</Button>
-        <Button onClick={() => setHasExtraControls(!hasExtraControls)}>
+        <Button
+          onClick={() => {
+            setHasExtraControls(!hasExtraControls)
+
+            setTimeout(() => {
+              writingArea.current?.focus()
+            }, 100)
+          }}
+        >
           {hasExtraControls ? <FaTools /> : <FaToolbox />}
         </Button>
         {hasExtraControls && (
@@ -613,43 +668,31 @@ const Panel = ({
         {!hasExtraControls && fragments.list.length > 1 && (
           <Button
             onClick={() => {
-              setPractice('')
-              setWriting('')
-              setPracticeHasError(false)
-
-              langOpts.charsWithMistakes = []
-
-              const newFragments: T_Fragments = {
-                index: 0,
-                list: [
-                  fragments.list.reduce((acc, fragmentText) => {
-                    const lastChar = acc[acc.length - 1] || ''
-
-                    const separator =
-                      acc &&
-                      !['!', '！', '?', '？', '.', '。', '》', '」'].includes(
-                        lastChar,
-                      )
-                        ? '. '
-                        : ' '
-
-                    return `${acc}${separator}${fragmentText}`
-                  }, ''),
-                ],
-              }
-
-              setFragments(newFragments)
-              storage.setValue('fragments', JSON.stringify(newFragments))
-              writingArea.current?.focus()
+              trimByChunks(Infinity)
             }}
           >
             {t('panel.trim', 'Trim')}
           </Button>
         )}
-        {isShowingEdition && (
+        {!hasExtraControls && fragments.list.length > 50 && (
+          <Button
+            onClick={() => {
+              trimByChunks(50)
+            }}
+          >
+            {t('panel.trim50', 'Trim by 50')}
+          </Button>
+        )}
+        {hasExtraControls && (
           <>
             <label htmlFor="file-input" style={{ cursor: 'pointer' }}>
-              <Button>{t('panel.importFile')}</Button>
+              <Button
+                onClick={() => {
+                  fileInputRef.current?.click()
+                }}
+              >
+                {t('panel.importFile')}
+              </Button>
               <input
                 id="file-input"
                 onChange={() => {
@@ -692,6 +735,7 @@ const Panel = ({
                     setShowingPronunciation(false)
                   })()
                 }}
+                ref={fileInputRef}
                 style={{ display: 'none' }}
                 type="file"
               />
@@ -742,6 +786,7 @@ const Panel = ({
             {onChangeTheme && (
               <Button onClick={onChangeTheme}>{t('panel.changeTheme')}</Button>
             )}
+            <span className="flex items-center">{progressStr}</span>
           </>
         )}
         {fragments.list.length > 1 && (
