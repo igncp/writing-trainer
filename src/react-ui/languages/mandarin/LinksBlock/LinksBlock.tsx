@@ -1,4 +1,8 @@
-import { DictContent, useDictState } from '../../common/Links/DictButton'
+import {
+  DictButton,
+  DictContent,
+  useDictState,
+} from '../../common/Links/DictButton'
 import GTButton from '../../common/Links/GoogleTranslateButton'
 import TranslateButton from '../../common/Links/TranslateButton'
 import ChangeCharType from '../../common/change-char-type/change-char-type'
@@ -11,6 +15,7 @@ const LinksBlock: T_LinksBlock = ({ 文字, fragments, updateFragments }) => {
     <>
       <div className="inline-flex flex-row flex-wrap gap-[12px]">
         <GTButton language="zh-CN" text={文字} />
+        <DictButton language="zh-CN" text={文字} {...dictState} />
         <ChangeCharType
           fragments={fragments}
           updateFragments={updateFragments}

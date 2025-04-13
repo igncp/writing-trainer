@@ -1,9 +1,10 @@
 use crate::{
-    db::{Anki, Song, Text},
+    db::{Anki, ReadStatsResult, Song, Text},
     dict::{use_dict, DictMatches},
     translation::translate_text,
 };
 use juniper::GraphQLObject;
+use writing_trainer_core::CharType;
 
 #[derive(GraphQLObject)]
 pub struct Me {
@@ -80,12 +81,33 @@ pub struct SongGQL {
 }
 
 #[derive(GraphQLObject)]
-pub struct StatSentenceCorrectGQL {
-    count: f64,
-    id: String,
-    is_today: bool,
+pub struct StatsClearGQL {
+    success: bool,
+}
+
+#[derive(Debug, Clone, GraphQLObject)]
+struct HistoryMetric {
+    all_time: f64,
+    today: f64,
+}
+
+#[derive(GraphQLObject)]
+pub struct StatsSaveResultDataGQL {
+    chars_today: String,
+    fail_count: HistoryMetric,
     lang: String,
-    user_id: String,
+    sentence_length: HistoryMetric,
+    sentence_percentage: HistoryMetric,
+    sentences_completed: HistoryMetric,
+    success_count: HistoryMetric,
+    success_perc: HistoryMetric,
+    unique_chars_count: HistoryMetric,
+}
+
+#[derive(GraphQLObject)]
+pub struct StatsSaveResultGQL {
+    success: bool,
+    data: StatsSaveResultDataGQL,
 }
 
 impl Me {
@@ -181,5 +203,109 @@ impl From<DictMatches> for DictResponse {
                 })
                 .collect(),
         }
+    }
+}
+
+impl StatsSaveResultGQL {
+    pub fn new(success: bool, data: StatsSaveResultDataGQL) -> Self {
+        Self { success, data }
+    }
+}
+
+impl StatsSaveResultDataGQL {
+    pub fn new(data: ReadStatsResult) -> Self {
+        let sentences_length_today_count =
+            data.sentences_length.today.get_length_average(&data.lang);
+        let sentences_length_all_time_count = data
+            .sentences_length
+            .all_time
+            .get_length_average(&data.lang);
+
+        let sentences_completed_today_count = data.sentences_completed.today.get_total(&data.lang);
+        let sentences_completed_all_time_count =
+            data.sentences_completed.all_time.get_total(&data.lang);
+
+        let sentences_completed_today_perc = data
+            .sentences_completed
+            .today
+            .get_correct_percentage(&data.lang);
+        let sentences_completed_all_time_perc = data
+            .sentences_completed
+            .all_time
+            .get_correct_percentage(&data.lang);
+
+        let mut chars_today_success = data.chars.today.clone();
+        let mut chars_all_time_success = data.chars.all_time.clone();
+        let mut chars_today_fail = data.chars.today.clone();
+        let mut chars_all_time_fail = data.chars.all_time.clone();
+
+        chars_today_success.filter_by_type(CharType::Success);
+        chars_all_time_success.filter_by_type(CharType::Success);
+        chars_today_fail.filter_by_type(CharType::Fail);
+        chars_all_time_fail.filter_by_type(CharType::Fail);
+
+        let chars_all_time_fail_count = chars_all_time_fail.get_total(&data.lang);
+        let chars_all_time_success_count = chars_all_time_success.get_total(&data.lang);
+        let chars_today_fail_count = chars_today_fail.get_total(&data.lang);
+        let chars_today_success_count = chars_today_success.get_total(&data.lang);
+
+        let chars_today_unique_count = chars_today_success.get_unique_chars(&data.lang);
+        let chars_all_time_unique_count = chars_all_time_success.get_unique_chars(&data.lang);
+
+        let success_today_perc = if chars_today_success_count > 0 {
+            chars_today_success_count as f32
+                / (chars_today_success_count + chars_today_fail_count) as f32
+        } else {
+            0.0
+        };
+        let success_all_time_perc = if chars_all_time_success_count > 0 {
+            chars_all_time_success_count as f32
+                / (chars_all_time_success_count + chars_all_time_fail_count) as f32
+        } else {
+            0.0
+        };
+
+        let chars_today_str = chars_today_success.get_names(&data.lang);
+
+        let lang = data.lang.clone();
+
+        Self {
+            chars_today: chars_today_str,
+            fail_count: HistoryMetric {
+                all_time: chars_all_time_fail_count as f64,
+                today: chars_today_fail_count as f64,
+            },
+            lang,
+            sentence_length: HistoryMetric {
+                all_time: sentences_length_all_time_count as f64,
+                today: sentences_length_today_count as f64,
+            },
+            sentence_percentage: HistoryMetric {
+                all_time: sentences_completed_all_time_perc as f64,
+                today: sentences_completed_today_perc as f64,
+            },
+            sentences_completed: HistoryMetric {
+                all_time: sentences_completed_all_time_count as f64,
+                today: sentences_completed_today_count as f64,
+            },
+            success_count: HistoryMetric {
+                all_time: chars_all_time_success_count as f64,
+                today: chars_today_success_count as f64,
+            },
+            success_perc: HistoryMetric {
+                all_time: success_all_time_perc as f64,
+                today: success_today_perc as f64,
+            },
+            unique_chars_count: HistoryMetric {
+                all_time: chars_all_time_unique_count as f64,
+                today: chars_today_unique_count as f64,
+            },
+        }
+    }
+}
+
+impl StatsClearGQL {
+    pub fn new(success: bool) -> Self {
+        Self { success }
     }
 }

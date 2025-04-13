@@ -1,19 +1,29 @@
+import { StatsSaveResultDataGql } from '#/react-ui/graphql/graphql'
+import { backendClient } from '#/react-ui/lib/backendClient'
 import {
   CharType,
   CharsStats,
   SentencesCorrectStats,
   SentencesLengthStats,
   get_db_name,
+  TableNames,
 } from 'writing-trainer-wasm/writing_trainer_wasm'
+
+export type StatsLocation = 'local' | 'remote'
 
 const DBNAME = get_db_name()
 
-const objStoreCharsAllTime = 'charsAllTime'
-const objStoreCharsToday = 'charsToday'
-const objsStoreSentencesAllTime = 'sentencesAllTime'
-const objsStoreSentencesToday = 'sentencesToday'
-const objsStoreSentenceLengthAllTime = 'sentenceLengthAllTime'
-const objsStoreSentenceLengthToday = 'sentenceLengthToday'
+const tableNames =
+  typeof window === 'undefined' ? ({} as TableNames) : new TableNames()
+
+const {
+  chars_all_time: objStoreCharsAllTime,
+  chars_today: objStoreCharsToday,
+  sentence_length_all_time: objsStoreSentenceLengthAllTime,
+  sentence_length_today: objsStoreSentenceLengthToday,
+  sentences_all_time: objsStoreSentencesAllTime,
+  sentences_today: objsStoreSentencesToday,
+} = tableNames
 
 const objStoresChars = [objStoreCharsAllTime, objStoreCharsToday]
 
@@ -33,6 +43,14 @@ const objStoreToday = [
   objsStoreSentenceLengthToday,
 ]
 
+const objStoresAllTime = [
+  objStoreCharsAllTime,
+  objsStoreSentencesAllTime,
+  objsStoreSentenceLengthAllTime,
+]
+
+const allObjStores = objStoreToday.concat(objStoresAllTime)
+
 enum CharResult {
   Fail = 'fail',
   Success = 'success',
@@ -40,7 +58,7 @@ enum CharResult {
 
 type StatsPair = [number, number]
 
-const getDB = () =>
+const getLocalDB = () =>
   new Promise<IDBDatabase>((resolve, reject) => {
     const dbOpenRequest = window.indexedDB.open(DBNAME, 5)
 
@@ -109,6 +127,14 @@ const getDB = () =>
         console.error(`資料庫錯誤:`, dbEvent)
       }
 
+      db.onclose = () => {
+        console.log('資料庫關閉')
+      }
+
+      setTimeout(() => {
+        db.close()
+      }, 1000)
+
       resolve(db)
     }
   })
@@ -117,7 +143,7 @@ const getStore = async (
   objStoreName: string,
   mode: IDBTransactionMode = 'readonly',
 ) => {
-  const db = await getDB()
+  const db = await getLocalDB()
 
   const transaction = db.transaction([objStoreName], mode)
 
@@ -179,6 +205,50 @@ export const saveSuccessChar = async (lang: string, char: string) =>
 export const saveFailChar = async (lang: string, char: string) =>
   saveChar(lang, char, CharResult.Fail)
 
+const getSentenceLengthStats = async (
+  objStoreName: string,
+): Promise<SentencesLengthStats> => {
+  const objectStore = await getStore(objStoreName)
+  const request = objectStore.getAll()
+
+  return new Promise(resolve => {
+    request.onsuccess = () => {
+      const stats = new SentencesLengthStats()
+
+      request.result.forEach(record => {
+        stats.add_stat(record.lang, Number(record.length))
+      })
+
+      resolve(stats)
+    }
+  })
+}
+
+const getCharsStats = async (objStoreName: string): Promise<CharsStats> => {
+  const objectStore = await getStore(objStoreName)
+  const request = objectStore.getAll()
+
+  return new Promise(resolve => {
+    request.onsuccess = () => {
+      const stats = new CharsStats()
+
+      request.result.forEach(record => {
+        const statType =
+          record.type === CharResult.Success ? CharType.Success : CharType.Fail
+
+        stats.add_stat(
+          record.lang,
+          Number(record.count),
+          statType,
+          record.name || '',
+        )
+      })
+
+      resolve(stats)
+    }
+  })
+}
+
 const getSentencePercentages = async (lang: string): Promise<StatsPair> =>
   objStoresSentencesSuccess.reduce(
     async (p, objStoreName) => {
@@ -204,25 +274,32 @@ const getSentencePercentages = async (lang: string): Promise<StatsPair> =>
     Promise.resolve([] as unknown as StatsPair),
   )
 
+const getSentenceCountsStats = async (
+  objStoreName: string,
+): Promise<SentencesCorrectStats> => {
+  const objectStore = await getStore(objStoreName, 'readwrite')
+  const request = objectStore.getAll()
+
+  return new Promise(resolve => {
+    request.onsuccess = () => {
+      const stats = new SentencesCorrectStats()
+
+      request.result.forEach(record => {
+        stats.add_stat(record.lang, Number(record.count))
+      })
+
+      resolve(stats)
+    }
+  })
+}
+
 const getSentenceCounts = async (lang: string): Promise<StatsPair> =>
   objStoresSentencesSuccess.reduce(
     async (p, objStoreName) => {
       const existing = await p
+      const stats = await getSentenceCountsStats(objStoreName)
 
-      const objectStore = await getStore(objStoreName, 'readwrite')
-      const request = objectStore.getAll()
-
-      return new Promise(resolve => {
-        request.onsuccess = () => {
-          const stats = new SentencesCorrectStats()
-
-          request.result.forEach(record => {
-            stats.add_stat(record.lang, Number(record.count))
-          })
-
-          resolve(existing.concat([stats.get_total(lang)]) as StatsPair)
-        }
-      })
+      return existing.concat([stats.get_total(lang)]) as StatsPair
     },
     Promise.resolve([] as unknown as StatsPair),
   )
@@ -231,23 +308,9 @@ const getSentenceLength = async (lang: string): Promise<StatsPair> =>
   objStoresSentencesLength.reduce(
     async (p, objStoreName) => {
       const existing = await p
+      const stats = await getSentenceLengthStats(objStoreName)
 
-      const objectStore = await getStore(objStoreName)
-      const request = objectStore.getAll()
-
-      return new Promise(resolve => {
-        request.onsuccess = () => {
-          const stats = new SentencesLengthStats()
-
-          request.result.forEach(record => {
-            stats.add_stat(record.lang, Number(record.length))
-          })
-
-          resolve(
-            existing.concat([stats.get_length_average(lang)]) as StatsPair,
-          )
-        }
-      })
+      return existing.concat([stats.get_length_average(lang)]) as StatsPair
     },
     Promise.resolve([] as unknown as StatsPair),
   )
@@ -259,34 +322,13 @@ const getCount = async (
   objStoresChars.reduce(
     async (p, objStoreName) => {
       const existing = await p
+      const stats = await getCharsStats(objStoreName)
 
-      const objectStore = await getStore(objStoreName)
-      const index = objectStore.index('type')
-      const keyRange = IDBKeyRange.only(charType)
+      stats.filter_by_type(
+        charType === CharResult.Success ? CharType.Success : CharType.Fail,
+      )
 
-      return new Promise(resolve => {
-        const request = index.getAll(keyRange)
-
-        request.onsuccess = () => {
-          const stats = new CharsStats()
-
-          request.result.forEach(record => {
-            const statType =
-              record.type === CharResult.Success
-                ? CharType.Success
-                : CharType.Fail
-
-            stats.add_stat(
-              record.lang,
-              Number(record.count),
-              statType,
-              record.name || '',
-            )
-          })
-
-          resolve(existing.concat([stats.get_total(lang)]) as StatsPair)
-        }
-      })
+      return existing.concat([stats.get_total(lang)]) as StatsPair
     },
     Promise.resolve([] as unknown as StatsPair),
   )
@@ -295,65 +337,21 @@ const getUniqueCharsCount = async (lang: string): Promise<StatsPair> =>
   objStoresChars.reduce(
     async (p, objStoreName) => {
       const existing = await p
+      const stats = await getCharsStats(objStoreName)
 
-      const objectStore = await getStore(objStoreName)
-      const index = objectStore.index('type')
-      const keyRange = IDBKeyRange.only(CharResult.Success)
+      stats.filter_by_type(CharType.Success)
 
-      return new Promise<number[]>(resolve => {
-        const request = index.getAll(keyRange)
-
-        request.onsuccess = () => {
-          const stats = new CharsStats()
-
-          request.result.forEach(record => {
-            const statType =
-              record.type === CharResult.Success
-                ? CharType.Success
-                : CharType.Fail
-
-            stats.add_stat(
-              record.lang,
-              Number(record.count),
-              statType,
-              record.name || '',
-            )
-          })
-
-          resolve(existing.concat(stats.get_unique_chars(lang)))
-        }
-      })
+      return existing.concat(stats.get_unique_chars(lang))
     },
     Promise.resolve([] as number[]),
   ) as Promise<StatsPair>
 
 const getTodayChars = async (lang: string): Promise<string> => {
-  const objectStore = await getStore(objStoreCharsToday)
+  const stats = await getCharsStats(objStoreCharsToday)
 
-  const index = objectStore.index('type')
-  const keyRange = IDBKeyRange.only(CharResult.Success)
+  stats.filter_by_type(CharType.Success)
 
-  return new Promise<string>(resolve => {
-    const request = index.getAll(keyRange)
-
-    request.onsuccess = () => {
-      const stats = new CharsStats()
-
-      request.result.forEach(record => {
-        const statType =
-          record.type === CharResult.Success ? CharType.Success : CharType.Fail
-
-        stats.add_stat(
-          record.lang,
-          Number(record.count),
-          statType,
-          record.name || '',
-        )
-      })
-
-      resolve(stats.get_names(lang))
-    }
-  })
+  return stats.get_names(lang)
 }
 
 export const saveSentenceStats = async (
@@ -393,13 +391,21 @@ export const saveSentenceStats = async (
 }
 
 const deleteSingleDB = async () => {
-  await (async () => {
+  const closeDB = async () => {
+    const db = await getLocalDB()
+
     console.log('Closing database')
 
-    const db = await getDB()
+    db.onerror = ev => {
+      console.error('Error closing database', ev)
+    }
 
     db.close()
-  })()
+
+    await new Promise(resolve => setTimeout(resolve, 1000))
+  }
+
+  await closeDB()
 
   return new Promise<void>(resolve => {
     console.log('Deleting database')
@@ -421,23 +427,6 @@ const deleteSingleDB = async () => {
   })
 }
 
-type HistoricStat = {
-  allTime: number
-  today: number
-}
-
-export type StatsResult = {
-  charsToday: string
-  failCount: HistoricStat
-  lang: string
-  sentenceLength: HistoricStat
-  sentencePercentage: HistoricStat
-  sentencesCompleted: HistoricStat
-  successCount: HistoricStat
-  successPerc: HistoricStat
-  uniqueCharsCount: HistoricStat
-}
-
 export const doStatsCheck = async () => {
   const today = new Date().toLocaleDateString()
   const lastSavedDB = localStorage.getItem('lastSavedTodayDB')
@@ -455,7 +444,7 @@ export const doStatsCheck = async () => {
   localStorage.setItem('lastSavedTodayDB', today)
 }
 
-export const getStats = async (lang: string): Promise<StatsResult> => {
+const getStatsLocal = async (lang: string): Promise<StatsSaveResultDataGql> => {
   const promises = [
     getCount(lang, CharResult.Success),
     getCount(lang, CharResult.Fail),
@@ -542,37 +531,133 @@ export const getStats = async (lang: string): Promise<StatsResult> => {
     successCount,
     successPerc,
     uniqueCharsCount,
-  } satisfies StatsResult
+  } satisfies StatsSaveResultDataGql
 }
 
-export const deleteDatabase = async (): Promise<void> =>
-  deleteSingleDB().then(() => {})
+const deleteLocalDB = async (): Promise<void> => deleteSingleDB().then(() => {})
+
+const deleteAllStatsOfLang = async (lang: string) => {
+  const db = await getLocalDB()
+
+  for (const objStoreName of allObjStores) {
+    const objectStore = db
+      .transaction([objStoreName], 'readwrite')
+      .objectStore(objStoreName)
+
+    const deleteByLang = objectStore.index('lang')
+    const keyRange = IDBKeyRange.only(lang)
+
+    await (() =>
+      new Promise<void>(resolve => {
+        const request = deleteByLang.openCursor(keyRange)
+
+        request.onsuccess = event => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const cursor = (event.target as any)
+            .result as IDBCursorWithValue | null
+
+          if (cursor) {
+            const key = cursor.primaryKey
+
+            objectStore.delete(key)
+
+            cursor.continue()
+          } else {
+            resolve()
+          }
+        }
+
+        request.onerror = () => {
+          console.error(`Error deleting records for ${lang}`)
+          resolve()
+        }
+      }))()
+  }
+}
+
+const toIsoString = (date: Date) => {
+  const tzo = -date.getTimezoneOffset(),
+    dif = tzo >= 0 ? '+' : '-',
+    pad = function (num: number) {
+      return (num < 10 ? '0' : '') + num
+    }
+
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
+    date.getDate(),
+  )}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(
+    date.getSeconds(),
+  )}${dif}${pad(Math.floor(Math.abs(tzo) / 60))}:${pad(Math.abs(tzo) % 60)}`
+}
+
+const getRawStats = async (lang: string) => {
+  const result: Record<string, unknown> = {
+    isoDate: toIsoString(new Date()),
+    lang,
+  }
+
+  for (const objStoreName of objStoresSentencesSuccess) {
+    const stats = await getSentenceCountsStats(objStoreName)
+
+    result[objStoreName] = stats.encode_for_transfer(lang)
+  }
+
+  for (const objStoreName of objStoresSentencesLength) {
+    const stats = await getSentenceLengthStats(objStoreName)
+
+    result[objStoreName] = stats.encode_for_transfer(lang)
+  }
+
+  for (const objStoreName of objStoresChars) {
+    const stats = await getCharsStats(objStoreName)
+
+    result[objStoreName] = stats.encode_for_transfer(lang)
+  }
+
+  return result
+}
+
+export const getStats = async (
+  isLoggedIn: boolean,
+  lang: string,
+): Promise<{ data: null | StatsSaveResultDataGql; type: StatsLocation }> => {
+  if (isLoggedIn) {
+    const rawStats = await getRawStats(lang)
+
+    const remoteStats = await backendClient.saveStats(rawStats).catch(err => {
+      console.log('debug: stats.ts: err', err)
+
+      return {
+        data: null,
+        success: false,
+      }
+    })
+
+    if (remoteStats.success) {
+      await deleteAllStatsOfLang(lang)
+
+      return { data: remoteStats.data, type: 'remote' }
+    }
+  }
+
+  const localStats = await getStatsLocal(lang)
+
+  return { data: localStats, type: 'local' }
+}
+
+export const deleteStats = async (): Promise<boolean> => {
+  const [, result] = await Promise.all([
+    deleteLocalDB(),
+    backendClient.clearStats(),
+  ])
+
+  return result.success
+}
 
 export const getMostFailures = async (
   lang: string,
   count: number,
 ): Promise<string> => {
-  const objectStore = await getStore(objStoreCharsAllTime)
+  const stats = await getCharsStats(objStoreCharsAllTime)
 
-  return new Promise<string>(resolve => {
-    const request = objectStore.getAll()
-
-    request.onsuccess = () => {
-      const stats = new CharsStats()
-
-      request.result.forEach(record => {
-        const statType =
-          record.type === CharResult.Success ? CharType.Success : CharType.Fail
-
-        stats.add_stat(
-          record.lang,
-          Number(record.count),
-          statType,
-          record.name || '',
-        )
-      })
-
-      resolve(stats.prepare_failure_sentence(lang, count))
-    }
-  })
+  return stats.prepare_failure_sentence(lang, count)
 }

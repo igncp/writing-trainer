@@ -10,6 +10,10 @@ if [ ! -f .env ]; then
   exit 1
 fi
 
+if [ ! -f src/rust_packages/wasm/pkg/package.json ]; then
+  bash scripts/wasm_build.sh
+fi
+
 if [ ! -d node_modules ]; then
   bun i
 fi

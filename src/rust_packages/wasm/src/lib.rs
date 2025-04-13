@@ -1,6 +1,9 @@
-use std::collections::HashMap;
 use wasm_bindgen::prelude::wasm_bindgen;
-use writing_trainer_core::StatSentenceCorrect;
+use writing_trainer_core::{
+    CharType as CoreCharType, StatChars, StatSentenceCorrect, StatSentenceLength,
+    TABLE_CHARS_ALL_TIME, TABLE_CHARS_TODAY, TABLE_SENTENCES_ALL_TIME, TABLE_SENTENCES_TODAY,
+    TABLE_SENTENCE_LENGTH_ALL_TIME, TABLE_SENTENCE_LENGTH_TODAY,
+};
 
 const DBNAME: &str = "WritingTrainerDB";
 
@@ -9,38 +12,42 @@ pub fn get_db_name() -> String {
     DBNAME.to_string()
 }
 
-struct SentenceLengthStat {
-    lang: String,
-    length: i32,
-}
-
-#[derive(Clone, PartialEq)]
+#[derive(Clone)]
 #[wasm_bindgen]
 pub enum CharType {
     Success,
     Fail,
 }
 
-struct CharStat {
-    char_type: CharType,
-    count: i32,
-    lang: String,
-    name: String,
+#[wasm_bindgen]
+pub struct TableNames {
+    #[wasm_bindgen(getter_with_clone)]
+    pub chars_all_time: String,
+    #[wasm_bindgen(getter_with_clone)]
+    pub chars_today: String,
+    #[wasm_bindgen(getter_with_clone)]
+    pub sentence_length_all_time: String,
+    #[wasm_bindgen(getter_with_clone)]
+    pub sentence_length_today: String,
+    #[wasm_bindgen(getter_with_clone)]
+    pub sentences_all_time: String,
+    #[wasm_bindgen(getter_with_clone)]
+    pub sentences_today: String,
 }
 
 #[wasm_bindgen]
 pub struct SentencesCorrectStats {
-    stats: Vec<StatSentenceCorrect>,
+    stats: StatSentenceCorrect,
 }
 
 #[wasm_bindgen]
 pub struct SentencesLengthStats {
-    stats: Vec<SentenceLengthStat>,
+    stats: StatSentenceLength,
 }
 
 #[wasm_bindgen]
 pub struct CharsStats {
-    stats: Vec<CharStat>,
+    stats: StatChars,
 }
 
 impl Default for SentencesCorrectStats {
@@ -53,36 +60,25 @@ impl Default for SentencesCorrectStats {
 impl SentencesCorrectStats {
     #[wasm_bindgen(constructor)]
     pub fn new() -> Self {
-        Self { stats: Vec::new() }
+        Self {
+            stats: StatSentenceCorrect::new(),
+        }
     }
 
     pub fn add_stat(&mut self, lang: &str, count: f32) {
-        self.stats.push(StatSentenceCorrect {
-            lang: lang.to_string().clone(),
-            count,
-        });
+        self.stats.add_stat(lang, count);
     }
 
     pub fn get_correct_percentage(&self, lang: &str) -> f32 {
-        let denominator_base = self.stats.iter().filter(|stat| stat.lang == lang).count();
-        let denominator = if denominator_base == 0 {
-            1
-        } else {
-            denominator_base
-        };
-
-        let numerator: f32 = self
-            .stats
-            .iter()
-            .filter(|stat| stat.lang == lang)
-            .map(|stat| stat.count)
-            .sum();
-
-        numerator / denominator as f32
+        self.stats.get_correct_percentage(lang)
     }
 
     pub fn get_total(&self, lang: &str) -> i32 {
-        self.stats.iter().filter(|stat| stat.lang == lang).count() as i32
+        self.stats.get_total(lang)
+    }
+
+    pub fn encode_for_transfer(&self, lang: &str) -> String {
+        self.stats.encode_for_transfer(lang)
     }
 }
 
@@ -96,32 +92,21 @@ impl Default for SentencesLengthStats {
 impl SentencesLengthStats {
     #[wasm_bindgen(constructor)]
     pub fn new() -> Self {
-        Self { stats: Vec::new() }
+        Self {
+            stats: StatSentenceLength::new(),
+        }
     }
 
     pub fn add_stat(&mut self, lang: &str, length: i32) {
-        self.stats.push(SentenceLengthStat {
-            lang: lang.to_string().clone(),
-            length,
-        });
+        self.stats.add_stat(lang, length);
     }
 
     pub fn get_length_average(&self, lang: &str) -> f32 {
-        let denominator_base = self.stats.iter().filter(|stat| stat.lang == lang).count();
-        let denominator = if denominator_base == 0 {
-            1
-        } else {
-            denominator_base
-        };
+        self.stats.get_length_average(lang)
+    }
 
-        let numerator: f32 = self
-            .stats
-            .iter()
-            .filter(|stat| stat.lang == lang)
-            .map(|stat| stat.length as f32)
-            .sum();
-
-        numerator / denominator as f32
+    pub fn encode_for_transfer(&self, lang: &str) -> String {
+        self.stats.encode_for_transfer(lang)
     }
 }
 
@@ -135,91 +120,66 @@ impl Default for CharsStats {
 impl CharsStats {
     #[wasm_bindgen(constructor)]
     pub fn new() -> Self {
-        Self { stats: Vec::new() }
+        Self {
+            stats: StatChars::new(),
+        }
     }
 
     pub fn add_stat(&mut self, lang: &str, count: i32, char_type: CharType, name: &str) {
-        self.stats.push(CharStat {
-            char_type,
-            count,
-            lang: lang.to_string().clone(),
-            name: name.to_string().clone(),
-        });
+        self.stats.add_stat(lang, count, char_type.into(), name);
     }
 
     pub fn get_total(&self, lang: &str) -> i32 {
-        self.stats
-            .iter()
-            .filter(|stat| stat.lang == lang)
-            .map(|stat| stat.count)
-            .sum()
+        self.stats.get_total(lang)
     }
 
     pub fn get_unique_chars(&self, lang: &str) -> i32 {
-        self.stats.iter().filter(|stat| stat.lang == lang).count() as i32
+        self.stats.get_unique_chars(lang)
     }
 
     pub fn get_names(&self, lang: &str) -> String {
-        let mut names: Vec<String> = self
-            .stats
-            .iter()
-            .filter(|stat| stat.lang == lang)
-            .map(|stat| stat.name.clone())
-            .collect();
-
-        names.sort();
-
-        names.join(" ")
+        self.stats.get_names(lang)
     }
 
     pub fn prepare_failure_sentence(&self, lang: &str, count: i32) -> String {
-        let get_map = |char_type: CharType| {
-            self.stats
-                .iter()
-                .filter(|stat| stat.lang == lang && stat.char_type == char_type)
-                .fold(
-                    HashMap::new(),
-                    |acc: HashMap<String, i32>, record: &CharStat| {
-                        let mut acc = acc;
-                        acc.insert(record.name.clone(), record.count);
+        self.stats.prepare_failure_sentence(lang, count)
+    }
 
-                        acc
-                    },
-                )
-        };
-        let success_map = get_map(CharType::Success);
-        let fail_map = get_map(CharType::Fail);
+    pub fn filter_by_type(&mut self, char_type: CharType) {
+        self.stats.filter_by_type(char_type.into());
+    }
 
-        let mut all_chars = [
-            success_map.keys().cloned().collect::<Vec<String>>(),
-            fail_map.keys().cloned().collect::<Vec<String>>(),
-        ]
-        .concat();
+    pub fn encode_for_transfer(&self, lang: &str) -> String {
+        self.stats.encode_for_transfer(lang)
+    }
+}
 
-        all_chars.sort_by(|a, b| {
-            let get_sort_value = |char: &String| {
-                let success_count = success_map.get(char).unwrap_or(&0);
-                let fail_count = fail_map.get(char).unwrap_or(&0);
-                let total = success_count + fail_count;
+impl From<CharType> for CoreCharType {
+    fn from(char_type: CharType) -> Self {
+        match char_type {
+            CharType::Success => CoreCharType::Success,
+            CharType::Fail => CoreCharType::Fail,
+        }
+    }
+}
 
-                if total == 0 {
-                    return 0;
-                }
+#[wasm_bindgen]
+impl TableNames {
+    #[wasm_bindgen(constructor)]
+    pub fn new() -> Self {
+        Self {
+            chars_all_time: TABLE_CHARS_ALL_TIME.to_string(),
+            chars_today: TABLE_CHARS_TODAY.to_string(),
+            sentence_length_all_time: TABLE_SENTENCE_LENGTH_ALL_TIME.to_string(),
+            sentence_length_today: TABLE_SENTENCE_LENGTH_TODAY.to_string(),
+            sentences_all_time: TABLE_SENTENCES_ALL_TIME.to_string(),
+            sentences_today: TABLE_SENTENCES_TODAY.to_string(),
+        }
+    }
+}
 
-                // This formula aims to give a higher value to characters that have
-                // more failures and less successes
-                ((fail_count / (success_count + fail_count)) * (fail_count + 1))
-                    / (success_count + 1)
-            };
-
-            get_sort_value(b).partial_cmp(&get_sort_value(a)).unwrap()
-        });
-
-        all_chars
-            .iter()
-            .take(count as usize)
-            .cloned()
-            .collect::<Vec<String>>()
-            .join("")
+impl Default for TableNames {
+    fn default() -> Self {
+        Self::new()
     }
 }

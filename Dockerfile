@@ -11,7 +11,7 @@ RUN cargo chef prepare  --recipe-path recipe.json
 FROM chef AS builder
 COPY --from=planner /app/recipe.json recipe.json
 RUN rustup target add $(uname -m)-unknown-linux-musl
-RUN cargo chef cook --release \
+RUN mkdir -p src && cargo chef cook --release \
   --recipe-path recipe.json \
   --target $(uname -m)-unknown-linux-musl \
   -p writing-trainer-backend

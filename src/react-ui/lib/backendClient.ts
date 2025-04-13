@@ -1,9 +1,13 @@
+import { Base64 } from 'js-base64'
+
 import {
   AnkiGql,
   CantoDictWordGql,
   DictResponse,
   Me,
   SongGql,
+  StatsClearGql,
+  StatsSaveResultGql,
   TextGql,
 } from '../graphql/graphql'
 
@@ -298,7 +302,41 @@ const saveText = (text: TextGql) =>
 
 const logout = () => fetchCommon('/auth/logout')
 
+const clearStats = () =>
+  fetchGraphQL<{ clearStats: Pick<StatsClearGql, 'success'> }>(`#graphql
+    mutation {
+      clearStats {
+        success
+      }
+    }
+  `).then(({ clearStats: clearStatsResult }) => clearStatsResult)
+
+const saveStats = (localStats: unknown) =>
+  fetchGraphQL<{
+    saveStats: Pick<StatsSaveResultGql, 'success' | 'data'>
+  }>(`#graphql
+    mutation {
+      saveStats(
+        localStats: "${Base64.encode(JSON.stringify(localStats))}"
+      ) {
+        success
+        data {
+          charsToday
+          failCount { today, allTime }
+          lang
+          sentenceLength { today, allTime }
+          sentencePercentage { today, allTime }
+          sentencesCompleted { today, allTime }
+          successCount { today, allTime }
+          successPerc { today, allTime }
+          uniqueCharsCount { today, allTime }
+        }
+      }
+    }
+    `).then(({ saveStats: saveStatsResult }) => saveStatsResult)
+
 export const backendClient = {
+  clearStats,
   getAnkisRound,
   getHealth,
   getInfo,
@@ -312,6 +350,7 @@ export const backendClient = {
   queryCantodict,
   saveAnki,
   saveReviewedAnki,
+  saveStats,
   saveText,
   translateText,
   useDict,

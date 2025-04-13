@@ -1,12 +1,14 @@
 import Button from '#/react-ui/components/button/button'
+import { StatsSaveResultDataGql } from '#/react-ui/graphql/graphql'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import {
-  deleteDatabase,
+  deleteStats,
   getStats,
-  StatsResult,
+  StatsLocation,
 } from '../../languages/common/stats'
+import { useMainContext } from '../main-context'
 
 type Props = {
   onClose: () => void
@@ -19,23 +21,27 @@ const cellClasses = 'p-[8px]'
 export const StatsSection = ({ onClose, selectedLanguage }: Props) => {
   const { t } = useTranslation()
 
+  const mainContext = useMainContext()
+  const { isLoggedIn } = mainContext.state
   const [isShowingChars, setIsShowingChars] = useState(false)
+  const [statsLocation, setStatsLocation] = useState<StatsLocation | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
   const [deleteConfirmation, setDeleteConfirmation] = useState('')
 
-  const [stats, setStats] = useState<null | StatsResult>(null)
+  const [stats, setStats] = useState<null | StatsSaveResultDataGql>(null)
 
   const retrieveStats = useCallback(async () => {
     if (process.env.NODE_ENV === 'test') return
 
-    getStats(selectedLanguage)
+    getStats(isLoggedIn, selectedLanguage)
       .then(result => {
-        setStats(result)
+        setStats(result.data)
+        setStatsLocation(result.type)
       })
       .catch(err => {
         console.error('Error getting stats:', err)
       })
-  }, [selectedLanguage])
+  }, [isLoggedIn, selectedLanguage])
 
   useEffect(() => {
     retrieveStats()
@@ -49,9 +55,14 @@ export const StatsSection = ({ onClose, selectedLanguage }: Props) => {
 
   return (
     <div>
-      <Button onClick={onClose}>Close</Button>
-      {!!stats && (
+      <Button onClick={onClose}>{t('panel.close', 'Close')}</Button>
+      {!!stats && !!statsLocation && (
         <div className="mt-[8px] flex flex-col gap-[16px]">
+          <div>
+            {statsLocation === 'local'
+              ? t('panel.localStats', 'The stats are only for your device')
+              : t('panel.remoteStats', 'The stats are synced for your account')}
+          </div>
           <table className="w-full border-[1px] border-[#ccc] p-[8px]">
             <thead>
               <tr className={rowClasses}>
@@ -154,13 +165,8 @@ export const StatsSection = ({ onClose, selectedLanguage }: Props) => {
               {t('panel.deleteStats')}
             </Button>
             {isDeleting && (
-              <div>
-                <div>
-                  {t(
-                    'panel.deleteStatsConfirmation',
-                    'Input "confirm" and click the button',
-                  )}
-                </div>
+              <div className="mt-[24px] ">
+                <div>{t('panel.deleteStatsConfirmation')}</div>
                 <div className="my-[16px] flex flex-row flex-wrap gap-[16px]">
                   <input
                     autoFocus
@@ -171,11 +177,22 @@ export const StatsSection = ({ onClose, selectedLanguage }: Props) => {
                   />
                   <Button
                     disabled={deleteConfirmation !== 'confirm'}
-                    onClick={() => {
+                    onClick={e => {
+                      e?.preventDefault()
+                      e?.stopPropagation()
+
                       if (deleteConfirmation === 'confirm') {
-                        deleteDatabase().then(() => {
-                          setStats(null)
-                          setIsDeleting(false)
+                        deleteStats().then(success => {
+                          if (success) {
+                            setIsDeleting(false)
+
+                            getStats(isLoggedIn, selectedLanguage).then(
+                              result => {
+                                setStats(result.data)
+                                setStatsLocation(result.type)
+                              },
+                            )
+                          }
                         })
                       }
                     }}

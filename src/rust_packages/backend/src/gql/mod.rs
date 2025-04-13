@@ -1,10 +1,13 @@
 use self::context::GraphQLContext;
 use crate::{
-    db::{Anki, Song, Text},
+    db::{Anki, Song, StatsWrapper, Text},
     gql::models::{AnkiGQL, Me, SongGQL, TextGQL, TranslationRequest},
 };
 use juniper::{EmptySubscription, FieldResult, RootNode};
-use models::{CantoDictWordGQL, DictRequest, DictResponse};
+use models::{
+    CantoDictWordGQL, DictRequest, DictResponse, StatsClearGQL, StatsSaveResultDataGQL,
+    StatsSaveResultGQL,
+};
 use tracing::debug;
 
 pub mod context;
@@ -253,6 +256,37 @@ impl MutationRoot {
         }
 
         Ok(TextGQL::from_text(&text))
+    }
+
+    async fn save_stats(
+        ctx: &GraphQLContext,
+        local_stats: String,
+    ) -> FieldResult<StatsSaveResultGQL> {
+        check_user(ctx)?;
+
+        let user_id = ctx.user.as_ref().unwrap().id.to_string();
+        let mut stats_wrapper = StatsWrapper::from_transfer_str(&user_id, &local_stats)?;
+
+        stats_wrapper.save().await?;
+
+        let read_result = stats_wrapper.read_stats().await?;
+        let response_data = StatsSaveResultDataGQL::new(read_result);
+
+        let result = StatsSaveResultGQL::new(true, response_data);
+
+        Ok(result)
+    }
+
+    fn clear_stats(ctx: &GraphQLContext) -> FieldResult<StatsClearGQL> {
+        check_user(ctx)?;
+
+        let user_id = ctx.user.as_ref().unwrap().id.to_string();
+
+        StatsWrapper::clear_for_user(&user_id)?;
+
+        let result = StatsClearGQL::new(true);
+
+        Ok(result)
     }
 }
 

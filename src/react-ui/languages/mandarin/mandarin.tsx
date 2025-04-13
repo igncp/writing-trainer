@@ -14,10 +14,10 @@ import { T_MandarinLangOpts } from './mandarinTypes'
 const charToPronunciationMap: { [key: string]: string } = {}
 const pronunciationToCharMap: { [key: string]: string } = {}
 
-const 解析發音 = (文字: string, 選項: T_LangOpts) => {
+const parsePronunciation = (文字: string, 選項?: T_LangOpts) => {
   let 解析後的文本 = 文字.toLowerCase()
 
-  if ((選項.聲調值 as T_MandarinLangOpts['聲調值']) === '不要使用聲調') {
+  if ((選項?.聲調值 as T_MandarinLangOpts['聲調值']) === '不要使用聲調') {
     解析後的文本 = 解析後的文本.replace(/[0-9]/g, '')
   }
 
@@ -26,7 +26,7 @@ const 解析發音 = (文字: string, 選項: T_LangOpts) => {
 
 const handleKeyDown: T_LangUIController['handleKeyDown'] = 參數 => {
   commonHandleWritingKeyDown(參數, {
-    解析發音,
+    parsePronunciation,
   })
 }
 

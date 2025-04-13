@@ -10,7 +10,7 @@ MISSING_ENVS=""
 # k get secret SECRET_NAME -o jsonpath='{.data.token}' | base64 -d
 
 if [ -f .env ]; then
-  export $(cat .env | xargs)
+  export $(cat .env | grep -v '^#' | xargs)
 fi
 
 if [ -z "$DEPLOYMENT_LOCATION" ]; then

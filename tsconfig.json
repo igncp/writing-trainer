@@ -24,7 +24,7 @@
     "rootDir": ".",
     "skipLibCheck": true,
     "sourceMap": false,
-    "strict": false,
+    "strict": true,
     "strictNullChecks": true,
     "target": "es5",
     "typeRoots": [

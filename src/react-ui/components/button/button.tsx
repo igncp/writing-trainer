@@ -19,7 +19,10 @@ export type T_ButtonProps = {
   'data-tooltip-id'?: string
   disabled?: boolean
   href?: string
-  onClick?: (e?: unknown) => void
+  onClick?: (e?: {
+    preventDefault: () => void
+    stopPropagation: () => void
+  }) => void
   onDoubleClick?: () => void
   shouldUseLink?: boolean
   style?: CSSProperties

@@ -1,4 +1,5 @@
 pub use models::{Anki, Song, Text, User};
+pub use stats::{ReadStatsResult, StatsWrapper};
 pub use utils::establish_connection;
 
 mod anki;

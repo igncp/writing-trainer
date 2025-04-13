@@ -55,6 +55,12 @@ export type DictResponseItem = {
   word: Scalars['String']['output']
 }
 
+export type HistoryMetric = {
+  __typename?: 'HistoryMetric'
+  allTime: Scalars['Float']['output']
+  today: Scalars['Float']['output']
+}
+
 export type Me = {
   __typename?: 'Me'
   canUseAI: Scalars['Boolean']['output']
@@ -65,9 +71,15 @@ export type Me = {
 
 export type MutationRoot = {
   __typename?: 'MutationRoot'
+  clearStats: StatsClearGql
   saveAnki: AnkiGql
   saveReviewedAnki: AnkiGql
+  saveStats: StatsSaveResultGql
   saveText: TextGql
+}
+
+export type MutationRootClearStatsArgs = {
+  lang: Scalars['String']['input']
 }
 
 export type MutationRootSaveAnkiArgs = {
@@ -80,6 +92,10 @@ export type MutationRootSaveAnkiArgs = {
 export type MutationRootSaveReviewedAnkiArgs = {
   guessed: Scalars['Boolean']['input']
   id: Scalars['String']['input']
+}
+
+export type MutationRootSaveStatsArgs = {
+  localStats: Scalars['String']['input']
 }
 
 export type MutationRootSaveTextArgs = {
@@ -163,6 +179,30 @@ export type SongGql = {
   pronunciation?: Maybe<Scalars['String']['output']>
   title: Scalars['String']['output']
   videoUrl: Scalars['String']['output']
+}
+
+export type StatsClearGql = {
+  __typename?: 'StatsClearGQL'
+  success: Scalars['Boolean']['output']
+}
+
+export type StatsSaveResultDataGql = {
+  __typename?: 'StatsSaveResultDataGQL'
+  charsToday: Scalars['String']['output']
+  failCount: HistoryMetric
+  lang: Scalars['String']['output']
+  sentenceLength: HistoryMetric
+  sentencePercentage: HistoryMetric
+  sentencesCompleted: HistoryMetric
+  successCount: HistoryMetric
+  successPerc: HistoryMetric
+  uniqueCharsCount: HistoryMetric
+}
+
+export type StatsSaveResultGql = {
+  __typename?: 'StatsSaveResultGQL'
+  data: StatsSaveResultDataGql
+  success: Scalars['Boolean']['output']
 }
 
 export type TextGql = {

@@ -65,7 +65,7 @@ type IProps = {
   text: string
 }
 
-// @TODO: Remove local/remote records and use a offline syncing librar
+// @TODO: Remove local/remote records and use a offline syncing library
 const RecordsSection = ({
   initScreen,
   language,

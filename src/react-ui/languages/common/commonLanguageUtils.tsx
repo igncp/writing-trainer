@@ -4,19 +4,19 @@ import { T_LangUIController, T_LangOpts } from '../types'
 
 import { saveSuccessChar, saveFailChar, saveSentenceStats } from './stats'
 
-type 類型_解析發音 = (文字: string, langOpts?: T_LangOpts) => string
+type T_parsePronunciation = (文字: string, langOpts?: T_LangOpts) => string
 
 type T_OnPracticeBackspaceFormat = (practiceValue: string) => string
 
 type T_CommonHandleWritingKeyDown = (
   opts: Parameters<T_LangUIController['handleKeyDown']>[0],
   opts2: {
-    解析發音?: 類型_解析發音
     onPracticeBackspaceFormat?: T_OnPracticeBackspaceFormat
+    parsePronunciation?: T_parsePronunciation
   },
 ) => ReturnType<T_LangUIController['handleKeyDown']>
 
-const 預設解析發音: 類型_解析發音 = 文字 => 文字.toLowerCase()
+const 預設parsePronunciation: T_parsePronunciation = 文字 => 文字.toLowerCase()
 
 const onPracticeBackspaceFormatDefault: T_OnPracticeBackspaceFormat = (
   p = '',
@@ -48,8 +48,8 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     writingValue,
   },
   {
-    解析發音 = 預設解析發音,
     onPracticeBackspaceFormat = onPracticeBackspaceFormatDefault,
+    parsePronunciation = 預設parsePronunciation,
   },
 ) => {
   if (按鍵事件.key === 'Backspace' && writingValue.length === 0) {
@@ -111,11 +111,16 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
       ? writingValue.slice(0, writingValue.length - 1)
       : writingValue + 解析按鍵
 
-  const correctPronunciationParsed = 解析發音(correctPronunciation, langOpts)
+  const correctPronunciationParsed = parsePronunciation(
+    correctPronunciation,
+    langOpts,
+  )
+
   const isDuringReduction = !!currentText
 
   if (
-    correctPronunciationParsed === 解析發音(newWritingValue, langOpts) ||
+    correctPronunciationParsed ===
+      parsePronunciation(newWritingValue, langOpts) ||
     correctPronunciationParsed === unknownPronunciation
   ) {
     const newPractice = practiceValue + currentCharObj.word

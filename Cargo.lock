@@ -3240,6 +3240,7 @@ dependencies = [
  "actix-web",
  "actix-web-actors",
  "async-trait",
+ "base64 0.22.1",
  "chrono",
  "diesel",
  "diesel_migrations",
