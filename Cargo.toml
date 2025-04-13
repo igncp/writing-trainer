@@ -1,9 +1,9 @@
 [workspace]
 resolver = "2"
 members = [
-    "./rust_packages/backend",
-    "./rust_packages/core",
-    "./rust_packages/wasm"
+    "./src/rust_packages/backend",
+    "./src/rust_packages/core",
+    "./src/rust_packages/wasm"
 ]
 
 [profile.release]

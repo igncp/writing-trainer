@@ -7,7 +7,7 @@
     "check": "bash scripts/check.sh",
     "clean": "sh scripts/clean.sh",
     "dev:be": "cargo watch -x run",
-    "dev:fe": "(cd rust_packages/wasm && wasm-pack build) && bun add ./rust_packages/wasm/pkg && rm -rf .next && next dev",
+    "dev:fe": "(cd src/rust_packages/wasm && wasm-pack build) && bun add ./src/rust_packages/wasm/pkg && rm -rf .next && next dev",
     "eslint": "eslint . --ext ts --ext tsx --ext js",
     "format": "bash scripts/format.sh",
     "gen:gql": "graphql-codegen && bun run prettier:fix",
@@ -84,7 +84,7 @@
     "react-toastify": "^10.0.5",
     "react-tooltip": "^5.27.0",
     "react-use": "^17.3.2",
-    "writing-trainer-wasm": "./rust_packages/wasm/pkg"
+    "writing-trainer-wasm": "./src/rust_packages/wasm/pkg"
   },
   "typeCoverage": {
     "atLeast": 95

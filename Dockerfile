@@ -17,7 +17,7 @@ RUN cargo chef cook --release \
   -p writing-trainer-backend
 # Copy all rust directories
 COPY scripts scripts
-COPY rust_packages rust_packages
+COPY src/rust_packages src/rust_packages
 COPY .cargo .cargo
 COPY Cargo.toml Cargo.lock ./
 RUN bash scripts/build_docker.sh

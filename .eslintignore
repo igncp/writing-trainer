@@ -6,5 +6,5 @@ coverage-ts
 out
 dist
 
-rust_packages/wasm/pkg/writing_trainer_wasm_bg.js
-rust_packages/wasm/pkg/writing_trainer_wasm.js
+src/rust_packages/wasm/pkg/writing_trainer_wasm_bg.js
+src/rust_packages/wasm/pkg/writing_trainer_wasm.js
