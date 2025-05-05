@@ -2,6 +2,7 @@ pub const ENV_BASE_URL: &str = "BACKEND_URL";
 pub const ENV_CLIENT_ORIGIN: &str = "CLIENT_ORIGIN";
 pub const ENV_DATABASE_URL: &str = "DATABASE_URL";
 pub const ENV_DICT_FILE_PATH: &str = "DICT_FILE_PATH";
+pub const ENV_DICT2_FILE_PATH: &str = "DICT2_FILE_PATH";
 pub const ENV_GOOGLE_CLIENT_ID: &str = "NEXT_PUBLIC_GOOGLE_CLIENT_ID";
 pub const ENV_GOOGLE_CLIENT_SECRET: &str = "GOOGLE_CLIENT_SECRET";
 pub const ENV_JWT_SECRET: &str = "JWT_SECRET";

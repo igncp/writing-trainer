@@ -35,11 +35,18 @@
   },
   "dict": {
     "clear": "クリア",
+    "closeShuffle": "閉じる",
+    "correct": "正しい",
     "displayOneWord": "一文字の単語を表示",
+    "displayPronunciation": "発音を表示",
     "hideAll": "すべてを隠す",
     "hideOneWord": "一文字の単語を表示しない",
+    "hidePronunciation": "発音を隠す",
+    "remaining": "残り",
     "showAll": "すべてを表示",
-    "total": "合計"
+    "startShuffle": "シャッフルを開始",
+    "total": "合計",
+    "wrong": "間違った"
   },
   "help": {
     "how": "Writing Trainer の使い方",
@@ -51,6 +58,7 @@
     "japanese": "日本語",
     "mandarin": "中国語"
   },
+  "meaningFilter": "意味フィルター",
   "option": {
     "automaticSplitText": "テストを自動的に分割する",
     "changeToSimplified": "繁体字に変換する",
@@ -108,6 +116,7 @@
     "writingArea": "書き込みエリア"
   },
   "progressStr": "進捗",
+  "pronunciationFilter": "発音フィルター",
   "record": {
     "artist": "アーティスト",
     "close": "閉じる",

@@ -35,11 +35,18 @@
   },
   "dict": {
     "clear": "Limpiar",
+    "closeShuffle": "Cerrar",
+    "correct": "Correcto",
     "displayOneWord": "Mostrar palabras con un solo carácter",
+    "displayPronunciation": "Mostrar pronunciación",
     "hideAll": "Ocultar todo",
     "hideOneWord": "No mostrar palabras con un solo carácter",
+    "hidePronunciation": "Ocultar pronunciación",
+    "remaining": "Restante",
     "showAll": "Mostrar todo",
-    "total": "Total"
+    "startShuffle": "Empezar Aleatorio",
+    "total": "Total",
+    "wrong": "Incorrecto"
   },
   "help": {
     "how": "Cómo utilizar Writing Trainer?",
@@ -51,6 +58,7 @@
     "japanese": "Japonés",
     "mandarin": "Mandarín"
   },
+  "meaningFilter": "Filtro de significado",
   "option": {
     "automaticSplitText": "Dividir automáticamente el texto",
     "changeToSimplified": "Caracteres simplificados",
@@ -108,6 +116,7 @@
     "writingArea": "Área de escritura"
   },
   "progressStr": "Progreso",
+  "pronunciationFilter": "Filtro de pronunciación",
   "record": {
     "artist": "Artista",
     "close": "Cerrar",

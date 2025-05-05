@@ -595,7 +595,7 @@ const Panel = ({
   const { mobileKeyboard } = languageUIController
 
   const progressStr = (() => {
-    if (!charsObjsList) return `${t('progressStr', 'Progress')}: 0%`
+    if (!charsObjsList?.length) return `${t('progressStr', 'Progress')}: 0%`
 
     return `Progress: ${Math.round(
       (currentDisplayCharIdx / charsObjsList.length) * 100,
@@ -1079,6 +1079,8 @@ const Panel = ({
       <div className="mb-[12px] flex flex-row flex-wrap justify-start gap-[12px]">
         <LinksBlock
           fragments={fragments}
+          langHandler={langHandler}
+          langOptsObj={langOptsObj}
           updateFragments={setFragments}
           文字={originalTextValue}
         />

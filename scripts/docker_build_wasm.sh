@@ -2,14 +2,16 @@
 
 set -e
 
-apt update
-apt install -y libc6
+mkdir -p /target
 
 export CARGO_TARGET_DIR=/target
 
-mkdir -p /target
+if ! type -P wasm-pack >/dev/null 2>&1; then
+  apt update
+  apt install -y libc6
 
-curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+  curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+fi
 
 cd src/rust_packages/wasm
 

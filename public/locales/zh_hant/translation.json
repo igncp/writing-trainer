@@ -35,11 +35,18 @@
   },
   "dict": {
     "clear": "清除",
+    "closeShuffle": "關閉隨機",
+    "correct": "正確的",
     "displayOneWord": "顯示一個字的字元",
+    "displayPronunciation": "顯示發音",
     "hideAll": "隱藏所有",
     "hideOneWord": "不顯示一個字的字元",
+    "hidePronunciation": "隱藏發音",
+    "remaining": "剩餘",
     "showAll": "顯示所有",
-    "total": "總數"
+    "startShuffle": "開始隨機",
+    "total": "總數",
+    "wrong": "錯誤的"
   },
   "help": {
     "how": "如何使用 Writing Trainer",
@@ -51,6 +58,7 @@
     "japanese": "日語",
     "mandarin": "普通話"
   },
+  "meaningFilter": "意思過濾器",
   "option": {
     "automaticSplitText": "自動分割文字行",
     "changeToSimplified": "轉換為簡體字",
@@ -108,6 +116,7 @@
     "writingArea": "書寫區"
   },
   "progressStr": "進度",
+  "pronunciationFilter": "發音過濾器",
   "record": {
     "artist": "藝術家",
     "close": "關閉",

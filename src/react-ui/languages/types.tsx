@@ -9,6 +9,8 @@ export type T_LinksBlock = (選項: {
   文字: string
   children?: ReactNode
   fragments: T_Fragments
+  langHandler: LanguageHandler | null
+  langOptsObj: Record<string, unknown>
   updateFragments: (list: T_Fragments) => void
 }) => ReactNode
 

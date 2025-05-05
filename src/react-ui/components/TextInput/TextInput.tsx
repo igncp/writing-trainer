@@ -2,7 +2,7 @@ import { InputHTMLAttributes, RefObject } from 'react'
 
 type Props = {
   inputRef?: RefObject<HTMLInputElement>
-  onEnterPress: () => void
+  onEnterPress?: () => void
 }
 
 type IProps = InputHTMLAttributes<HTMLInputElement> & Props
@@ -19,7 +19,7 @@ const TextInput = ({
     <input
       data-gramm_editor={false}
       onChange={onChange}
-      onKeyPress={e => {
+      onKeyUp={e => {
         if (e.key === 'Enter') {
           onEnterPress()
         }
