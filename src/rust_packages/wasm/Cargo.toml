@@ -13,3 +13,6 @@ writing-trainer-core = { version = "0.1.0", path = "../core" }
 
 [lib]
 crate-type = ["cdylib", "rlib"]
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = false

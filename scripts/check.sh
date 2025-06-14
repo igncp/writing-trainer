@@ -21,6 +21,8 @@ bun run tsc --noEmit
 
 cargo clippy --release --all-targets --all-features -- -D warnings
 
+cargo test
+
 rm -rf .next out
 NODE_ENV=production \
   bun run next:build

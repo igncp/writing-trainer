@@ -9,6 +9,5 @@ dist
 .direnv
 .env
 writing-trainer.db
-cedict_ts.u8
-cccanto.txt
+src/rust_packages/backend/dicts
 *.vtt

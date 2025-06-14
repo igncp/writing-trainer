@@ -4,7 +4,7 @@ import { useMainContext } from '#/react-ui/containers/main-context'
 import { DictResponse } from '#/react-ui/graphql/graphql'
 import { backendClient } from '#/react-ui/lib/backendClient'
 import { TOOLTIP_ID } from '#/utils/tooltip'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaSpinner } from 'react-icons/fa'
 import { RxCross2 } from 'react-icons/rx'
@@ -30,6 +30,8 @@ type CombinationItem = {
 
 type ClickItem = Record<keyof CombinationItem, null | number>
 
+const REVERSE_STORAGE_KEY = 'dict-reverse'
+
 const shuffleArray = <A,>(array: A[]): A[] => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
@@ -40,7 +42,8 @@ const shuffleArray = <A,>(array: A[]): A[] => {
   return array
 }
 
-const CLICKED_STYLE = 'text-[#afebaf] font-bold'
+const CLICKED_STYLE = 'border-l-[2px] border-[#0c0] cursor-pointer pl-[8px]'
+const NUM_STYLE = 'mr-[12px] rounded-[24px] bg-[#555] px-[8px] py-[4px]'
 
 type Props = {
   language: string
@@ -103,6 +106,7 @@ type ShuffleData = {
   pronunciations: string[]
   words: string[]
   wrong: number
+  wrongWords: Set<string>
 }
 
 export const DictContent = ({
@@ -118,9 +122,16 @@ export const DictContent = ({
   setDictResponse: (dictResponse: [DictResponse, string] | null) => void
   text: string
 }) => {
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
   const [displayedItems, setDisplayedItems] = useState(new Set<number>())
   const [displayOneWord, setDisplayOneWord] = useState(false)
   const [displayPronunciation, setDisplayPronunciation] = useState(false)
+
+  const [isReverse, setIsReverse] = useState(
+    typeof window !== 'undefined'
+      ? window.localStorage.getItem(REVERSE_STORAGE_KEY) === 'true'
+      : false,
+  )
 
   const meaningFilterRef = useRef<HTMLInputElement>(null)
   const pronunciationFilterRef = useRef<HTMLInputElement>(null)
@@ -129,20 +140,27 @@ export const DictContent = ({
 
   const { t } = useTranslation()
 
-  const getPronunciation = (word: string) => {
-    const charsObjsList = langHandler?.convertToCharsObjs({
-      ...langOptsObj,
-      charsToRemove: [],
-      text: word,
-    })
+  const getPronunciation = useCallback(
+    (word: string) => {
+      const charsObjsList = langHandler?.convertToCharsObjs({
+        ...langOptsObj,
+        charsToRemove: [],
+        text: word,
+      })
 
-    if (!charsObjsList) return ''
+      if (!charsObjsList) return ''
 
-    return charsObjsList
-      .map(c => c.pronunciation)
-      .filter(Boolean)
-      .join(' ')
-  }
+      return charsObjsList
+        .map(c => c.pronunciation)
+        .filter(Boolean)
+        .join(' ')
+    },
+    [langHandler, langOptsObj],
+  )
+
+  useEffect(() => {
+    window.localStorage.setItem(REVERSE_STORAGE_KEY, isReverse.toString())
+  }, [isReverse])
 
   useEffect(() => {
     if (text) {
@@ -151,6 +169,60 @@ export const DictContent = ({
       setDisplayOneWord(false)
     }
   }, [text, setDictResponse])
+
+  const getInitDataForWords = useCallback(
+    (wordsList: Set<string>): ShuffleData => {
+      if (!dictResponse) throw new Error('dictResponse is null')
+
+      const combinations: CombinationItem[] = dictResponse[0].words
+        .map(dict => {
+          const { meaning, word } = dict
+
+          if (!wordsList.has(word)) {
+            return null
+          }
+
+          if (!displayOneWord && word.length === 1) {
+            return null
+          }
+
+          const pronunciation = getPronunciation(word)
+
+          return { meaning, pronunciation, word }
+        })
+        .filter(Boolean) as CombinationItem[]
+
+      const words = combinations.map(c => c.word)
+      const meanings = combinations.map(c => c.meaning)
+      const pronunciations = combinations.map(c => c.pronunciation)
+
+      shuffleArray(words)
+      shuffleArray(meanings)
+      shuffleArray(pronunciations)
+
+      const currentClick = isReverse
+        ? { meaning: 0, pronunciation: null, word: null }
+        : {
+            meaning: null,
+            pronunciation: null,
+            word: 0,
+          }
+
+      return {
+        combinations,
+        correct: 0,
+        currentClick,
+        meaningFilter: '',
+        meanings,
+        pronunciationFilter: '',
+        pronunciations,
+        words,
+        wrong: 0,
+        wrongWords: new Set(),
+      }
+    },
+    [displayOneWord, dictResponse, getPronunciation, isReverse],
+  )
 
   useEffect(() => {
     if (!shuffleData) return
@@ -183,11 +255,17 @@ export const DictContent = ({
 
       const newShuffleData: ShuffleData = {
         ...shuffleData,
-        currentClick: {
-          meaning: null,
-          pronunciation: null,
-          word: 0,
-        },
+        currentClick: isReverse
+          ? {
+              meaning: 0,
+              pronunciation: null,
+              word: null,
+            }
+          : {
+              meaning: null,
+              pronunciation: null,
+              word: 0,
+            },
         meaningFilter: '',
         pronunciationFilter: '',
       }
@@ -195,16 +273,28 @@ export const DictContent = ({
       if (clickedCombination !== -1) {
         newShuffleData.correct += 1
 
+        const wordsIndex = newShuffleData.words.findIndex(
+          w => w === clickedWord,
+        )
+
+        const pronunciationIndex = newShuffleData.pronunciations.findIndex(
+          p => p === clickedPronunciation,
+        )
+
+        const meningIndex = newShuffleData.meanings.findIndex(
+          m => m === clickedMeaning,
+        )
+
         newShuffleData.words = newShuffleData.words.filter(
-          w => w !== clickedWord,
+          (_, i) => i !== wordsIndex,
         )
 
         newShuffleData.pronunciations = newShuffleData.pronunciations.filter(
-          w => w !== clickedPronunciation,
+          (_, i) => i !== pronunciationIndex,
         )
 
         newShuffleData.meanings = newShuffleData.meanings.filter(
-          w => w !== clickedMeaning,
+          (_, i) => i !== meningIndex,
         )
 
         newShuffleData.combinations = newShuffleData.combinations.filter(
@@ -212,18 +302,30 @@ export const DictContent = ({
         )
 
         if (newShuffleData.words.length === 0) {
-          setShuffleData(null)
+          if (newShuffleData.wrongWords.size > 0) {
+            const newData = getInitDataForWords(newShuffleData.wrongWords)
+
+            setShuffleData(newData)
+          } else {
+            setShuffleData(null)
+          }
 
           return
         }
 
-        newShuffleData.currentClick.word = 0
+        if (isReverse) {
+          newShuffleData.currentClick.meaning = 0
+        } else {
+          newShuffleData.currentClick.word = 0
+        }
       } else {
         newShuffleData.wrong += 1
 
-        const [firstWord, ...restWords] = newShuffleData.words
+        const newWrongWords = new Set(newShuffleData.wrongWords)
 
-        shuffleData.words = restWords.concat([firstWord])
+        newWrongWords.add(clickedWord)
+
+        newShuffleData.wrongWords = newWrongWords
       }
 
       if (displayPronunciation) {
@@ -234,7 +336,7 @@ export const DictContent = ({
 
       setShuffleData(newShuffleData)
     }
-  }, [shuffleData, displayPronunciation])
+  }, [shuffleData, displayPronunciation, getInitDataForWords, isReverse])
 
   if (!dictResponse?.[1]) {
     return null
@@ -243,7 +345,10 @@ export const DictContent = ({
   const filterMatches = (filterText: string, fullText: string) =>
     filterText
       .split(' ')
-      .every(word => fullText.toLowerCase().includes(word.toLowerCase()))
+      .filter(Boolean)
+      .every(word =>
+        (fullText || '').toLowerCase().includes(word.toLowerCase()),
+      )
 
   return (
     <div className="flex w-[100%] flex-col gap-[16px]">
@@ -273,6 +378,13 @@ export const DictContent = ({
             </Button>
             <Button
               onClick={() => {
+                setIsReverse(!isReverse)
+              }}
+            >
+              {t('dict.reverse', 'Reverse')}
+            </Button>
+            <Button
+              onClick={() => {
                 setDisplayOneWord(!displayOneWord)
               }}
             >
@@ -299,45 +411,11 @@ export const DictContent = ({
               return
             }
 
-            const combinations: CombinationItem[] = dictResponse[0].words
-              .map(dict => {
-                const { meaning, word } = dict
+            const wordsList = new Set(dictResponse[0].words.map(w => w.word))
 
-                if (!displayOneWord && word.length === 1) {
-                  return null
-                }
+            const initData = getInitDataForWords(wordsList)
 
-                const pronunciation = getPronunciation(word)
-
-                return { meaning, pronunciation, word }
-              })
-              .filter(Boolean) as CombinationItem[]
-
-            const words = combinations.map(c => c.word)
-            const meanings = combinations.map(c => c.meaning)
-            const pronunciations = combinations.map(c => c.pronunciation)
-
-            shuffleArray(words)
-            shuffleArray(meanings)
-            shuffleArray(pronunciations)
-
-            const currentClick = {
-              meaning: null,
-              pronunciation: null,
-              word: 0,
-            }
-
-            setShuffleData({
-              combinations,
-              correct: 0,
-              currentClick,
-              meaningFilter: '',
-              meanings,
-              pronunciationFilter: '',
-              pronunciations,
-              words,
-              wrong: 0,
-            })
+            setShuffleData(initData)
           }}
         >
           {shuffleData
@@ -384,6 +462,22 @@ export const DictContent = ({
               setShuffleData(newShuffleData)
             }
 
+            const onWordClicked = (index: number) => {
+              const isWordClicked = shuffleData.currentClick.word === index
+
+              const newShuffleData = {
+                ...shuffleData,
+                meaningFilter: '',
+              }
+
+              newShuffleData.currentClick = {
+                ...shuffleData.currentClick,
+                word: isWordClicked ? null : index,
+              }
+
+              setShuffleData(newShuffleData)
+            }
+
             const onPronunciationClicked = (index: number) => {
               const isPronunciationClicked =
                 shuffleData.currentClick.pronunciation === index
@@ -407,10 +501,20 @@ export const DictContent = ({
               .map((_, i) => {
                 const meaning = shuffleData.meanings[i]
                 const pronunciation = shuffleData.pronunciations[i]
+                const word = shuffleData.words[i]
+
+                const pronunciationForWord = shuffleData.combinations.find(
+                  c => c.word === word,
+                )?.pronunciation
 
                 if (
                   !!shuffleData.meaningFilter &&
-                  !filterMatches(shuffleData.meaningFilter, meaning)
+                  (isReverse
+                    ? !filterMatches(
+                        shuffleData.meaningFilter,
+                        pronunciationForWord ?? '',
+                      )
+                    : !filterMatches(shuffleData.meaningFilter, meaning))
                 ) {
                   return null
                 }
@@ -432,6 +536,11 @@ export const DictContent = ({
                 ? shuffleData.words[shuffleData.currentClick.word]
                 : null
 
+            const clickedMeaning =
+              typeof shuffleData.currentClick.meaning === 'number'
+                ? shuffleData.meanings[shuffleData.currentClick.meaning]
+                : null
+
             const clickedPronunciation =
               typeof shuffleData.currentClick.pronunciation === 'number' &&
               displayPronunciation
@@ -445,29 +554,50 @@ export const DictContent = ({
                 ...shuffleData,
               }
 
-              const newWords = shuffleData.words.slice()
+              if (isReverse) {
+                const newMeanings = shuffleData.meanings.slice()
 
-              if (shiftKey) {
-                const lastWord = newWords.pop()
+                if (shiftKey) {
+                  const lastMeaning = newMeanings.pop()
 
-                newWords.unshift(lastWord as string)
+                  newMeanings.unshift(lastMeaning as string)
+                } else {
+                  const firstMeaning = newMeanings.shift()
+
+                  newMeanings.push(firstMeaning as string)
+                }
+
+                newShuffleData.meanings = newMeanings
               } else {
-                const firstWord = newWords.shift()
+                const newWords = shuffleData.words.slice()
 
-                newWords.push(firstWord as string)
+                if (shiftKey) {
+                  const lastWord = newWords.pop()
+
+                  newWords.unshift(lastWord as string)
+                } else {
+                  const firstWord = newWords.shift()
+
+                  newWords.push(firstWord as string)
+                }
+
+                newShuffleData.words = newWords
               }
-
-              newShuffleData.words = newWords
 
               setShuffleData(newShuffleData)
             }
 
             return (
-              <div className="max-w-[100%] overflow-auto whitespace-pre-line rounded-[12px] border-[2px] border-[#ccc] p-[10px]">
+              <div className="h-[500px] min-h-[500px] max-w-[100%] overflow-auto whitespace-pre-line rounded-[12px] border-[2px] border-[#ccc] p-[10px]">
                 <div>
-                  {clickedWord && <span>{clickedWord}</span>}
+                  {clickedWord && (
+                    <span className="mr-[8px] text-[30px]">{clickedWord}</span>
+                  )}
                   {clickedPronunciation && (
                     <span className="ml-[4px]">{clickedPronunciation}</span>
+                  )}
+                  {isReverse && clickedMeaning && (
+                    <span className="ml-[4px]">{clickedMeaning}</span>
                   )}
                   {displayPronunciation && (
                     <TextInput
@@ -480,6 +610,37 @@ export const DictContent = ({
                         newShuffleData.pronunciationFilter = e.target.value
 
                         setShuffleData(newShuffleData)
+                      }}
+                      onKeyDown={e => {
+                        const numKeys = Array.from({ length: 5 }).map((_, i) =>
+                          String(i + 1),
+                        )
+
+                        if (numKeys.includes(e.key)) {
+                          e.preventDefault()
+                          e.stopPropagation()
+
+                          const numKey = Number(e.key) - 1
+
+                          if (typeof filteredData[numKey] === 'number') {
+                            const pronunciation =
+                              shuffleData.pronunciations[filteredData[numKey]]
+
+                            const index = shuffleData.pronunciations.findIndex(
+                              m => pronunciation === m,
+                            )
+
+                            onPronunciationClicked(index)
+                          }
+                        } else if (e.key === 'Escape') {
+                          e.stopPropagation()
+                          e.preventDefault()
+
+                          setShuffleData({
+                            ...shuffleData,
+                            pronunciationFilter: '',
+                          })
+                        }
                       }}
                       onKeyUp={e => {
                         if (e.key === 'Enter') {
@@ -515,26 +676,83 @@ export const DictContent = ({
 
                       setShuffleData(newShuffleData)
                     }}
+                    onKeyDown={e => {
+                      const numKeys = Array.from({ length: 5 }).map((_, i) =>
+                        String(i + 1),
+                      )
+
+                      if (numKeys.includes(e.key)) {
+                        e.preventDefault()
+                        e.stopPropagation()
+
+                        const numKey = Number(e.key) - 1
+
+                        if (typeof filteredData[numKey] === 'number') {
+                          const meaning =
+                            shuffleData.meanings[filteredData[numKey]]
+
+                          const index = shuffleData.meanings.findIndex(
+                            m => meaning === m,
+                          )
+
+                          onMeaningClicked(index)
+                        }
+                      } else if (e.key === 'Escape') {
+                        e.stopPropagation()
+                        e.preventDefault()
+
+                        setShuffleData({
+                          ...shuffleData,
+                          meaningFilter: '',
+                        })
+                      }
+                    }}
                     onKeyUp={e => {
                       if (e.key === 'Enter') {
                         if (!filteredData.length) return
 
-                        const meaning = shuffleData.meanings[filteredData[0]]
+                        if (isReverse) {
+                          const word = shuffleData.words[filteredData[0]]
 
-                        const index = shuffleData.meanings.findIndex(
-                          m => meaning === m,
-                        )
+                          const index = shuffleData.words.findIndex(
+                            m => word === m,
+                          )
 
-                        onMeaningClicked(index)
+                          onWordClicked(index)
+                        } else {
+                          const meaning = shuffleData.meanings[filteredData[0]]
+
+                          const index = shuffleData.meanings.findIndex(
+                            m => meaning === m,
+                          )
+
+                          onMeaningClicked(index)
+                        }
                       } else if (e.key === 'Tab') {
                         handleTab(e.shiftKey)
                       }
                     }}
-                    placeholder={t('meaningFilter', 'Meaning Filter')}
+                    placeholder={
+                      isReverse
+                        ? t('wordFilter', 'Word Filter')
+                        : t('meaningFilter', 'Meaning Filter')
+                    }
                     value={shuffleData.meaningFilter}
                   />
+                  {isMobile && (
+                    <span
+                      className="ml-[8px] text-[14px] underline"
+                      onClick={e => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        handleTab(false)
+                      }}
+                    >
+                      {t('dict.nextWord', 'Next word')}
+                    </span>
+                  )}
                 </div>
-                {filteredData.map(i => {
+                {filteredData.map((i, idx) => {
                   const word = shuffleData.words[i]
                   const meaning = shuffleData.meanings[i]
                   const pronunciation = shuffleData.pronunciations[i]
@@ -547,51 +765,58 @@ export const DictContent = ({
                   const isPronunciationClicked =
                     shuffleData.currentClick.pronunciation === i
 
+                  const wordEl = (
+                    <div
+                      className={[
+                        isWordClicked &&
+                        !shuffleData.meaningFilter &&
+                        !shuffleData.pronunciationFilter
+                          ? CLICKED_STYLE
+                          : '',
+                        isMobile
+                          ? 'w-[50px] min-w-[50px] text-[20px]'
+                          : 'w-[200px] min-w-[200px] text-[40px]',
+                      ].join(' ')}
+                      onClick={() => {
+                        if (
+                          shuffleData.meaningFilter ||
+                          shuffleData.pronunciationFilter
+                        ) {
+                          return
+                        }
+
+                        const newShuffleData = {
+                          ...shuffleData,
+                        }
+
+                        newShuffleData.currentClick = {
+                          ...shuffleData.currentClick,
+                          word: isWordClicked ? null : i,
+                        }
+
+                        if (displayPronunciation) {
+                          pronunciationFilterRef.current?.focus()
+                        } else {
+                          meaningFilterRef.current?.focus()
+                        }
+
+                        setShuffleData(newShuffleData)
+                      }}
+                    >
+                      {!isReverse &&
+                      (shuffleData.meaningFilter ||
+                        shuffleData.pronunciationFilter)
+                        ? '-'
+                        : word}
+                    </div>
+                  )
+
                   return (
                     <div
-                      className="flex min-w-[500px] flex-row gap-[10px] border-b-[1px] border-[#ccc] py-[10px] text-[22px]"
+                      className="flex min-w-[500px] flex-row items-center justify-start gap-[10px] border-b-[1px] border-[#ccc] py-[10px] text-[22px]"
                       key={i}
                     >
-                      <div
-                        className={[
-                          isWordClicked &&
-                          !shuffleData.meaningFilter &&
-                          !shuffleData.pronunciationFilter
-                            ? CLICKED_STYLE
-                            : '',
-                          'w-[100px] min-w-[100px] cursor-pointer',
-                        ].join(' ')}
-                        onClick={() => {
-                          if (
-                            shuffleData.meaningFilter ||
-                            shuffleData.pronunciationFilter
-                          ) {
-                            return
-                          }
-
-                          const newShuffleData = {
-                            ...shuffleData,
-                          }
-
-                          newShuffleData.currentClick = {
-                            ...shuffleData.currentClick,
-                            word: isWordClicked ? null : i,
-                          }
-
-                          if (displayPronunciation) {
-                            pronunciationFilterRef.current?.focus()
-                          } else {
-                            meaningFilterRef.current?.focus()
-                          }
-
-                          setShuffleData(newShuffleData)
-                        }}
-                      >
-                        {shuffleData.meaningFilter ||
-                        shuffleData.pronunciationFilter
-                          ? '-'
-                          : word}
-                      </div>
+                      {!isReverse && wordEl}
                       {displayPronunciation && (
                         <div
                           className={[
@@ -600,18 +825,46 @@ export const DictContent = ({
                           ].join(' ')}
                           onClick={() => onPronunciationClicked(i)}
                         >
-                          {shuffleData.meaningFilter ? '-' : pronunciation}
+                          {(() => {
+                            if (shuffleData.meaningFilter) return '-'
+
+                            return (
+                              <span>
+                                {shuffleData.pronunciationFilter ? (
+                                  <span className={NUM_STYLE}>{idx + 1}</span>
+                                ) : null}
+                                <span>{pronunciation}</span>
+                              </span>
+                            )
+                          })()}
                         </div>
                       )}
                       <div
                         className={[
                           isMeaningClicked ? CLICKED_STYLE : '',
                           'cursor-pointer',
+                          isReverse ? 'flex-1' : '',
                         ].join(' ')}
                         onClick={() => onMeaningClicked(i)}
                       >
-                        {shuffleData.pronunciationFilter ? '-' : meaning}
+                        {(() => {
+                          if (
+                            (isReverse && shuffleData.meaningFilter) ||
+                            shuffleData.pronunciationFilter
+                          )
+                            return '-'
+
+                          return (
+                            <span>
+                              {shuffleData.meaningFilter ? (
+                                <span className={NUM_STYLE}>{idx + 1}</span>
+                              ) : null}
+                              <span>{meaning}</span>
+                            </span>
+                          )
+                        })()}
                       </div>
+                      {isReverse && wordEl}
                     </div>
                   )
                 })}
@@ -669,7 +922,10 @@ export const DictContent = ({
                       ({i + 1})
                     </div>
                     <div
-                      className="cursor-pointer break-keep border-b-[1px] border-[#ccc] text-[30px]"
+                      className={[
+                        'cursor-pointer break-keep border-b-[1px] border-[#ccc]',
+                        isReverse ? 'flex items-center' : 'text-[30px]',
+                      ].join(' ')}
                       onClick={() => {
                         if (displayedItems.has(i)) {
                           displayedItems.delete(i)
@@ -680,7 +936,7 @@ export const DictContent = ({
                         }
                       }}
                     >
-                      {dict.word}
+                      {isReverse ? dict.meaning : dict.word}
                     </div>
                     {displayedItems.has(i) &&
                       (() => {
@@ -693,7 +949,12 @@ export const DictContent = ({
                         })()
 
                         return (
-                          <div className="pt-[10px]">
+                          <div
+                            className={[
+                              'pt-[10px]',
+                              isReverse ? 'text-[30px]' : '',
+                            ].join(' ')}
+                          >
                             {displayPronunciation ? (
                               <i className="mr-[4px] font-bold">
                                 [{pronunciation}]
@@ -701,7 +962,7 @@ export const DictContent = ({
                             ) : (
                               ''
                             )}
-                            {dict.meaning}
+                            {isReverse ? dict.word : dict.meaning}
                           </div>
                         )
                       })()}
