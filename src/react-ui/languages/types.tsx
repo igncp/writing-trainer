@@ -8,10 +8,13 @@ export type T_LangOpts = { [k: string]: unknown }
 export type T_LinksBlock = (選項: {
   文字: string
   children?: ReactNode
+  focusWritingArea: () => void
   fragments: T_Fragments
   langHandler: LanguageHandler | null
   langOptsObj: Record<string, unknown>
   updateFragments: (list: T_Fragments) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  updateLangOpts: (...args: any[]) => void
 }) => ReactNode
 
 export type T_GetToneColor = (

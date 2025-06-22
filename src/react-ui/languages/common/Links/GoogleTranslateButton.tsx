@@ -1,3 +1,4 @@
+import { useIsMobile } from '#/react-ui/lib/hooks'
 import { useTranslation } from 'react-i18next'
 
 import Button, { T_ButtonProps } from '../../../components/button/button'
@@ -9,6 +10,7 @@ type Props = {
 
 const GoogleTranslateButton = ({ language, text, ...rest }: Props) => {
   const { i18n, t } = useTranslation()
+  const isMobile = useIsMobile()
 
   const hrefText = text
     .split('')
@@ -32,8 +34,17 @@ const GoogleTranslateButton = ({ language, text, ...rest }: Props) => {
 
   return (
     <Button
-      href={`https://translate.google.com/?sl=${hrefLang}&tl=${intoLang}&text=${encodeURIComponent(hrefText)}`}
-      shouldUseLink
+      onClick={() => {
+        const link = `https://translate.google.com/?sl=${hrefLang}&tl=${intoLang}&text=${encodeURIComponent(hrefText)}`
+
+        // Copy to clipboard since sometimes it doesn't work on mobile to
+        // directly open the link with the text prefilled
+        if (isMobile) {
+          navigator.clipboard.writeText(text)
+        }
+
+        window.open(link, '_blank', 'noopener,noreferrer')
+      }}
       {...rest}
     >
       {t('option.translateGoogle')}

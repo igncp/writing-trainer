@@ -42,7 +42,9 @@
     "hideAll": "隱藏所有",
     "hideOneWord": "不顯示一個字的字元",
     "hidePronunciation": "隱藏發音",
+    "nextWord": "下一個字",
     "remaining": "剩餘",
+    "reverse": "反向",
     "showAll": "顯示所有",
     "startShuffle": "開始隨機",
     "total": "總數",
@@ -68,6 +70,7 @@
     "noTones": "不要使用聲調",
     "reductive": "還原論者",
     "repetitive": "重複的",
+    "toggleTones": "切換聲調",
     "translateAI": "AI 翻譯",
     "translateCantodict": "Cantodict 翻譯",
     "translateGoogle": "Google 翻譯",
@@ -145,5 +148,6 @@
     "successCount": "成功次數",
     "successPerc": "成功百分比",
     "uniqueCharsCount": "獨特字元數量"
-  }
+  },
+  "wordFilter": "單詞過濾器"
 }

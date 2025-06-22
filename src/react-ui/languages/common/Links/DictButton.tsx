@@ -3,6 +3,7 @@ import TextInput from '#/react-ui/components/TextInput/TextInput'
 import { useMainContext } from '#/react-ui/containers/main-context'
 import { DictResponse } from '#/react-ui/graphql/graphql'
 import { backendClient } from '#/react-ui/lib/backendClient'
+import { useIsMobile } from '#/react-ui/lib/hooks'
 import { TOOLTIP_ID } from '#/utils/tooltip'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -122,7 +123,7 @@ export const DictContent = ({
   setDictResponse: (dictResponse: [DictResponse, string] | null) => void
   text: string
 }) => {
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+  const isMobile = useIsMobile()
   const [displayedItems, setDisplayedItems] = useState(new Set<number>())
   const [displayOneWord, setDisplayOneWord] = useState(false)
   const [displayPronunciation, setDisplayPronunciation] = useState(false)
@@ -746,6 +747,12 @@ export const DictContent = ({
                         e.preventDefault()
                         e.stopPropagation()
                         handleTab(false)
+
+                        if (displayPronunciation) {
+                          pronunciationFilterRef.current?.focus()
+                        } else {
+                          meaningFilterRef.current?.focus()
+                        }
                       }}
                     >
                       {t('dict.nextWord', 'Next word')}

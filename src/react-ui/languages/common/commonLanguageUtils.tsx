@@ -129,7 +129,12 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     setPracticeHasError(false)
     setPractice(`${newPractice} `)
 
-    if (!isDuringReduction) {
+    if (
+      !isDuringReduction &&
+      !(langOpts.charsWithMistakes as string[] | undefined)?.includes(
+        currentCharObj.word,
+      )
+    ) {
       saveSuccessChar(selectedLanguage, currentCharObj.word)
     }
 

@@ -42,7 +42,9 @@
     "hideAll": "Hide all",
     "hideOneWord": "Don't show words with one character",
     "hidePronunciation": "Hide pronunciation",
+    "nextWord": "Next word",
     "remaining": "Remaining",
+    "reverse": "Reverse",
     "showAll": "Show all",
     "startShuffle": "Start Shuffle",
     "total": "Total",
@@ -68,6 +70,7 @@
     "noTones": "No Tones",
     "reductive": "Reductive",
     "repetitive": "Repetitive",
+    "toggleTones": "Toggle Tones",
     "translateAI": "Translate AI",
     "translateCantodict": "Use cantodict",
     "translateGoogle": "Google Translate",
@@ -145,5 +148,6 @@
     "successCount": "Success Count",
     "successPerc": "Success Percentage",
     "uniqueCharsCount": "Unique Chars Count"
-  }
+  },
+  "wordFilter": "Word Filter"
 }

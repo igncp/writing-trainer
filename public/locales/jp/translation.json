@@ -42,7 +42,9 @@
     "hideAll": "すべてを隠す",
     "hideOneWord": "一文字の単語を表示しない",
     "hidePronunciation": "発音を隠す",
+    "nextWord": "次の単語",
     "remaining": "残り",
+    "reverse": "反転",
     "showAll": "すべてを表示",
     "startShuffle": "シャッフルを開始",
     "total": "合計",
@@ -68,8 +70,9 @@
     "noTones": "声調なし",
     "reductive": "簡約的",
     "repetitive": "繰り返し",
+    "toggleTones": "声調を切り替える",
     "translateAI": "AIを使って翻訳する",
-    "translateCantodict": "Use cantodict",
+    "translateCantodict": "Cantodictを使って翻訳する",
     "translateGoogle": "Googleを使って翻訳する",
     "useDict": "Use Dictionary",
     "useTones": "声調を使用する",
@@ -145,5 +148,6 @@
     "successCount": "成功回数",
     "successPerc": "成功率",
     "uniqueCharsCount": "一意の文字数"
-  }
+  },
+  "wordFilter": "単語フィルター"
 }

@@ -7,6 +7,7 @@ import {
   doStatsCheck,
   getMostFailures,
 } from '#/react-ui/languages/common/stats'
+import { useIsMobile } from '#/react-ui/lib/hooks'
 import { Paths } from '#/react-ui/lib/paths'
 import {
   ChangeEvent,
@@ -166,8 +167,8 @@ const Panel = ({
   const [currentDisplayCharIdx, setCurrentDisplayCharIdx] = useState<number>(0)
   const [writingBorder, setWritingBorder] = useState<'bold' | 'normal'>('bold')
   const [hasExtraControls, setHasExtraControls] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
   const writingArea = useRef<HTMLTextAreaElement | null>(null)
+  const isMobile = useIsMobile()
 
   const [displayMobileKeyboard, setDisplayMobileKeyboard] = useState<
     boolean | null
@@ -235,20 +236,6 @@ const Panel = ({
 
     localLanguageUIController.loadDictionary().then(onDictionaryLoaded)
   }, [languageUIManager, selectedLanguage, hasLoadedStorage])
-
-  useEffect(() => {
-    const listener = () => {
-      setIsMobile(window.innerWidth <= 768)
-    }
-
-    listener()
-
-    window.addEventListener('resize', listener)
-
-    return () => {
-      window.removeEventListener('resize', listener)
-    }
-  }, [])
 
   useEffect(() => {
     // eslint-disable-next-line
@@ -1078,10 +1065,14 @@ const Panel = ({
       </div>
       <div className="mb-[12px] flex flex-row flex-wrap justify-start gap-[12px]">
         <LinksBlock
+          focusWritingArea={() => {
+            writingArea.current?.focus()
+          }}
           fragments={fragments}
           langHandler={langHandler}
           langOptsObj={langOptsObj}
           updateFragments={setFragments}
+          updateLangOpts={updateLangOpts}
           文字={originalTextValue}
         />
       </div>
