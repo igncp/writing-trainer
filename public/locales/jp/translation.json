@@ -36,19 +36,18 @@
   "dict": {
     "clear": "クリア",
     "closeShuffle": "閉じる",
-    "correct": "正しい",
     "displayOneWord": "一文字の単語を表示",
     "displayPronunciation": "発音を表示",
+    "extraFilterCheckNo": "フィルターを削除",
+    "extraFilterCheckYes": "フィルターを追加",
     "hideAll": "すべてを隠す",
     "hideOneWord": "一文字の単語を表示しない",
     "hidePronunciation": "発音を隠す",
     "nextWord": "次の単語",
-    "remaining": "残り",
     "reverse": "反転",
     "showAll": "すべてを表示",
     "startShuffle": "シャッフルを開始",
-    "total": "合計",
-    "wrong": "間違った"
+    "total": "合計"
   },
   "help": {
     "how": "Writing Trainer の使い方",

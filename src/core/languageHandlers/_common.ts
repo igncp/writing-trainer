@@ -1,68 +1,67 @@
-import { LanguageDefinition, unknownPronunciation } from '../constants'
-import { T_CharObj, CurrentCharObj } from '../languageManager'
+import { LanguageDefinition, unknownPronunciation } from '../constants';
+import { CurrentCharObj, T_CharObj } from '../languageManager';
+import { specialChars } from './_特殊字元';
 
-import { specialChars } from './_特殊字元'
-
-type T_Dictionary = { [k: string]: string }
+type T_Dictionary = { [k: string]: string };
 
 type 類型_轉換為字元對象列表 = (opts: {
-  charsToRemove: string[]
-  langOpts?: { [k: string]: unknown }
-  text: string
-}) => T_CharObj[]
+  charsToRemove: string[];
+  langOpts?: { [k: string]: unknown };
+  text: string;
+}) => T_CharObj[];
 
 export class LanguageHandler {
-  public readonly convertToCharsObjs: 類型_轉換為字元對象列表
-  private readonly extraSpecialChars: string[]
-  private readonly language: LanguageDefinition
+  private readonly extraSpecialChars: string[];
+  private readonly language: LanguageDefinition;
+  public readonly convertToCharsObjs: 類型_轉換為字元對象列表;
 
   public constructor({
     convertToCharsObjs,
     extraSpecialChars,
     language,
   }: {
-    convertToCharsObjs: LanguageHandler['convertToCharsObjs']
-    extraSpecialChars?: string[]
-    language: LanguageHandler['language']
+    convertToCharsObjs: LanguageHandler['convertToCharsObjs'];
+    extraSpecialChars?: string[];
+    language: LanguageHandler['language'];
   }) {
-    this.convertToCharsObjs = convertToCharsObjs
-    this.language = language
-    this.extraSpecialChars = extraSpecialChars ?? []
+    this.convertToCharsObjs = convertToCharsObjs;
+    this.language = language;
+    this.extraSpecialChars = extraSpecialChars ?? [];
   }
 
   public filterTextToPractice({
     charsToRemove,
     text,
   }: {
-    charsToRemove: string[]
-    text: string
+    charsToRemove: string[];
+    text: string;
   }) {
-    const specialCharsList = this.getSpecialChars()
-    const allCharsToRemove = charsToRemove.concat(specialCharsList)
+    const specialCharsList = this.getSpecialChars();
+    const allCharsToRemove = charsToRemove.concat(specialCharsList);
 
     return text
       .split('')
-      .filter(c => !!c)
-      .filter(c => !allCharsToRemove.includes(c))
-      .join('')
+      .filter((c) => !!c)
+      .filter((c) => !allCharsToRemove.includes(c))
+      .join('');
   }
 
   public getCurrentCharObj({
     originalCharsObjs,
     practiceCharsObjs,
   }: {
-    originalCharsObjs: T_CharObj[]
-    practiceCharsObjs: T_CharObj[]
+    originalCharsObjs: T_CharObj[];
+    practiceCharsObjs: T_CharObj[];
   }) {
     const originalCharsWithPronunciationObjs = originalCharsObjs
       .map((ch, idx) => ({ ch, idx }))
-      .filter(c => !!c.ch.pronunciation)
+      .filter((c) => !!c.ch.pronunciation);
 
     const practiceCharsWithPronunciation = practiceCharsObjs.filter(
-      c => !!c.pronunciation,
-    )
+      (c) => !!c.pronunciation,
+    );
 
-    let originalCharIdx = 0
+    let originalCharIdx = 0;
 
     for (
       let practiceIndex = 0;
@@ -70,10 +69,10 @@ export class LanguageHandler {
       practiceIndex += 1
     ) {
       originalCharIdx =
-        practiceIndex % originalCharsWithPronunciationObjs.length
+        practiceIndex % originalCharsWithPronunciationObjs.length;
 
       const expectedCharObj =
-        originalCharsWithPronunciationObjs[originalCharIdx]
+        originalCharsWithPronunciationObjs[originalCharIdx];
 
       if (
         expectedCharObj.ch.word !==
@@ -82,68 +81,71 @@ export class LanguageHandler {
         return new CurrentCharObj({
           ch: expectedCharObj.ch,
           index: expectedCharObj.idx,
-        })
+        });
       }
     }
 
     originalCharIdx =
       practiceCharsWithPronunciation.length %
-      originalCharsWithPronunciationObjs.length
+      originalCharsWithPronunciationObjs.length;
 
     if (!originalCharsWithPronunciationObjs.length) {
-      return null
+      return null;
     }
 
     return new CurrentCharObj({
       ch: originalCharsWithPronunciationObjs[originalCharIdx].ch,
       index: originalCharsWithPronunciationObjs[originalCharIdx].idx,
-    })
+    });
   }
 
   public getId() {
-    return this.language.id
+    return this.language.id;
   }
 
   public getName() {
-    return this.language.name
+    return this.language.name;
   }
 
   public getSpecialChars() {
-    return specialChars.concat(this.extraSpecialChars)
+    return specialChars.concat(this.extraSpecialChars);
   }
 }
 
 export const convertToCharsObjsCommon =
   (handler: LanguageHandler): LanguageHandler['convertToCharsObjs'] =>
   ({ charsToRemove, langOpts = {}, text }) => {
-    const dictionary: T_Dictionary = (langOpts.dictionary || {}) as T_Dictionary
+    const dictionary: T_Dictionary = (langOpts.dictionary ??
+      {}) as T_Dictionary;
 
-    const pronunciationInput: string = (langOpts.pronunciationInput ||
-      '') as string
+    const pronunciationInput: string = (langOpts.pronunciationInput ??
+      '') as string;
 
-    const pronunciationInputArr = pronunciationInput.split(' ').filter(c => !!c)
+    const pronunciationInputArr = pronunciationInput
+      .split(' ')
+      .filter((c) => !!c);
 
-    const defaultSpecialChars = handler.getSpecialChars()
+    const defaultSpecialChars = handler.getSpecialChars();
 
     const allCharsToRemove = defaultSpecialChars
       .concat(charsToRemove)
-      .concat([' '])
+      .concat([' ']);
 
-    const charsObjsList: T_CharObj[] = []
+    const charsObjsList: T_CharObj[] = [];
 
     // @ts-expect-error 這裡的 segment 是實驗性功能
     const segmented = [...new Intl.Segmenter().segment(text)].map(
-      s => s.segment,
-    )
+      (s) => s.segment,
+    );
 
     segmented.forEach((ch, chIdx) => {
       if (allCharsToRemove.includes(ch)) {
         const charObj = new T_CharObj({
           pronunciation: '',
           word: ch,
-        })
+        });
 
-        charsObjsList.push(charObj)
+        charsObjsList.push(charObj);
       } else {
         const charObj = new T_CharObj({
           pronunciation:
@@ -151,11 +153,11 @@ export const convertToCharsObjsCommon =
             dictionary[ch] ||
             unknownPronunciation,
           word: ch,
-        })
+        });
 
-        charsObjsList.push(charObj)
+        charsObjsList.push(charObj);
       }
-    })
+    });
 
-    return charsObjsList
-  }
+    return charsObjsList;
+  };

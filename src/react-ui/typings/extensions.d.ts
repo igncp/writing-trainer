@@ -1,17 +1,17 @@
 declare module '*.csv' {
-  const list: string[][]
+  const list: string[][];
 
-  export default list
+  export default list;
 }
 
 declare module '*.yml' {
-  const list: unknown
+  const list: unknown;
 
-  export default list
+  export default list;
 }
 
 declare module '*.txt' {
-  const value: string
+  const value: string;
 
-  export default value
+  export default value;
 }

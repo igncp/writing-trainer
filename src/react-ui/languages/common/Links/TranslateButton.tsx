@@ -1,24 +1,24 @@
-import { useMainContext } from '#/react-ui/containers/main-context'
-import { backendClient } from '#/react-ui/lib/backendClient'
-import { TOOLTIP_ID } from '#/utils/tooltip'
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { FaSpinner } from 'react-icons/fa'
+import { useMainContext } from '#/react-ui/containers/main-context';
+import { backendClient } from '#/react-ui/lib/backendClient';
+import { TOOLTIP_ID } from '#/utils/tooltip';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FaSpinner } from 'react-icons/fa';
 
-import Button, { T_ButtonProps } from '../../../components/button/button'
+import Button, { T_ButtonProps } from '../../../components/button/button';
 
 type Props = {
-  language: string
-  text: string
-} & Omit<T_ButtonProps, 'children'>
+  language: string;
+  text: string;
+} & Omit<T_ButtonProps, 'children'>;
 
 const TranslateButton = ({ language, text, ...rest }: Props) => {
-  const { t } = useTranslation()
-  const mainContext = useMainContext()
-  const [translation, setTranslation] = useState<[string, string] | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const { t } = useTranslation();
+  const mainContext = useMainContext();
+  const [translation, setTranslation] = useState<[string, string] | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { canUseAI } = mainContext.state
+  const { canUseAI } = mainContext.state;
 
   return (
     <>
@@ -27,16 +27,16 @@ const TranslateButton = ({ language, text, ...rest }: Props) => {
         data-tooltip-id={TOOLTIP_ID}
         disabled={!canUseAI}
         onClick={() => {
-          setIsLoading(true)
+          setIsLoading(true);
 
-          backendClient
+          void backendClient
             .translateText(text, language)
-            .then(_translation => {
-              setTranslation([text, _translation])
+            .then((_translation) => {
+              setTranslation([text, _translation]);
             })
             .finally(() => {
-              setIsLoading(false)
-            })
+              setIsLoading(false);
+            });
         }}
         {...rest}
       >
@@ -57,7 +57,7 @@ const TranslateButton = ({ language, text, ...rest }: Props) => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default TranslateButton
+export default TranslateButton;

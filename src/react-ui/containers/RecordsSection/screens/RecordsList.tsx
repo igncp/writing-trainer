@@ -1,70 +1,68 @@
-import { Record } from '#/core'
-import { backendClient, SongItem } from '#/react-ui/lib/backendClient'
-import { TOOLTIP_ID } from '#/utils/tooltip'
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { Record } from '#/core';
+import { backendClient, SongItem } from '#/react-ui/lib/backendClient';
+import { TOOLTIP_ID } from '#/utils/tooltip';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import TextInput from '../../../components/TextInput/TextInput'
-import Button from '../../../components/button/button'
+import Button from '../../../components/button/button';
+import TextInput from '../../../components/TextInput/TextInput';
 
 type CellProps = {
-  bold?: boolean
-  className?: string
-  label?: string
-  tooltip?: string
-  value: string
-}
+  bold?: boolean;
+  className?: string;
+  label?: string;
+  tooltip?: string;
+  value: string;
+};
 
-const Cell = ({ bold, className, label, tooltip, value }: CellProps) => {
-  return (
-    <div
-      className={className}
-      style={{
-        display: 'inline-block',
-        marginRight: 30,
-        ...(bold ? { fontWeight: 700 } : {}),
-      }}
-      {...(tooltip
-        ? {
-            'data-tooltip-content': tooltip,
-            'data-tooltip-id': TOOLTIP_ID,
-          }
-        : {})}
-    >
-      {label && (
-        <>
-          <b>{label}</b>:{' '}
-        </>
-      )}
-      {value}
-    </div>
-  )
-}
+const Cell = ({ bold, className, label, tooltip, value }: CellProps) => (
+  <div
+    className={className}
+    style={{
+      display: 'inline-block',
+      marginRight: 30,
+      ...(bold ? { fontWeight: 700 } : {}),
+    }}
+    {...(tooltip
+      ? {
+          'data-tooltip-content': tooltip,
+          'data-tooltip-id': TOOLTIP_ID,
+        }
+      : {})}
+  >
+    {label && (
+      <>
+        <b>{label}</b>:{' '}
+      </>
+    )}
+    {value}
+  </div>
+);
 
 const formatRecordDate = (d: number): string => {
-  const date = new Date(d)
+  const date = new Date(d);
 
   const dateStr = date.toLocaleDateString('en-US', {
     hour: '2-digit',
     hour12: false,
     minute: '2-digit',
-  })
+  });
 
-  return `[${dateStr}]`
-}
+  return `[${dateStr}]`;
+};
 
 type 條目清單屬性 = {
-  disabled: boolean
-  onPronunciationLoad: (p: string) => void
-  onRecordEdit: (r: Record) => void
-  onRecordLoad: (r: Record) => void
-  onRecordRemove: (r: Record) => void
-  onSongLoad: (s: string[]) => void
-  records: Record[]
-  setSongsFilter: (s: string) => void
-  songs: { list: SongItem[]; total: number }
-  songsFilter: string
-}
+  disabled: boolean;
+  onPronunciationLoad: (p: string) => void;
+  onRecordEdit: (r: Record) => void;
+  onRecordLoad: (r: Record) => void;
+  onRecordRemove: (r: Record) => void;
+  onSongLoad: (s: string[]) => void;
+  records: Record[];
+  setSongsFilter: (s: string) => void;
+  songs: { list: SongItem[]; total: number };
+  songsFilter: string;
+};
 
 const RecordsList = ({
   disabled,
@@ -78,13 +76,13 @@ const RecordsList = ({
   songs,
   songsFilter,
 }: 條目清單屬性) => {
-  const { t } = useTranslation()
-  const [filterText, setFilterText] = useState<string>('')
+  const { t } = useTranslation();
+  const [filterText, setFilterText] = useState<string>('');
 
   const filteredList = Record.filterByText({
     filterText,
     records,
-  })
+  });
 
   return (
     <div>
@@ -92,12 +90,12 @@ const RecordsList = ({
         <div style={{ padding: 10, position: 'relative' }}>
           <TextInput
             autoFocus
-            onChange={e => {
-              setFilterText(e.target.value)
+            onChange={(e) => {
+              setFilterText(e.target.value);
             }}
             onEnterPress={() => {
               if (filteredList.length > 0) {
-                onRecordLoad(filteredList[0])
+                onRecordLoad(filteredList[0]);
               }
             }}
             placeholder="Filter by name and language"
@@ -107,8 +105,8 @@ const RecordsList = ({
       )}
       {!!filteredList.length && (
         <div style={{ maxHeight: 'calc(100vh - 150px)', overflow: 'auto' }}>
-          {filteredList.map(filteredItem => {
-            const { createdOn, id, lastLoadedOn, name } = filteredItem
+          {filteredList.map((filteredItem) => {
+            const { createdOn, id, lastLoadedOn, name } = filteredItem;
 
             return (
               <div
@@ -147,7 +145,7 @@ const RecordsList = ({
                   <Button
                     disabled={disabled}
                     onClick={() => {
-                      onRecordLoad(filteredItem)
+                      onRecordLoad(filteredItem);
                     }}
                   >
                     {t('record.load')}
@@ -155,7 +153,7 @@ const RecordsList = ({
                   <Button
                     disabled={disabled}
                     onClick={() => {
-                      onRecordEdit(filteredItem)
+                      onRecordEdit(filteredItem);
                     }}
                   >
                     {t('record.edit')}
@@ -163,14 +161,14 @@ const RecordsList = ({
                   <Button
                     disabled={disabled}
                     onClick={() => {
-                      onRecordRemove(filteredItem)
+                      onRecordRemove(filteredItem);
                     }}
                   >
                     {t('record.remove')}
                   </Button>
                 </div>
               </div>
-            )
+            );
           })}
         </div>
       )}
@@ -178,19 +176,19 @@ const RecordsList = ({
       <div style={{ maxHeight: 'calc(100vh - 150px)', overflow: 'auto' }}>
         <TextInput
           className="my-[16px] w-full"
-          onChange={e => {
-            setSongsFilter(e.target.value)
+          onChange={(e) => {
+            setSongsFilter(e.target.value);
           }}
           onEnterPress={() => {}}
           placeholder={t('record.filter', 'Filter songs')}
           value={songsFilter}
         />
-        {songs.list.map(song => {
-          const { artist, id: songId, title, videoUrl } = song
+        {songs.list.map((song) => {
+          const { artist, id: songId, title, videoUrl } = song;
 
           const 影片連結網址 = videoUrl.startsWith('https://')
             ? videoUrl
-            : `https://www.youtube.com/watch?v=${videoUrl}`
+            : `https://www.youtube.com/watch?v=${videoUrl}`;
 
           return (
             <div
@@ -216,27 +214,27 @@ const RecordsList = ({
               <Button
                 disabled={disabled}
                 onClick={() => {
-                  backendClient
+                  void backendClient
                     .getSongLyrics(song.id)
                     .then(({ lyrics, pronunciation }) => {
                       onSongLoad(
                         [song.title].concat((lyrics || '').split('\n')),
-                      )
+                      );
 
                       if (pronunciation) {
-                        onPronunciationLoad(pronunciation)
+                        onPronunciationLoad(pronunciation);
                       }
-                    })
+                    });
                 }}
               >
                 {t('record.load')}
               </Button>
             </div>
-          )
+          );
         })}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default RecordsList
+export default RecordsList;

@@ -11,4 +11,4 @@ export const Paths = {
   stats: {
     main: '/stats',
   },
-}
+};

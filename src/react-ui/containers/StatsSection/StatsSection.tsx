@@ -1,57 +1,61 @@
-import Button from '#/react-ui/components/button/button'
-import { StatsSaveResultDataGql } from '#/react-ui/graphql/graphql'
-import { useCallback, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import Button from '#/react-ui/components/button/button';
+import { StatsSaveResultDataGql } from '#/react-ui/graphql/graphql';
+import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   deleteStats,
   getStats,
   StatsLocation,
-} from '../../languages/common/stats'
-import { useMainContext } from '../main-context'
+} from '../../languages/common/stats';
+import { useMainContext } from '../main-context';
 
 type Props = {
-  onClose: () => void
-  selectedLanguage: string
-}
+  onClose: () => void;
+  selectedLanguage: string;
+};
 
-const rowClasses = 'border-b-[1px] border-[#ccc] even:bg-[#222]'
-const cellClasses = 'p-[8px]'
+const rowClasses = 'border-b-[1px] border-[#ccc] even:bg-[#222]';
+const cellClasses = 'p-[8px]';
 
 export const StatsSection = ({ onClose, selectedLanguage }: Props) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  const mainContext = useMainContext()
-  const { isLoggedIn } = mainContext.state
-  const [isShowingChars, setIsShowingChars] = useState(false)
-  const [statsLocation, setStatsLocation] = useState<StatsLocation | null>(null)
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [deleteConfirmation, setDeleteConfirmation] = useState('')
+  const mainContext = useMainContext();
+  const { isLoggedIn } = mainContext.state;
+  const [isShowingChars, setIsShowingChars] = useState(false);
 
-  const [stats, setStats] = useState<null | StatsSaveResultDataGql>(null)
+  const [statsLocation, setStatsLocation] = useState<null | StatsLocation>(
+    null,
+  );
+
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState('');
+
+  const [stats, setStats] = useState<null | StatsSaveResultDataGql>(null);
 
   const retrieveStats = useCallback(async () => {
-    if (process.env.NODE_ENV === 'test') return
+    if (process.env.NODE_ENV === 'test') return;
 
-    getStats(isLoggedIn, selectedLanguage)
-      .then(result => {
-        setStats(result.data)
-        setStatsLocation(result.type)
+    return getStats(isLoggedIn, selectedLanguage)
+      .then((result) => {
+        setStats(result.data);
+        setStatsLocation(result.type);
       })
-      .catch(err => {
-        console.error('Error getting stats:', err)
-      })
-  }, [isLoggedIn, selectedLanguage])
+      .catch((err) => {
+        console.error('Error getting stats:', err);
+      });
+  }, [isLoggedIn, selectedLanguage]);
 
   useEffect(() => {
-    retrieveStats()
-  }, [retrieveStats])
+    void retrieveStats();
+  }, [retrieveStats]);
 
   const displayPerc = (perc: number | undefined) => {
-    if (perc === undefined) return '-'
+    if (perc === undefined) return '-';
 
-    return `${(perc * 100).toFixed(2)}%`
-  }
+    return `${(perc * 100).toFixed(2)}%`;
+  };
 
   return (
     <div>
@@ -144,7 +148,7 @@ export const StatsSection = ({ onClose, selectedLanguage }: Props) => {
           <div>
             <Button
               onClick={() => {
-                setIsShowingChars(!isShowingChars)
+                setIsShowingChars(!isShowingChars);
               }}
             >
               {t('stats.showChars', 'Show unique chars today')}
@@ -158,8 +162,8 @@ export const StatsSection = ({ onClose, selectedLanguage }: Props) => {
           <div>
             <Button
               onClick={() => {
-                setIsDeleting(true)
-                setDeleteConfirmation('')
+                setIsDeleting(true);
+                setDeleteConfirmation('');
               }}
             >
               {t('panel.deleteStats')}
@@ -171,29 +175,29 @@ export const StatsSection = ({ onClose, selectedLanguage }: Props) => {
                   <input
                     autoFocus
                     className="rounded-[8px] border-[1px] border-[#fff] p-[4px]"
-                    onChange={e => setDeleteConfirmation(e.target.value)}
+                    onChange={(e) => setDeleteConfirmation(e.target.value)}
                     type="text"
                     value={deleteConfirmation}
                   />
                   <Button
                     disabled={deleteConfirmation !== 'confirm'}
-                    onClick={e => {
-                      e?.preventDefault()
-                      e?.stopPropagation()
+                    onClick={(e) => {
+                      e?.preventDefault();
+                      e?.stopPropagation();
 
                       if (deleteConfirmation === 'confirm') {
-                        deleteStats().then(success => {
+                        void deleteStats().then((success) => {
                           if (success) {
-                            setIsDeleting(false)
+                            setIsDeleting(false);
 
-                            getStats(isLoggedIn, selectedLanguage).then(
-                              result => {
-                                setStats(result.data)
-                                setStatsLocation(result.type)
+                            void getStats(isLoggedIn, selectedLanguage).then(
+                              (result) => {
+                                setStats(result.data);
+                                setStatsLocation(result.type);
                               },
-                            )
+                            );
                           }
-                        })
+                        });
                       }
                     }}
                   >
@@ -206,5 +210,5 @@ export const StatsSection = ({ onClose, selectedLanguage }: Props) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};

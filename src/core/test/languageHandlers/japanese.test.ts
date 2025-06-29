@@ -1,18 +1,18 @@
-import { japaneseHandler, specialChars, T_CharObj } from '../..'
+import { japaneseHandler, specialChars, T_CharObj } from '../..';
 
 describe('values', () => {
   it('has the correct values', () => {
-    expect(japaneseHandler.getId()).toEqual('japanese')
-    expect(japaneseHandler.getName()).toEqual('Japanese')
-  })
-})
+    expect(japaneseHandler.getId()).toEqual('japanese');
+    expect(japaneseHandler.getName()).toEqual('Japanese');
+  });
+});
 
 describe('getSpecialChars', () => {
   it('returns the expected array', () => {
-    expect(japaneseHandler.getSpecialChars()).toEqual(specialChars)
-    expect(japaneseHandler.getSpecialChars()).toEqual(specialChars)
-  })
-})
+    expect(japaneseHandler.getSpecialChars()).toEqual(specialChars);
+    expect(japaneseHandler.getSpecialChars()).toEqual(specialChars);
+  });
+});
 
 describe('convertToCharsObjs', () => {
   it('returns the correct array when correct pronunciation', () => {
@@ -44,21 +44,21 @@ describe('convertToCharsObjs', () => {
         pronunciation: '',
         word: ' ',
       }),
-    ])
-  })
-})
+    ]);
+  });
+});
 
 describe('filterTextToPractice', () => {
   it('returns the expected string', () => {
     expect(
       japaneseHandler.filterTextToPractice({ charsToRemove: [], text: 'foo' }),
-    ).toEqual('foo')
+    ).toEqual('foo');
 
     expect(
       japaneseHandler.filterTextToPractice({
         charsToRemove: [],
         text: 'f_o_o',
       }),
-    ).toEqual('foo')
-  })
-})
+    ).toEqual('foo');
+  });
+});

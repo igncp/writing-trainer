@@ -1,13 +1,12 @@
-import { Button } from '#/react-ui'
-import { useState } from 'react'
-
-import openOptionsPage from '@/services/openOptionsPage'
-import sendTabsMessage from '@/services/sendTabsMessage'
-import { MessageType } from '@/utils/constants'
+import openOptionsPage from '@/services/openOptionsPage';
+import sendTabsMessage from '@/services/sendTabsMessage';
+import { MessageType } from '@/utils/constants';
+import { Button } from '#/react-ui';
+import { useState } from 'react';
 
 type onEnableOnceClickOpts = {
-  setButtonOneEnabled: (v: boolean) => void
-}
+  setButtonOneEnabled: (v: boolean) => void;
+};
 
 const defaultOnEnableOnceClick = ({
   setButtonOneEnabled,
@@ -15,24 +14,24 @@ const defaultOnEnableOnceClick = ({
   sendTabsMessage({ type: MessageType.EnableOnce })
     .then((received: boolean) => {
       if (received) {
-        setButtonOneEnabled(false)
+        setButtonOneEnabled(false);
       }
     })
     .catch((e: Error) => {
-      console.log(e)
-    })
-}
+      console.error(e);
+    });
+};
 
 type PopupProps = {
-  onEnableOnceClick?: (opt: onEnableOnceClickOpts) => void
-  onOptionsPageClick?: () => void
-}
+  onEnableOnceClick?: (opt: onEnableOnceClickOpts) => void;
+  onOptionsPageClick?: () => void;
+};
 
 const Popup = ({
   onEnableOnceClick = defaultOnEnableOnceClick,
   onOptionsPageClick = openOptionsPage,
 }: PopupProps) => {
-  const [isButtonOneEnabled, setButtonOneEnabled] = useState<boolean>(true)
+  const [isButtonOneEnabled, setButtonOneEnabled] = useState<boolean>(true);
 
   return (
     <div style={{ width: 400 }}>
@@ -40,7 +39,7 @@ const Popup = ({
         <Button
           disabled={!isButtonOneEnabled}
           onClick={() => {
-            onEnableOnceClick({ setButtonOneEnabled })
+            onEnableOnceClick({ setButtonOneEnabled });
           }}
         >
           Enable one time
@@ -50,7 +49,7 @@ const Popup = ({
         <Button onClick={onOptionsPageClick}>Open Config</Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Popup
+export default Popup;

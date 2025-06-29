@@ -1,100 +1,99 @@
 import {
+  Record as CoreRecord,
   LanguageDefinition,
   LanguageManager,
-  Record as CoreRecord,
-} from '#/core'
+} from '#/core';
 import {
   doStatsCheck,
   getMostFailures,
-} from '#/react-ui/languages/common/stats'
-import { useIsMobile } from '#/react-ui/lib/hooks'
-import { Paths } from '#/react-ui/lib/paths'
+} from '#/react-ui/languages/common/stats';
+import { useIsMobile } from '#/react-ui/lib/hooks';
+import { Paths } from '#/react-ui/lib/paths';
 import {
   ChangeEvent,
-  useEffect,
+  Fragment,
   KeyboardEvent as ReactKeyboardEvent,
+  useEffect,
   useRef,
   useState,
-  Fragment,
-} from 'react'
-import { useTranslation } from 'react-i18next'
-import { CgSpinnerAlt } from 'react-icons/cg'
-import { FaToolbox, FaTools } from 'react-icons/fa'
+} from 'react';
+import { useTranslation } from 'react-i18next';
+import { CgSpinnerAlt } from 'react-icons/cg';
+import { FaToolbox, FaTools } from 'react-icons/fa';
 
-import CharactersDisplay from '../../components/CharactersDisplay/CharactersDisplay'
-import ChooseLanguage from '../../components/ChooseLanguage/ChooseLanguage'
-import TextArea from '../../components/TextArea/TextArea'
-import Button from '../../components/button/button'
-import { LanguageUIManager } from '../../languages/languageUIManager'
+import Button from '../../components/button/button';
+import CharactersDisplay from '../../components/CharactersDisplay/CharactersDisplay';
+import ChooseLanguage from '../../components/ChooseLanguage/ChooseLanguage';
+import TextArea from '../../components/TextArea/TextArea';
+import { LanguageUIManager } from '../../languages/languageUIManager';
 import {
-  T_LangOpts,
-  T_getCurrentCharObjFromPractice,
   T_Fragments,
-} from '../../languages/types'
-import { T_Services } from '../../typings/mainTypes'
+  T_getCurrentCharObjFromPractice,
+  T_LangOpts,
+} from '../../languages/types';
+import { T_Services } from '../../typings/mainTypes';
 import {
   ankiModeToPath,
   AnkisMode,
   AnkisSection,
-} from '../AnkisSection/AnkisSection'
-import LoginWidget from '../LoginWidget/LoginWidget'
+} from '../AnkisSection/AnkisSection';
+import LoginWidget from '../LoginWidget/LoginWidget';
+import { useMainContext } from '../main-context';
 import RecordsSection, {
   recordsModeToPath,
   RecordsScreen,
-} from '../RecordsSection/RecordsSection'
-import { StatsSection } from '../StatsSection/StatsSection'
-import { useMainContext } from '../main-context'
+} from '../RecordsSection/RecordsSection';
+import { StatsSection } from '../StatsSection/StatsSection';
 
-const STORAGE_LANGUAGE_KEY = 'selectedLanguage'
+const STORAGE_LANGUAGE_KEY = 'selectedLanguage';
 
 const createInputSetterFn =
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (setValue: any) => (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(e.target.value)
-  }
+    setValue(e.target.value);
+  };
 
-const SHORTCUT_NEXT_FRAGMENT = 'Tab'
-const defaultFontSize = 30
+const SHORTCUT_NEXT_FRAGMENT = 'Tab';
+const defaultFontSize = 30;
 
 type Props = {
   _stories?: {
-    defaultLanguage?: LanguageDefinition['id']
-    defaultPractice?: string
-    defaultPronunciation?: string
-    langOpts?: T_LangOpts
-  }
-  getPath: () => string
-  initialFragmentIndex?: number
-  languageManager: LanguageManager
-  languageUIManager: LanguageUIManager
-  onChangeTheme?: () => void
-  onHideRequest?: () => void
-  replacePath: (path: string) => void
-  services: T_Services
-  text: string
+    defaultLanguage?: LanguageDefinition['id'];
+    defaultPractice?: string;
+    defaultPronunciation?: string;
+    langOpts?: T_LangOpts;
+  };
+  getPath: () => string;
+  initialFragmentIndex?: number;
+  languageManager: LanguageManager;
+  languageUIManager: LanguageUIManager;
+  onChangeTheme?: () => void;
+  onHideRequest?: () => void;
+  replacePath: (path: string) => void;
+  services: T_Services;
+  text: string;
   UI?: {
-    noHideButton?: boolean
-  }
-}
+    noHideButton?: boolean;
+  };
+};
 
-const getLanguageDefinitions = (languageManager: LanguageManager) => {
-  return languageManager
+const getLanguageDefinitions = (languageManager: LanguageManager) =>
+  languageManager
     .getAvailableLangs()
-    .map(langId => {
-      const languageHandler = languageManager.getLanguageHandler(langId)
+    .map((langId) => {
+      const languageHandler = languageManager.getLanguageHandler(langId);
 
-      if (!languageHandler) return null
+      if (!languageHandler) return null;
 
       return {
         id: languageHandler.getId(),
         name: languageHandler.getName(),
-      }
+      };
     })
-    .filter(item => !!item) as Array<{
-    id: LanguageDefinition['id']
-    name: string
-  }>
-}
+    .filter((item) => !!item) as Array<{
+    id: LanguageDefinition['id'];
+    name: string;
+  }>;
 
 const Panel = ({
   _stories = {},
@@ -109,349 +108,355 @@ const Panel = ({
   text,
   UI,
 }: Props) => {
-  const { t } = useTranslation()
-  const initialLanguageId = languageUIManager.getDefaultLanguage()
-  const path = getPath()
+  const { t } = useTranslation();
+  const initialLanguageId = languageUIManager.getDefaultLanguage();
+  const path = getPath();
 
   const {
     state: { isLoggedIn },
-  } = useMainContext()
+  } = useMainContext();
 
-  const [, 觸發重新渲染] = useState<number>(0)
+  const [, 觸發重新渲染] = useState<number>(0);
 
-  const languageUIController = languageUIManager.getLanguageUIController()
-  const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const languageUIController = languageUIManager.getLanguageUIController();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const [fragments, setFragments] = useState<T_Fragments>({
     index: 0,
     list: [text],
-  })
+  });
 
   const showingAnkis = (Object.entries(ankiModeToPath).find(
     ([, value]) => value === path,
-  )?.[0] ?? null) as AnkisMode | null
+  )?.[0] ?? null) as AnkisMode | null;
 
   const showingRecordsInitScreen = (Object.entries(recordsModeToPath).find(
     ([, value]) => value === path,
-  )?.[0] ?? null) as RecordsScreen | null
+  )?.[0] ?? null) as null | RecordsScreen;
 
-  const showingStatsSection = path === Paths.stats.main
+  const showingStatsSection = path === Paths.stats.main;
 
   const [currentRecord, setCurrentRecord] = useState<CoreRecord['id'] | null>(
     null,
-  )
+  );
 
-  const [currentText, setCurrentText] = useState<string>('')
-  const originalTextValue = currentText || fragments.list[fragments.index]
+  const [currentText, setCurrentText] = useState<string>('');
+  const originalTextValue = currentText || fragments.list[fragments.index];
 
   const [pronunciationValue, setPronunciation] = useState<string>(
     _stories.defaultPronunciation ?? '',
-  )
+  );
 
-  const [specialCharsValue, setSpecialChars] = useState<string>('')
-  const [writingValue, setWriting] = useState<string>('')
+  const [specialCharsValue, setSpecialChars] = useState<string>('');
+  const [writingValue, setWriting] = useState<string>('');
 
   const [practiceValue, setPractice] = useState<string>(
     _stories.defaultPractice ?? '',
-  )
+  );
 
-  const [fontSize, setFontSize] = useState<number>(defaultFontSize)
-  const [isShowingPronunciation, setShowingPronunciation] = useState(false)
-  const [isShowingEdition, setShowingEdition] = useState<boolean>(false)
-  const [practiceHasError, setPracticeHasError] = useState<boolean>(false)
+  const [fontSize, setFontSize] = useState<number>(defaultFontSize);
+  const [isShowingPronunciation, setShowingPronunciation] = useState(false);
+  const [isShowingEdition, setShowingEdition] = useState<boolean>(false);
+  const [practiceHasError, setPracticeHasError] = useState<boolean>(false);
 
   const [selectedLanguage, setSelectedLanguage] =
-    useState<LanguageDefinition['id']>(initialLanguageId)
+    useState<LanguageDefinition['id']>(initialLanguageId);
 
-  const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false)
-  const [currentDisplayCharIdx, setCurrentDisplayCharIdx] = useState<number>(0)
-  const [writingBorder, setWritingBorder] = useState<'bold' | 'normal'>('bold')
-  const [hasExtraControls, setHasExtraControls] = useState(false)
-  const writingArea = useRef<HTMLTextAreaElement | null>(null)
-  const isMobile = useIsMobile()
+  const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false);
+  const [currentDisplayCharIdx, setCurrentDisplayCharIdx] = useState<number>(0);
+  const [writingBorder, setWritingBorder] = useState<'bold' | 'normal'>('bold');
+  const [hasExtraControls, setHasExtraControls] = useState(false);
+  const writingArea = useRef<HTMLTextAreaElement | null>(null);
+  const isMobile = useIsMobile();
 
   const [displayMobileKeyboard, setDisplayMobileKeyboard] = useState<
     boolean | null
-  >(null)
+  >(null);
 
-  const [, setDictionaryKey] = useState<number>(0)
-  const langOpts = _stories.langOpts ?? languageUIController.getLangOpts()
+  const [, setDictionaryKey] = useState<number>(0);
+  const langOpts = _stories.langOpts ?? languageUIController.getLangOpts();
 
-  const langHandler = languageManager.getCurrentLanguageHandler()
+  const langHandler = languageManager.getCurrentLanguageHandler();
 
-  const { storage } = services
+  const { storage } = services;
 
   const onPracticeSourceChange = (newFragments?: T_Fragments) => {
-    setCurrentText('')
-    setPractice('')
-    setWriting('')
+    setCurrentText('');
+    setPractice('');
+    setWriting('');
 
-    setPracticeHasError(false)
+    setPracticeHasError(false);
 
-    langOpts.charsWithMistakes = []
+    langOpts.charsWithMistakes = [];
 
     if (newFragments) {
-      setFragments(newFragments)
-      storage.setValue('fragments', JSON.stringify(newFragments))
+      setFragments(newFragments);
+      storage.setValue('fragments', JSON.stringify(newFragments));
     }
-  }
+  };
 
   const handleOriginalTextUpdate = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const val = e.target.value
+    const val = e.target.value;
 
     const list = val
       .split('\n')
-      .map(s => s.trim())
-      .filter(Boolean)
+      .map((s) => s.trim())
+      .filter(Boolean);
 
     const newFragments: T_Fragments = {
       index: 0,
       list: list.length ? list : [''],
-    }
+    };
 
-    onPracticeSourceChange(newFragments)
-  }
+    onPracticeSourceChange(newFragments);
+  };
 
   const onDictionaryLoaded = () => {
-    setDictionaryKey(k => k + 1)
-  }
+    setDictionaryKey((k) => k + 1);
+  };
 
   const updateLanguage = (lang: LanguageDefinition['id']) => {
-    languageManager.setCurrentLanguageHandler(lang)
-    setSelectedLanguage(lang)
-  }
+    languageManager.setCurrentLanguageHandler(lang);
+    setSelectedLanguage(lang);
+  };
 
   useEffect(() => {
-    doStatsCheck()
-  }, [])
+    void doStatsCheck();
+  }, []);
 
   useEffect(() => {
-    if (!hasLoadedStorage) return
+    if (!hasLoadedStorage) return;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    selectedLanguage
+    selectedLanguage;
 
     const localLanguageUIController =
-      languageUIManager.getLanguageUIController()
+      languageUIManager.getLanguageUIController();
 
-    localLanguageUIController.loadDictionary().then(onDictionaryLoaded)
-  }, [languageUIManager, selectedLanguage, hasLoadedStorage])
+    void localLanguageUIController.loadDictionary().then(onDictionaryLoaded);
+  }, [languageUIManager, selectedLanguage, hasLoadedStorage]);
 
   useEffect(() => {
     // eslint-disable-next-line
-    ;(async () => {
-      const savedFontSize = await storage.getValue('fontSize')
-      const savedDisplayTonesNum = await storage.getValue('displayTonesNum')
+    (async () => {
+      const savedFontSize = await storage.getValue('fontSize');
+      const savedDisplayTonesNum = await storage.getValue('displayTonesNum');
 
       if (savedFontSize) {
-        const parsedFontSize = Number(savedFontSize)
+        const parsedFontSize = Number(savedFontSize);
 
         if (parsedFontSize) {
-          setFontSize(parsedFontSize)
+          setFontSize(parsedFontSize);
         }
       }
 
       if (savedDisplayTonesNum) {
-        setDisplayMobileKeyboard(savedDisplayTonesNum === 'true')
+        setDisplayMobileKeyboard(savedDisplayTonesNum === 'true');
       }
-    })()
-  }, [storage])
+    })();
+  }, [storage]);
 
   useEffect(() => {
     if (fontSize !== defaultFontSize) {
-      storage.setValue('fontSize', fontSize.toString())
+      storage.setValue('fontSize', fontSize.toString());
     } else {
-      storage.setValue('fontSize', '')
+      storage.setValue('fontSize', '');
     }
-  }, [fontSize, storage])
+  }, [fontSize, storage]);
 
   useEffect(() => {
-    if (displayMobileKeyboard === null) return
+    if (displayMobileKeyboard === null) return;
 
-    storage.setValue('displayTonesNum', displayMobileKeyboard.toString())
-  }, [displayMobileKeyboard, storage])
+    storage.setValue('displayTonesNum', displayMobileKeyboard.toString());
+  }, [displayMobileKeyboard, storage]);
 
   useEffect(() => {
     if (!_stories.defaultLanguage) {
-      return
+      return;
     }
 
-    updateLanguage(_stories.defaultLanguage)
+    updateLanguage(_stories.defaultLanguage);
     // eslint-disable-next-line
-  }, [_stories.defaultLanguage])
+  }, [_stories.defaultLanguage]);
 
   const updateLanguageWithStorage = async () => {
-    const storageSelectedLanguage = await storage.getValue(STORAGE_LANGUAGE_KEY)
+    const storageSelectedLanguage =
+      await storage.getValue(STORAGE_LANGUAGE_KEY);
 
     if (
       storageSelectedLanguage &&
       storageSelectedLanguage !== selectedLanguage &&
       !_stories.defaultLanguage
     ) {
-      updateLanguage(storageSelectedLanguage)
+      updateLanguage(storageSelectedLanguage);
     }
 
-    setHasLoadedStorage(true)
-  }
+    setHasLoadedStorage(true);
+  };
 
   const trimByChunks = (chunks: number) => {
-    setPractice('')
-    setWriting('')
-    setPracticeHasError(false)
+    setPractice('');
+    setWriting('');
+    setPracticeHasError(false);
 
-    langOpts.charsWithMistakes = []
+    langOpts.charsWithMistakes = [];
 
     const newFragments: T_Fragments = {
       index: 0,
       list: fragments.list.reduce<string[]>((acc, fragmentText, idx) => {
         if (idx % chunks === 0) {
-          acc.push(fragmentText)
+          acc.push(fragmentText);
 
-          return acc
+          return acc;
         }
 
-        const lastFragment = acc[acc.length - 1] || ''
-        const lastChar = lastFragment[lastFragment.length - 1] || ''
+        const lastFragment = acc[acc.length - 1] || '';
+        const lastChar = lastFragment[lastFragment.length - 1] || '';
 
         const separator =
           !!lastFragment &&
           !['!', '！', '?', '？', '.', '。', '》', '」'].includes(lastChar)
             ? '. '
-            : ' '
+            : ' ';
 
-        const newFragment = `${lastFragment}${separator}${fragmentText}`
+        const newFragment = `${lastFragment}${separator}${fragmentText}`;
 
-        acc[acc.length - 1] = newFragment
+        acc[acc.length - 1] = newFragment;
 
-        return acc
+        return acc;
       }, []),
-    }
+    };
 
-    setFragments(newFragments)
-    storage.setValue('fragments', JSON.stringify(newFragments))
-    writingArea.current?.focus()
-  }
-
-  useEffect(() => {
-    updateLanguageWithStorage().catch(() => {})
-    // eslint-disable-next-line
-  }, [])
+    setFragments(newFragments);
+    storage.setValue('fragments', JSON.stringify(newFragments));
+    writingArea.current?.focus();
+  };
 
   useEffect(() => {
+    updateLanguageWithStorage().catch(() => {});
     // eslint-disable-next-line
-    ;(async () => {
-      const lastFragments = await storage.getValue('fragments')
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line
+    (async () => {
+      const lastFragments = await storage.getValue('fragments');
 
       if (lastFragments) {
-        const parsedFragments = JSON.parse(lastFragments)
+        const parsedFragments = JSON.parse(lastFragments);
 
         setFragments({
           ...parsedFragments,
           ...(initialFragmentIndex !== undefined && {
             index: initialFragmentIndex,
           }),
-        })
+        });
       }
-    })()
-  }, [initialFragmentIndex, storage])
+    })();
+  }, [initialFragmentIndex, storage]);
 
-  const specialChars = langHandler?.getSpecialChars()
+  const specialChars = langHandler?.getSpecialChars();
 
   const langOptsObj = {
     langOpts: {
       pronunciationInput: pronunciationValue,
       ...((langOpts as unknown as T_LangOpts | undefined) ?? {}),
     },
-  }
+  };
 
-  const charsToRemove = specialCharsValue.split('').concat(specialChars ?? [])
+  const charsToRemove = specialCharsValue.split('').concat(specialChars ?? []);
 
   const charsObjsList = langHandler?.convertToCharsObjs({
     ...langOptsObj,
     charsToRemove,
     text: originalTextValue,
-  })
+  });
 
   const getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice = (
     practiceText = practiceValue,
   ) => {
-    if (!langHandler) return null
+    if (!langHandler) return null;
 
     const practiceCharsObjs = langHandler.convertToCharsObjs({
       ...langOptsObj,
       charsToRemove,
       text: practiceText,
-    })
+    });
 
     return langHandler.getCurrentCharObj({
       originalCharsObjs: charsObjsList ?? [],
       practiceCharsObjs,
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    const practiceCharObj = getCurrentCharObjFromPractice()
+    const practiceCharObj = getCurrentCharObjFromPractice();
 
     if (practiceCharObj?.ch && practiceCharObj.ch.pronunciation !== '?') {
-      setCurrentDisplayCharIdx(practiceCharObj.index)
+      setCurrentDisplayCharIdx(practiceCharObj.index);
     }
     // eslint-disable-next-line
-  }, [practiceValue, pronunciationValue])
+  }, [practiceValue, pronunciationValue]);
 
   useEffect(() => {
-    if (showingAnkis) return
+    if (showingAnkis) return;
 
     const handleShortcuts = (e: KeyboardEvent) => {
-      const value = e.key
+      const value = e.key;
 
       if (value === SHORTCUT_NEXT_FRAGMENT) {
-        e.preventDefault()
+        e.preventDefault();
 
         const newFragments: T_Fragments = {
           ...fragments,
           index: (fragments.index + 1) % fragments.list.length,
-        }
+        };
 
-        onPracticeSourceChange(newFragments)
+        onPracticeSourceChange(newFragments);
       }
-    }
+    };
 
-    document.addEventListener('keydown', handleShortcuts)
+    document.addEventListener('keydown', handleShortcuts);
 
     return () => {
-      document.removeEventListener('keydown', handleShortcuts)
-    }
+      document.removeEventListener('keydown', handleShortcuts);
+    };
     // eslint-disable-next-line
-  }, [isShowingEdition, isShowingPronunciation, fragments, showingAnkis])
+  }, [isShowingEdition, isShowingPronunciation, fragments, showingAnkis]);
 
   const clearValues = () => {
-    const valsFns = [setPronunciation, setSpecialChars, setWriting, setPractice]
+    const valsFns = [
+      setPronunciation,
+      setSpecialChars,
+      setWriting,
+      setPractice,
+    ];
 
-    valsFns.forEach(fn => {
-      fn('')
-    })
+    valsFns.forEach((fn) => {
+      fn('');
+    });
 
-    const newFragments: T_Fragments = { index: 0, list: [''] }
+    const newFragments: T_Fragments = { index: 0, list: [''] };
 
-    languageUIController.處理清除事件?.(languageUIController)
-    storage.setValue('fragments', JSON.stringify(newFragments))
-    setShowingPronunciation(true)
-    setShowingEdition(true)
-    setCurrentRecord(null)
-    onPracticeSourceChange(newFragments)
-  }
+    languageUIController.處理清除事件?.(languageUIController);
+    storage.setValue('fragments', JSON.stringify(newFragments));
+    setShowingPronunciation(true);
+    setShowingEdition(true);
+    setCurrentRecord(null);
+    onPracticeSourceChange(newFragments);
+  };
 
   const handleLanguageChange = (newSelectedLanguage: string) => {
-    storage.setValue(STORAGE_LANGUAGE_KEY, newSelectedLanguage)
-    updateLanguage(newSelectedLanguage)
-  }
+    storage.setValue(STORAGE_LANGUAGE_KEY, newSelectedLanguage);
+    updateLanguage(newSelectedLanguage);
+  };
 
   const handleKeyDown = (事件: ReactKeyboardEvent<HTMLTextAreaElement>) => {
     // 允許瀏覽器快捷鍵
-    if (事件.ctrlKey || 事件.metaKey) return
+    if (事件.ctrlKey || 事件.metaKey) return;
 
     if (事件.key === 'Enter') {
-      setPractice(`${practiceValue}\n`)
+      setPractice(`${practiceValue}\n`);
     }
 
     languageUIController.handleKeyDown({
@@ -470,26 +475,26 @@ const Panel = ({
       setWriting,
       specialCharsValue: charsToRemove.join(''),
       writingValue,
-    })
+    });
 
-    languageUIController.saveLangOptss(langOpts)
-  }
+    languageUIController.saveLangOptss(langOpts);
+  };
 
   const updateLangOpts = (選項: T_LangOpts) => {
-    languageUIController.saveLangOptss(選項)
-    觸發重新渲染(Math.random())
-  }
+    languageUIController.saveLangOptss(選項);
+    觸發重新渲染(Math.random());
+  };
 
-  const LinksBlock = languageUIController.getLinksBlock()
-  const OptionsBlock = languageUIController.getOptionsBlock()
+  const LinksBlock = languageUIController.getLinksBlock();
+  const OptionsBlock = languageUIController.getOptionsBlock();
 
   const saveRecord = () => {
-    replacePath(Paths.records.save)
-  }
+    replacePath(Paths.records.save);
+  };
 
   const listRecords = () => {
-    replacePath(Paths.records.list)
-  }
+    replacePath(Paths.records.list);
+  };
 
   if (!hasLoadedStorage) {
     return (
@@ -498,7 +503,7 @@ const Panel = ({
           <CgSpinnerAlt />
         </span>
       </div>
-    )
+    );
   }
 
   if (showingAnkis) {
@@ -507,11 +512,11 @@ const Panel = ({
         charsObjsList={charsObjsList ?? []}
         language={selectedLanguage}
         mode={showingAnkis}
-        setMode={mode => {
-          replacePath(mode ? ankiModeToPath[mode] : '')
+        setMode={(mode) => {
+          replacePath(mode ? ankiModeToPath[mode] : '');
         }}
       />
-    )
+    );
   }
 
   if (showingRecordsInitScreen) {
@@ -521,54 +526,54 @@ const Panel = ({
         language={selectedLanguage}
         onPronunciationLoad={setPronunciation}
         onRecordLoad={(record: CoreRecord) => {
-          clearValues()
+          clearValues();
 
           if (record.language !== selectedLanguage) {
-            handleLanguageChange(record.language)
+            handleLanguageChange(record.language);
           }
 
-          replacePath('')
-          setShowingEdition(false)
-          setShowingPronunciation(false)
+          replacePath('');
+          setShowingEdition(false);
+          setShowingPronunciation(false);
 
           const newFragments: T_Fragments = {
             index: 0,
             list: record.text.split('\n'),
-          }
+          };
 
-          onPracticeSourceChange(newFragments)
-          setCurrentRecord(record.id)
-          setPronunciation(record.pronunciation)
+          onPracticeSourceChange(newFragments);
+          setCurrentRecord(record.id);
+          setPronunciation(record.pronunciation);
         }}
         onRecordsClose={() => {
-          replacePath('')
+          replacePath('');
         }}
-        onSongLoad={lyrics => {
+        onSongLoad={(lyrics) => {
           const newFragments: T_Fragments = {
             index: 0,
             list: lyrics,
-          }
+          };
 
-          onPracticeSourceChange(newFragments)
-          replacePath('')
+          onPracticeSourceChange(newFragments);
+          replacePath('');
         }}
         pronunciation={pronunciationValue}
         selectedLanguage={selectedLanguage}
         services={services}
         text={originalTextValue}
       />
-    )
+    );
   }
 
   if (showingStatsSection) {
     return (
       <StatsSection
         onClose={() => {
-          replacePath('')
+          replacePath('');
         }}
         selectedLanguage={selectedLanguage}
       />
-    )
+    );
   }
 
   const colorOfCurrentChar = practiceHasError
@@ -577,17 +582,17 @@ const Panel = ({
         { ...langOpts, useTonesColors: 'current-error' },
         getCurrentCharObjFromPractice()?.ch ?? null,
       )
-    : undefined
+    : undefined;
 
-  const { mobileKeyboard } = languageUIController
+  const { mobileKeyboard } = languageUIController;
 
   const progressStr = (() => {
-    if (!charsObjsList?.length) return `${t('progressStr', 'Progress')}: 0%`
+    if (!charsObjsList?.length) return `${t('progressStr', 'Progress')}: 0%`;
 
     return `Progress: ${Math.round(
       (currentDisplayCharIdx / charsObjsList.length) * 100,
-    )}% (${currentDisplayCharIdx}/${charsObjsList.length})`
-  })()
+    )}% (${currentDisplayCharIdx}/${charsObjsList.length})`;
+  })();
 
   return (
     <>
@@ -595,11 +600,11 @@ const Panel = ({
         <Button onClick={clearValues}>{t('panel.clear')}</Button>
         <Button
           onClick={() => {
-            setHasExtraControls(!hasExtraControls)
+            setHasExtraControls(!hasExtraControls);
 
             setTimeout(() => {
-              writingArea.current?.focus()
-            }, 100)
+              writingArea.current?.focus();
+            }, 100);
           }}
         >
           {hasExtraControls ? <FaTools /> : <FaToolbox />}
@@ -610,7 +615,7 @@ const Panel = ({
         {hasExtraControls && (
           <Button
             onClick={() => {
-              replacePath(Paths.stats.main)
+              replacePath(Paths.stats.main);
             }}
           >
             {t('panel.stats', 'Stats')}
@@ -619,7 +624,7 @@ const Panel = ({
         {hasExtraControls && isMobile && (
           <Button
             onClick={() => {
-              setDisplayMobileKeyboard(!displayMobileKeyboard)
+              setDisplayMobileKeyboard(!displayMobileKeyboard);
             }}
           >
             {displayMobileKeyboard
@@ -630,7 +635,7 @@ const Panel = ({
         {hasExtraControls && isLoggedIn && (
           <Button
             onClick={() => {
-              replacePath(ankiModeToPath[AnkisMode.Main])
+              replacePath(ankiModeToPath[AnkisMode.Main]);
             }}
           >
             {t('panel.openAnki')}
@@ -638,7 +643,7 @@ const Panel = ({
         )}
         <Button
           onClick={() => {
-            navigator.clipboard.writeText(originalTextValue)
+            void navigator.clipboard.writeText(originalTextValue);
           }}
         >
           {t('panel.copy')}
@@ -646,7 +651,7 @@ const Panel = ({
         {isLoggedIn && !hasExtraControls && (
           <Button
             onClick={() => {
-              replacePath(ankiModeToPath[AnkisMode.Main])
+              replacePath(ankiModeToPath[AnkisMode.Main]);
             }}
           >
             {t('panel.addAnkis')}
@@ -655,7 +660,7 @@ const Panel = ({
         {!hasExtraControls && fragments.list.length > 1 && (
           <Button
             onClick={() => {
-              trimByChunks(Infinity)
+              trimByChunks(Infinity);
             }}
           >
             {t('panel.trim', 'Trim')}
@@ -664,7 +669,7 @@ const Panel = ({
         {!hasExtraControls && fragments.list.length > 50 && (
           <Button
             onClick={() => {
-              trimByChunks(50)
+              trimByChunks(50);
             }}
           >
             {t('panel.trim50', 'Trim by 50')}
@@ -675,7 +680,7 @@ const Panel = ({
             <label htmlFor="file-input" style={{ cursor: 'pointer' }}>
               <Button
                 onClick={() => {
-                  fileInputRef.current?.click()
+                  fileInputRef.current?.click();
                 }}
               >
                 {t('panel.importFile')}
@@ -685,42 +690,44 @@ const Panel = ({
                 onChange={() => {
                   const fileEl = document.getElementById(
                     'file-input',
-                  ) as HTMLInputElement | null
+                  ) as HTMLInputElement | null;
 
-                  if (!fileEl) return
+                  if (!fileEl) return;
 
-                  const file = fileEl.files?.[0]
+                  const file = fileEl.files?.[0];
 
                   if (!file) {
-                    return
+                    return;
                   }
 
                   // eslint-disable-next-line
-                  ;(async () => {
-                    let fileContent = await file.text()
+                  (async () => {
+                    let fileContent = await file.text();
 
-                    if (['.srt', '.vtt'].find(ext => file.name.endsWith(ext))) {
+                    if (
+                      ['.srt', '.vtt'].find((ext) => file.name.endsWith(ext))
+                    ) {
                       fileContent = fileContent
                         .split('\n')
-                        .map(line => line.trim())
+                        .map((line) => line.trim())
                         .filter(
-                          line =>
+                          (line) =>
                             !!line &&
                             !line.includes('-->') &&
                             !/^[0-9]*$/.test(line),
                         )
-                        .join('\n')
+                        .join('\n');
                     }
 
                     const newFragments: T_Fragments = {
                       index: 0,
                       list: fileContent.split('\n'),
-                    }
+                    };
 
-                    onPracticeSourceChange(newFragments)
-                    setShowingEdition(false)
-                    setShowingPronunciation(false)
-                  })()
+                    onPracticeSourceChange(newFragments);
+                    setShowingEdition(false);
+                    setShowingPronunciation(false);
+                  })();
                 }}
                 ref={fileInputRef}
                 style={{ display: 'none' }}
@@ -729,8 +736,8 @@ const Panel = ({
             </label>
             <Button
               onClick={() => {
-                setShowingPronunciation(!isShowingPronunciation)
-                writingArea.current?.focus()
+                setShowingPronunciation(!isShowingPronunciation);
+                writingArea.current?.focus();
               }}
             >
               {t('panel.togglePronunciation')}
@@ -741,12 +748,12 @@ const Panel = ({
           <>
             <Button
               onClick={async () => {
-                const newText = await getMostFailures(selectedLanguage, 50)
+                const newText = await getMostFailures(selectedLanguage, 50);
 
                 onPracticeSourceChange({
                   index: 0,
                   list: [newText],
-                })
+                });
               }}
             >
               {t('panel.mostFailures', 'Most Failures Round')}
@@ -754,8 +761,8 @@ const Panel = ({
             <LoginWidget />
             <Button
               onClick={() => {
-                setShowingEdition(!isShowingEdition)
-                writingArea.current?.focus()
+                setShowingEdition(!isShowingEdition);
+                writingArea.current?.focus();
               }}
             >
               {t('panel.toggleEdition')}
@@ -782,9 +789,9 @@ const Panel = ({
               const newFragments: T_Fragments = {
                 ...fragments,
                 index: (fragments.index + 1) % fragments.list.length,
-              }
+              };
 
-              onPracticeSourceChange(newFragments)
+              onPracticeSourceChange(newFragments);
             }}
           >
             {t('panel.currentFragment')}: {fragments.index + 1} /{' '}
@@ -800,9 +807,9 @@ const Panel = ({
                   fragments.index <= 0
                     ? fragments.list.length - 1
                     : fragments.index - 1,
-              }
+              };
 
-              onPracticeSourceChange(newFragments)
+              onPracticeSourceChange(newFragments);
             }}
           >
             {t('panel.previousFragment')}
@@ -811,7 +818,7 @@ const Panel = ({
         {currentRecord !== null && (
           <Button
             onClick={() => {
-              setCurrentRecord(null)
+              setCurrentRecord(null);
             }}
           >
             {t('panel.closeRecord')}
@@ -842,21 +849,21 @@ const Panel = ({
                   const { newFragmentsList } = languageUIController.onBlur({
                     fragmentsList: fragments.list,
                     langOpts,
-                  })
+                  });
 
                   if (newFragmentsList) {
                     const newFragments = {
                       ...fragments,
                       list: newFragmentsList,
-                    }
+                    };
 
-                    onPracticeSourceChange(newFragments)
+                    onPracticeSourceChange(newFragments);
                   }
                 }
 
-                setShowingEdition(false)
-                setShowingPronunciation(false)
-                writingArea.current?.focus()
+                setShowingEdition(false);
+                setShowingPronunciation(false);
+                writingArea.current?.focus();
               }}
               onChange={handleOriginalTextUpdate}
               placeholder={t('panel.sourceText')}
@@ -886,8 +893,8 @@ const Panel = ({
                 <div style={{ fontSize: '12px' }}>
                   {t('panel.charSize')}:{' '}
                   <input
-                    onChange={event => {
-                      setFontSize(Number(event.target.value))
+                    onChange={(event) => {
+                      setFontSize(Number(event.target.value));
                     }}
                     type="number"
                     value={fontSize}
@@ -909,19 +916,29 @@ const Panel = ({
         <div>
           <div style={{ marginBottom: 10, marginTop: 5 }}>
             <CharactersDisplay
+              重點字元索引={currentDisplayCharIdx}
+              應該有不同的寬度={
+                !languageUIController.shouldAllCharsHaveSameWidth
+              }
+              顯示目前字元的發音={
+                practiceHasError &&
+                ['還原論者', undefined].includes(
+                  langOpts.遊戲模式值 as string | undefined,
+                )
+              }
               charsObjsList={charsObjsList ?? []}
               colorOfChar={(isCurrentChar, ch) =>
                 languageUIController.getToneColor?.(
                   (() => {
                     if (isCurrentChar) {
                       if (practiceHasError) {
-                        return 'current-error'
+                        return 'current-error';
                       }
 
-                      return 'current'
+                      return 'current';
                     }
 
-                    return 'other'
+                    return 'other';
                   })(),
                   langOpts,
                   ch,
@@ -932,67 +949,58 @@ const Panel = ({
                 languageManager.currentLanguageHandlerId as string,
               )}
               onSymbolClick={() => {
-                setShowingEdition(false)
-                setHasExtraControls(false)
-                setShowingPronunciation(false)
+                setShowingEdition(false);
+                setHasExtraControls(false);
+                setShowingPronunciation(false);
 
                 if (!displayMobileKeyboard) {
-                  writingArea.current?.focus()
+                  writingArea.current?.focus();
                 }
               }}
-              應該有不同的寬度={
-                !languageUIController.shouldAllCharsHaveSameWidth
-              }
-              應該隱藏發音={!isShowingPronunciation}
-              重點字元索引={currentDisplayCharIdx}
-              顯示目前字元的發音={
-                practiceHasError &&
-                ['還原論者', undefined].includes(
-                  langOpts.遊戲模式值 as string | undefined,
-                )
-              }
+              shouldHidePronunciation={!isShowingPronunciation}
             />
           </div>
           <TextArea
+            無遊標
             autoFocus
             onBlur={() => setWritingBorder('normal')}
-            onChange={e => {
-              const diff = e.target.value.length - writingValue.length
+            onChange={(e) => {
+              const diff = e.target.value.length - writingValue.length;
 
-              setWriting(e.target.value)
+              setWriting(e.target.value);
 
               // Simulate the keydown event again to support mobile web
               if (diff === 1) {
                 const mockEvent = {
                   key: e.target.value.slice(-1),
                   preventDefault: () => {},
-                } as unknown as ReactKeyboardEvent<HTMLTextAreaElement>
+                } as unknown as ReactKeyboardEvent<HTMLTextAreaElement>;
 
-                handleKeyDown(mockEvent)
+                handleKeyDown(mockEvent);
               }
             }}
             onFocus={() => setWritingBorder('bold')}
             onKeyDown={handleKeyDown}
             placeholder={practiceValue ? '' : t('panel.writingArea')}
             rows={1}
-            setRef={ref => (writingArea.current = ref)}
+            setRef={(ref) => (writingArea.current = ref)}
             style={{
               borderWidth: writingBorder === 'bold' ? 2 : 1,
             }}
             value={writingValue}
-            無遊標
           />
           <TextArea
+            自動捲動
             onChange={createInputSetterFn(setPractice)}
             onFocus={() => {
-              writingArea.current?.focus()
+              writingArea.current?.focus();
             }}
             placeholder=""
             rows={3}
             style={{
               border: `4px solid ${
                 practiceHasError
-                  ? colorOfCurrentChar ?? 'red'
+                  ? (colorOfCurrentChar ?? 'red')
                   : 'var(--color-background, "white")'
               }`,
               fontSize,
@@ -1000,13 +1008,12 @@ const Panel = ({
               maxHeight: isMobile ? '100px' : undefined,
             }}
             value={practiceValue}
-            自動捲動
           />
           {isMobile && mobileKeyboard && (
             <div className="flex w-full flex-col justify-between gap-[24px]">
               {mobileKeyboard.map((row, rowIdx) => {
                 // Display first row (numbers) even if the keyboard is hidden
-                if (rowIdx !== 0 && !displayMobileKeyboard) return null
+                if (rowIdx !== 0 && !displayMobileKeyboard) return null;
 
                 return (
                   <div className="flex flex-row justify-between" key={rowIdx}>
@@ -1016,24 +1023,24 @@ const Panel = ({
                         style: {
                           padding: '16px',
                         },
-                      }
+                      };
 
                       return (
                         <Fragment key={key}>
                           <Button
-                            onClick={e => {
+                            onClick={(e) => {
                               if (!displayMobileKeyboard) {
                                 // eslint-disable-next-line
-                                ;(e as any).preventDefault()
+                                (e as any).preventDefault();
                                 // eslint-disable-next-line
-                                ;(e as any).stopPropagation()
-                                writingArea.current?.focus()
+                                (e as any).stopPropagation();
+                                writingArea.current?.focus();
                               }
 
                               handleKeyDown({
                                 key,
                                 preventDefault: () => {},
-                              } as unknown as ReactKeyboardEvent<HTMLTextAreaElement>)
+                              } as unknown as ReactKeyboardEvent<HTMLTextAreaElement>);
                             }}
                             {...commonProps}
                           >
@@ -1046,7 +1053,7 @@ const Panel = ({
                                   handleKeyDown({
                                     key: 'Backspace',
                                     preventDefault: () => {},
-                                  } as unknown as ReactKeyboardEvent<HTMLTextAreaElement>)
+                                  } as unknown as ReactKeyboardEvent<HTMLTextAreaElement>);
                                 }}
                                 {...commonProps}
                               >
@@ -1054,10 +1061,10 @@ const Panel = ({
                               </Button>
                             )}
                         </Fragment>
-                      )
+                      );
                     })}
                   </div>
-                )
+                );
               })}
             </div>
           )}
@@ -1065,19 +1072,19 @@ const Panel = ({
       </div>
       <div className="mb-[12px] flex flex-row flex-wrap justify-start gap-[12px]">
         <LinksBlock
+          文字={originalTextValue}
           focusWritingArea={() => {
-            writingArea.current?.focus()
+            writingArea.current?.focus();
           }}
           fragments={fragments}
           langHandler={langHandler}
           langOptsObj={langOptsObj}
           updateFragments={setFragments}
           updateLangOpts={updateLangOpts}
-          文字={originalTextValue}
         />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Panel
+export default Panel;

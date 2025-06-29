@@ -1,126 +1,124 @@
-import { LanguageManager } from '#/core'
-import {
-  LanguageUIManager,
-  Panel,
-  面板基本,
-  useBodyOverflowSwitch,
-  useTextSelection,
-} from '#/react-ui'
-import { useCallback, useEffect, useState } from 'react'
-
-import PanelTrigger from '@/components/PanelTrigger/PanelTrigger'
-
-import getCurrentUrl from '@/services/getCurrentUrl'
-import listenToRuntimeMessage from '@/services/listenToRuntimeMessage'
-import log from '@/services/log'
-import storage from '@/services/storage'
+import PanelTrigger from '@/components/PanelTrigger/PanelTrigger';
+import getCurrentUrl from '@/services/getCurrentUrl';
+import listenToRuntimeMessage from '@/services/listenToRuntimeMessage';
+import log from '@/services/log';
+import storage from '@/services/storage';
 import {
   Message,
   MessageType,
   STORAGE_ENABLED_PAGES_KEY,
-} from '@/utils/constants'
+} from '@/utils/constants';
+import { LanguageManager } from '#/core';
+import {
+  面板基本,
+  LanguageUIManager,
+  Panel,
+  useBodyOverflowSwitch,
+  useTextSelection,
+} from '#/react-ui';
+import { useCallback, useEffect, useState } from 'react';
 
-const languageManager = new LanguageManager()
-const languageUIManager = new LanguageUIManager(languageManager)
+const languageManager = new LanguageManager();
+const languageUIManager = new LanguageUIManager(languageManager);
 
-languageUIManager.init()
+languageUIManager.init();
 
-const panelServices = { getCurrentUrl, storage }
+const panelServices = { getCurrentUrl, storage };
 
 const getIsCurrentPageEnabled = (currentUrl: string, enabledPages: string) => {
   const pagesList = enabledPages
     .split('\n')
-    .map(p => p.trim())
-    .filter(p => !!p)
+    .map((p) => p.trim())
+    .filter((p) => !!p);
 
-  return pagesList.some(p => {
-    const reg = new RegExp(p)
+  return pagesList.some((p) => {
+    const reg = new RegExp(p);
 
-    return reg.test(currentUrl)
-  })
-}
+    return reg.test(currentUrl);
+  });
+};
 
 type ContentProps = {
-  onContentEnabledResult?: (r: boolean) => void
-}
+  onContentEnabledResult?: (r: boolean) => void;
+};
 
 const Content = ({ onContentEnabledResult }: ContentProps) => {
-  const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false)
-  const [isExtensionEnabled, setIsExtensionEnabled] = useState<boolean>(false)
-  const [shouldShowPanel, showPanel] = useState<boolean>(false)
-  const [usedText, setUsedText] = useState<string>('')
+  const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false);
+  const [isExtensionEnabled, setIsExtensionEnabled] = useState<boolean>(false);
+  const [shouldShowPanel, showPanel] = useState<boolean>(false);
+  const [usedText, setUsedText] = useState<string>('');
 
   const updateLanguageWithStorage = async () => {
     const [enabledPages, currentUrl] = await Promise.all([
       storage.getValue(STORAGE_ENABLED_PAGES_KEY),
       getCurrentUrl(),
-    ])
+    ]);
 
-    const isContentEnabled = getIsCurrentPageEnabled(currentUrl, enabledPages)
+    const isContentEnabled = getIsCurrentPageEnabled(currentUrl, enabledPages);
 
-    setIsExtensionEnabled(isContentEnabled)
+    setIsExtensionEnabled(isContentEnabled);
 
     if (onContentEnabledResult) {
-      onContentEnabledResult(isContentEnabled)
+      onContentEnabledResult(isContentEnabled);
     }
 
-    setHasLoadedStorage(true)
-  }
+    setHasLoadedStorage(true);
+  };
 
   useEffect(() => {
     updateLanguageWithStorage().catch((e: Error) => {
-      log('ERROR', e)
-    })
+      log('ERROR', e);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
   useEffect(() => {
     listenToRuntimeMessage((message: Message) => {
       if (message.type === MessageType.EnableOnce && !isExtensionEnabled) {
-        setIsExtensionEnabled(true)
+        setIsExtensionEnabled(true);
 
-        return true
+        return true;
       }
 
-      return false
-    })
+      return false;
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
-  useBodyOverflowSwitch(shouldShowPanel)
+  useBodyOverflowSwitch(shouldShowPanel);
 
   const onTextSelection = useCallback(
     (textSelected: string) => {
-      const parsedText = textSelected.trim()
+      const parsedText = textSelected.trim();
 
       if (parsedText !== '' && !shouldShowPanel) {
-        setUsedText(parsedText)
+        setUsedText(parsedText);
       }
     },
     [shouldShowPanel],
-  )
+  );
 
-  useTextSelection(isExtensionEnabled, onTextSelection)
+  useTextSelection(isExtensionEnabled, onTextSelection);
 
   if (!hasLoadedStorage || !isExtensionEnabled) {
-    return null
+    return null;
   }
 
   if (!shouldShowPanel && usedText) {
     return (
       <PanelTrigger
         onClick={() => {
-          showPanel(true)
+          showPanel(true);
         }}
       />
-    )
+    );
   } else if (!usedText) {
-    return null
+    return null;
   }
 
   const hidePanel = () => {
-    showPanel(false)
-  }
+    showPanel(false);
+  };
 
   return (
     <面板基本 覆蓋點擊={hidePanel}>
@@ -134,7 +132,7 @@ const Content = ({ onContentEnabledResult }: ContentProps) => {
         text={usedText}
       />
     </面板基本>
-  )
-}
+  );
+};
 
-export default Content
+export default Content;

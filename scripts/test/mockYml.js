@@ -1,1 +1,1 @@
-module.exports = { dict: ['Foo Bar'] }
+module.exports = { dict: ['Foo Bar'] };

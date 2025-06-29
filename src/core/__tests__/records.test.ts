@@ -1,4 +1,4 @@
-import { Record } from '../records'
+import { Record } from '../records';
 
 const dummyRecords: Record[] = [
   {
@@ -23,24 +23,24 @@ const dummyRecords: Record[] = [
       pronunciation: `pronunciationValue-${semiRecordIdx}`,
       text: `textValue-${semiRecordIdx}`,
     }),
-)
+);
 
 describe('Record.filterByText', () => {
   it('returns the original input when no text', () => {
     expect(
       Record.filterByText({ filterText: '', records: dummyRecords }),
-    ).toEqual(dummyRecords)
+    ).toEqual(dummyRecords);
 
-    expect(Record.filterByText({ filterText: '', records: [] })).toEqual([])
-  })
+    expect(Record.filterByText({ filterText: '', records: [] })).toEqual([]);
+  });
 
   it('returns the expected lists', () => {
     expect(
       Record.filterByText({ filterText: 'japanese', records: dummyRecords }),
-    ).toEqual([dummyRecords[0]])
+    ).toEqual([dummyRecords[0]]);
 
     expect(
       Record.filterByText({ filterText: 'nameValue', records: dummyRecords }),
-    ).toEqual(dummyRecords.slice(0).reverse())
-  })
-})
+    ).toEqual(dummyRecords.slice(0).reverse());
+  });
+});

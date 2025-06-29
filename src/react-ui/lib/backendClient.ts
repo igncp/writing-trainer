@@ -1,4 +1,4 @@
-import { Base64 } from 'js-base64'
+import { Base64 } from 'js-base64';
 
 import {
   AnkiGql,
@@ -9,12 +9,12 @@ import {
   StatsClearGql,
   StatsSaveResultGql,
   TextGql,
-} from '../graphql/graphql'
+} from '../graphql/graphql';
 
 const baseURL =
-  process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:9000'
+  process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:9000';
 
-const clientID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string
+const clientID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string;
 
 const fetchCommon = (uri: string, options?: RequestInit) =>
   fetch(baseURL + uri, {
@@ -24,29 +24,29 @@ const fetchCommon = (uri: string, options?: RequestInit) =>
     },
     ...options,
   })
-    .then(r => {
+    .then((r) => {
       if (!r.ok) {
-        throw new Error(r.statusText)
+        throw new Error(r.statusText);
       }
 
-      return r
+      return r;
     })
-    .then(res => res.json())
+    .then((res) => res.json());
 
 const fetchGraphQL = <A>(query: string) =>
   fetchCommon('/graphql', {
     body: JSON.stringify({ query }),
     method: 'POST',
-  }).then(res => {
+  }).then((res) => {
     if (res.errors) {
-      throw new Error(res.errors[0].message)
+      throw new Error(res.errors[0].message);
     }
 
-    return res.data as A
-  })
+    return res.data as A;
+  });
 
 const getGoogleUrl = (from: string) => {
-  const rootUrl = `https://accounts.google.com/o/oauth2/v2/auth`
+  const rootUrl = `https://accounts.google.com/o/oauth2/v2/auth`;
 
   const options = {
     access_type: 'offline',
@@ -60,23 +60,23 @@ const getGoogleUrl = (from: string) => {
     response_type: 'code',
     scope: ['https://www.googleapis.com/auth/userinfo.email'].join(' '),
     state: from.replace(/\/$/g, ''),
-  }
+  };
 
-  const qs = new URLSearchParams(options)
+  const qs = new URLSearchParams(options);
 
-  return `${rootUrl}?${qs.toString()}`
-}
+  return `${rootUrl}?${qs.toString()}`;
+};
 
 const decodeAnki = <T extends Partial<AnkiGql>>(anki: T): T => ({
   ...anki,
   ...('back' in anki && anki.back && { back: decodeURIComponent(anki.back) }),
   ...('front' in anki &&
     anki.front && { front: decodeURIComponent(anki.front) }),
-})
+});
 
-const getHealth = () => fetchCommon('/health')
+const getHealth = () => fetchCommon('/health');
 
-const login = () => (window.location.href = getGoogleUrl(window.location.href))
+const login = () => (window.location.href = getGoogleUrl(window.location.href));
 
 const getInfo = () =>
   fetchGraphQL<{ me: Me }>(`#graphql
@@ -88,7 +88,7 @@ const getInfo = () =>
         canUseCantodict
       }
     }
-  `).then(({ me }) => me)
+  `).then(({ me }) => me);
 
 const TextFragment = `
   fragment TextFragment on TextGQL {
@@ -97,14 +97,14 @@ const TextFragment = `
     language
     title
   }
-`
+`;
 
 const getUserAnkis = (items: number, offset: number, query: string) =>
   fetchGraphQL<{
     ankis: Array<
-      Pick<AnkiGql, 'id' | 'front' | 'language' | 'correct' | 'incorrect'>
-    >
-    ankisTotal: number
+      Pick<AnkiGql, 'correct' | 'front' | 'id' | 'incorrect' | 'language'>
+    >;
+    ankisTotal: number;
   }>(`#graphql
     query {
       ankis(
@@ -125,7 +125,7 @@ const getUserAnkis = (items: number, offset: number, query: string) =>
   `).then(({ ankis, ankisTotal }) => ({
     list: ankis.map(decodeAnki),
     total: ankisTotal,
-  }))
+  }));
 
 const getUserAnki = (id: string) =>
   fetchGraphQL<{ anki: AnkiGql }>(`#graphql
@@ -139,12 +139,12 @@ const getUserAnki = (id: string) =>
         language
       }
     }
-  `).then(({ anki }) => decodeAnki(anki))
+  `).then(({ anki }) => decodeAnki(anki));
 
 export type SongItem = Pick<
   SongGql,
-  'id' | 'artist' | 'language' | 'title' | 'lyrics' | 'videoUrl'
->
+  'artist' | 'id' | 'language' | 'lyrics' | 'title' | 'videoUrl'
+>;
 
 const getSongs = (
   language: string,
@@ -153,8 +153,8 @@ const getSongs = (
   offset: number,
 ) =>
   fetchGraphQL<{
-    songs: SongItem[]
-    songsTotal: number
+    songs: SongItem[];
+    songsTotal: number;
   }>(`#graphql
     query {
       songs(
@@ -177,11 +177,11 @@ const getSongs = (
   `).then(({ songs, songsTotal }) => ({
     list: songs,
     total: songsTotal,
-  }))
+  }));
 
 const getSongLyrics = (id: number) =>
   fetchGraphQL<{
-    song: Pick<SongGql, 'lyrics' | 'pronunciation'> | null
+    song: null | Pick<SongGql, 'lyrics' | 'pronunciation'>;
   }>(`#graphql
     query {
       song(
@@ -191,11 +191,11 @@ const getSongLyrics = (id: number) =>
         pronunciation
       }
     }
-  `).then(({ song }) => song ?? { lyrics: '', pronunciation: '' })
+  `).then(({ song }) => song ?? { lyrics: '', pronunciation: '' });
 
 const getAnkisRound = (query: string) =>
   fetchGraphQL<{
-    ankisRound: Array<Pick<AnkiGql, 'id' | 'front' | 'back'>>
+    ankisRound: Array<Pick<AnkiGql, 'back' | 'front' | 'id'>>;
   }>(`#graphql
     query {
       ankisRound(
@@ -206,7 +206,7 @@ const getAnkisRound = (query: string) =>
         back
       }
     }
-  `).then(({ ankisRound }) => ankisRound.map(decodeAnki))
+  `).then(({ ankisRound }) => ankisRound.map(decodeAnki));
 
 const getUserTexts = () =>
   fetchGraphQL<{ texts: TextGql[] }>(`#graphql
@@ -216,10 +216,10 @@ const getUserTexts = () =>
       }
     }
     ${TextFragment}
-  `).then(({ texts }) => texts)
+  `).then(({ texts }) => texts);
 
-const queryCantodict = (sentence: string) => {
-  return fetchGraphQL<{ cantodictSentence: CantoDictWordGql[] }>(`#graphql
+const queryCantodict = (sentence: string) =>
+  fetchGraphQL<{ cantodictSentence: CantoDictWordGql[] }>(`#graphql
     query {
       cantodictSentence(
         sentence: "${sentence}",
@@ -228,22 +228,20 @@ const queryCantodict = (sentence: string) => {
         meaning
       }
     }
-  `).then(({ cantodictSentence }) => cantodictSentence)
-}
+  `).then(({ cantodictSentence }) => cantodictSentence);
 
-const translateText = (content: string, currentLanguage: string) => {
-  return fetchGraphQL<{ translationRequest: string }>(`#graphql
+const translateText = (content: string, currentLanguage: string) =>
+  fetchGraphQL<{ translationRequest: string }>(`#graphql
     query {
       translationRequest(
         content: "${content}",
         currentLanguage: "${currentLanguage}"
       )
     }
-  `).then(({ translationRequest }) => translationRequest)
-}
+  `).then(({ translationRequest }) => translationRequest);
 
-const useDict = (content: string, currentLanguage: string) => {
-  return fetchGraphQL<{ dictText: DictResponse }>(`#graphql
+const useDict = (content: string, currentLanguage: string) =>
+  fetchGraphQL<{ dictText: DictResponse }>(`#graphql
     query {
       dictText(
         content: "${content}",
@@ -255,10 +253,9 @@ const useDict = (content: string, currentLanguage: string) => {
         }
       }
     }
-  `).then(({ dictText }) => dictText)
-}
+  `).then(({ dictText }) => dictText);
 
-const saveAnki = (anki: Pick<AnkiGql, 'front' | 'id' | 'back' | 'language'>) =>
+const saveAnki = (anki: Pick<AnkiGql, 'back' | 'front' | 'id' | 'language'>) =>
   fetchGraphQL<{ saveAnki: { id: string } }>(`#graphql
     mutation {
       saveAnki(
@@ -270,7 +267,7 @@ const saveAnki = (anki: Pick<AnkiGql, 'front' | 'id' | 'back' | 'language'>) =>
         id
       }
     }
-  `).then(({ saveAnki: saveAnkiResult }) => saveAnkiResult)
+  `).then(({ saveAnki: saveAnkiResult }) => saveAnkiResult);
 
 const saveReviewedAnki = (anki: { guessed: boolean; id: string }) =>
   fetchGraphQL<{ saveReviewedAnki: { id: string } }>(`#graphql
@@ -284,7 +281,7 @@ const saveReviewedAnki = (anki: { guessed: boolean; id: string }) =>
     }
   `).then(
     ({ saveReviewedAnki: saveReviewedAnkiResult }) => saveReviewedAnkiResult,
-  )
+  );
 
 const saveText = (text: TextGql) =>
   fetchGraphQL<{ saveText: { id: string } }>(`#graphql
@@ -298,9 +295,9 @@ const saveText = (text: TextGql) =>
         id
       }
     }
-  `).then(({ saveText: saveTextResult }) => saveTextResult)
+  `).then(({ saveText: saveTextResult }) => saveTextResult);
 
-const logout = () => fetchCommon('/auth/logout')
+const logout = () => fetchCommon('/auth/logout');
 
 const clearStats = () =>
   fetchGraphQL<{ clearStats: Pick<StatsClearGql, 'success'> }>(`#graphql
@@ -309,11 +306,11 @@ const clearStats = () =>
         success
       }
     }
-  `).then(({ clearStats: clearStatsResult }) => clearStatsResult)
+  `).then(({ clearStats: clearStatsResult }) => clearStatsResult);
 
 const saveStats = (localStats: unknown) =>
   fetchGraphQL<{
-    saveStats: Pick<StatsSaveResultGql, 'success' | 'data'>
+    saveStats: Pick<StatsSaveResultGql, 'data' | 'success'>;
   }>(`#graphql
     mutation {
       saveStats(
@@ -333,7 +330,7 @@ const saveStats = (localStats: unknown) =>
         }
       }
     }
-    `).then(({ saveStats: saveStatsResult }) => saveStatsResult)
+    `).then(({ saveStats: saveStatsResult }) => saveStatsResult);
 
 export const backendClient = {
   clearStats,
@@ -354,4 +351,4 @@ export const backendClient = {
   saveText,
   translateText,
   useDict,
-}
+};

@@ -1,36 +1,36 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react';
 
 export const useEffectLater = (fn: () => void, deps: unknown[]) => {
-  const hasRun = useRef(false)
+  const hasRun = useRef(false);
 
   useEffect(() => {
     if (!hasRun.current) {
-      hasRun.current = true
+      hasRun.current = true;
 
-      return
+      return;
     }
 
-    fn()
+    fn();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps)
-}
+  }, deps);
+};
 
 export const useIsMobile = () => {
-  const [isMobile, setIsMobile] = useState(false)
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const listener = () => {
-      setIsMobile(window.innerWidth <= 768)
-    }
+      setIsMobile(window.innerWidth <= 768);
+    };
 
-    listener()
+    listener();
 
-    window.addEventListener('resize', listener)
+    window.addEventListener('resize', listener);
 
     return () => {
-      window.removeEventListener('resize', listener)
-    }
-  }, [])
+      window.removeEventListener('resize', listener);
+    };
+  }, []);
 
-  return isMobile
-}
+  return isMobile;
+};

@@ -36,19 +36,18 @@
   "dict": {
     "clear": "Clear",
     "closeShuffle": "Close Shuffle",
-    "correct": "Correct",
     "displayOneWord": "Show words with one character",
     "displayPronunciation": "Display pronunciation",
+    "extraFilterCheckNo": "Remove Filter Check",
+    "extraFilterCheckYes": "Add Filter Check",
     "hideAll": "Hide all",
     "hideOneWord": "Don't show words with one character",
     "hidePronunciation": "Hide pronunciation",
     "nextWord": "Next word",
-    "remaining": "Remaining",
     "reverse": "Reverse",
     "showAll": "Show all",
     "startShuffle": "Start Shuffle",
-    "total": "Total",
-    "wrong": "Wrong"
+    "total": "Total"
   },
   "help": {
     "how": "How to use the Writing Trainer?",

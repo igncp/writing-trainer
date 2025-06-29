@@ -1,33 +1,32 @@
-import { unknownPronunciation } from '#/core'
+import { unknownPronunciation } from '#/core';
 
-import { T_LangUIController, T_LangOpts } from '../types'
+import { T_LangOpts, T_LangUIController } from '../types';
+import { saveFailChar, saveSentenceStats, saveSuccessChar } from './stats';
 
-import { saveSuccessChar, saveFailChar, saveSentenceStats } from './stats'
+type T_parsePronunciation = (文字: string, langOpts?: T_LangOpts) => string;
 
-type T_parsePronunciation = (文字: string, langOpts?: T_LangOpts) => string
-
-type T_OnPracticeBackspaceFormat = (practiceValue: string) => string
+type T_OnPracticeBackspaceFormat = (practiceValue: string) => string;
 
 type T_CommonHandleWritingKeyDown = (
   opts: Parameters<T_LangUIController['handleKeyDown']>[0],
   opts2: {
-    onPracticeBackspaceFormat?: T_OnPracticeBackspaceFormat
-    parsePronunciation?: T_parsePronunciation
+    onPracticeBackspaceFormat?: T_OnPracticeBackspaceFormat;
+    parsePronunciation?: T_parsePronunciation;
   },
-) => ReturnType<T_LangUIController['handleKeyDown']>
+) => ReturnType<T_LangUIController['handleKeyDown']>;
 
-const 預設parsePronunciation: T_parsePronunciation = 文字 => 文字.toLowerCase()
+const 預設parsePronunciation: T_parsePronunciation = (文字) =>
+  文字.toLowerCase();
 
 const onPracticeBackspaceFormatDefault: T_OnPracticeBackspaceFormat = (
   p = '',
-) => {
-  return p
+) =>
+  p
     .split(' ')
     .filter((ch, idx, arr) => idx !== arr.length - 1 || ch.trim() !== '')
     .filter((_, idx, arr) => idx !== arr.length - 1)
     .concat([''])
-    .join(' ')
-}
+    .join(' ');
 
 export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
   {
@@ -53,81 +52,81 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
   },
 ) => {
   if (按鍵事件.key === 'Backspace' && writingValue.length === 0) {
-    const newPracticeText = onPracticeBackspaceFormat(practiceValue)
+    const newPracticeText = onPracticeBackspaceFormat(practiceValue);
 
-    setPractice(newPracticeText)
+    setPractice(newPracticeText);
 
-    const langObj = getCurrentCharObjFromPractice(newPracticeText)
+    const langObj = getCurrentCharObjFromPractice(newPracticeText);
 
     if (langObj?.ch) {
-      setCurrentDisplayCharIdx(langObj.index)
+      setCurrentDisplayCharIdx(langObj.index);
     }
 
-    return
+    return;
   }
 
-  const currentLangObj = getCurrentCharObjFromPractice()
+  const currentLangObj = getCurrentCharObjFromPractice();
 
   if (!currentLangObj?.ch) {
-    setPracticeHasError(false)
+    setPracticeHasError(false);
 
-    return
+    return;
   }
 
-  setCurrentDisplayCharIdx(currentLangObj.index)
+  setCurrentDisplayCharIdx(currentLangObj.index);
 
-  const { ch: currentCharObj } = currentLangObj
+  const { ch: currentCharObj } = currentLangObj;
 
-  按鍵事件.preventDefault()
+  按鍵事件.preventDefault();
 
   const 解析按鍵 = (() => {
     // 按鍵音調更舒適
     switch (按鍵事件.key) {
       case '!':
-        return '4'
+        return '4';
       case '@':
-        return '5'
+        return '5';
       case '#':
-        return '6'
+        return '6';
       default:
-        return 按鍵事件.key
+        return 按鍵事件.key;
     }
-  })()
+  })();
 
   if (!/[a-z0-9]/.test(解析按鍵)) {
-    setPractice(practiceValue + 解析按鍵)
+    setPractice(practiceValue + 解析按鍵);
 
-    return
+    return;
   }
 
   if (解析按鍵.length !== 1 && 解析按鍵 !== 'Backspace') {
-    return
+    return;
   }
 
-  const { pronunciation: correctPronunciation } = currentCharObj
+  const { pronunciation: correctPronunciation } = currentCharObj;
 
   const newWritingValue =
     解析按鍵 === 'Backspace'
       ? writingValue.slice(0, writingValue.length - 1)
-      : writingValue + 解析按鍵
+      : writingValue + 解析按鍵;
 
   const correctPronunciationParsed = parsePronunciation(
     correctPronunciation,
     langOpts,
-  )
+  );
 
-  const isDuringReduction = !!currentText
+  const isDuringReduction = !!currentText;
 
   if (
     correctPronunciationParsed ===
       parsePronunciation(newWritingValue, langOpts) ||
     correctPronunciationParsed === unknownPronunciation
   ) {
-    const newPractice = practiceValue + currentCharObj.word
+    const newPractice = practiceValue + currentCharObj.word;
 
-    setWriting('')
-    setPracticeHasError(false)
-    setPractice(`${newPractice} `)
+    setWriting('');
+    setPracticeHasError(false);
+    setPractice(`${newPractice} `);
 
     if (
       !isDuringReduction &&
@@ -135,7 +134,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
         currentCharObj.word,
       )
     ) {
-      saveSuccessChar(selectedLanguage, currentCharObj.word)
+      void saveSuccessChar(selectedLanguage, currentCharObj.word);
     }
 
     if (
@@ -145,54 +144,54 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     ) {
       const newPracticeText = (newPractice || '')
         .split('')
-        .filter(c => !specialCharsValue.includes(c))
-        .join('')
+        .filter((c) => !specialCharsValue.includes(c))
+        .join('');
 
       const originalText = (originalTextValue || '')
         .split('')
-        .filter(c => !specialCharsValue.includes(c))
-        .join('')
+        .filter((c) => !specialCharsValue.includes(c))
+        .join('');
 
       if (newPracticeText === originalText) {
         const charsWithMistakes = langOpts.charsWithMistakes as
           | string[]
-          | undefined
+          | undefined;
 
         if (!isDuringReduction) {
-          const uniqueMistakes = Array.from(new Set(charsWithMistakes ?? []))
+          const uniqueMistakes = Array.from(new Set(charsWithMistakes ?? []));
 
-          saveSentenceStats(
+          void saveSentenceStats(
             selectedLanguage,
             charsObjsList.length,
             (charsObjsList.length - uniqueMistakes.length) /
               charsObjsList.length,
-          )
+          );
         }
 
         if ((charsWithMistakes ?? []).length) {
           const fullChars = Array.from(new Set(charsWithMistakes))
             .join('')
-            .repeat(3)
+            .repeat(3);
 
-          setCurrentText(fullChars)
-          langOpts.charsWithMistakes = []
+          setCurrentText(fullChars);
+          langOpts.charsWithMistakes = [];
         } else {
-          setCurrentText('')
+          setCurrentText('');
         }
 
-        setPractice('')
+        setPractice('');
       }
     }
 
-    return
+    return;
   }
 
-  setWriting(newWritingValue)
+  setWriting(newWritingValue);
 
-  const hasError = !correctPronunciation.startsWith(newWritingValue)
+  const hasError = !correctPronunciation.startsWith(newWritingValue);
 
   if (hasError) {
-    langOpts.charsWithMistakes = langOpts.charsWithMistakes || []
+    langOpts.charsWithMistakes = langOpts.charsWithMistakes ?? [];
 
     if (
       !isDuringReduction &&
@@ -200,11 +199,11 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
         .slice(-1)
         .includes(currentCharObj.word)
     ) {
-      saveFailChar(selectedLanguage, currentCharObj.word)
+      void saveFailChar(selectedLanguage, currentCharObj.word);
     }
 
-    ;(langOpts.charsWithMistakes as string[]).push(currentCharObj.word)
+    (langOpts.charsWithMistakes as string[]).push(currentCharObj.word);
   }
 
-  setPracticeHasError(hasError)
-}
+  setPracticeHasError(hasError);
+};

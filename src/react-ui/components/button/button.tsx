@@ -1,34 +1,33 @@
-import { CSSProperties, ReactNode, useState } from 'react'
+import { CSSProperties, ReactNode, useState } from 'react';
 
-import { useHover } from '../../utils/hooks'
+import { useHover } from '../../utils/hooks';
 import {
   COMP_TRANSITION,
   DIM_COMP_OPACITY,
   HOVERED_COMP_OPACITY,
-} from '../../utils/ui'
+} from '../../utils/ui';
+import classes from './button.module.scss';
 
-import classes from './button.module.scss'
-
-const noop = () => {}
+const noop = () => {};
 
 export type T_ButtonProps = {
-  children: ReactNode
-  className?: string
-  clickEffect?: boolean
-  'data-tooltip-content'?: string
-  'data-tooltip-id'?: string
-  disabled?: boolean
-  href?: string
-  onClick?: (e?: {
-    preventDefault: () => void
-    stopPropagation: () => void
-  }) => void
-  onDoubleClick?: () => void
-  shouldUseLink?: boolean
-  style?: CSSProperties
-  tabIndex?: number
-  title?: string
-}
+  'children': ReactNode;
+  'className'?: string;
+  'clickEffect'?: boolean;
+  'data-tooltip-content'?: string;
+  'data-tooltip-id'?: string;
+  'disabled'?: boolean;
+  'href'?: string;
+  'onClick'?: (e?: {
+    preventDefault: () => void;
+    stopPropagation: () => void;
+  }) => Promise<void> | void;
+  'onDoubleClick'?: () => void;
+  'shouldUseLink'?: boolean;
+  'style'?: CSSProperties;
+  'tabIndex'?: number;
+  'title'?: string;
+};
 
 const Button = ({
   children,
@@ -44,15 +43,15 @@ const Button = ({
   title,
   ...props
 }: T_ButtonProps) => {
-  const { bind, hovered } = useHover()
-  const [isClicked, setIsAnimating] = useState(false)
+  const { bind, hovered } = useHover();
+  const [isClicked, setIsAnimating] = useState(false);
 
   const finalStyle = {
     backgroundColor: clickEffect ? undefined : 'var(--color-bg-dim)',
     border: '0',
     boxShadow: '0 0 5px 0.1px var(--color-text)',
     color: 'var(--color-text, "black")',
-    cursor: disabled ?? !onClick ? 'default' : 'pointer',
+    cursor: (disabled ?? !onClick) ? 'default' : 'pointer',
     display: 'inline-block',
     fontSize: 20,
     opacity: hovered && !disabled ? HOVERED_COMP_OPACITY : DIM_COMP_OPACITY,
@@ -62,14 +61,14 @@ const Button = ({
     transition: COMP_TRANSITION,
     userSelect: 'none',
     ...style,
-  } as const
+  } as const;
 
   const fullClassName = [
     className,
     clickEffect && isClicked ? classes.animation : '',
   ]
     .filter(Boolean)
-    .join(' ')
+    .join(' ');
 
   if (shouldUseLink) {
     return (
@@ -86,7 +85,7 @@ const Button = ({
       >
         {children}
       </a>
-    )
+    );
   }
 
   return (
@@ -97,15 +96,15 @@ const Button = ({
       data-tooltip-id={props['data-tooltip-id']}
       disabled={disabled}
       onAnimationEnd={() => {
-        setIsAnimating(false)
+        setIsAnimating(false);
       }}
       onClick={
         disabled
           ? noop
-          : e => {
-              setIsAnimating(false)
-              setTimeout(() => setIsAnimating(true), 10)
-              onClick?.(e)
+          : (e) => {
+              setIsAnimating(false);
+              setTimeout(() => setIsAnimating(true), 10);
+              void onClick?.(e);
             }
       }
       onDoubleClick={disabled ? noop : onDoubleClick}
@@ -116,7 +115,7 @@ const Button = ({
     >
       {children}
     </button>
-  )
-}
+  );
+};
 
-export default Button
+export default Button;

@@ -1,83 +1,82 @@
-import { T_CharObj } from '#/core'
-import CantoDictButton from '#/react-ui/languages/common/Links/CantoDictButton'
-import GoogleTranslateButton from '#/react-ui/languages/common/Links/GoogleTranslateButton'
-import { MutableRefObject, useEffect, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { FaChevronDown, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import { ClickAwayListener } from '@mui/base/ClickAwayListener';
+import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
+import { T_CharObj } from '#/core';
+import CantoDictButton from '#/react-ui/languages/common/Links/CantoDictButton';
+import GoogleTranslateButton from '#/react-ui/languages/common/Links/GoogleTranslateButton';
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FaChevronDown, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
-import { ClickAwayListener } from '@mui/base/ClickAwayListener'
-import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup'
-
-const CHAR_WIDTH = 25
-const MAX_HEIGHT = 160
+const CHAR_WIDTH = 25;
+const MAX_HEIGHT = 160;
 
 type Props = {
-  重點字元索引?: number
-  應該有不同的寬度?: boolean
-  應該隱藏發音: boolean
-  顯示目前字元的發音?: boolean
-  charsObjsList: T_CharObj[]
-  colorOfChar?: (isCurrentChar: boolean, c: T_CharObj) => string | undefined
-  fontSize?: number
-  hasCantodict?: boolean
+  重點字元索引?: number;
+  應該有不同的寬度?: boolean;
+  顯示目前字元的發音?: boolean;
+  charsObjsList: T_CharObj[];
+  colorOfChar?: (isCurrentChar: boolean, c: T_CharObj) => string | undefined;
+  fontSize?: number;
+  hasCantodict?: boolean;
   onSymbolClick?: (o: {
-    charObj: T_CharObj
-    charsObjsList: T_CharObj[]
-    index: number
-  }) => void
-}
+    charObj: T_CharObj;
+    charsObjsList: T_CharObj[];
+    index: number;
+  }) => void;
+  shouldHidePronunciation: boolean;
+};
 
 const CharactersDisplay = ({
   重點字元索引,
   應該有不同的寬度,
-  應該隱藏發音,
   顯示目前字元的發音,
   charsObjsList,
   colorOfChar,
   fontSize,
   hasCantodict,
   onSymbolClick,
+  shouldHidePronunciation: shouldHidePronunciationDefault,
 }: Props) => {
-  const { i18n } = useTranslation()
-  const usedFontSize = fontSize ?? 30
-  const wrapperRef = useRef<HTMLDivElement | undefined>()
-  const charWidth = CHAR_WIDTH + usedFontSize
+  const { i18n } = useTranslation();
+  const usedFontSize = fontSize ?? 30;
+  const wrapperRef = useRef<HTMLDivElement | undefined>();
+  const charWidth = CHAR_WIDTH + usedFontSize;
 
   const [multichar, setMultichar] = useState<
     [number, null] | [number, number] | null
-  >(null)
+  >(null);
 
   const [showMultichar, setShowMultichar] = useState<
     [number, 'left' | 'right'] | null
-  >(null)
+  >(null);
 
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
-  useEffect(() => {}, [multichar])
+  useEffect(() => {}, [multichar]);
 
   useEffect(() => {
     if (!wrapperRef.current || (!wrapperRef.current.childNodes as unknown)) {
-      return () => {}
+      return () => {};
     }
 
     const charEl = wrapperRef.current.childNodes[
       重點字元索引 as number
-    ] as HTMLDivElement
+    ] as HTMLDivElement;
 
     if (!(charEl as unknown)) {
-      return () => {}
+      return () => {};
     }
 
-    const { scrollTop } = wrapperRef.current
-    const { offsetTop } = charEl
-    const { height } = charEl.getBoundingClientRect()
+    const { scrollTop } = wrapperRef.current;
+    const { offsetTop } = charEl;
+    const { height } = charEl.getBoundingClientRect();
 
     if (offsetTop + height > scrollTop + MAX_HEIGHT) {
-      wrapperRef.current.scrollTop = offsetTop + height - MAX_HEIGHT
+      wrapperRef.current.scrollTop = offsetTop + height - MAX_HEIGHT;
     } else if (offsetTop < scrollTop) {
-      wrapperRef.current.scrollTop = offsetTop
+      wrapperRef.current.scrollTop = offsetTop;
     }
-  }, [重點字元索引])
+  }, [重點字元索引]);
 
   return (
     <div
@@ -92,66 +91,67 @@ const CharactersDisplay = ({
       }}
     >
       {charsObjsList.map((charObj, index) => {
-        const { pronunciation, word } = charObj
+        const { pronunciation, word } = charObj;
 
         const shouldHidePronunciation =
-          !(顯示目前字元的發音 && index === 重點字元索引) && 應該隱藏發音
+          !(顯示目前字元的發音 && index === 重點字元索引) &&
+          shouldHidePronunciationDefault;
 
         const showMulticharHere =
           (!!showMultichar && showMultichar[0] === index) ||
-          (multichar && (multichar[0] === index || multichar[1] === index))
+          (multichar && (multichar[0] === index || multichar[1] === index));
 
-        const opacity = index === 重點字元索引 ? 1 : 0.3
+        const opacity = index === 重點字元索引 ? 1 : 0.3;
 
         const hasLeft =
           (showMultichar?.[0] === index && showMultichar[1] === 'left') ||
-          multichar?.[0] === index
+          multichar?.[0] === index;
 
         const hasRight =
           (showMultichar?.[0] === index && showMultichar[1] === 'right') ||
-          multichar?.[1] === index
+          multichar?.[1] === index;
 
         return (
           <span
             key={`${index}${charObj.word}`}
-            onClick={e => {
-              e.stopPropagation()
+            onClick={(e) => {
+              e.stopPropagation();
 
-              setMultichar(null)
-              setShowMultichar(null)
+              setMultichar(null);
+              setShowMultichar(null);
 
               onSymbolClick?.({
                 charObj,
                 charsObjsList,
                 index,
-              })
+              });
             }}
-            onMouseDown={e => {
-              e.stopPropagation()
-              e.preventDefault()
+            onMouseDown={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
 
               if (!multichar) {
-                setMultichar([index, null])
+                setMultichar([index, null]);
               }
             }}
             onMouseEnter={() => {
-              if (!multichar) setShowMultichar([index, 'left'])
+              if (!multichar) setShowMultichar([index, 'left']);
               else if (multichar[1] === null && index >= multichar[0])
-                setShowMultichar([index, 'right'])
+                setShowMultichar([index, 'right']);
             }}
             onMouseLeave={() => {
               if (!multichar || typeof multichar[1] !== 'number') {
-                setShowMultichar(null)
+                setShowMultichar(null);
               }
             }}
-            onMouseUp={e => {
-              e.stopPropagation()
-              e.preventDefault()
+            onMouseUp={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
 
-              if (!multichar) return
+              if (!multichar) return;
 
               if (multichar[1] === null) {
-                setMultichar([multichar[0], index])
+                setMultichar([multichar[0], index]);
               }
             }}
             style={{
@@ -221,7 +221,7 @@ const CharactersDisplay = ({
               {word}
             </span>
           </span>
-        )
+        );
       })}
       {multichar && typeof multichar[1] === 'number' && anchorEl && (
         <BasePopup
@@ -232,12 +232,12 @@ const CharactersDisplay = ({
           <ClickAwayListener onClickAway={() => setMultichar(null)}>
             <div style={{ background: 'rgba(0, 0, 0, 0.7)', padding: 40 }}>
               {(() => {
-                const [firstIndex, secondIndex] = multichar
+                const [firstIndex, secondIndex] = multichar;
 
                 const word = charsObjsList
                   .slice(firstIndex, secondIndex + 1)
-                  .map(c => c.word)
-                  .join('')
+                  .map((c) => c.word)
+                  .join('');
 
                 return (
                   <div className="flex flex-col gap-[16px]">
@@ -254,14 +254,14 @@ const CharactersDisplay = ({
                       </div>
                     )}
                   </div>
-                )
+                );
               })()}
             </div>
           </ClickAwayListener>
         </BasePopup>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default CharactersDisplay
+export default CharactersDisplay;

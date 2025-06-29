@@ -1,14 +1,14 @@
-type T_openOptionsPage = () => void
+type T_openOptionsPage = () => void;
 
 const openReal: T_openOptionsPage = () => {
-  chrome.tabs.create({
+  void chrome.tabs.create({
     url: `chrome-extension://${chrome.runtime.id}/html/options.html`,
-  })
-}
+  });
+};
 
-const openFake: T_openOptionsPage = () => {}
+const openFake: T_openOptionsPage = () => {};
 
 const openOptionsPage =
-  process.env.NODE_ENV === 'production' ? openReal : openFake
+  process.env.NODE_ENV === 'production' ? openReal : openFake;
 
-export default openOptionsPage
+export default openOptionsPage;

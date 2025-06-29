@@ -1,23 +1,23 @@
-import { useMainContext } from '#/react-ui/containers/main-context'
-import { backendClient } from '#/react-ui/lib/backendClient'
-import { TOOLTIP_ID } from '#/utils/tooltip'
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { FaSpinner } from 'react-icons/fa'
+import { useMainContext } from '#/react-ui/containers/main-context';
+import { backendClient } from '#/react-ui/lib/backendClient';
+import { TOOLTIP_ID } from '#/utils/tooltip';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FaSpinner } from 'react-icons/fa';
 
-import Button, { T_ButtonProps } from '../../../components/button/button'
+import Button, { T_ButtonProps } from '../../../components/button/button';
 
 type Props = {
-  text: string
-} & Omit<T_ButtonProps, 'children'>
+  text: string;
+} & Omit<T_ButtonProps, 'children'>;
 
 const CantoDictButton = ({ text, ...rest }: Props) => {
-  const { t } = useTranslation()
-  const [translation, setTranslation] = useState<[string, string] | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const mainContext = useMainContext()
+  const { t } = useTranslation();
+  const [translation, setTranslation] = useState<[string, string] | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const mainContext = useMainContext();
 
-  const { canUseCantodict } = mainContext.state
+  const { canUseCantodict } = mainContext.state;
 
   return (
     <>
@@ -26,21 +26,21 @@ const CantoDictButton = ({ text, ...rest }: Props) => {
         data-tooltip-id={TOOLTIP_ID}
         disabled={!canUseCantodict}
         onClick={() => {
-          setIsLoading(true)
+          setIsLoading(true);
 
-          backendClient
+          void backendClient
             .queryCantodict(text)
-            .then(_translation => {
+            .then((_translation) => {
               const final = _translation
-                .filter(it => !!it.meaning && it.meaning !== '-')
-                .map(it => `- ${it.word}: ${it.meaning}`)
-                .join('\n')
+                .filter((it) => !!it.meaning && it.meaning !== '-')
+                .map((it) => `- ${it.word}: ${it.meaning}`)
+                .join('\n');
 
-              setTranslation([text, final])
+              setTranslation([text, final]);
             })
             .finally(() => {
-              setIsLoading(false)
-            })
+              setIsLoading(false);
+            });
         }}
         {...rest}
       >
@@ -64,7 +64,7 @@ const CantoDictButton = ({ text, ...rest }: Props) => {
         </>
       )}
     </>
-  )
-}
+  );
+};
 
-export default CantoDictButton
+export default CantoDictButton;

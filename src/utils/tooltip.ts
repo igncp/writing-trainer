@@ -1,1 +1,1 @@
-export const TOOLTIP_ID = 'tooltip'
+export const TOOLTIP_ID = 'tooltip';

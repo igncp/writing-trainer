@@ -1,20 +1,20 @@
-import { ChangeEvent, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { ChangeEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import { T_OptionsBlock } from '../../types'
+import { T_OptionsBlock } from '../../types';
 
-export const defaultUseTonesColors = 'current'
+export const defaultUseTonesColors = 'current';
 
 const OptionsBlock: T_OptionsBlock = ({ langOpts, updateLangOpts }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const [聲調值, 保存聲調值] = useState(
     (langOpts.聲調值 as string) || '使用聲調',
-  )
+  );
 
   const [遊戲模式值, setPlaymodeValue] = useState(
     (langOpts.遊戲模式值 as string) || '還原論者',
-  )
+  );
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleOptionsChange = (newValues: any) => {
@@ -25,24 +25,24 @@ const OptionsBlock: T_OptionsBlock = ({ langOpts, updateLangOpts }) => {
       聲調值,
 
       ...newValues,
-    })
-  }
+    });
+  };
 
   const handleTonesChange = (事件: ChangeEvent<HTMLSelectElement>) => {
-    保存聲調值(事件.target.value)
+    保存聲調值(事件.target.value);
 
     handleOptionsChange({
       聲調值: 事件.target.value,
-    })
-  }
+    });
+  };
 
   const handlePlaymodeChange = (事件: ChangeEvent<HTMLSelectElement>) => {
-    setPlaymodeValue(事件.target.value)
+    setPlaymodeValue(事件.target.value);
 
     handleOptionsChange({
       遊戲模式值: 事件.target.value,
-    })
-  }
+    });
+  };
 
   return (
     <div className="flex flex-col gap-[16px] md:flex-row">
@@ -71,7 +71,7 @@ const OptionsBlock: T_OptionsBlock = ({ langOpts, updateLangOpts }) => {
             onChange={() => {
               handleOptionsChange({
                 自動分割文字行: !langOpts.自動分割文字行,
-              })
+              });
             }}
             type="checkbox"
           />
@@ -79,10 +79,10 @@ const OptionsBlock: T_OptionsBlock = ({ langOpts, updateLangOpts }) => {
       </span>
       <span className="border-[1px] border-[#ccc] p-[4px]">
         <select
-          onChange={e => {
+          onChange={(e) => {
             handleOptionsChange({
               useTonesColors: e.target.value,
-            })
+            });
           }}
           value={(langOpts.useTonesColors as string) || defaultUseTonesColors}
         >
@@ -95,7 +95,7 @@ const OptionsBlock: T_OptionsBlock = ({ langOpts, updateLangOpts }) => {
         </select>
       </span>
     </div>
-  )
-}
+  );
+};
 
-export default OptionsBlock
+export default OptionsBlock;

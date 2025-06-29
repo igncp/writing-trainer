@@ -36,19 +36,18 @@
   "dict": {
     "clear": "清除",
     "closeShuffle": "關閉隨機",
-    "correct": "正確的",
     "displayOneWord": "顯示一個字的字元",
     "displayPronunciation": "顯示發音",
+    "extraFilterCheckNo": "移除過濾器檢查",
+    "extraFilterCheckYes": "添加過濾器檢查",
     "hideAll": "隱藏所有",
     "hideOneWord": "不顯示一個字的字元",
     "hidePronunciation": "隱藏發音",
     "nextWord": "下一個字",
-    "remaining": "剩餘",
     "reverse": "反向",
     "showAll": "顯示所有",
     "startShuffle": "開始隨機",
-    "total": "總數",
-    "wrong": "錯誤的"
+    "total": "總數"
   },
   "help": {
     "how": "如何使用 Writing Trainer",

@@ -1,22 +1,22 @@
-import { Message } from '@/utils/constants'
+import { Message } from '@/utils/constants';
 
-type T_sendResponse = (v: unknown) => void
+type T_sendResponse = (v: unknown) => void;
 
 type T_Listener = (
   m: Message,
   sender: unknown,
   sendResponse: T_sendResponse,
-) => void
+) => void;
 
-type T_listenToRuntimeMessage = (fn: T_Listener) => void
+type T_listenToRuntimeMessage = (fn: T_Listener) => void;
 
 const listenReal: T_listenToRuntimeMessage = (fn: T_Listener) => {
-  chrome.runtime.onMessage.addListener(fn)
-}
+  chrome.runtime.onMessage.addListener(fn);
+};
 
-const listenFake: T_listenToRuntimeMessage = () => {}
+const listenFake: T_listenToRuntimeMessage = () => {};
 
 const listenToRuntimeMessage =
-  process.env.NODE_ENV === 'production' ? listenReal : listenFake
+  process.env.NODE_ENV === 'production' ? listenReal : listenFake;
 
-export default listenToRuntimeMessage
+export default listenToRuntimeMessage;

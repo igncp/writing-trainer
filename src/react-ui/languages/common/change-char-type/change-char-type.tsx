@@ -1,16 +1,16 @@
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
-import Button from '../../../components/button/button'
-import { T_Fragments } from '../../types'
-import { changeToSimplified, changeToTraditional } from '../conversion'
+import Button from '../../../components/button/button';
+import { T_Fragments } from '../../types';
+import { changeToSimplified, changeToTraditional } from '../conversion';
 
 type 類型 = {
-  fragments: T_Fragments
-  updateFragments: (list: T_Fragments) => void
-}
+  fragments: T_Fragments;
+  updateFragments: (list: T_Fragments) => void;
+};
 
 const ChangeCharType = ({ fragments, updateFragments }: 類型) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <>
@@ -20,7 +20,7 @@ const ChangeCharType = ({ fragments, updateFragments }: 類型) => {
             updateFragments({
               ...fragments,
               list: fragments.list.map(changeToTraditional),
-            })
+            });
           }}
         >
           {t('option.changeToTraditional')}
@@ -32,14 +32,14 @@ const ChangeCharType = ({ fragments, updateFragments }: 類型) => {
             updateFragments({
               ...fragments,
               list: fragments.list.map(changeToSimplified),
-            })
+            });
           }}
         >
           {t('option.changeToSimplified')}
         </Button>
       </span>
     </>
-  )
-}
+  );
+};
 
-export default ChangeCharType
+export default ChangeCharType;

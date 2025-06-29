@@ -1,22 +1,22 @@
-import { useEffect, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import TextInput from '../../../components/TextInput/TextInput'
-import Button from '../../../components/button/button'
-import { T_Services } from '../../../typings/mainTypes'
+import Button from '../../../components/button/button';
+import TextInput from '../../../components/TextInput/TextInput';
+import { T_Services } from '../../../typings/mainTypes';
 
 export interface RecordToSave {
-  link: string
-  name: string
+  link: string;
+  name: string;
 }
 
 type RecordSaveProps = {
-  disabled?: boolean
-  initialRecord: RecordToSave | null
-  onRecordSave: (r: RecordToSave) => void
-  onShowRecordsList: () => void
-  services: T_Services
-}
+  disabled?: boolean;
+  initialRecord: null | RecordToSave;
+  onRecordSave: (r: RecordToSave) => void;
+  onShowRecordsList: () => void;
+  services: T_Services;
+};
 
 const RecordSave = ({
   disabled,
@@ -27,42 +27,42 @@ const RecordSave = ({
 }: RecordSaveProps) => {
   const [recordName, setRecordName] = useState<string>(
     initialRecord ? initialRecord.name : '',
-  )
+  );
 
   const [recordLink, setRecordLink] = useState<string>(
     initialRecord ? initialRecord.link : '',
-  )
+  );
 
-  const [currentUrl, setCurrentUrl] = useState<string>('')
-  const linkInputRef = useRef<HTMLInputElement>(null)
-  const { t } = useTranslation()
+  const [currentUrl, setCurrentUrl] = useState<string>('');
+  const linkInputRef = useRef<HTMLInputElement>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     services
       .getCurrentUrl()
-      .then(newCurrentUrl => {
-        setCurrentUrl(newCurrentUrl)
-        setRecordLink(newCurrentUrl)
+      .then((newCurrentUrl) => {
+        setCurrentUrl(newCurrentUrl);
+        setRecordLink(newCurrentUrl);
       })
       .catch((e: Error) => {
-        console.log(e)
-      })
-  }, [services])
+        console.error(e);
+      });
+  }, [services]);
 
   if (!currentUrl) {
-    return null
+    return null;
   }
 
-  const isSaveButtonDisabled = !recordName
+  const isSaveButtonDisabled = !recordName;
 
   const handleRecordSave = () => {
     if (!isSaveButtonDisabled) {
       onRecordSave({
         link: recordLink.trim(),
         name: recordName,
-      })
+      });
     }
-  }
+  };
 
   return (
     <>
@@ -77,12 +77,12 @@ const RecordSave = ({
           <span style={{ marginLeft: 10 }}>
             <TextInput
               autoFocus
-              onChange={e => {
-                setRecordName(e.target.value)
+              onChange={(e) => {
+                setRecordName(e.target.value);
               }}
               onEnterPress={() => {
                 if (recordName) {
-                  linkInputRef.current?.focus()
+                  linkInputRef.current?.focus();
                 }
               }}
               tabIndex={1}
@@ -95,8 +95,8 @@ const RecordSave = ({
           <span style={{ marginLeft: 10 }}>
             <TextInput
               inputRef={linkInputRef}
-              onChange={e => {
-                setRecordLink(e.target.value)
+              onChange={(e) => {
+                setRecordLink(e.target.value);
               }}
               onEnterPress={handleRecordSave}
               tabIndex={2}
@@ -115,7 +115,7 @@ const RecordSave = ({
         </Button>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default RecordSave
+export default RecordSave;

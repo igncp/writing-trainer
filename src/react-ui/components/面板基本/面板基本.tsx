@@ -1,48 +1,46 @@
-import { ReactNode } from 'react'
+import { ReactNode } from 'react';
 
 type 特性 = {
-  覆蓋點擊: () => void
-  children: ReactNode
-}
+  覆蓋點擊: () => void;
+  children: ReactNode;
+};
 
-const 面板基本 = ({ 覆蓋點擊, children }: 特性) => {
-  return (
+const 面板基本 = ({ 覆蓋點擊, children }: 特性) => (
+  <div
+    style={{
+      bottom: 0,
+      left: 0,
+      position: 'fixed',
+      right: 0,
+      top: 0,
+      zIndex: 9999999,
+    }}
+  >
     <div
+      style={{
+        backgroundColor: 'rgba(255,255,255,1)',
+        border: '1px solid black',
+        left: 0,
+        margin: 10,
+        position: 'absolute',
+        right: 0,
+        zIndex: 2,
+      }}
+    >
+      {children}
+    </div>
+    <div
+      onClick={覆蓋點擊}
       style={{
         bottom: 0,
         left: 0,
-        position: 'fixed',
+        position: 'absolute',
         right: 0,
         top: 0,
-        zIndex: 9999999,
+        zIndex: 1,
       }}
-    >
-      <div
-        style={{
-          backgroundColor: 'rgba(255,255,255,1)',
-          border: '1px solid black',
-          left: 0,
-          margin: 10,
-          position: 'absolute',
-          right: 0,
-          zIndex: 2,
-        }}
-      >
-        {children}
-      </div>
-      <div
-        onClick={覆蓋點擊}
-        style={{
-          bottom: 0,
-          left: 0,
-          position: 'absolute',
-          right: 0,
-          top: 0,
-          zIndex: 1,
-        }}
-      />
-    </div>
-  )
-}
+    />
+  </div>
+);
 
-export default 面板基本
+export default 面板基本;

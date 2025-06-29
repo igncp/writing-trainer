@@ -1,12 +1,12 @@
-import { useHover } from '#/react-ui'
-import { FC } from 'react'
+import { useHover } from '#/react-ui';
+import { FC } from 'react';
 
 type T_PanelTrigger = FC<{
-  onClick: () => void
-}>
+  onClick: () => void;
+}>;
 
 const PanelTrigger: T_PanelTrigger = ({ onClick }) => {
-  const { bind, hovered } = useHover()
+  const { bind, hovered } = useHover();
 
   return (
     <div
@@ -27,7 +27,7 @@ const PanelTrigger: T_PanelTrigger = ({ onClick }) => {
     >
       Open Writing Trainer
     </div>
-  )
-}
+  );
+};
 
-export default PanelTrigger
+export default PanelTrigger;

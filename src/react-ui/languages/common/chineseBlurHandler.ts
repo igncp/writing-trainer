@@ -1,52 +1,52 @@
-import { T_LangUIController } from '../types'
+import { T_LangUIController } from '../types';
 
 export const chineseBlurHandler: T_LangUIController['onBlur'] = ({
   fragmentsList,
   langOpts,
 }) => {
   if (langOpts.自動分割文字行) {
-    const splitChars = new Set(['。', '？', '！', '；', '，'])
-    const splitLength = 20
+    const splitChars = new Set(['，', '；', '！', '？', '。']);
+    const splitLength = 20;
 
     const newList = fragmentsList
-      .map(l => {
+      .map((l) => {
         if (l.startsWith('原文網址: ')) {
-          return []
+          return [];
         }
 
         if (l.length <= splitLength) {
-          return [l]
+          return [l];
         }
 
-        const lines: string[] = []
+        const lines: string[] = [];
 
-        let currentLine = l.slice(0, splitLength)
-        let currentCharNum = splitLength
+        let currentLine = l.slice(0, splitLength);
+        let currentCharNum = splitLength;
 
         while (currentCharNum < l.length) {
-          currentLine += l[currentCharNum]
+          currentLine += l[currentCharNum];
 
           if (splitChars.has(l[currentCharNum])) {
-            lines.push(currentLine)
+            lines.push(currentLine);
 
-            currentLine = ''
+            currentLine = '';
           }
 
-          currentCharNum++
+          currentCharNum++;
         }
 
         if (currentLine.length > 0) {
-          lines.push(currentLine)
+          lines.push(currentLine);
         }
 
-        return lines
+        return lines;
       })
       .flat()
-      .map(l => l.trim())
-      .filter(Boolean)
+      .map((l) => l.trim())
+      .filter(Boolean);
 
-    return { newFragmentsList: newList }
+    return { newFragmentsList: newList };
   }
 
-  return { newFragmentsList: undefined }
-}
+  return { newFragmentsList: undefined };
+};

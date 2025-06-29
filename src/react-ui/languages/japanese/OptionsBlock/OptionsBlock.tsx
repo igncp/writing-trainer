@@ -1,7 +1,5 @@
-import { T_OptionsBlock } from '../../types'
+import { T_OptionsBlock } from '../../types';
 
-const OptionsBlock: T_OptionsBlock = () => {
-  return null
-}
+const OptionsBlock: T_OptionsBlock = () => null;
 
-export default OptionsBlock
+export default OptionsBlock;

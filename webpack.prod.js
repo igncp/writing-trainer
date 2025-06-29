@@ -1,13 +1,13 @@
-const path = require('path')
-const webpack = require('webpack')
+const path = require('path');
+const webpack = require('webpack');
 
-const srcPath = path.join(__dirname, 'src/chrome-extension')
+const srcPath = path.join(__dirname, 'src/chrome-extension');
 
 const plugins = [
   new webpack.DefinePlugin({
     __STORAGE_TYPE__: JSON.stringify('chrome'),
   }),
-]
+];
 
 const config = {
   entry: {
@@ -62,6 +62,6 @@ const config = {
     },
     extensions: ['.ts', '.tsx', '.js', '.csv'],
   },
-}
+};
 
-module.exports = config
+module.exports = config;

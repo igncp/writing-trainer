@@ -1,11 +1,11 @@
-import 獲取 from 'lodash/get'
-import { TextareaHTMLAttributes, useEffect, useRef } from 'react'
+import 獲取 from 'lodash/get';
+import { TextareaHTMLAttributes, useEffect, useRef } from 'react';
 
-type 特性 = TextareaHTMLAttributes<HTMLTextAreaElement> & {
-  自動捲動?: boolean
-  無遊標?: boolean
-  setRef?: (ref: HTMLTextAreaElement | null) => void
-}
+type 特性 = {
+  自動捲動?: boolean;
+  無遊標?: boolean;
+  setRef?: (ref: HTMLTextAreaElement | null) => void;
+} & TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 const TextArea = ({
   自動捲動 = false,
@@ -16,25 +16,25 @@ const TextArea = ({
   style,
   ...特性
 }: 特性) => {
-  const ref = useRef<HTMLTextAreaElement>(null)
-  const 顏色 = 獲取(style, 'color', 'var(--color-text, "black")')
+  const ref = useRef<HTMLTextAreaElement>(null);
+  const 顏色 = 獲取(style, 'color', 'var(--color-text, "black")');
 
   const 遊標樣式 = 無遊標
     ? {
         color: 'transparent',
         textShadow: `0 0 0 ${顏色}`,
       }
-    : {}
+    : {};
 
   if (setRef) {
-    setRef(ref.current)
+    setRef(ref.current);
   }
 
   useEffect(() => {
     if (自動捲動 && ref.current) {
-      ref.current.scrollTop = ref.current.scrollHeight
+      ref.current.scrollTop = ref.current.scrollHeight;
     }
-  })
+  });
 
   return (
     <textarea
@@ -56,7 +56,7 @@ const TextArea = ({
       }}
       {...特性}
     />
-  )
-}
+  );
+};
 
-export default TextArea
+export default TextArea;

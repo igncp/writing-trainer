@@ -1,28 +1,25 @@
-import { Message } from '@/utils/constants'
+import { Message } from '@/utils/constants';
 
-type T_sendTabsMessage = (msg: Message) => Promise<boolean>
+type T_sendTabsMessage = (msg: Message) => Promise<boolean>;
 
-const sendReal: T_sendTabsMessage = msg => {
-  return new Promise(resolve => {
-    chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
+const sendReal: T_sendTabsMessage = (msg) =>
+  new Promise((resolve) => {
+    chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
       if (!tabs.length) {
-        resolve(false)
+        resolve(false);
 
-        return
+        return;
       }
 
       chrome.tabs.sendMessage(tabs[0].id as number, msg, (val: boolean) => {
-        resolve(val)
-      })
-    })
-  })
-}
+        resolve(val);
+      });
+    });
+  });
 
-const sendFake: T_sendTabsMessage = () => {
-  return Promise.resolve(true)
-}
+const sendFake: T_sendTabsMessage = () => Promise.resolve(true);
 
 const sendTabsMessage =
-  process.env.NODE_ENV === 'production' ? sendReal : sendFake
+  process.env.NODE_ENV === 'production' ? sendReal : sendFake;
 
-export default sendTabsMessage
+export default sendTabsMessage;

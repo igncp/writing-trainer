@@ -1,60 +1,59 @@
-import { Panel } from '#/react-ui'
-import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { useState, useEffect, useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
-import { FaRegQuestionCircle } from 'react-icons/fa'
-import { FaLanguage } from 'react-icons/fa6'
+import { Panel } from '#/react-ui';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FaRegQuestionCircle } from 'react-icons/fa';
+import { FaLanguage } from 'react-icons/fa6';
 
 import {
   languageManager,
   languageUIManager,
   panelServices,
   usedText,
-} from '../utils'
-
-import HelpModal from './help-modal'
+} from '../utils';
+import HelpModal from './help-modal';
 
 const PANEL_UI = {
   noHideButton: true,
-}
+};
 
 const getPath = () => {
-  if (typeof window === 'undefined') return ''
+  if (typeof window === 'undefined') return '';
 
-  return window.location.hash.replace(/^#/, '')
-}
+  return window.location.hash.replace(/^#/, '');
+};
 
 const IndexPage = () => {
-  const [theme, setTheme] = useState('dark')
-  const [showingLangs, setShowingLangs] = useState(false)
-  const [showingHelp, setShowingHelp] = useState(false)
-  const { i18n, t } = useTranslation()
-  const [hasLoaded, setHasLoaded] = useState(false)
-  const [currentPath, setCurrentPath] = useState(getPath())
+  const [theme, setTheme] = useState('dark');
+  const [showingLangs, setShowingLangs] = useState(false);
+  const [showingHelp, setShowingHelp] = useState(false);
+  const { i18n, t } = useTranslation();
+  const [hasLoaded, setHasLoaded] = useState(false);
+  const [currentPath, setCurrentPath] = useState(getPath());
 
-  const { query } = useRouter()
+  const { query } = useRouter();
 
   const replacePath = useCallback((path: string) => {
-    window.location.replace(`/#${path}`)
-    setCurrentPath(path)
-  }, [])
+    window.location.replace(`/#${path}`);
+    setCurrentPath(path);
+  }, []);
 
   useEffect(() => {
-    setHasLoaded(true)
-  }, [])
+    setHasLoaded(true);
+  }, []);
 
   useEffect(() => {
     if (theme) {
-      document.body.setAttribute('data-theme', theme)
-      document.cookie = `theme=${theme};path=/`
+      document.body.setAttribute('data-theme', theme);
+      document.cookie = `theme=${theme};path=/`;
     }
-  }, [theme])
+  }, [theme]);
 
   const changeLanguage = (lang: string) => {
-    i18n.changeLanguage(lang)
-    localStorage.setItem('lang', lang)
-  }
+    void i18n.changeLanguage(lang);
+    localStorage.setItem('lang', lang);
+  };
 
   return (
     <div>
@@ -66,14 +65,14 @@ const IndexPage = () => {
         <div className="absolute right-[24px] flex flex-row gap-[24px] text-[24px]">
           <button
             onClick={() => {
-              setShowingHelp(!showingHelp)
+              setShowingHelp(!showingHelp);
             }}
           >
             <FaRegQuestionCircle />
           </button>
           <button
             onClick={() => {
-              setShowingLangs(!showingLangs)
+              setShowingLangs(!showingLangs);
             }}
           >
             <FaLanguage />
@@ -89,7 +88,7 @@ const IndexPage = () => {
         <button
           className="cursor-pointer"
           onClick={() => {
-            changeLanguage('en')
+            changeLanguage('en');
           }}
         >
           EN
@@ -97,7 +96,7 @@ const IndexPage = () => {
         <button
           className="cursor-pointer"
           onClick={() => {
-            changeLanguage('zh_hant')
+            changeLanguage('zh_hant');
           }}
         >
           繁
@@ -105,7 +104,7 @@ const IndexPage = () => {
         <button
           className="cursor-pointer"
           onClick={() => {
-            changeLanguage('jp')
+            changeLanguage('jp');
           }}
         >
           日
@@ -113,7 +112,7 @@ const IndexPage = () => {
         <button
           className="cursor-pointer"
           onClick={() => {
-            changeLanguage('es')
+            changeLanguage('es');
           }}
         >
           ES
@@ -121,7 +120,6 @@ const IndexPage = () => {
       </h2>
       <div className="relative px-[8px] md:px-[16px]">
         <Panel
-          UI={PANEL_UI}
           getPath={() => currentPath}
           initialFragmentIndex={
             query.fragmentIndex ? Number(query.fragmentIndex) : undefined
@@ -129,21 +127,22 @@ const IndexPage = () => {
           languageManager={languageManager}
           languageUIManager={languageUIManager}
           onChangeTheme={() => {
-            setTheme(theme === 'light' ? 'dark' : 'light')
+            setTheme(theme === 'light' ? 'dark' : 'light');
           }}
           replacePath={replacePath}
           services={panelServices}
           text={usedText}
+          UI={PANEL_UI}
         />
         {showingHelp && (
           <HelpModal
             isOpen={showingHelp}
-            setIsOpen={val => setShowingHelp(val)}
+            setIsOpen={(val) => setShowingHelp(val)}
           />
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default IndexPage
+export default IndexPage;

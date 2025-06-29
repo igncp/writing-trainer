@@ -1,22 +1,21 @@
-import { englishHandler } from '#/core'
+import { englishHandler } from '#/core';
 
-import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils'
-import { T_LangUIController, T_LangOpts } from '../types'
+import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils';
+import { T_LangOpts, T_LangUIController } from '../types';
+import LinksBlock from './LinksBlock/LinksBlock';
+import OptionsBlock from './OptionsBlock';
 
-import LinksBlock from './LinksBlock/LinksBlock'
-import OptionsBlock from './OptionsBlock'
+const handleKeyDown: T_LangUIController['handleKeyDown'] = (params) => {
+  commonHandleWritingKeyDown(params, {});
+};
 
-const handleKeyDown: T_LangUIController['handleKeyDown'] = params => {
-  commonHandleWritingKeyDown(params, {})
-}
+const langOpts: T_LangOpts = {};
 
-const langOpts: T_LangOpts = {}
+const getLangOpts = () => langOpts;
 
-const getLangOpts = () => langOpts
+const saveLangOptss = () => {};
 
-const saveLangOptss = () => {}
-
-const loadDictionary = () => Promise.resolve()
+const loadDictionary = () => Promise.resolve();
 
 const languageUIController: T_LangUIController = {
   getLangOpts,
@@ -27,21 +26,21 @@ const languageUIController: T_LangUIController = {
   loadDictionary,
   saveLangOptss,
   shouldAllCharsHaveSameWidth: false,
-}
+};
 
 let _test:
   | {
-      langOpts: typeof langOpts
+      langOpts: typeof langOpts;
     }
-  | undefined
+  | undefined;
 
 // istanbul ignore else
 if (process.env.NODE_ENV === 'test') {
   _test = {
     langOpts,
-  }
+  };
 }
 
-export { _test }
+export { _test };
 
-export default languageUIController
+export default languageUIController;

@@ -1,18 +1,18 @@
-import Button from '#/react-ui/components/button/button'
-import { backendClient } from '#/react-ui/lib/backendClient'
-import { TOOLTIP_ID } from '#/utils/tooltip'
-import { memo } from 'react'
-import { useTranslation } from 'react-i18next'
+import Button from '#/react-ui/components/button/button';
+import { backendClient } from '#/react-ui/lib/backendClient';
+import { TOOLTIP_ID } from '#/utils/tooltip';
+import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import { useMainContext } from '../main-context'
+import { useMainContext } from '../main-context';
 
 const LoginWidget = () => {
-  const mainContext = useMainContext()
-  const { t } = useTranslation()
+  const mainContext = useMainContext();
+  const { t } = useTranslation();
 
-  const { isBackendActive, isLoggedIn } = mainContext.state
+  const { isBackendActive, isLoggedIn } = mainContext.state;
 
-  if (!isBackendActive) return null
+  if (!isBackendActive) return null;
 
   return (
     <>
@@ -36,12 +36,12 @@ const LoginWidget = () => {
           <Button
             className="ml-[12px]"
             onClick={() => {
-              backendClient.logout().then(() => {
+              void backendClient.logout().then(() => {
                 mainContext.dispatch({
                   payload: false,
                   type: 'SET_IS_LOGGED_IN',
-                })
-              })
+                });
+              });
             }}
           >
             {t('auth.logout')}
@@ -50,14 +50,14 @@ const LoginWidget = () => {
       ) : (
         <Button
           onClick={() => {
-            backendClient.login()
+            backendClient.login();
           }}
         >
           {t('auth.login')}
         </Button>
       )}
     </>
-  )
-}
+  );
+};
 
-export default memo(LoginWidget)
+export default memo(LoginWidget);

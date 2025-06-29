@@ -1,9 +1,8 @@
-import { LanguageDefinition } from '../constants'
-import { T_CharObj } from '../languageManager'
+import { LanguageDefinition } from '../constants';
+import { T_CharObj } from '../languageManager';
+import { LanguageHandler } from './_common';
 
-import { LanguageHandler } from './_common'
-
-const MAX_CHARS_IN_WORD = 6
+const MAX_CHARS_IN_WORD = 6;
 
 const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
   charsToRemove,
@@ -11,40 +10,40 @@ const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
   text,
 }) => {
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  const defaultSpecialChars = japaneseHandler.getSpecialChars()
+  const defaultSpecialChars = japaneseHandler.getSpecialChars();
 
   const allCharsToRemove = new Set(
     defaultSpecialChars.concat(charsToRemove).concat([' ']),
-  )
+  );
 
   const dictionary = langOpts?.dictionary as
     | Record<string, string | undefined>
-    | undefined
+    | undefined;
 
   const pronunciationInput = ((langOpts?.pronunciationInput as string) || '')
     .split('\n')
     .reduce<Record<string, string>>((acc, item) => {
-      const [char, pronunciationVal] = item.split(' ')
+      const [char, pronunciationVal] = item.split(' ');
 
-      acc[char] = pronunciationVal
+      acc[char] = pronunciationVal;
 
-      return acc
-    }, {})
+      return acc;
+    }, {});
 
   if (!dictionary) {
-    return []
+    return [];
   }
 
-  const charsObjsList: T_CharObj[] = []
+  const charsObjsList: T_CharObj[] = [];
 
-  let currentWord = ''
+  let currentWord = '';
 
   const addWords = (textToAdd: string): number => {
-    let charsAdded = 0
+    let charsAdded = 0;
 
     for (let i = textToAdd.length; i > 0; i--) {
-      const word = textToAdd.slice(0, i)
-      const pronunciation = pronunciationInput[word] || dictionary[word]
+      const word = textToAdd.slice(0, i);
+      const pronunciation = pronunciationInput[word] || dictionary[word];
 
       if (pronunciation) {
         charsObjsList.push(
@@ -52,10 +51,10 @@ const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
             pronunciation,
             word,
           }),
-        )
+        );
 
-        charsAdded = i
-        break
+        charsAdded = i;
+        break;
       }
     }
 
@@ -65,20 +64,20 @@ const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
           pronunciation: '',
           word: textToAdd[0],
         }),
-      )
+      );
 
-      charsAdded = 1
+      charsAdded = 1;
     }
 
-    return charsAdded
-  }
+    return charsAdded;
+  };
 
   text.split('').forEach((ch, idx) => {
     if (allCharsToRemove.has(ch)) {
       while (currentWord) {
-        const charsAdded = addWords(currentWord)
+        const charsAdded = addWords(currentWord);
 
-        currentWord = currentWord.slice(charsAdded)
+        currentWord = currentWord.slice(charsAdded);
       }
 
       charsObjsList.push(
@@ -86,41 +85,41 @@ const convertToCharsObjs: LanguageHandler['convertToCharsObjs'] = ({
           pronunciation: '',
           word: ch,
         }),
-      )
+      );
 
-      currentWord = ''
+      currentWord = '';
 
-      return
+      return;
     }
 
-    currentWord += ch
+    currentWord += ch;
 
     if (currentWord.length >= MAX_CHARS_IN_WORD || idx === text.length - 1) {
-      const charsAdded = addWords(currentWord)
+      const charsAdded = addWords(currentWord);
 
-      currentWord = currentWord.slice(charsAdded)
+      currentWord = currentWord.slice(charsAdded);
 
       if (idx === text.length - 1) {
         while (currentWord) {
-          const charsAdded2 = addWords(currentWord)
+          const charsAdded2 = addWords(currentWord);
 
-          currentWord = currentWord.slice(charsAdded2)
+          currentWord = currentWord.slice(charsAdded2);
         }
       }
     }
-  })
+  });
 
-  return charsObjsList
-}
+  return charsObjsList;
+};
 
 const language = new LanguageDefinition({
   id: 'japanese',
   name: 'Japanese',
-})
+});
 
 const japaneseHandler = new LanguageHandler({
   convertToCharsObjs,
   language,
-})
+});
 
-export { japaneseHandler }
+export { japaneseHandler };

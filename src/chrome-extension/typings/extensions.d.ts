@@ -1,13 +1,13 @@
 declare module '*.csv' {
-  declare const list: string[][]
+  declare const list: string[][];
 
-  export default list
+  export default list;
 }
 
 declare module '*.txt' {
-  declare const value: string
+  declare const value: string;
 
-  export default value
+  export default value;
 }
 
-declare let __STORAGE_TYPE__: 'chrome' | 'dummy' | 'localStorage'
+declare let __STORAGE_TYPE__: 'chrome' | 'dummy' | 'localStorage';

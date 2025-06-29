@@ -1,1 +1,1 @@
-export const siteUrl = 'https://learn-languages-writing.com'
+export const siteUrl = 'https://learn-languages-writing.com';

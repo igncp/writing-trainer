@@ -32,4 +32,4 @@ module.exports = {
   sort: true,
   verbose: false,
   yamlOptions: null,
-}
+};

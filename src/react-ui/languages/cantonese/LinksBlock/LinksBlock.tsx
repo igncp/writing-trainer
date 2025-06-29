@@ -1,13 +1,13 @@
+import ChangeCharType from '../../common/change-char-type/change-char-type';
 import {
   DictButton,
   DictContent,
   useDictState,
-} from '../../common/Links/DictButton'
-import GTButton from '../../common/Links/GoogleTranslateButton'
-import ToggleTonesButton from '../../common/Links/ToggleTonesButton'
-import TranslateButton from '../../common/Links/TranslateButton'
-import ChangeCharType from '../../common/change-char-type/change-char-type'
-import { T_LangOpts, T_LinksBlock } from '../../types'
+} from '../../common/Links/DictButton';
+import GTButton from '../../common/Links/GoogleTranslateButton';
+import ToggleTonesButton from '../../common/Links/ToggleTonesButton';
+import TranslateButton from '../../common/Links/TranslateButton';
+import { T_LangOpts, T_LinksBlock } from '../../types';
 
 const LinksBlock: T_LinksBlock = ({
   文字,
@@ -18,7 +18,7 @@ const LinksBlock: T_LinksBlock = ({
   updateFragments,
   updateLangOpts,
 }) => {
-  const dictState = useDictState()
+  const dictState = useDictState();
 
   return (
     <>
@@ -43,7 +43,7 @@ const LinksBlock: T_LinksBlock = ({
         text={文字}
       />
     </>
-  )
-}
+  );
+};
 
-export default LinksBlock
+export default LinksBlock;

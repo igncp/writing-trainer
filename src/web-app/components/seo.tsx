@@ -1,14 +1,14 @@
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet';
 
 type IProps = {
-  description: string
-  lang: string
-  meta: Array<{ content: string; name: string }>
-  title: string
-}
+  description: string;
+  lang: string;
+  meta: Array<{ content: string; name: string }>;
+  title: string;
+};
 
 function SEO({ description = '', lang = 'en', meta = [], title }: IProps) {
-  const metaDescription = description || ''
+  const metaDescription = description || '';
 
   return (
     <Helmet
@@ -48,7 +48,7 @@ function SEO({ description = '', lang = 'en', meta = [], title }: IProps) {
       title={title}
       titleTemplate="%s"
     />
-  )
+  );
 }
 
-export default SEO
+export default SEO;

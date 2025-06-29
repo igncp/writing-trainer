@@ -1,3 +1,3 @@
-import IndexPage from '#/web-app/components/main-page'
+import IndexPage from '#/web-app/components/main-page';
 
-export default IndexPage
+export default IndexPage;

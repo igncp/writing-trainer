@@ -1,4 +1,4 @@
-export const STORAGE_ENABLED_PAGES_KEY = 'enabledPages'
+export const STORAGE_ENABLED_PAGES_KEY = 'enabledPages';
 
 export enum MessageType {
   EnableOnce,
@@ -6,5 +6,5 @@ export enum MessageType {
 }
 
 export interface Message {
-  type: MessageType
+  type: MessageType;
 }

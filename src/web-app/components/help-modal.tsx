@@ -1,14 +1,14 @@
-import { useTranslation } from 'react-i18next'
-import { RxCross2 } from 'react-icons/rx'
-import Modal from 'react-modal'
+import { useTranslation } from 'react-i18next';
+import { RxCross2 } from 'react-icons/rx';
+import Modal from 'react-modal';
 
 type Props = {
-  isOpen: boolean
-  setIsOpen: (isOpen: boolean) => void
-}
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+};
 
 const HelpModal = ({ isOpen, setIsOpen }: Props) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <Modal
@@ -28,7 +28,7 @@ const HelpModal = ({ isOpen, setIsOpen }: Props) => {
       <h1>{t('help.how')}</h1>
       <p>{t('help.howText1')}</p>
     </Modal>
-  )
-}
+  );
+};
 
-export default HelpModal
+export default HelpModal;

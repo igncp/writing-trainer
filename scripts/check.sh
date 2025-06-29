@@ -13,6 +13,8 @@ bash scripts/prettier.sh --list-different
 
 bun run eslint
 
+bun run test
+
 bun run type-coverage -- \
   --ignore-files 'src/react-ui/graphql/**/*' \
   --ignore-files 'src/rust_packages/**/*'

@@ -1,11 +1,11 @@
-import { specialChars, cantoneseHandler } from '../..'
+import { cantoneseHandler, specialChars } from '../..';
 
 describe('values', () => {
   it('has the correct values', () => {
-    expect(cantoneseHandler.getId()).toEqual('cantonese')
-    expect(cantoneseHandler.getName()).toEqual('Cantonese')
-  })
-})
+    expect(cantoneseHandler.getId()).toEqual('cantonese');
+    expect(cantoneseHandler.getName()).toEqual('Cantonese');
+  });
+});
 
 describe('getSpecialChars', () => {
   it('returns the expected array', () => {
@@ -15,7 +15,7 @@ describe('getSpecialChars', () => {
           '',
         ),
       ),
-    )
+    );
 
     expect(cantoneseHandler.getSpecialChars()).toEqual(
       specialChars.concat(
@@ -23,9 +23,9 @@ describe('getSpecialChars', () => {
           '',
         ),
       ),
-    )
-  })
-})
+    );
+  });
+});
 
 describe('convertToCharsObjs', () => {
   it('returns the correct arrays', () => {
@@ -58,7 +58,7 @@ describe('convertToCharsObjs', () => {
         pronunciation: 'hao',
         word: '好',
       },
-    ]
+    ];
 
     const fullDictionary = {
       好: 'hao',
@@ -66,7 +66,7 @@ describe('convertToCharsObjs', () => {
       我: 'wo',
       很: 'hen',
       嗎: 'ma',
-    }
+    };
 
     expect(
       cantoneseHandler.convertToCharsObjs({
@@ -80,10 +80,10 @@ describe('convertToCharsObjs', () => {
         text: '你好嗎?我很好',
       }),
     ).toEqual(
-      correctResult.map(c =>
+      correctResult.map((c) =>
         c.word === '很' ? { ...c, pronunciation: '?' } : c,
       ),
-    )
+    );
 
     expect(
       cantoneseHandler.convertToCharsObjs({
@@ -92,10 +92,10 @@ describe('convertToCharsObjs', () => {
         text: '你好嗎?我很好',
       }),
     ).toEqual(
-      correctResult.map(c =>
+      correctResult.map((c) =>
         c.pronunciation ? { ...c, pronunciation: '?' } : c,
       ),
-    )
+    );
 
     expect(
       cantoneseHandler.convertToCharsObjs({
@@ -103,10 +103,10 @@ describe('convertToCharsObjs', () => {
         text: '你好嗎?我很好',
       }),
     ).toEqual(
-      correctResult.map(c =>
+      correctResult.map((c) =>
         c.pronunciation ? { ...c, pronunciation: '?' } : c,
       ),
-    )
+    );
 
     expect(
       cantoneseHandler.convertToCharsObjs({
@@ -122,9 +122,9 @@ describe('convertToCharsObjs', () => {
         ...c,
         pronunciation: ['foo', 'bar'][cIdx] || c.pronunciation,
       })),
-    )
-  })
-})
+    );
+  });
+});
 
 describe('filterTextToPractice', () => {
   it('returns the expected string', () => {
@@ -133,6 +133,6 @@ describe('filterTextToPractice', () => {
         charsToRemove: [],
         text: ' 你好嗎?我很好!',
       }),
-    ).toEqual('你好嗎我很好')
-  })
-})
+    ).toEqual('你好嗎我很好');
+  });
+});

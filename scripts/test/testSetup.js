@@ -1,4 +1,4 @@
-const origConsoleError = console.error.bind(console)
+const origConsoleError = console.error.bind(console);
 
 console.error = (msg, ...rest) => {
   if (
@@ -7,10 +7,10 @@ console.error = (msg, ...rest) => {
     )
   ) {
     // https://github.com/facebook/react/issues/14769
-    return
+    return;
   }
 
-  origConsoleError(msg, ...rest)
-}
+  origConsoleError(msg, ...rest);
+};
 
-console.warn = jest.fn()
+console.warn = jest.fn();

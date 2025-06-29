@@ -1,4 +1,4 @@
-import { CodegenConfig } from '@graphql-codegen/cli'
+import { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
   documents: ['src/**/*.tsx'],
@@ -9,6 +9,6 @@ const config: CodegenConfig = {
   },
   ignoreNoDocuments: true,
   schema: 'http://localhost:9000/graphql',
-}
+};
 
-export default config
+export default config;

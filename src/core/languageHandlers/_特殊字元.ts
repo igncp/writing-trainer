@@ -98,6 +98,6 @@ const specialChars = [
   '｜',
   '～',
   '�️',
-]
+];
 
-export { specialChars }
+export { specialChars };

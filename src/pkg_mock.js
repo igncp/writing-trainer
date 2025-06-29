@@ -1,1 +1,1 @@
-export const get_db_name = () => ''
+export const get_db_name = () => '';

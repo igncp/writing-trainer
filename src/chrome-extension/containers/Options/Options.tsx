@@ -1,53 +1,52 @@
-import { Button, TextArea } from '#/react-ui'
-import { ChangeEvent, FC, ReactNode, useEffect, useState } from 'react'
+import storage from '@/services/storage';
+import { STORAGE_ENABLED_PAGES_KEY } from '@/utils/constants';
+import { Button, TextArea } from '#/react-ui';
+import { ChangeEvent, FC, ReactNode, useEffect, useState } from 'react';
 
-import storage from '@/services/storage'
-import { STORAGE_ENABLED_PAGES_KEY } from '@/utils/constants'
+type T_Wrapper = FC<{ children: ReactNode }>;
 
-type T_Wrapper = FC<{ children: ReactNode }>
-
-const SpanWrapper: T_Wrapper = ({ children }) => <span>{children}</span>
-const BWrapper: T_Wrapper = ({ children }) => <b>{children}</b>
+const SpanWrapper: T_Wrapper = ({ children }) => <span>{children}</span>;
+const BWrapper: T_Wrapper = ({ children }) => <b>{children}</b>;
 
 const Options = () => {
-  const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false)
-  const [enabledPagesValue, setEnabledPagesValue] = useState<string>('')
+  const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false);
+  const [enabledPagesValue, setEnabledPagesValue] = useState<string>('');
 
   const [savedEnabledPagesValue, setSavedEnabledPagesValue] =
-    useState<string>('')
+    useState<string>('');
 
   const updateLanguageWithStorage = async () => {
-    const enabledPages = await storage.getValue(STORAGE_ENABLED_PAGES_KEY)
+    const enabledPages = await storage.getValue(STORAGE_ENABLED_PAGES_KEY);
 
     if (enabledPages) {
-      setEnabledPagesValue(enabledPages)
-      setSavedEnabledPagesValue(enabledPages)
+      setEnabledPagesValue(enabledPages);
+      setSavedEnabledPagesValue(enabledPages);
     }
 
-    setHasLoadedStorage(true)
-  }
+    setHasLoadedStorage(true);
+  };
 
   useEffect(() => {
-    updateLanguageWithStorage().catch(error => {
-      console.log(error)
-    })
-  }, [])
+    updateLanguageWithStorage().catch((error) => {
+      console.error(error);
+    });
+  }, []);
 
   const handleEnabledPagesChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setEnabledPagesValue(e.target.value)
-  }
+    setEnabledPagesValue(e.target.value);
+  };
 
   const handleSave = () => {
-    storage.setValue(STORAGE_ENABLED_PAGES_KEY, enabledPagesValue)
-    setSavedEnabledPagesValue(enabledPagesValue)
-  }
+    storage.setValue(STORAGE_ENABLED_PAGES_KEY, enabledPagesValue);
+    setSavedEnabledPagesValue(enabledPagesValue);
+  };
 
   if (!hasLoadedStorage) {
-    return null
+    return null;
   }
 
   const Wrapper: T_Wrapper =
-    savedEnabledPagesValue === enabledPagesValue ? SpanWrapper : BWrapper
+    savedEnabledPagesValue === enabledPagesValue ? SpanWrapper : BWrapper;
 
   return (
     <div>
@@ -61,7 +60,7 @@ const Options = () => {
         rows={20}
       />
     </div>
-  )
-}
+  );
+};
 
-export default Options
+export default Options;
