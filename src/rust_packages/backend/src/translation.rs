@@ -33,7 +33,7 @@ pub async fn translate_text(text: &str, language: &str) -> Result<String, Box<dy
     };
 
     let mut prompt = [
-        &format!("Translate the text below into English from {}.", source_lang),
+        &format!("Translate the text below into English from {source_lang}."),
         "Don't include jyutping or pinyin anywhere in your response.",
         "Describe the sentence structure and provide around three specific grammar points used in the sentence.",
     ]
@@ -69,7 +69,7 @@ pub async fn translate_text(text: &str, language: &str) -> Result<String, Box<dy
     );
     headers_map.insert(
         "Authorization",
-        reqwest::header::HeaderValue::from_str(&format!("Bearer {}", api_key))?,
+        reqwest::header::HeaderValue::from_str(&format!("Bearer {api_key}"))?,
     );
 
     let response = client

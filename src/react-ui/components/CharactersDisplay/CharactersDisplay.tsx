@@ -1,11 +1,11 @@
 import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
-import { T_CharObj } from '#/core';
 import CantoDictButton from '#/react-ui/languages/common/Links/CantoDictButton';
 import GoogleTranslateButton from '#/react-ui/languages/common/Links/GoogleTranslateButton';
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaChevronDown, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { CharObjUI } from 'writing-trainer-wasm/writing_trainer_wasm';
 
 const CHAR_WIDTH = 25;
 const MAX_HEIGHT = 160;
@@ -14,13 +14,13 @@ type Props = {
   重點字元索引?: number;
   應該有不同的寬度?: boolean;
   顯示目前字元的發音?: boolean;
-  charsObjsList: T_CharObj[];
-  colorOfChar?: (isCurrentChar: boolean, c: T_CharObj) => string | undefined;
+  charsObjsList: CharObjUI[];
+  colorOfChar?: (isCurrentChar: boolean, c: CharObjUI) => string | undefined;
   fontSize?: number;
   hasCantodict?: boolean;
   onSymbolClick?: (o: {
-    charObj: T_CharObj;
-    charsObjsList: T_CharObj[];
+    charObj: CharObjUI;
+    charsObjsList: CharObjUI[];
     index: number;
   }) => void;
   shouldHidePronunciation: boolean;

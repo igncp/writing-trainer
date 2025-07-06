@@ -1,9 +1,11 @@
 use wasm_bindgen::prelude::wasm_bindgen;
-use writing_trainer_core::{
+use writing_trainer_core::stats::{
     CharType as CoreCharType, StatChars, StatSentenceCorrect, StatSentenceLength,
     TABLE_CHARS_ALL_TIME, TABLE_CHARS_TODAY, TABLE_SENTENCES_ALL_TIME, TABLE_SENTENCES_TODAY,
     TABLE_SENTENCE_LENGTH_ALL_TIME, TABLE_SENTENCE_LENGTH_TODAY,
 };
+
+mod languages_ui;
 
 const DBNAME: &str = "WritingTrainerDB";
 

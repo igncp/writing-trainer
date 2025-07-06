@@ -8,20 +8,14 @@ import {
   MessageType,
   STORAGE_ENABLED_PAGES_KEY,
 } from '@/utils/constants';
-import { LanguageManager } from '#/core';
 import {
   面板基本,
-  LanguageUIManager,
   Panel,
   useBodyOverflowSwitch,
   useTextSelection,
 } from '#/react-ui';
-import { useCallback, useEffect, useState } from 'react';
-
-const languageManager = new LanguageManager();
-const languageUIManager = new LanguageUIManager(languageManager);
-
-languageUIManager.init();
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { LanguagesUI } from 'writing-trainer-wasm/writing_trainer_wasm';
 
 const panelServices = { getCurrentUrl, storage };
 
@@ -47,6 +41,11 @@ const Content = ({ onContentEnabledResult }: ContentProps) => {
   const [isExtensionEnabled, setIsExtensionEnabled] = useState<boolean>(false);
   const [shouldShowPanel, showPanel] = useState<boolean>(false);
   const [usedText, setUsedText] = useState<string>('');
+  const languagesUI = useRef<LanguagesUI>();
+
+  if (typeof window !== 'undefined') {
+    languagesUI.current ??= new LanguagesUI();
+  }
 
   const updateLanguageWithStorage = async () => {
     const [enabledPages, currentUrl] = await Promise.all([
@@ -120,12 +119,13 @@ const Content = ({ onContentEnabledResult }: ContentProps) => {
     showPanel(false);
   };
 
+  if (!languagesUI.current) return null;
+
   return (
     <面板基本 覆蓋點擊={hidePanel}>
       <Panel
         getPath={() => ''}
-        languageManager={languageManager}
-        languageUIManager={languageUIManager}
+        languagesUI={languagesUI.current}
         onHideRequest={hidePanel}
         replacePath={() => {}}
         services={panelServices}

@@ -4,7 +4,7 @@ use crate::{
     translation::translate_text,
 };
 use juniper::GraphQLObject;
-use writing_trainer_core::CharType;
+use writing_trainer_core::stats::CharType;
 
 #[derive(GraphQLObject)]
 pub struct Me {

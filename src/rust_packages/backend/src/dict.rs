@@ -283,7 +283,7 @@ pub async fn use_dict(text: &str, language: &str) -> Result<DictMatches, Box<dyn
     ) -> impl Fn(Box<dyn Error>) -> HashMap<String, String> {
         let dict_name = dict_name.clone();
         move |err: Box<dyn Error>| {
-            eprintln!("Error generating dictionary {}: {}", dict_name, err);
+            eprintln!("Error generating dictionary {dict_name}: {err}");
 
             HashMap::new()
         }
@@ -337,7 +337,7 @@ pub async fn use_dict(text: &str, language: &str) -> Result<DictMatches, Box<dyn
                     } else if !extra_meaning.is_empty() && meaning.contains(&extra_meaning) {
                         meaning
                     } else {
-                        format!("{} | {}", meaning, extra_meaning)
+                        format!("{meaning} | {extra_meaning}")
                     };
                 }
             }

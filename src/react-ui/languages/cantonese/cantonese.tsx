@@ -1,5 +1,3 @@
-import { cantoneseHandler } from '#/core';
-
 import OptionsBlock, {
   defaultUseTonesColors,
 } from '../common/CharsOptions/OptionsBlock';
@@ -87,9 +85,11 @@ const getToneColor: T_GetToneColor = (char, 選項, 字元) => {
   }[音數];
 };
 
-const loadDictionary = async () => {
+const loadDictionary = async (): Promise<Array<[string, string]>> => {
+  const getParsedDictionary = () => Object.entries(charToPronunciationMap);
+
   if (Object.keys(charToPronunciationMap).length) {
-    return;
+    return getParsedDictionary();
   }
 
   const dictionary = (await import('./converted-list-jy.yml')).default as {
@@ -131,21 +131,22 @@ const loadDictionary = async () => {
     [charToPronunciationMap[char]] = item;
     pronunciationToCharMap[item[0]] = char;
   });
+
+  return getParsedDictionary();
 };
 
 const languageUIController: T_LangUIController = {
-  處理清除事件: (處理程序: T_LangUIController) => {
+  getLangOpts,
+  getLinksBlock: () => LinksBlock,
+  getOptionsBlock: () => OptionsBlock,
+  getToneColor,
+  handleClearEvent: (處理程序: T_LangUIController) => {
     處理程序.saveLangOptss({
       ...處理程序.getLangOpts(),
       charsWithMistakes: [],
     });
   },
-  getLangOpts,
-  getLinksBlock: () => LinksBlock,
-  getOptionsBlock: () => OptionsBlock,
-  getToneColor,
   handleKeyDown,
-  languageHandler: cantoneseHandler,
   loadDictionary,
   mobileKeyboard: [
     Array.from({ length: 6 }).map((_, i) => `${i + 1}`),

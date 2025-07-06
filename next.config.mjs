@@ -1,4 +1,4 @@
-import webpack from 'webpack'
+import webpack from 'webpack';
 
 export default {
   output: 'export',
@@ -9,7 +9,7 @@ export default {
     ignoreBuildErrors: true,
   },
   webpack: (config, { isServer }) => {
-    config.experiments = { ...config.experiments, asyncWebAssembly: true }
+    config.experiments = { ...config.experiments, asyncWebAssembly: true };
 
     if (isServer) {
       config.plugins.push(
@@ -17,7 +17,7 @@ export default {
           /writing-trainer-wasm*/,
           'src/pkg_mock.js',
         ),
-      )
+      );
     }
 
     config.module.rules.push(
@@ -38,11 +38,11 @@ export default {
         loader: 'text-loader',
         test: /\.txt$/,
       },
-    )
+    );
 
-    return config
+    return config;
   },
   ...(process.env.WEBAPP_PATH_PREFIX && {
     basePath: process.env.WEBAPP_PATH_PREFIX,
   }),
-}
+};

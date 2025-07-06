@@ -43,8 +43,7 @@ impl AuthConfig {
             google_oauth_client_id,
             google_oauth_client_secret,
             google_oauth_redirect_url: format!(
-                "{}/sessions/oauth/google",
-                google_oauth_redirect_url_base
+                "{google_oauth_redirect_url_base}/sessions/oauth/google"
             ),
         }
     }

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 cd $SCRIPT_DIR/../..
@@ -34,4 +34,6 @@ docker buildx build \
   -t igncp/writing-trainer:latest \
   .
 
-bash scripts/redeploy.sh
+if [ -z "${SKIP_REDEPLOY:-}" ]; then
+  bash scripts/redeploy.sh
+fi

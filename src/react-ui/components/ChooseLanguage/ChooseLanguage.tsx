@@ -1,4 +1,3 @@
-import { LanguageDefinition } from '#/core';
 import { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -10,9 +9,9 @@ import {
 } from '../../utils/ui';
 
 type Props = {
-  languages: Array<{ id: LanguageDefinition['id']; name: string }>;
+  languages: Array<{ id: string; name: string }>;
   onOptionsChange: (id: string) => void;
-  selectedLanguage: LanguageDefinition['id'];
+  selectedLanguage: string;
 };
 
 const ChooseLanguage = ({

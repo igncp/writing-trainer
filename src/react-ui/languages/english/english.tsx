@@ -1,5 +1,3 @@
-import { englishHandler } from '#/core';
-
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils';
 import { T_LangOpts, T_LangUIController } from '../types';
 import LinksBlock from './LinksBlock/LinksBlock';
@@ -15,14 +13,13 @@ const getLangOpts = () => langOpts;
 
 const saveLangOptss = () => {};
 
-const loadDictionary = () => Promise.resolve();
+const loadDictionary = () => Promise.resolve(undefined);
 
 const languageUIController: T_LangUIController = {
   getLangOpts,
   getLinksBlock: () => LinksBlock,
   getOptionsBlock: () => OptionsBlock,
   handleKeyDown,
-  languageHandler: englishHandler,
   loadDictionary,
   saveLangOptss,
   shouldAllCharsHaveSameWidth: false,

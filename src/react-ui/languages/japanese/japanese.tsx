@@ -1,5 +1,3 @@
-import { japaneseHandler } from '#/core';
-
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils';
 import { T_LangOpts, T_LangUIController } from '../types';
 import LinksBlock from './LinksBlock/LinksBlock';
@@ -17,8 +15,10 @@ const langOpts: T_LangOpts = {
 };
 
 const loadDictionary = async () => {
+  const getParsedDictionary = () => Object.entries(charToPronunciationMap);
+
   if (Object.keys(charToPronunciationMap).length) {
-    return;
+    return getParsedDictionary();
   }
 
   const dictionary = (await import('./list.csv')).default;
@@ -45,6 +45,8 @@ const loadDictionary = async () => {
     [charToPronunciationMap[char]] = item;
     pronunciationToCharMap[item[0]] = char;
   });
+
+  return getParsedDictionary();
 };
 
 const languageUIController: T_LangUIController = {
@@ -52,7 +54,6 @@ const languageUIController: T_LangUIController = {
   getLinksBlock: () => LinksBlock,
   getOptionsBlock: () => OptionsBlock,
   handleKeyDown,
-  languageHandler: japaneseHandler,
   loadDictionary,
   saveLangOptss: () => {},
   shouldAllCharsHaveSameWidth: false,

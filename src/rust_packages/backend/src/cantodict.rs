@@ -9,10 +9,7 @@ async fn query_cantodict(search_word: &str) -> Result<String, String> {
         Url::parse("http://www.cantonese.sheik.co.uk/scripts/wordsearch.php?level=0").unwrap();
 
     let encode_word = urlencoding::encode(search_word);
-    let body = format!(
-        "TEXT={}&SEARCHTYPE=1&radicaldropdown=0&searchsubmit=search",
-        encode_word
-    );
+    let body = format!("TEXT={encode_word}&SEARCHTYPE=1&radicaldropdown=0&searchsubmit=search",);
 
     let response = client
         .post(url)
@@ -45,7 +42,7 @@ pub async fn query_cantodict_sentence(search_word: &str) -> HashMap<String, Stri
     for character in search_word.chars() {
         let word = character.to_string();
         if !previous_word.is_empty() {
-            let combined_word = format!("{}{}", previous_word, word);
+            let combined_word = format!("{previous_word}{word}");
             result.insert(combined_word.clone(), "".to_string());
         }
         previous_word = word;

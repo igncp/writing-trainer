@@ -1,4 +1,3 @@
-import { LanguageHandler } from '#/core';
 import TextInput from '#/react-ui/components/TextInput/TextInput';
 import { useMainContext } from '#/react-ui/containers/main-context';
 import { DictResponse } from '#/react-ui/graphql/graphql';
@@ -9,6 +8,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaSpinner } from 'react-icons/fa';
 import { RxCross2 } from 'react-icons/rx';
+import { LanguagesUI } from 'writing-trainer-wasm/writing_trainer_wasm';
 
 import Button, { T_ButtonProps } from '../../../components/button/button';
 
@@ -114,14 +114,12 @@ type ShuffleData = {
 
 export const DictContent = ({
   dictResponse,
-  langHandler,
-  langOptsObj,
+  languagesUI,
   setDictResponse,
   text,
 }: {
   dictResponse: DictResponseState;
-  langHandler: LanguageHandler | null;
-  langOptsObj: Record<string, unknown>;
+  languagesUI: LanguagesUI | null;
   setDictResponse: (dictResponse: [DictResponse, string] | null) => void;
   text: string;
 }) => {
@@ -145,21 +143,8 @@ export const DictContent = ({
   const { t } = useTranslation();
 
   const getPronunciation = useCallback(
-    (word: string) => {
-      const charsObjsList = langHandler?.convertToCharsObjs({
-        ...langOptsObj,
-        charsToRemove: [],
-        text: word,
-      });
-
-      if (!charsObjsList) return '';
-
-      return charsObjsList
-        .map((c) => c.pronunciation)
-        .filter(Boolean)
-        .join(' ');
-    },
-    [langHandler, langOptsObj],
+    (txt: string) => languagesUI?.get_filtered_pronunciation(txt, undefined),
+    [languagesUI],
   );
 
   useEffect(() => {
@@ -284,11 +269,11 @@ export const DictContent = ({
 
         const meaningWords = new Set(
           clickedMeaning
+            .replace(/[^a-zA-Z'-]/g, ' ')
             .split(' ')
-            .map((c) => c.replace(/[^a-zA-Z'-]/g, ''))
             .map((w) => w.trim().toLowerCase())
-            .filter((c) => /^[-]*$/.test(c) === false)
-            .filter(Boolean),
+            .filter(Boolean)
+            .filter((c) => !/^[-]*$/.test(c)),
         );
 
         if (!meaningWords.size) return true;
@@ -351,6 +336,7 @@ export const DictContent = ({
         }
 
         newShuffleData.lastResult = 'correct';
+
         if (isReverse) {
           newShuffleData.currentClick.meaning = 0;
         } else {
@@ -375,7 +361,13 @@ export const DictContent = ({
 
       setShuffleData(newShuffleData);
     }
-  }, [shuffleData, displayPronunciation, getInitDataForWords, isReverse]);
+  }, [
+    shuffleData,
+    displayPronunciation,
+    getInitDataForWords,
+    isReverse,
+    extraFilterCheck,
+  ]);
 
   if (!dictResponse?.[1]) {
     return null;
@@ -723,7 +715,7 @@ export const DictContent = ({
                           e.stopPropagation();
                           e.preventDefault();
                           handleTab(e.shiftKey);
-                        } else if (e.key === 'Backspace') {
+                        } else if (!isMobile && e.key === 'Backspace') {
                           e.stopPropagation();
                           e.preventDefault();
 
@@ -812,7 +804,7 @@ export const DictContent = ({
                         e.stopPropagation();
                         e.preventDefault();
                         handleTab(e.shiftKey);
-                      } else if (e.key === 'Backspace') {
+                      } else if (!isMobile && e.key === 'Backspace') {
                         e.stopPropagation();
                         e.preventDefault();
 

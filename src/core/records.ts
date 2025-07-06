@@ -1,11 +1,9 @@
-import { LanguageDefinition } from './constants';
-
 // @TODO: refactor to have a private `data` property
 class Record {
   public createdOn: number;
   public id: string;
   public isRemote: boolean;
-  public language: LanguageDefinition['id'];
+  public language: string;
   public lastLoadedOn: number;
   public link: string;
   public name: string;

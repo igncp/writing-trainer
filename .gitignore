@@ -5,7 +5,7 @@ coverage-ts
 out
 dist
 
-/target
+target
 .direnv
 .env
 writing-trainer.db

@@ -5,7 +5,7 @@ use tracing_subscriber::FmtSubscriber;
 pub fn setup_logs() {
     let logger_level = std::env::var(ENV_LOGGER_LEVEL).unwrap_or("".to_string());
 
-    println!("logger_level (from then environment) {:?}", logger_level);
+    println!("logger_level (from then environment) {logger_level:?}");
 
     let logger_level = match logger_level.as_str() {
         "trace" => Level::TRACE,
@@ -16,7 +16,7 @@ pub fn setup_logs() {
         _ => Level::WARN,
     };
 
-    println!("logger_level {:?}", logger_level);
+    println!("logger_level {logger_level:?}");
 
     let subscriber = FmtSubscriber::builder()
         .compact()

@@ -9,7 +9,7 @@
     "dev:be": "cd src/rust_packages/backend && cargo watch -x run",
     "dev:fe": "bash scripts/wasm_build.sh && bun add ./src/rust_packages/wasm/pkg && rm -rf .next && next dev",
     "diesel-migrations": "cd src/rust_packages/backend && diesel migration run",
-    "eslint": "eslint . --ext ts --ext tsx --ext js",
+    "eslint": "eslint src --ext ts --ext tsx --ext js",
     "format": "bash scripts/format.sh",
     "gen:gql": "bash scripts/gen_gql.sh",
     "next:build": "next build",
@@ -24,7 +24,7 @@
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",
     "@graphql-codegen/client-preset": "^4.2.6",
-    "@igncp/common-config": "0.0.7",
+    "@igncp/common-config": "0.0.9",
     "@types/chrome": "^0.0.268",
     "@types/jest": "^29.5.12",
     "@types/lodash": "^4.17.4",
@@ -71,6 +71,7 @@
     "react-toastify": "^10.0.5",
     "react-tooltip": "^5.27.0",
     "react-use": "^17.3.2",
+    "ts-jest": "^29.4.0",
     "writing-trainer-wasm": "./src/rust_packages/wasm/pkg"
   },
   "typeCoverage": {

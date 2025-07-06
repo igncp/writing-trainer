@@ -1,30 +1,4 @@
-/* istanbul ignore file */
-import {
-  LanguageDefinition,
-  T_Storage,
-  unknownPronunciation,
-} from './constants';
-import { specialChars } from './languageHandlers/_特殊字元';
-import { LanguageHandler } from './languageHandlers/_common';
-import { cantoneseHandler } from './languageHandlers/cantonese';
-import { englishHandler } from './languageHandlers/english';
-import { japaneseHandler } from './languageHandlers/japanese';
-import { mandarinHandler } from './languageHandlers/mandarin';
-import { CurrentCharObj, LanguageManager, T_CharObj } from './languageManager';
+import { T_Storage } from './constants';
 import { Record } from './records';
 
-export {
-  cantoneseHandler,
-  CurrentCharObj,
-  englishHandler,
-  japaneseHandler,
-  LanguageDefinition,
-  LanguageHandler,
-  LanguageManager,
-  mandarinHandler,
-  Record,
-  specialChars,
-  T_CharObj,
-  type T_Storage,
-  unknownPronunciation,
-};
+export { Record, type T_Storage };

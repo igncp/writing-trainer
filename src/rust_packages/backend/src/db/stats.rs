@@ -5,7 +5,7 @@ use super::models::{
 use crate::db::establish_connection;
 use base64::prelude::*;
 use diesel::{prelude::*, sql_query};
-use writing_trainer_core::{
+use writing_trainer_core::stats::{
     CharType, StatChars, StatSentenceCorrect, StatSentenceLength, TABLE_CHARS_ALL_TIME,
     TABLE_CHARS_TODAY, TABLE_SENTENCES_ALL_TIME, TABLE_SENTENCES_TODAY,
     TABLE_SENTENCE_LENGTH_ALL_TIME, TABLE_SENTENCE_LENGTH_TODAY,
@@ -330,7 +330,7 @@ impl StatsWrapper {
         let json_str = |key: &str| -> Result<String, String> {
             local_stats[key]
                 .as_str()
-                .ok_or_else(|| format!("Could not find the {} field in the JSON data", key))
+                .ok_or_else(|| format!("Could not find the {key} field in the JSON data"))
                 .map(|s| s.to_string())
         };
 

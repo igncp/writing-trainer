@@ -1,4 +1,4 @@
-import { Record as CoreRecord, LanguageDefinition } from '#/core';
+import { Record as CoreRecord } from '#/core';
 import { TextGql } from '#/react-ui/graphql/graphql';
 import { backendClient, SongItem } from '#/react-ui/lib/backendClient';
 import { Paths } from '#/react-ui/lib/paths';
@@ -59,7 +59,7 @@ type IProps = {
   onRecordsClose: () => void;
   onSongLoad: (s: string[]) => void;
   pronunciation: string;
-  selectedLanguage: LanguageDefinition['id'];
+  selectedLanguage: string;
   services: T_Services;
   text: string;
 };

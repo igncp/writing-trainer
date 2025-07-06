@@ -4,3 +4,10 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+# This should only be used with the `wasm-support` feature, mostly to add
+# console.logs while debugging
+web-sys = "0.3.77"
+
+[features]
+default = []
+wasm-support = []

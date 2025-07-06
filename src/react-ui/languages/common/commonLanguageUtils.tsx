@@ -1,4 +1,4 @@
-import { unknownPronunciation } from '#/core';
+import { LanguagesUI } from 'writing-trainer-wasm/writing_trainer_wasm';
 
 import { T_LangOpts, T_LangUIController } from '../types';
 import { saveFailChar, saveSentenceStats, saveSuccessChar } from './stats';
@@ -35,7 +35,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     currentText,
     getCurrentCharObjFromPractice,
     langOpts,
-    originalTextValue,
+    languagesUI,
     practiceValue,
     selectedLanguage,
     setCurrentDisplayCharIdx,
@@ -43,7 +43,6 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
     setPractice,
     setPracticeHasError,
     setWriting,
-    specialCharsValue = '',
     writingValue,
   },
   {
@@ -117,6 +116,8 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
 
   const isDuringReduction = !!currentText;
 
+  const unknownPronunciation = LanguagesUI.get_default_pronunciation();
+
   if (
     correctPronunciationParsed ===
       parsePronunciation(newWritingValue, langOpts) ||
@@ -142,17 +143,7 @@ export const commonHandleWritingKeyDown: T_CommonHandleWritingKeyDown = (
         langOpts.遊戲模式值 as string | undefined,
       )
     ) {
-      const newPracticeText = (newPractice || '')
-        .split('')
-        .filter((c) => !specialCharsValue.includes(c))
-        .join('');
-
-      const originalText = (originalTextValue || '')
-        .split('')
-        .filter((c) => !specialCharsValue.includes(c))
-        .join('');
-
-      if (newPracticeText === originalText) {
+      if (languagesUI.does_practice_match_full_text(newPractice)) {
         const charsWithMistakes = langOpts.charsWithMistakes as
           | string[]
           | undefined;

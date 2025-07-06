@@ -1,8 +1,5 @@
-import {
-  Record as CoreRecord,
-  LanguageDefinition,
-  LanguageManager,
-} from '#/core';
+import { Record as CoreRecord } from '#/core';
+import { getController } from '#/react-ui/languages';
 import {
   doStatsCheck,
   getMostFailures,
@@ -14,18 +11,19 @@ import {
   Fragment,
   KeyboardEvent as ReactKeyboardEvent,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CgSpinnerAlt } from 'react-icons/cg';
 import { FaToolbox, FaTools } from 'react-icons/fa';
+import { LanguagesUI } from 'writing-trainer-wasm/writing_trainer_wasm';
 
 import Button from '../../components/button/button';
 import CharactersDisplay from '../../components/CharactersDisplay/CharactersDisplay';
 import ChooseLanguage from '../../components/ChooseLanguage/ChooseLanguage';
 import TextArea from '../../components/TextArea/TextArea';
-import { LanguageUIManager } from '../../languages/languageUIManager';
 import {
   T_Fragments,
   T_getCurrentCharObjFromPractice,
@@ -58,15 +56,14 @@ const defaultFontSize = 30;
 
 type Props = {
   _stories?: {
-    defaultLanguage?: LanguageDefinition['id'];
+    defaultLanguage?: string;
     defaultPractice?: string;
     defaultPronunciation?: string;
     langOpts?: T_LangOpts;
   };
   getPath: () => string;
   initialFragmentIndex?: number;
-  languageManager: LanguageManager;
-  languageUIManager: LanguageUIManager;
+  languagesUI: LanguagesUI;
   onChangeTheme?: () => void;
   onHideRequest?: () => void;
   replacePath: (path: string) => void;
@@ -77,30 +74,18 @@ type Props = {
   };
 };
 
-const getLanguageDefinitions = (languageManager: LanguageManager) =>
-  languageManager
-    .getAvailableLangs()
-    .map((langId) => {
-      const languageHandler = languageManager.getLanguageHandler(langId);
-
-      if (!languageHandler) return null;
-
-      return {
-        id: languageHandler.getId(),
-        name: languageHandler.getName(),
-      };
-    })
-    .filter((item) => !!item) as Array<{
-    id: LanguageDefinition['id'];
-    name: string;
-  }>;
+const languageIdToName: Record<string, string> = {
+  cantonese: '粤语',
+  english: 'English',
+  japanese: '日本語',
+  mandarin: '普通话',
+};
 
 const Panel = ({
   _stories = {},
   getPath,
   initialFragmentIndex,
-  languageManager,
-  languageUIManager,
+  languagesUI,
   onChangeTheme,
   onHideRequest,
   replacePath,
@@ -109,8 +94,10 @@ const Panel = ({
   UI,
 }: Props) => {
   const { t } = useTranslation();
-  const initialLanguageId = languageUIManager.getDefaultLanguage();
   const path = getPath();
+  const [, rerender] = useState(0);
+
+  const currentLanguage = languagesUI.get_language();
 
   const {
     state: { isLoggedIn },
@@ -118,7 +105,6 @@ const Panel = ({
 
   const [, 觸發重新渲染] = useState<number>(0);
 
-  const languageUIController = languageUIManager.getLanguageUIController();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const [fragments, setFragments] = useState<T_Fragments>({
@@ -147,20 +133,19 @@ const Panel = ({
     _stories.defaultPronunciation ?? '',
   );
 
-  const [specialCharsValue, setSpecialChars] = useState<string>('');
   const [writingValue, setWriting] = useState<string>('');
 
   const [practiceValue, setPractice] = useState<string>(
     _stories.defaultPractice ?? '',
   );
 
+  languagesUI.set_practice(practiceValue);
+  languagesUI.set_original(originalTextValue);
+
   const [fontSize, setFontSize] = useState<number>(defaultFontSize);
   const [isShowingPronunciation, setShowingPronunciation] = useState(false);
   const [isShowingEdition, setShowingEdition] = useState<boolean>(false);
   const [practiceHasError, setPracticeHasError] = useState<boolean>(false);
-
-  const [selectedLanguage, setSelectedLanguage] =
-    useState<LanguageDefinition['id']>(initialLanguageId);
 
   const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false);
   const [currentDisplayCharIdx, setCurrentDisplayCharIdx] = useState<number>(0);
@@ -169,14 +154,16 @@ const Panel = ({
   const writingArea = useRef<HTMLTextAreaElement | null>(null);
   const isMobile = useIsMobile();
 
+  const controller = useMemo(
+    () => getController(currentLanguage),
+    [currentLanguage],
+  );
+
   const [displayMobileKeyboard, setDisplayMobileKeyboard] = useState<
     boolean | null
   >(null);
 
-  const [, setDictionaryKey] = useState<number>(0);
-  const langOpts = _stories.langOpts ?? languageUIController.getLangOpts();
-
-  const langHandler = languageManager.getCurrentLanguageHandler();
+  const langOpts = _stories.langOpts ?? controller.getLangOpts();
 
   const { storage } = services;
 
@@ -211,13 +198,9 @@ const Panel = ({
     onPracticeSourceChange(newFragments);
   };
 
-  const onDictionaryLoaded = () => {
-    setDictionaryKey((k) => k + 1);
-  };
-
-  const updateLanguage = (lang: LanguageDefinition['id']) => {
-    languageManager.setCurrentLanguageHandler(lang);
-    setSelectedLanguage(lang);
+  const updateLanguage = (lang: string) => {
+    languagesUI.set_language(lang);
+    rerender((i) => i + 1);
   };
 
   useEffect(() => {
@@ -227,14 +210,12 @@ const Panel = ({
   useEffect(() => {
     if (!hasLoadedStorage) return;
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    selectedLanguage;
+    void controller.loadDictionary().then((dictionary) => {
+      if (!dictionary) return;
 
-    const localLanguageUIController =
-      languageUIManager.getLanguageUIController();
-
-    void localLanguageUIController.loadDictionary().then(onDictionaryLoaded);
-  }, [languageUIManager, selectedLanguage, hasLoadedStorage]);
+      languagesUI.set_dictionary(currentLanguage, dictionary);
+    });
+  }, [hasLoadedStorage, currentLanguage, languagesUI, controller]);
 
   useEffect(() => {
     // eslint-disable-next-line
@@ -285,7 +266,7 @@ const Panel = ({
 
     if (
       storageSelectedLanguage &&
-      storageSelectedLanguage !== selectedLanguage &&
+      storageSelectedLanguage !== currentLanguage &&
       !_stories.defaultLanguage
     ) {
       updateLanguage(storageSelectedLanguage);
@@ -355,39 +336,21 @@ const Panel = ({
     })();
   }, [initialFragmentIndex, storage]);
 
-  const specialChars = langHandler?.getSpecialChars();
+  useEffect(() => {
+    languagesUI.set_pronunciation_input(pronunciationValue || undefined);
+  }, [pronunciationValue, languagesUI]);
 
   const langOptsObj = {
     langOpts: {
-      pronunciationInput: pronunciationValue,
       ...((langOpts as unknown as T_LangOpts | undefined) ?? {}),
     },
   };
 
-  const charsToRemove = specialCharsValue.split('').concat(specialChars ?? []);
-
-  const charsObjsList = langHandler?.convertToCharsObjs({
-    ...langOptsObj,
-    charsToRemove,
-    text: originalTextValue,
-  });
+  const charsObjsList = languagesUI.convert_to_char_objs_original();
 
   const getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice = (
     practiceText = practiceValue,
-  ) => {
-    if (!langHandler) return null;
-
-    const practiceCharsObjs = langHandler.convertToCharsObjs({
-      ...langOptsObj,
-      charsToRemove,
-      text: practiceText,
-    });
-
-    return langHandler.getCurrentCharObj({
-      originalCharsObjs: charsObjsList ?? [],
-      practiceCharsObjs,
-    });
-  };
+  ) => languagesUI.get_current_char_obj(practiceText) ?? null;
 
   useEffect(() => {
     const practiceCharObj = getCurrentCharObjFromPractice();
@@ -425,12 +388,7 @@ const Panel = ({
   }, [isShowingEdition, isShowingPronunciation, fragments, showingAnkis]);
 
   const clearValues = () => {
-    const valsFns = [
-      setPronunciation,
-      setSpecialChars,
-      setWriting,
-      setPractice,
-    ];
+    const valsFns = [setPronunciation, setWriting, setPractice];
 
     valsFns.forEach((fn) => {
       fn('');
@@ -438,7 +396,7 @@ const Panel = ({
 
     const newFragments: T_Fragments = { index: 0, list: [''] };
 
-    languageUIController.處理清除事件?.(languageUIController);
+    controller.handleClearEvent();
     storage.setValue('fragments', JSON.stringify(newFragments));
     setShowingPronunciation(true);
     setShowingEdition(true);
@@ -459,34 +417,33 @@ const Panel = ({
       setPractice(`${practiceValue}\n`);
     }
 
-    languageUIController.handleKeyDown({
+    controller.handleKeyDown({
       按鍵事件: 事件,
       charsObjsList: charsObjsList ?? [],
       currentText,
       getCurrentCharObjFromPractice,
       langOpts,
-      originalTextValue,
+      languagesUI,
       practiceValue,
-      selectedLanguage,
+      selectedLanguage: currentLanguage,
       setCurrentDisplayCharIdx,
       setCurrentText,
       setPractice,
       setPracticeHasError,
       setWriting,
-      specialCharsValue: charsToRemove.join(''),
       writingValue,
     });
 
-    languageUIController.saveLangOptss(langOpts);
+    controller.saveLangOptss(langOpts);
   };
 
   const updateLangOpts = (選項: T_LangOpts) => {
-    languageUIController.saveLangOptss(選項);
+    controller.saveLangOptss(選項);
     觸發重新渲染(Math.random());
   };
 
-  const LinksBlock = languageUIController.getLinksBlock();
-  const OptionsBlock = languageUIController.getOptionsBlock();
+  const LinksBlock = controller.getLinksBlock();
+  const OptionsBlock = controller.getOptionsBlock();
 
   const saveRecord = () => {
     replacePath(Paths.records.save);
@@ -510,7 +467,7 @@ const Panel = ({
     return (
       <AnkisSection
         charsObjsList={charsObjsList ?? []}
-        language={selectedLanguage}
+        language={currentLanguage}
         mode={showingAnkis}
         setMode={(mode) => {
           replacePath(mode ? ankiModeToPath[mode] : '');
@@ -523,12 +480,12 @@ const Panel = ({
     return (
       <RecordsSection
         initScreen={showingRecordsInitScreen}
-        language={selectedLanguage}
+        language={currentLanguage}
         onPronunciationLoad={setPronunciation}
         onRecordLoad={(record: CoreRecord) => {
           clearValues();
 
-          if (record.language !== selectedLanguage) {
+          if (record.language !== currentLanguage) {
             handleLanguageChange(record.language);
           }
 
@@ -558,7 +515,7 @@ const Panel = ({
           replacePath('');
         }}
         pronunciation={pronunciationValue}
-        selectedLanguage={selectedLanguage}
+        selectedLanguage={currentLanguage}
         services={services}
         text={originalTextValue}
       />
@@ -571,20 +528,25 @@ const Panel = ({
         onClose={() => {
           replacePath('');
         }}
-        selectedLanguage={selectedLanguage}
+        selectedLanguage={currentLanguage}
       />
     );
   }
 
+  const availableLanguages = languagesUI.get_languages().map((lang) => ({
+    id: lang,
+    name: languageIdToName[lang] ?? lang,
+  }));
+
   const colorOfCurrentChar = practiceHasError
-    ? languageUIController.getToneColor?.(
+    ? controller.getToneColor(
         'current-error',
         { ...langOpts, useTonesColors: 'current-error' },
         getCurrentCharObjFromPractice()?.ch ?? null,
       )
     : undefined;
 
-  const { mobileKeyboard } = languageUIController;
+  const mobileKeyboard = controller.getMobileKeyboard();
 
   const progressStr = (() => {
     if (!charsObjsList?.length) return `${t('progressStr', 'Progress')}: 0%`;
@@ -593,6 +555,8 @@ const Panel = ({
       (currentDisplayCharIdx / charsObjsList.length) * 100,
     )}% (${currentDisplayCharIdx}/${charsObjsList.length})`;
   })();
+
+  if (!hasLoadedStorage) return null;
 
   return (
     <>
@@ -748,7 +712,7 @@ const Panel = ({
           <>
             <Button
               onClick={async () => {
-                const newText = await getMostFailures(selectedLanguage, 50);
+                const newText = await getMostFailures(currentLanguage, 50);
 
                 onPracticeSourceChange({
                   index: 0,
@@ -768,9 +732,9 @@ const Panel = ({
               {t('panel.toggleEdition')}
             </Button>
             <ChooseLanguage
-              languages={getLanguageDefinitions(languageManager)}
+              languages={availableLanguages}
               onOptionsChange={handleLanguageChange}
-              selectedLanguage={selectedLanguage}
+              selectedLanguage={currentLanguage}
             />
             <Button onClick={saveRecord}>
               {currentRecord === null
@@ -845,8 +809,10 @@ const Panel = ({
           >
             <TextArea
               onBlur={() => {
-                if (languageUIController.onBlur) {
-                  const { newFragmentsList } = languageUIController.onBlur({
+                const onBlur = controller.getOnBlur();
+
+                if (onBlur) {
+                  const { newFragmentsList } = onBlur({
                     fragmentsList: fragments.list,
                     langOpts,
                   });
@@ -878,18 +844,12 @@ const Panel = ({
                   rows={2}
                   value={pronunciationValue}
                 />
-                {langHandler && (
+                {OptionsBlock && (
                   <OptionsBlock
                     langOpts={langOpts}
                     updateLangOpts={updateLangOpts}
                   />
                 )}
-                <TextArea
-                  onChange={createInputSetterFn(setSpecialChars)}
-                  placeholder={t('panel.specialChars')}
-                  rows={1}
-                  value={specialCharsValue}
-                />
                 <div style={{ fontSize: '12px' }}>
                   {t('panel.charSize')}:{' '}
                   <input
@@ -904,7 +864,7 @@ const Panel = ({
             )}
             {/* This is necessary because the options block initialises some values*/}
             <div style={{ display: 'none' }}>
-              {langHandler && (
+              {OptionsBlock && (
                 <OptionsBlock
                   langOpts={langOpts}
                   updateLangOpts={updateLangOpts}
@@ -917,9 +877,7 @@ const Panel = ({
           <div style={{ marginBottom: 10, marginTop: 5 }}>
             <CharactersDisplay
               重點字元索引={currentDisplayCharIdx}
-              應該有不同的寬度={
-                !languageUIController.shouldAllCharsHaveSameWidth
-              }
+              應該有不同的寬度={!controller.shouldAllCharsHaveSameWidth()}
               顯示目前字元的發音={
                 practiceHasError &&
                 ['還原論者', undefined].includes(
@@ -928,7 +886,7 @@ const Panel = ({
               }
               charsObjsList={charsObjsList ?? []}
               colorOfChar={(isCurrentChar, ch) =>
-                languageUIController.getToneColor?.(
+                controller.getToneColor(
                   (() => {
                     if (isCurrentChar) {
                       if (practiceHasError) {
@@ -945,9 +903,7 @@ const Panel = ({
                 )
               }
               fontSize={fontSize}
-              hasCantodict={['cantonese', 'mandarin'].includes(
-                languageManager.currentLanguageHandlerId as string,
-              )}
+              hasCantodict={['cantonese', 'mandarin'].includes(currentLanguage)}
               onSymbolClick={() => {
                 setShowingEdition(false);
                 setHasExtraControls(false);
@@ -1077,8 +1033,8 @@ const Panel = ({
             writingArea.current?.focus();
           }}
           fragments={fragments}
-          langHandler={langHandler}
           langOptsObj={langOptsObj}
+          languagesUI={languagesUI}
           updateFragments={setFragments}
           updateLangOpts={updateLangOpts}
         />

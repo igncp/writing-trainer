@@ -1,17 +1,13 @@
 import { Panel } from '#/react-ui';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaRegQuestionCircle } from 'react-icons/fa';
 import { FaLanguage } from 'react-icons/fa6';
+import { LanguagesUI } from 'writing-trainer-wasm/writing_trainer_wasm';
 
-import {
-  languageManager,
-  languageUIManager,
-  panelServices,
-  usedText,
-} from '../utils';
+import { panelServices, usedText } from '../utils';
 import HelpModal from './help-modal';
 
 const PANEL_UI = {
@@ -31,6 +27,10 @@ const IndexPage = () => {
   const { i18n, t } = useTranslation();
   const [hasLoaded, setHasLoaded] = useState(false);
   const [currentPath, setCurrentPath] = useState(getPath());
+  const languagesUI = useRef<LanguagesUI>();
+
+  languagesUI.current ??=
+    typeof window !== 'undefined' ? new LanguagesUI() : undefined;
 
   const { query } = useRouter();
 
@@ -49,6 +49,8 @@ const IndexPage = () => {
       document.cookie = `theme=${theme};path=/`;
     }
   }, [theme]);
+
+  if (!languagesUI.current || !hasLoaded) return <div />;
 
   const changeLanguage = (lang: string) => {
     void i18n.changeLanguage(lang);
@@ -124,8 +126,7 @@ const IndexPage = () => {
           initialFragmentIndex={
             query.fragmentIndex ? Number(query.fragmentIndex) : undefined
           }
-          languageManager={languageManager}
-          languageUIManager={languageUIManager}
+          languagesUI={languagesUI.current}
           onChangeTheme={() => {
             setTheme(theme === 'light' ? 'dark' : 'light');
           }}

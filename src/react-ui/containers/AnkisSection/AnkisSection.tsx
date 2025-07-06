@@ -1,4 +1,3 @@
-import { T_CharObj } from '#/core';
 import CharactersDisplay from '#/react-ui/components/CharactersDisplay/CharactersDisplay';
 import { AnkiGql } from '#/react-ui/graphql/graphql';
 import {
@@ -11,6 +10,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaEye, FaSpinner, FaTrashAlt } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import { CharObjUI } from 'writing-trainer-wasm/writing_trainer_wasm';
 
 import Button from '../../components/button/button';
 import TextArea from '../../components/TextArea/TextArea';
@@ -29,7 +29,7 @@ type AnkiRoundItem = Pick<AnkiGql, 'back' | 'front' | 'id'>;
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
-  charsObjsList: T_CharObj[];
+  charsObjsList: CharObjUI[];
   language: string;
   mode: AnkisMode;
   setMode: (mode: AnkisMode | null) => void;
