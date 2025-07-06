@@ -148,12 +148,6 @@ const languageUIController: T_LangUIController = {
   },
   handleKeyDown,
   loadDictionary,
-  mobileKeyboard: [
-    Array.from({ length: 6 }).map((_, i) => `${i + 1}`),
-    ['w', 'e', 't', 'y', 'u', 'i', 'o', 'p'],
-    ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
-    ['z', 'c', 'b', 'n', 'm'],
-  ],
   onBlur: chineseBlurHandler,
   saveLangOptss,
   shouldAllCharsHaveSameWidth: false,

@@ -1,6 +1,6 @@
 import 字典 from './chars-t-s.txt';
 
-export const 繁體轉簡體 = 字典
+const 繁體轉簡體 = 字典
   .split('\n')
   .reduce<Record<string, string[] | undefined>>((累積, line) => {
     if (!line || line.startsWith('--')) {
@@ -64,13 +64,13 @@ const 簡體轉繁體 = Object.entries(繁體轉簡體).reduce<
   return 累積;
 }, {});
 
-export const changeToSimplified = (文字: string) =>
+const changeToSimplified = (文字: string) =>
   文字
     .split('')
     .map((字元) => 繁體轉簡體[字元] ?? 字元)
     .join('');
 
-export const changeToTraditional = (文字: string) =>
+const changeToTraditional = (文字: string) =>
   文字
     .split(``)
     .map((字元) => {
@@ -79,3 +79,5 @@ export const changeToTraditional = (文字: string) =>
       return correctConversionObj[字元] ?? 簡體轉繁體[字元] ?? 字元;
     })
     .join('');
+
+export { 繁體轉簡體, changeToSimplified, changeToTraditional };

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { T_OptionsBlock } from '../../types';
 
-export const defaultUseTonesColors = 'current';
+const defaultUseTonesColors = 'current';
 
 const OptionsBlock: T_OptionsBlock = ({ langOpts, updateLangOpts }) => {
   const { t } = useTranslation();
@@ -99,3 +99,5 @@ const OptionsBlock: T_OptionsBlock = ({ langOpts, updateLangOpts }) => {
 };
 
 export default OptionsBlock;
+
+export { defaultUseTonesColors };

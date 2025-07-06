@@ -1,6 +1,5 @@
 import { MessageType } from '@/utils/constants';
-
-type T_getCurrentUrl = () => Promise<string>;
+import { T_getCurrentUrl } from '#/react-ui/typings/mainTypes';
 
 const getWithChrome: T_getCurrentUrl = () =>
   new Promise((resolve) => {

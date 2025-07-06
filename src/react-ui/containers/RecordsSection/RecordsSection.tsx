@@ -11,13 +11,13 @@ import RecordsWrapper from './RecordsWrapper';
 import RecordSave, { RecordToSave } from './screens/RecordSave';
 import RecordsList from './screens/RecordsList';
 
-export enum RecordsScreen {
+enum RecordsScreen {
   Edit = 'edit',
   List = 'list',
   Save = 'save',
 }
 
-export const recordsModeToPath: Record<RecordsScreen, string> = {
+const recordsModeToPath: Record<RecordsScreen, string> = {
   [RecordsScreen.Edit]: Paths.records.edit,
   [RecordsScreen.List]: Paths.records.list,
   [RecordsScreen.Save]: Paths.records.save,
@@ -345,3 +345,5 @@ const RecordsSection = ({
 };
 
 export default RecordsSection;
+
+export { recordsModeToPath, RecordsScreen };

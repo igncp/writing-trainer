@@ -10,7 +10,7 @@ import classes from './button.module.scss';
 
 const noop = () => {};
 
-export type T_ButtonProps = {
+type T_ButtonProps = {
   'children': ReactNode;
   'className'?: string;
   'clickEffect'?: boolean;
@@ -119,3 +119,5 @@ const Button = ({
 };
 
 export default Button;
+
+export { type T_ButtonProps };

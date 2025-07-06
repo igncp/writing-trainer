@@ -5,7 +5,7 @@ import Button from '../../../components/button/button';
 import TextInput from '../../../components/TextInput/TextInput';
 import { T_Services } from '../../../typings/mainTypes';
 
-export interface RecordToSave {
+interface RecordToSave {
   link: string;
   name: string;
 }
@@ -119,3 +119,5 @@ const RecordSave = ({
 };
 
 export default RecordSave;
+
+export { type RecordToSave };

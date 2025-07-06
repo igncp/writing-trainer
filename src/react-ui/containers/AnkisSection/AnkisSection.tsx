@@ -15,12 +15,12 @@ import { CharObjUI } from 'writing-trainer-wasm/writing_trainer_wasm';
 import Button from '../../components/button/button';
 import TextArea from '../../components/TextArea/TextArea';
 
-export enum AnkisMode {
+enum AnkisMode {
   Add = 'add',
   Main = 'main',
 }
 
-export const ankiModeToPath: Record<AnkisMode, string> = {
+const ankiModeToPath: Record<AnkisMode, string> = {
   [AnkisMode.Add]: Paths.ankis.add,
   [AnkisMode.Main]: Paths.ankis.main,
 };
@@ -535,3 +535,5 @@ export const AnkisSection = (props: Props) => {
     </div>
   );
 };
+
+export { ankiModeToPath, AnkisMode };

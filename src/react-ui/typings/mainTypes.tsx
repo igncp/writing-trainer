@@ -1,4 +1,4 @@
-import { T_Storage } from '#/core';
+import { T_Storage } from '#/chrome-extension/services/storage';
 
 type T_getCurrentUrl = () => Promise<string>;
 

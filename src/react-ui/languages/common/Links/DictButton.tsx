@@ -12,9 +12,9 @@ import { LanguagesUI } from 'writing-trainer-wasm/writing_trainer_wasm';
 
 import Button, { T_ButtonProps } from '../../../components/button/button';
 
-export type DictResponseState = [DictResponse, string] | null;
+type DictResponseState = [DictResponse, string] | null;
 
-export const useDictState = () => {
+const useDictState = () => {
   const [dictResponse, setDictResponse] = useState<DictResponseState>(null);
 
   return {
@@ -52,12 +52,7 @@ type Props = {
   text: string;
 } & Omit<T_ButtonProps, 'children'>;
 
-export const DictButton = ({
-  language,
-  setDictResponse,
-  text,
-  ...rest
-}: Props) => {
+const DictButton = ({ language, setDictResponse, text, ...rest }: Props) => {
   const { t } = useTranslation();
   const mainContext = useMainContext();
 
@@ -112,7 +107,7 @@ type ShuffleData = {
   wrongWords: Set<string>;
 };
 
-export const DictContent = ({
+const DictContent = ({
   dictResponse,
   languagesUI,
   setDictResponse,
@@ -1065,3 +1060,5 @@ export const DictContent = ({
     </div>
   );
 };
+
+export { DictButton, DictContent, useDictState };

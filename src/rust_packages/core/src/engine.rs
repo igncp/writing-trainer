@@ -21,11 +21,14 @@ pub struct CurrentCharObj {
     pub index: usize,
 }
 
+type MobileKeyboard = Option<Vec<Vec<char>>>;
+
 #[derive(Debug, Default)]
 pub struct Language {
     id: LanguageId,
     special_characters: Option<HashSet<&'static str>>,
     dictionary: Option<Dictionary>,
+    mobile_keyboard: MobileKeyboard,
     pronunciation_input: Option<Vec<(String, String)>>,
     practice_text: String,
     original_text: String,
@@ -37,10 +40,15 @@ pub struct LanguagesList {
 }
 
 impl Language {
-    pub fn new(id: LanguageId, special_characters: Option<HashSet<&'static str>>) -> Self {
+    pub fn new(
+        id: LanguageId,
+        special_characters: Option<HashSet<&'static str>>,
+        mobile_keyboard: MobileKeyboard,
+    ) -> Self {
         Self {
             id,
             special_characters,
+            mobile_keyboard,
             ..Default::default()
         }
     }
@@ -281,6 +289,10 @@ impl Language {
                 })
                 .collect()
         });
+    }
+
+    pub fn get_mobile_keyboard(&self) -> MobileKeyboard {
+        self.mobile_keyboard.clone()
     }
 }
 

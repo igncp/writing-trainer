@@ -97,7 +97,7 @@ const Panel = ({
   const path = getPath();
   const [, rerender] = useState(0);
 
-  const currentLanguage = languagesUI.get_language();
+  const currentLanguage = languagesUI.get_language() as string;
 
   const {
     state: { isLoggedIn },
@@ -162,6 +162,13 @@ const Panel = ({
   const [displayMobileKeyboard, setDisplayMobileKeyboard] = useState<
     boolean | null
   >(null);
+
+  const mobileKeyboard = useMemo((): string[][] | undefined => {
+    // @typescript-eslint/no-unused-expressions
+    currentLanguage;
+
+    return languagesUI.get_mobile_keyboard();
+  }, [currentLanguage, languagesUI]);
 
   const langOpts = _stories.langOpts ?? controller.getLangOpts();
 
@@ -296,6 +303,7 @@ const Panel = ({
 
         const separator =
           !!lastFragment &&
+          // @TODO: Move this to wasm
           !['!', '！', '?', '？', '.', '。', '》', '」'].includes(lastChar)
             ? '. '
             : ' ';
@@ -396,7 +404,7 @@ const Panel = ({
 
     const newFragments: T_Fragments = { index: 0, list: [''] };
 
-    controller.handleClearEvent();
+    controller.handleClearEvent?.(controller);
     storage.setValue('fragments', JSON.stringify(newFragments));
     setShowingPronunciation(true);
     setShowingEdition(true);
@@ -539,14 +547,12 @@ const Panel = ({
   }));
 
   const colorOfCurrentChar = practiceHasError
-    ? controller.getToneColor(
+    ? controller.getToneColor?.(
         'current-error',
         { ...langOpts, useTonesColors: 'current-error' },
         getCurrentCharObjFromPractice()?.ch ?? null,
       )
     : undefined;
-
-  const mobileKeyboard = controller.getMobileKeyboard();
 
   const progressStr = (() => {
     if (!charsObjsList?.length) return `${t('progressStr', 'Progress')}: 0%`;
@@ -664,10 +670,10 @@ const Panel = ({
                     return;
                   }
 
-                  // eslint-disable-next-line
-                  (async () => {
+                  void (async () => {
                     let fileContent = await file.text();
 
+                    // @TODO: Move this to wasm
                     if (
                       ['.srt', '.vtt'].find((ext) => file.name.endsWith(ext))
                     ) {
@@ -809,7 +815,7 @@ const Panel = ({
           >
             <TextArea
               onBlur={() => {
-                const onBlur = controller.getOnBlur();
+                const { onBlur } = controller;
 
                 if (onBlur) {
                   const { newFragmentsList } = onBlur({
@@ -877,7 +883,7 @@ const Panel = ({
           <div style={{ marginBottom: 10, marginTop: 5 }}>
             <CharactersDisplay
               重點字元索引={currentDisplayCharIdx}
-              應該有不同的寬度={!controller.shouldAllCharsHaveSameWidth()}
+              應該有不同的寬度={!controller.shouldAllCharsHaveSameWidth}
               顯示目前字元的發音={
                 practiceHasError &&
                 ['還原論者', undefined].includes(
@@ -886,7 +892,7 @@ const Panel = ({
               }
               charsObjsList={charsObjsList ?? []}
               colorOfChar={(isCurrentChar, ch) =>
-                controller.getToneColor(
+                controller.getToneColor?.(
                   (() => {
                     if (isCurrentChar) {
                       if (practiceHasError) {

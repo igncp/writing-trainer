@@ -9,7 +9,7 @@ import {
   TableNames,
 } from 'writing-trainer-wasm/writing_trainer_wasm';
 
-export type StatsLocation = 'local' | 'remote';
+type StatsLocation = 'local' | 'remote';
 
 const DBNAME = get_db_name();
 
@@ -199,10 +199,10 @@ const saveChar = (lang: string, char: string, charType: CharResult) => {
   }, Promise.resolve());
 };
 
-export const saveSuccessChar = (lang: string, char: string) =>
+const saveSuccessChar = (lang: string, char: string) =>
   saveChar(lang, char, CharResult.Success);
 
-export const saveFailChar = (lang: string, char: string) =>
+const saveFailChar = (lang: string, char: string) =>
   saveChar(lang, char, CharResult.Fail);
 
 const getSentenceLengthStats = async (
@@ -354,7 +354,7 @@ const getTodayChars = async (lang: string): Promise<string> => {
   return stats.get_names(lang);
 };
 
-export const saveSentenceStats = async (
+const saveSentenceStats = async (
   lang: string,
   length: number,
   correctRatio: number,
@@ -424,7 +424,7 @@ const deleteSingleDB = async () => {
   });
 };
 
-export const doStatsCheck = async () => {
+const doStatsCheck = async () => {
   const today = new Date().toLocaleDateString();
   const lastSavedDB = localStorage.getItem('lastSavedTodayDB');
 
@@ -617,7 +617,7 @@ const getRawStats = async (lang: string) => {
   return result;
 };
 
-export const getStats = async (
+const getStats = async (
   isLoggedIn: boolean,
   lang: string,
 ): Promise<{ data: null | StatsSaveResultDataGql; type: StatsLocation }> => {
@@ -645,7 +645,7 @@ export const getStats = async (
   return { data: localStats, type: 'local' };
 };
 
-export const deleteStats = async (): Promise<boolean> => {
+const deleteStats = async (): Promise<boolean> => {
   const [, result] = await Promise.all([
     deleteLocalDB(),
     backendClient.clearStats(),
@@ -654,11 +654,22 @@ export const deleteStats = async (): Promise<boolean> => {
   return result.success;
 };
 
-export const getMostFailures = async (
+const getMostFailures = async (
   lang: string,
   count: number,
 ): Promise<string> => {
   const stats = await getCharsStats(objStoreCharsAllTime);
 
   return stats.prepare_failure_sentence(lang, count);
+};
+
+export {
+  deleteStats,
+  doStatsCheck,
+  getMostFailures,
+  getStats,
+  saveFailChar,
+  saveSentenceStats,
+  saveSuccessChar,
+  type StatsLocation,
 };

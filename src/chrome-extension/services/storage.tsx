@@ -1,4 +1,7 @@
-import { T_Storage } from '#/core';
+interface T_Storage {
+  getValue: (key: string) => Promise<string>;
+  setValue: (key: string, value: string) => void;
+}
 
 const chromeSetValue = (key: string, value: string) => {
   void chrome.storage.local.set({ [key]: value });
@@ -48,3 +51,5 @@ const storage: T_Storage = {
 };
 
 export default storage;
+
+export { type T_Storage };

@@ -25,19 +25,4 @@ const languageUIController: T_LangUIController = {
   shouldAllCharsHaveSameWidth: false,
 };
 
-let _test:
-  | {
-      langOpts: typeof langOpts;
-    }
-  | undefined;
-
-// istanbul ignore else
-if (process.env.NODE_ENV === 'test') {
-  _test = {
-    langOpts,
-  };
-}
-
-export { _test };
-
 export default languageUIController;

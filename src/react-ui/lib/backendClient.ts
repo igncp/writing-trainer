@@ -141,7 +141,7 @@ const getUserAnki = (id: string) =>
     }
   `).then(({ anki }) => decodeAnki(anki));
 
-export type SongItem = Pick<
+type SongItem = Pick<
   SongGql,
   'artist' | 'id' | 'language' | 'lyrics' | 'title' | 'videoUrl'
 >;
@@ -352,3 +352,5 @@ export const backendClient = {
   translateText,
   useDict,
 };
+
+export { type SongItem };

@@ -157,4 +157,14 @@ impl LanguagesUI {
             lang.set_pronunciation_input(pronunciation_input);
         }
     }
+
+    pub fn get_mobile_keyboard(&mut self) -> JsValue {
+        if let Some(lang) = self.languages.get_current_language() {
+            let mobile_keyboard = lang.get_mobile_keyboard();
+
+            JsValue::from_serde(&mobile_keyboard).unwrap_or(JsValue::UNDEFINED)
+        } else {
+            JsValue::UNDEFINED
+        }
+    }
 }
