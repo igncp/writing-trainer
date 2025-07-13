@@ -1,9 +1,13 @@
 import { KeyboardEvent, ReactNode } from 'react';
 import {
-  CharObjUI,
-  CurrentCharObjUI,
-  LanguagesUI,
+  CharObj,
+  CurrentCharObj,
+  GameModes,
+  LanguagesList,
 } from 'writing-trainer-wasm/writing_trainer_wasm';
+
+const gameModes: GameModes | null =
+  typeof window !== 'undefined' ? new GameModes() : null;
 
 type T_Fragments = { index: number; list: string[] };
 
@@ -15,7 +19,7 @@ type T_LinksBlock = (選項: {
   focusWritingArea: () => void;
   fragments: T_Fragments;
   langOptsObj: Record<string, unknown>;
-  languagesUI: LanguagesUI;
+  languagesList: LanguagesList;
   updateFragments: (list: T_Fragments) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   updateLangOpts: (...args: any[]) => void;
@@ -24,7 +28,7 @@ type T_LinksBlock = (選項: {
 type T_GetToneColor = (
   char: 'current-error' | 'current' | 'other',
   選項: T_LangOpts,
-  字元: CharObjUI | null,
+  字元: CharObj | null,
 ) => string | undefined;
 
 type T_OptionsBlock = (props: {
@@ -33,23 +37,22 @@ type T_OptionsBlock = (props: {
   updateLangOpts: (...args: any[]) => void;
 }) => ReactNode;
 
-type T_getCurrentCharObjFromPractice = (t?: string) => CurrentCharObjUI | null;
+type T_getCurrentCharObjFromPractice = (t?: string) => CurrentCharObj | null;
+
+type PanelState = {
+  currentDisplayCharIdx: number;
+  override: string;
+  practice: string;
+  practiceError: boolean;
+  pronunciation: string;
+  writing: string;
+};
 
 type T_HandleKeyDown = (opts: {
   按鍵事件: KeyboardEvent<HTMLTextAreaElement>;
-  charsObjsList: CharObjUI[];
-  currentText: string;
-  getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice;
   langOpts: T_LangOpts;
-  languagesUI: LanguagesUI;
-  practiceValue: string;
-  selectedLanguage: string;
-  setCurrentDisplayCharIdx: (idx: number) => void;
-  setCurrentText: (text: string) => void;
-  setPractice: (o: string) => void;
-  setPracticeHasError: (o: boolean) => void;
-  setWriting: (o: string) => void;
-  writingValue: string;
+  languagesList: LanguagesList;
+  setPanel: (state: ((s: PanelState) => PanelState) | PanelState) => void;
 }) => void;
 
 type T_BlurHandlerOpts = {
@@ -75,6 +78,8 @@ export interface T_LangUIController {
 }
 
 export {
+  gameModes,
+  type PanelState,
   type T_Fragments,
   type T_getCurrentCharObjFromPractice,
   type T_GetToneColor,

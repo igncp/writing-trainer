@@ -14,7 +14,7 @@ const LinksBlock: T_LinksBlock = ({
   focusWritingArea,
   fragments,
   langOptsObj,
-  languagesUI,
+  languagesList,
   updateFragments,
   updateLangOpts,
 }) => {
@@ -36,7 +36,7 @@ const LinksBlock: T_LinksBlock = ({
         />
         <TranslateButton language="zh-HK" text={文字} />
       </div>
-      <DictContent {...dictState} languagesUI={languagesUI} text={文字} />
+      <DictContent {...dictState} languagesList={languagesList} text={文字} />
     </>
   );
 };

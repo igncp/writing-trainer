@@ -1,4 +1,3 @@
-import { Record as CoreRecord } from '#/core';
 import { getController } from '#/react-ui/languages';
 import {
   doStatsCheck,
@@ -18,13 +17,20 @@ import {
 import { useTranslation } from 'react-i18next';
 import { CgSpinnerAlt } from 'react-icons/cg';
 import { FaToolbox, FaTools } from 'react-icons/fa';
-import { LanguagesUI } from 'writing-trainer-wasm/writing_trainer_wasm';
+import {
+  get_mobile_keyboard,
+  LanguagesList,
+  set_language_dictionary,
+  TextRecordObj,
+} from 'writing-trainer-wasm/writing_trainer_wasm';
 
 import Button from '../../components/button/button';
 import CharactersDisplay from '../../components/CharactersDisplay/CharactersDisplay';
 import ChooseLanguage from '../../components/ChooseLanguage/ChooseLanguage';
 import TextArea from '../../components/TextArea/TextArea';
 import {
+  gameModes,
+  PanelState,
   T_Fragments,
   T_getCurrentCharObjFromPractice,
   T_LangOpts,
@@ -55,15 +61,9 @@ const SHORTCUT_NEXT_FRAGMENT = 'Tab';
 const defaultFontSize = 30;
 
 type Props = {
-  _stories?: {
-    defaultLanguage?: string;
-    defaultPractice?: string;
-    defaultPronunciation?: string;
-    langOpts?: T_LangOpts;
-  };
   getPath: () => string;
   initialFragmentIndex?: number;
-  languagesUI: LanguagesUI;
+  languagesList: LanguagesList;
   onChangeTheme?: () => void;
   onHideRequest?: () => void;
   replacePath: (path: string) => void;
@@ -82,10 +82,9 @@ const languageIdToName: Record<string, string> = {
 };
 
 const Panel = ({
-  _stories = {},
   getPath,
   initialFragmentIndex,
-  languagesUI,
+  languagesList,
   onChangeTheme,
   onHideRequest,
   replacePath,
@@ -97,7 +96,7 @@ const Panel = ({
   const path = getPath();
   const [, rerender] = useState(0);
 
-  const currentLanguage = languagesUI.get_language() as string;
+  const currentLanguage = languagesList.get_language_id() as string;
 
   const {
     state: { isLoggedIn },
@@ -122,33 +121,36 @@ const Panel = ({
 
   const showingStatsSection = path === Paths.stats.main;
 
-  const [currentRecord, setCurrentRecord] = useState<CoreRecord['id'] | null>(
-    null,
-  );
+  const [currentRecord, setCurrentRecord] = useState<
+    null | TextRecordObj['id']
+  >(null);
 
-  const [currentText, setCurrentText] = useState<string>('');
-  const originalTextValue = currentText || fragments.list[fragments.index];
+  const [panel, setPanel] = useState<PanelState>({
+    currentDisplayCharIdx: 0,
+    override: '',
+    practice: '',
+    practiceError: false,
+    pronunciation: '',
+    writing: '',
+  });
 
-  const [pronunciationValue, setPronunciation] = useState<string>(
-    _stories.defaultPronunciation ?? '',
-  );
+  const originalTextValue = panel.override || fragments.list[fragments.index];
 
-  const [writingValue, setWriting] = useState<string>('');
-
-  const [practiceValue, setPractice] = useState<string>(
-    _stories.defaultPractice ?? '',
-  );
-
-  languagesUI.set_practice(practiceValue);
-  languagesUI.set_original(originalTextValue);
+  languagesList.set_practice(panel.practice);
+  languagesList.set_original(originalTextValue);
+  languagesList.set_writing(panel.writing);
+  languagesList.set_override_text(panel.override);
+  languagesList.set_practice_has_error(panel.practiceError);
 
   const [fontSize, setFontSize] = useState<number>(defaultFontSize);
   const [isShowingPronunciation, setShowingPronunciation] = useState(false);
   const [isShowingEdition, setShowingEdition] = useState<boolean>(false);
-  const [practiceHasError, setPracticeHasError] = useState<boolean>(false);
 
   const [hasLoadedStorage, setHasLoadedStorage] = useState<boolean>(false);
-  const [currentDisplayCharIdx, setCurrentDisplayCharIdx] = useState<number>(0);
+
+  const [hasLoadedDictionary, setHasLoadedDictionary] =
+    useState<boolean>(false);
+
   const [writingBorder, setWritingBorder] = useState<'bold' | 'normal'>('bold');
   const [hasExtraControls, setHasExtraControls] = useState(false);
   const writingArea = useRef<HTMLTextAreaElement | null>(null);
@@ -167,21 +169,22 @@ const Panel = ({
     // @typescript-eslint/no-unused-expressions
     currentLanguage;
 
-    return languagesUI.get_mobile_keyboard();
-  }, [currentLanguage, languagesUI]);
+    return get_mobile_keyboard(languagesList);
+  }, [currentLanguage, languagesList]);
 
-  const langOpts = _stories.langOpts ?? controller.getLangOpts();
+  const langOpts = controller.getLangOpts();
 
   const { storage } = services;
 
   const onPracticeSourceChange = (newFragments?: T_Fragments) => {
-    setCurrentText('');
-    setPractice('');
-    setWriting('');
-
-    setPracticeHasError(false);
-
-    langOpts.charsWithMistakes = [];
+    setPanel((s) => ({
+      ...s,
+      currentDisplayCharIdx: 0,
+      override: '',
+      practice: '',
+      practiceError: false,
+      writing: '',
+    }));
 
     if (newFragments) {
       setFragments(newFragments);
@@ -206,7 +209,7 @@ const Panel = ({
   };
 
   const updateLanguage = (lang: string) => {
-    languagesUI.set_language(lang);
+    languagesList.set_current_language(lang);
     rerender((i) => i + 1);
   };
 
@@ -217,12 +220,19 @@ const Panel = ({
   useEffect(() => {
     if (!hasLoadedStorage) return;
 
-    void controller.loadDictionary().then((dictionary) => {
-      if (!dictionary) return;
+    setHasLoadedDictionary(false);
 
-      languagesUI.set_dictionary(currentLanguage, dictionary);
-    });
-  }, [hasLoadedStorage, currentLanguage, languagesUI, controller]);
+    void controller
+      .loadDictionary()
+      .then((dictionary) => {
+        if (!dictionary) return;
+
+        set_language_dictionary(languagesList, currentLanguage, dictionary);
+      })
+      .finally(() => {
+        setHasLoadedDictionary(true);
+      });
+  }, [hasLoadedStorage, currentLanguage, languagesList, controller]);
 
   useEffect(() => {
     // eslint-disable-next-line
@@ -258,23 +268,13 @@ const Panel = ({
     storage.setValue('displayTonesNum', displayMobileKeyboard.toString());
   }, [displayMobileKeyboard, storage]);
 
-  useEffect(() => {
-    if (!_stories.defaultLanguage) {
-      return;
-    }
-
-    updateLanguage(_stories.defaultLanguage);
-    // eslint-disable-next-line
-  }, [_stories.defaultLanguage]);
-
   const updateLanguageWithStorage = async () => {
     const storageSelectedLanguage =
       await storage.getValue(STORAGE_LANGUAGE_KEY);
 
     if (
       storageSelectedLanguage &&
-      storageSelectedLanguage !== currentLanguage &&
-      !_stories.defaultLanguage
+      storageSelectedLanguage !== currentLanguage
     ) {
       updateLanguage(storageSelectedLanguage);
     }
@@ -283,11 +283,12 @@ const Panel = ({
   };
 
   const trimByChunks = (chunks: number) => {
-    setPractice('');
-    setWriting('');
-    setPracticeHasError(false);
-
-    langOpts.charsWithMistakes = [];
+    setPanel({
+      ...panel,
+      practice: '',
+      practiceError: false,
+      writing: '',
+    });
 
     const newFragments: T_Fragments = {
       index: 0,
@@ -345,8 +346,8 @@ const Panel = ({
   }, [initialFragmentIndex, storage]);
 
   useEffect(() => {
-    languagesUI.set_pronunciation_input(pronunciationValue || undefined);
-  }, [pronunciationValue, languagesUI]);
+    languagesList.set_pronunciation_input(panel.pronunciation || undefined);
+  }, [panel.pronunciation, languagesList]);
 
   const langOptsObj = {
     langOpts: {
@@ -354,20 +355,23 @@ const Panel = ({
     },
   };
 
-  const charsObjsList = languagesUI.convert_to_char_objs_original();
+  const charsObjsList = languagesList.convert_to_char_objs_original();
 
   const getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice = (
-    practiceText = practiceValue,
-  ) => languagesUI.get_current_char_obj(practiceText) ?? null;
+    practiceText = panel.practice,
+  ) => languagesList.get_current_char_obj(practiceText) ?? null;
 
   useEffect(() => {
     const practiceCharObj = getCurrentCharObjFromPractice();
 
     if (practiceCharObj?.ch && practiceCharObj.ch.pronunciation !== '?') {
-      setCurrentDisplayCharIdx(practiceCharObj.index);
+      setPanel((s) => ({
+        ...s,
+        currentDisplayCharIdx: practiceCharObj.index,
+      }));
     }
     // eslint-disable-next-line
-  }, [practiceValue, pronunciationValue]);
+  }, [panel.practice, panel.pronunciation]);
 
   useEffect(() => {
     if (showingAnkis) return;
@@ -396,11 +400,12 @@ const Panel = ({
   }, [isShowingEdition, isShowingPronunciation, fragments, showingAnkis]);
 
   const clearValues = () => {
-    const valsFns = [setPronunciation, setWriting, setPractice];
-
-    valsFns.forEach((fn) => {
-      fn('');
-    });
+    setPanel((s) => ({
+      ...s,
+      practice: '',
+      pronunciation: '',
+      writing: '',
+    }));
 
     const newFragments: T_Fragments = { index: 0, list: [''] };
 
@@ -421,25 +426,11 @@ const Panel = ({
     // 允許瀏覽器快捷鍵
     if (事件.ctrlKey || 事件.metaKey) return;
 
-    if (事件.key === 'Enter') {
-      setPractice(`${practiceValue}\n`);
-    }
-
     controller.handleKeyDown({
       按鍵事件: 事件,
-      charsObjsList: charsObjsList ?? [],
-      currentText,
-      getCurrentCharObjFromPractice,
       langOpts,
-      languagesUI,
-      practiceValue,
-      selectedLanguage: currentLanguage,
-      setCurrentDisplayCharIdx,
-      setCurrentText,
-      setPractice,
-      setPracticeHasError,
-      setWriting,
-      writingValue,
+      languagesList,
+      setPanel,
     });
 
     controller.saveLangOptss(langOpts);
@@ -461,7 +452,7 @@ const Panel = ({
     replacePath(Paths.records.list);
   };
 
-  if (!hasLoadedStorage) {
+  if (!hasLoadedStorage || !hasLoadedDictionary) {
     return (
       <div className="flex w-full flex-row items-center justify-center">
         <span className="mt-[48px] animate-spin text-[50px]">
@@ -489,8 +480,10 @@ const Panel = ({
       <RecordsSection
         initScreen={showingRecordsInitScreen}
         language={currentLanguage}
-        onPronunciationLoad={setPronunciation}
-        onRecordLoad={(record: CoreRecord) => {
+        onPronunciationLoad={(p) =>
+          setPanel((s) => ({ ...s, pronunciation: p }))
+        }
+        onRecordLoad={(record: TextRecordObj) => {
           clearValues();
 
           if (record.language !== currentLanguage) {
@@ -508,7 +501,11 @@ const Panel = ({
 
           onPracticeSourceChange(newFragments);
           setCurrentRecord(record.id);
-          setPronunciation(record.pronunciation);
+
+          setPanel((s) => ({
+            ...s,
+            pronunciation: record.pronunciation,
+          }));
         }}
         onRecordsClose={() => {
           replacePath('');
@@ -522,7 +519,7 @@ const Panel = ({
           onPracticeSourceChange(newFragments);
           replacePath('');
         }}
-        pronunciation={pronunciationValue}
+        pronunciation={panel.pronunciation}
         selectedLanguage={currentLanguage}
         services={services}
         text={originalTextValue}
@@ -541,12 +538,14 @@ const Panel = ({
     );
   }
 
-  const availableLanguages = languagesUI.get_languages().map((lang) => ({
-    id: lang,
-    name: languageIdToName[lang] ?? lang,
-  }));
+  const availableLanguages = languagesList
+    .get_available_languages()
+    .map((lang) => ({
+      id: lang,
+      name: languageIdToName[lang] ?? lang,
+    }));
 
-  const colorOfCurrentChar = practiceHasError
+  const colorOfCurrentChar = panel.practiceError
     ? controller.getToneColor?.(
         'current-error',
         { ...langOpts, useTonesColors: 'current-error' },
@@ -558,8 +557,8 @@ const Panel = ({
     if (!charsObjsList?.length) return `${t('progressStr', 'Progress')}: 0%`;
 
     return `Progress: ${Math.round(
-      (currentDisplayCharIdx / charsObjsList.length) * 100,
-    )}% (${currentDisplayCharIdx}/${charsObjsList.length})`;
+      (panel.currentDisplayCharIdx / charsObjsList.length) * 100,
+    )}% (${panel.currentDisplayCharIdx}/${charsObjsList.length})`;
   })();
 
   if (!hasLoadedStorage) return null;
@@ -785,15 +784,6 @@ const Panel = ({
             {t('panel.previousFragment')}
           </Button>
         )}
-        {currentRecord !== null && (
-          <Button
-            onClick={() => {
-              setCurrentRecord(null);
-            }}
-          >
-            {t('panel.closeRecord')}
-          </Button>
-        )}
         <Button
           onClick={onHideRequest ?? undefined}
           style={{
@@ -845,10 +835,12 @@ const Panel = ({
             {hasExtraControls && (
               <>
                 <TextArea
-                  onChange={createInputSetterFn(setPronunciation)}
+                  onChange={createInputSetterFn((v: string) =>
+                    setPanel((s) => ({ ...s, pronunciation: v })),
+                  )}
                   placeholder={t('panel.pronunciation')}
                   rows={2}
-                  value={pronunciationValue}
+                  value={panel.pronunciation}
                 />
                 {OptionsBlock && (
                   <OptionsBlock
@@ -882,12 +874,12 @@ const Panel = ({
         <div>
           <div style={{ marginBottom: 10, marginTop: 5 }}>
             <CharactersDisplay
-              重點字元索引={currentDisplayCharIdx}
+              重點字元索引={panel.currentDisplayCharIdx}
               應該有不同的寬度={!controller.shouldAllCharsHaveSameWidth}
               顯示目前字元的發音={
-                practiceHasError &&
-                ['還原論者', undefined].includes(
-                  langOpts.遊戲模式值 as string | undefined,
+                panel.practiceError &&
+                [gameModes?.reductive, undefined].includes(
+                  langOpts.gameModeValue as string | undefined,
                 )
               }
               charsObjsList={charsObjsList ?? []}
@@ -895,7 +887,7 @@ const Panel = ({
                 controller.getToneColor?.(
                   (() => {
                     if (isCurrentChar) {
-                      if (practiceHasError) {
+                      if (panel.practiceError) {
                         return 'current-error';
                       }
 
@@ -927,9 +919,12 @@ const Panel = ({
             autoFocus
             onBlur={() => setWritingBorder('normal')}
             onChange={(e) => {
-              const diff = e.target.value.length - writingValue.length;
+              const diff = e.target.value.length - panel.writing.length;
 
-              setWriting(e.target.value);
+              setPanel((s) => ({
+                ...s,
+                writing: e.target.value,
+              }));
 
               // Simulate the keydown event again to support mobile web
               if (diff === 1) {
@@ -943,17 +938,22 @@ const Panel = ({
             }}
             onFocus={() => setWritingBorder('bold')}
             onKeyDown={handleKeyDown}
-            placeholder={practiceValue ? '' : t('panel.writingArea')}
+            placeholder={panel.practice ? '' : t('panel.writingArea')}
             rows={1}
             setRef={(ref) => (writingArea.current = ref)}
             style={{
               borderWidth: writingBorder === 'bold' ? 2 : 1,
             }}
-            value={writingValue}
+            value={panel.writing}
           />
           <TextArea
             自動捲動
-            onChange={createInputSetterFn(setPractice)}
+            onChange={createInputSetterFn((v: string) => {
+              setPanel((s) => ({
+                ...s,
+                practice: v,
+              }));
+            })}
             onFocus={() => {
               writingArea.current?.focus();
             }}
@@ -961,7 +961,7 @@ const Panel = ({
             rows={3}
             style={{
               border: `4px solid ${
-                practiceHasError
+                panel.practiceError
                   ? (colorOfCurrentChar ?? 'red')
                   : 'var(--color-background, "white")'
               }`,
@@ -969,7 +969,7 @@ const Panel = ({
               lineHeight: `${fontSize + 10}px`,
               maxHeight: isMobile ? '100px' : undefined,
             }}
-            value={practiceValue}
+            value={panel.practice}
           />
           {isMobile && mobileKeyboard && (
             <div className="flex w-full flex-col justify-between gap-[24px]">
@@ -1040,7 +1040,7 @@ const Panel = ({
           }}
           fragments={fragments}
           langOptsObj={langOptsObj}
-          languagesUI={languagesUI}
+          languagesList={languagesList}
           updateFragments={setFragments}
           updateLangOpts={updateLangOpts}
         />

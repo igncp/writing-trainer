@@ -1,8 +1,11 @@
-import { Record } from '#/core';
 import { backendClient, SongItem } from '#/react-ui/lib/backendClient';
 import { TOOLTIP_ID } from '#/utils/tooltip';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import {
+  TextRecord,
+  TextRecordObj,
+} from 'writing-trainer-wasm/writing_trainer_wasm';
 
 import Button from '../../../components/button/button';
 import TextInput from '../../../components/TextInput/TextInput';
@@ -54,11 +57,11 @@ const formatRecordDate = (d: number): string => {
 type 條目清單屬性 = {
   disabled: boolean;
   onPronunciationLoad: (p: string) => void;
-  onRecordEdit: (r: Record) => void;
-  onRecordLoad: (r: Record) => void;
-  onRecordRemove: (r: Record) => void;
+  onRecordEdit: (r: TextRecordObj) => void;
+  onRecordLoad: (r: TextRecordObj) => void;
+  onRecordRemove: (r: TextRecordObj) => void;
   onSongLoad: (s: string[]) => void;
-  records: Record[];
+  records: TextRecordObj[];
   setSongsFilter: (s: string) => void;
   songs: { list: SongItem[]; total: number };
   songsFilter: string;
@@ -79,10 +82,13 @@ const RecordsList = ({
   const { t } = useTranslation();
   const [filterText, setFilterText] = useState<string>('');
 
-  const filteredList = Record.filterByText({
-    filterText,
-    records,
-  });
+  const filteredList = useMemo(() => {
+    const nativeRecords = records.map((r) => TextRecord.from_js(r));
+
+    return TextRecord.filter_by_text(filterText, nativeRecords).map((r) =>
+      r.to_js(),
+    );
+  }, [filterText, records]);
 
   return (
     <div>
@@ -106,7 +112,7 @@ const RecordsList = ({
       {!!filteredList.length && (
         <div style={{ maxHeight: 'calc(100vh - 150px)', overflow: 'auto' }}>
           {filteredList.map((filteredItem) => {
-            const { createdOn, id, lastLoadedOn, name } = filteredItem;
+            const { created_on, id, last_loaded_on, name } = filteredItem;
 
             return (
               <div
@@ -117,11 +123,11 @@ const RecordsList = ({
                 <Cell label={t('record.name', 'Name')} value={name} />
                 <Cell
                   tooltip={t('record.created', 'Created')}
-                  value={formatRecordDate(createdOn)}
+                  value={formatRecordDate(Number(created_on))}
                 />
                 <Cell
                   tooltip={t('record.loaded', 'Loaded')}
-                  value={formatRecordDate(lastLoadedOn)}
+                  value={formatRecordDate(Number(last_loaded_on))}
                 />
                 <Cell
                   bold

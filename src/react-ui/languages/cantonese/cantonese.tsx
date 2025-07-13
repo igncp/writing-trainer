@@ -5,7 +5,6 @@ import { chineseBlurHandler } from '../common/chineseBlurHandler';
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils';
 import { 繁體轉簡體 } from '../common/conversion';
 import { T_GetToneColor, T_LangOpts, T_LangUIController } from '../types';
-import { 類型_廣東話的langOpts } from './cantoneseTypes';
 import LinksBlock from './LinksBlock/LinksBlock';
 
 const charToPronunciationMap: { [key: string]: string } = {};
@@ -38,22 +37,6 @@ const saveLangOptss = (opts: T_LangOpts) => {
   delete toSave.dictionary;
 
   localStorage.setItem('mandarinLangOpts', JSON.stringify(toSave));
-};
-
-const parsePronunciation = (文字: string, 選項?: T_LangOpts) => {
-  let 解析後的文本 = 文字.toLowerCase();
-
-  if ((選項?.聲調值 as 類型_廣東話的langOpts['聲調值']) === '不要使用聲調') {
-    解析後的文本 = 解析後的文本.replace(/[0-9]/g, '');
-  }
-
-  return 解析後的文本;
-};
-
-const handleKeyDown: T_LangUIController['handleKeyDown'] = (參數) => {
-  commonHandleWritingKeyDown(參數, {
-    parsePronunciation,
-  });
 };
 
 const getToneColor: T_GetToneColor = (char, 選項, 字元) => {
@@ -146,7 +129,7 @@ const languageUIController: T_LangUIController = {
       charsWithMistakes: [],
     });
   },
-  handleKeyDown,
+  handleKeyDown: commonHandleWritingKeyDown,
   loadDictionary,
   onBlur: chineseBlurHandler,
   saveLangOptss,

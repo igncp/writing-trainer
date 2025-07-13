@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaRegQuestionCircle } from 'react-icons/fa';
 import { FaLanguage } from 'react-icons/fa6';
-import { LanguagesUI } from 'writing-trainer-wasm/writing_trainer_wasm';
+import { LanguagesList } from 'writing-trainer-wasm/writing_trainer_wasm';
 
 import { panelServices, usedText } from '../utils';
 import HelpModal from './help-modal';
@@ -27,10 +27,10 @@ const IndexPage = () => {
   const { i18n, t } = useTranslation();
   const [hasLoaded, setHasLoaded] = useState(false);
   const [currentPath, setCurrentPath] = useState(getPath());
-  const languagesUI = useRef<LanguagesUI>();
+  const languagesList = useRef<LanguagesList>();
 
-  languagesUI.current ??=
-    typeof window !== 'undefined' ? new LanguagesUI() : undefined;
+  languagesList.current ??=
+    typeof window !== 'undefined' ? new LanguagesList() : undefined;
 
   const { query } = useRouter();
 
@@ -50,7 +50,7 @@ const IndexPage = () => {
     }
   }, [theme]);
 
-  if (!languagesUI.current || !hasLoaded) return <div />;
+  if (!languagesList.current || !hasLoaded) return <div />;
 
   const changeLanguage = (lang: string) => {
     void i18n.changeLanguage(lang);
@@ -126,7 +126,7 @@ const IndexPage = () => {
           initialFragmentIndex={
             query.fragmentIndex ? Number(query.fragmentIndex) : undefined
           }
-          languagesUI={languagesUI.current}
+          languagesList={languagesList.current}
           onChangeTheme={() => {
             setTheme(theme === 'light' ? 'dark' : 'light');
           }}

@@ -1,9 +1,9 @@
-import { Record as CoreRecord } from '#/core';
 import { TextGql } from '#/react-ui/graphql/graphql';
 import { backendClient, SongItem } from '#/react-ui/lib/backendClient';
 import { Paths } from '#/react-ui/lib/paths';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
+import { TextRecordObj } from 'writing-trainer-wasm/writing_trainer_wasm';
 
 import { T_Services } from '../../typings/mainTypes';
 import { useMainContext } from '../main-context';
@@ -25,15 +25,15 @@ const recordsModeToPath: Record<RecordsScreen, string> = {
 
 const RECORDS_STORAGE = 'records';
 
-const getMaxRecordId = (records: CoreRecord[]) =>
+const getMaxRecordId = (records: TextRecordObj[]) =>
   records.length ? Math.max(...records.map((r) => Number(r.id) || 0)) : 0;
 
 const getInitialRecord = ({
   editingRecordId,
   records,
 }: {
-  editingRecordId: CoreRecord['id'] | null;
-  records: CoreRecord[];
+  editingRecordId: null | TextRecordObj['id'];
+  records: TextRecordObj[];
 }) => {
   if (editingRecordId === null) {
     return null;
@@ -55,7 +55,7 @@ type IProps = {
   initScreen: RecordsScreen;
   language: string;
   onPronunciationLoad: (p: string) => void;
-  onRecordLoad: (r: CoreRecord) => void;
+  onRecordLoad: (r: TextRecordObj) => void;
   onRecordsClose: () => void;
   onSongLoad: (s: string[]) => void;
   pronunciation: string;
@@ -80,10 +80,10 @@ const RecordsSection = ({
   const [currentScreen, setCurrentScreen] = useState<RecordsScreen>(initScreen);
 
   const [editingRecordId, setEditingRecordId] = useState<
-    CoreRecord['id'] | null
+    null | TextRecordObj['id']
   >(null);
 
-  const [records, setRecords] = useState<CoreRecord[]>([]);
+  const [records, setRecords] = useState<TextRecordObj[]>([]);
 
   const [songs, setSongs] = useState<{ list: SongItem[]; total: number }>({
     list: [],
@@ -110,9 +110,12 @@ const RecordsSection = ({
 
     const recordsLocal = (() => {
       if (recordsStr) {
-        const parsedRecords: CoreRecord[] = JSON.parse(recordsStr).map(
-          (recordObj: ReturnType<CoreRecord['toJson']>) =>
-            new CoreRecord(recordObj),
+        const parsedRecords: TextRecordObj[] = JSON.parse(recordsStr).map(
+          (r: Record<string, unknown>) => ({
+            ...r,
+            created_on: BigInt(r.created_on as number),
+            last_loaded_on: BigInt(r.last_loaded_on as number),
+          }),
         );
 
         return parsedRecords;
@@ -123,18 +126,17 @@ const RecordsSection = ({
 
     const allRecords = dbTexts
       .map(
-        (dbText) =>
-          new CoreRecord({
-            createdOn: Date.now(),
-            id: dbText.id,
-            isRemote: true,
-            language: dbText.language,
-            lastLoadedOn: Date.now(),
-            link: '',
-            name: decodeURIComponent(dbText.title ?? ''),
-            pronunciation,
-            text: decodeURIComponent(dbText.body),
-          }),
+        (dbText): TextRecordObj => ({
+          created_on: BigInt(Date.now()),
+          id: dbText.id,
+          is_remote: true,
+          language: dbText.language,
+          last_loaded_on: BigInt(Date.now()),
+          link: '',
+          name: decodeURIComponent(dbText.title ?? ''),
+          pronunciation,
+          text: decodeURIComponent(dbText.body),
+        }),
       )
       .concat(recordsLocal);
 
@@ -180,8 +182,8 @@ const RecordsSection = ({
     retrieveSongs();
   }, [retrieveSongs]);
 
-  const saveRecord = (newRecord: CoreRecord) => {
-    let newRecords = [...records];
+  const saveRecord = (newRecord: TextRecordObj) => {
+    let newRecords = [...records].map((r) => r);
 
     const existingRecordIndex = newRecords.findIndex(
       (r) => r.id === newRecord.id,
@@ -196,7 +198,7 @@ const RecordsSection = ({
     newRecords = newRecords.filter((r) => r.text.trim());
 
     if (mainContext.state.isLoggedIn) {
-      newRecord.isRemote = true;
+      newRecord.is_remote = true;
 
       setIsLoading(true);
 
@@ -219,29 +221,35 @@ const RecordsSection = ({
         .finally(() => {
           setIsLoading(false);
         });
-    } else if (newRecord.isRemote) {
+    } else if (newRecord.is_remote) {
       toast.error('您需要登入才能保存遠端記錄');
     } else {
       newRecord.id = (getMaxRecordId(records) + 1).toString();
     }
 
     const recordsStr = JSON.stringify(
-      newRecords.filter((r) => !r.isRemote).map((record) => record.toJson()),
+      newRecords
+        .filter((r) => !r.is_remote)
+        .map((r) => ({
+          ...r,
+          created_on: r.created_on.toString(),
+          last_loaded_on: r.last_loaded_on.toString(),
+        })),
     );
 
     storage.setValue(RECORDS_STORAGE, recordsStr);
     setRecords(newRecords);
   };
 
-  const handleRecordLoad = (record: CoreRecord) => {
+  const handleRecordLoad = (record: TextRecordObj) => {
     if (isLoading) return;
 
-    record.lastLoadedOn = Date.now();
+    record.last_loaded_on = BigInt(Date.now());
     saveRecord(record);
     onRecordLoad(record);
   };
 
-  const handleRecordEdit = (record: CoreRecord) => {
+  const handleRecordEdit = (record: TextRecordObj) => {
     if (isLoading) return;
 
     setEditingRecordId(record.id);
@@ -251,17 +259,17 @@ const RecordsSection = ({
   const handleRecordSave = (newRecordSave: RecordToSave) => {
     if (isLoading) return;
 
-    const newRecord = new CoreRecord({
-      createdOn: Date.now(),
+    const newRecord: TextRecordObj = {
+      created_on: BigInt(Date.now()),
       id: '',
-      isRemote: false,
+      is_remote: false,
       language: selectedLanguage,
-      lastLoadedOn: Date.now(),
+      last_loaded_on: BigInt(Date.now()),
       link: newRecordSave.link,
       name: newRecordSave.name,
       pronunciation,
       text,
-    });
+    };
 
     saveRecord(newRecord);
     setCurrentScreen(RecordsScreen.List);
@@ -279,18 +287,18 @@ const RecordsSection = ({
 
     if (!existingRecord) return;
 
-    const newRecord = new CoreRecord({
+    const newRecord = {
       ...existingRecord,
       link: newRecordSave.link,
       name: newRecordSave.name,
-    });
+    };
 
     saveRecord(newRecord);
     setEditingRecordId(null);
     setCurrentScreen(RecordsScreen.List);
   };
 
-  const handleRecordRemove = (record: CoreRecord) => {
+  const handleRecordRemove = (record: TextRecordObj) => {
     record.text = '';
 
     saveRecord(record);

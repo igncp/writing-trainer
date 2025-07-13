@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaSpinner } from 'react-icons/fa';
 import { RxCross2 } from 'react-icons/rx';
-import { LanguagesUI } from 'writing-trainer-wasm/writing_trainer_wasm';
+import { LanguagesList } from 'writing-trainer-wasm/writing_trainer_wasm';
 
 import Button, { T_ButtonProps } from '../../../components/button/button';
 
@@ -109,12 +109,12 @@ type ShuffleData = {
 
 const DictContent = ({
   dictResponse,
-  languagesUI,
+  languagesList,
   setDictResponse,
   text,
 }: {
   dictResponse: DictResponseState;
-  languagesUI: LanguagesUI | null;
+  languagesList: LanguagesList | null;
   setDictResponse: (dictResponse: [DictResponse, string] | null) => void;
   text: string;
 }) => {
@@ -138,8 +138,8 @@ const DictContent = ({
   const { t } = useTranslation();
 
   const getPronunciation = useCallback(
-    (txt: string) => languagesUI?.get_filtered_pronunciation(txt, undefined),
-    [languagesUI],
+    (txt: string) => languagesList?.get_filtered_pronunciation(txt, undefined),
+    [languagesList],
   );
 
   useEffect(() => {

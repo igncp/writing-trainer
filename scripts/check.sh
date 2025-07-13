@@ -6,6 +6,8 @@ if [ "$SKIP_CHECK" = "true" ]; then
   exit 0
 fi
 
+bash scripts/wasm_build.sh
+
 bun run tsc --noEmit
 
 # Don't block for now until properly configured

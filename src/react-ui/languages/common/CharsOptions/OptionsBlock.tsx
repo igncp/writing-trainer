@@ -1,19 +1,19 @@
 import { ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { T_OptionsBlock } from '../../types';
+import { gameModes, T_OptionsBlock } from '../../types';
 
 const defaultUseTonesColors = 'current';
 
 const OptionsBlock: T_OptionsBlock = ({ langOpts, updateLangOpts }) => {
   const { t } = useTranslation();
 
-  const [聲調值, 保存聲調值] = useState(
-    (langOpts.聲調值 as string) || '使用聲調',
+  const [tonesHandling, 保存tonesHandling] = useState(
+    (langOpts.tonesHandling as string) || 'with-tones',
   );
 
-  const [遊戲模式值, setPlaymodeValue] = useState(
-    (langOpts.遊戲模式值 as string) || '還原論者',
+  const [gameModeValue, setPlaymodeValue] = useState(
+    (langOpts.gameModeValue as string) || 'reductive',
   );
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,18 +21,18 @@ const OptionsBlock: T_OptionsBlock = ({ langOpts, updateLangOpts }) => {
     updateLangOpts({
       ...langOpts,
 
-      遊戲模式值,
-      聲調值,
+      [gameModes?.key ?? '']: gameModeValue,
+      tonesHandling,
 
       ...newValues,
     });
   };
 
   const handleTonesChange = (事件: ChangeEvent<HTMLSelectElement>) => {
-    保存聲調值(事件.target.value);
+    保存tonesHandling(事件.target.value);
 
     handleOptionsChange({
-      聲調值: 事件.target.value,
+      tonesHandling: 事件.target.value,
     });
   };
 
@@ -40,7 +40,7 @@ const OptionsBlock: T_OptionsBlock = ({ langOpts, updateLangOpts }) => {
     setPlaymodeValue(事件.target.value);
 
     handleOptionsChange({
-      遊戲模式值: 事件.target.value,
+      gameModeValue: 事件.target.value,
     });
   };
 
@@ -49,18 +49,18 @@ const OptionsBlock: T_OptionsBlock = ({ langOpts, updateLangOpts }) => {
       <select
         className="border-[1px] border-[#ccc]"
         onChange={handleTonesChange}
-        value={聲調值}
+        value={tonesHandling}
       >
-        <option value="不要使用聲調">{t('option.noTones')}</option>
-        <option value="使用聲調">{t('option.useTones')}</option>
+        <option value="without-tones">{t('option.noTones')}</option>
+        <option value="with-tones">{t('option.useTones')}</option>
       </select>
       <select
         className="border-[1px] border-[#ccc]"
         onChange={handlePlaymodeChange}
-        value={遊戲模式值}
+        value={gameModeValue}
       >
-        <option value="還原論者">{t('option.reductive')}</option>
-        <option value="重複的">{t('option.repetitive')}</option>
+        <option value={gameModes?.reductive}>{t('option.reductive')}</option>
+        <option value={gameModes?.repetitive}>{t('option.repetitive')}</option>
       </select>
       <span className="border-[1px] border-[#ccc] p-[4px]">
         <label className="flex flex-row gap-[8px]" htmlFor="自動分割文字行">

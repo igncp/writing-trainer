@@ -1,4 +1,24 @@
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+#[cfg(feature = "wasm-support")]
+use wasm_bindgen::prelude::wasm_bindgen;
+
+const DBNAME: &str = "WritingTrainerDB";
+
+#[cfg_attr(feature = "wasm-support", wasm_bindgen)]
+pub fn get_db_name() -> String {
+    DBNAME.to_string()
+}
+
+#[cfg_attr(feature = "wasm-support", wasm_bindgen(getter_with_clone))]
+pub struct TableNames {
+    pub chars_all_time: String,
+    pub chars_today: String,
+    pub sentence_length_all_time: String,
+    pub sentence_length_today: String,
+    pub sentences_all_time: String,
+    pub sentences_today: String,
+}
 
 pub const TABLE_CHARS_ALL_TIME: &str = "charsAllTime";
 pub const TABLE_CHARS_TODAY: &str = "charsToday";
@@ -7,24 +27,51 @@ pub const TABLE_SENTENCE_LENGTH_TODAY: &str = "sentenceLengthToday";
 pub const TABLE_SENTENCES_ALL_TIME: &str = "sentencesAllTime";
 pub const TABLE_SENTENCES_TODAY: &str = "sentencesToday";
 
-#[derive(Debug, Clone, PartialEq)]
+#[cfg(feature = "wasm-support")]
+#[wasm_bindgen]
+impl TableNames {
+    #[wasm_bindgen(constructor)]
+    pub fn new() -> Self {
+        Self {
+            chars_all_time: TABLE_CHARS_ALL_TIME.to_string(),
+            chars_today: TABLE_CHARS_TODAY.to_string(),
+            sentence_length_all_time: TABLE_SENTENCE_LENGTH_ALL_TIME.to_string(),
+            sentence_length_today: TABLE_SENTENCE_LENGTH_TODAY.to_string(),
+            sentences_all_time: TABLE_SENTENCES_ALL_TIME.to_string(),
+            sentences_today: TABLE_SENTENCES_TODAY.to_string(),
+        }
+    }
+}
+
+#[cfg(feature = "wasm-support")]
+impl Default for TableNames {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+#[cfg_attr(feature = "wasm-support", wasm_bindgen)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum CharType {
     Success,
     Fail,
 }
 
-#[derive(Debug, Clone)]
+#[cfg_attr(feature = "wasm-support", wasm_bindgen(getter_with_clone))]
+#[derive(Debug, Clone, PartialEq)]
 struct StatSentenceLengthBase {
     lang: String,
     length: i32,
 }
 
+#[cfg_attr(feature = "wasm-support", wasm_bindgen)]
 #[derive(Debug, Clone)]
 struct StatSentenceCorrectBase {
     lang: String,
     count: f32,
 }
 
+#[cfg_attr(feature = "wasm-support", wasm_bindgen)]
 #[derive(Debug, Clone)]
 struct CharStatBase {
     char_type: CharType,
@@ -33,23 +80,28 @@ struct CharStatBase {
     name: String,
 }
 
+#[cfg_attr(feature = "wasm-support", wasm_bindgen)]
 #[derive(Debug, Clone)]
 pub struct StatSentenceLength {
     list: Vec<StatSentenceLengthBase>,
 }
 
+#[cfg_attr(feature = "wasm-support", wasm_bindgen)]
 #[derive(Debug, Clone)]
 pub struct StatSentenceCorrect {
     list: Vec<StatSentenceCorrectBase>,
 }
 
+#[cfg_attr(feature = "wasm-support", wasm_bindgen)]
 #[derive(Debug, Clone)]
 pub struct StatChars {
     list: Vec<CharStatBase>,
 }
 
+#[cfg_attr(feature = "wasm-support", wasm_bindgen)]
 impl StatSentenceLength {
-    pub fn new() -> Self {
+    #[cfg_attr(feature = "wasm-support", wasm_bindgen(constructor))]
+    pub fn new() -> StatSentenceLength {
         Self { list: Vec::new() }
     }
 
@@ -95,7 +147,9 @@ impl StatSentenceLength {
 
         result
     }
+}
 
+impl StatSentenceLength {
     pub fn decode_from_transfer(lang: &str, data: &str) -> Self {
         let mut result = Self::new();
         let lengths: Vec<i32> = data
@@ -132,7 +186,9 @@ impl StatSentenceLength {
     }
 }
 
+#[cfg_attr(feature = "wasm-support", wasm_bindgen)]
 impl StatSentenceCorrect {
+    #[cfg_attr(feature = "wasm-support", wasm_bindgen(constructor))]
     pub fn new() -> Self {
         Self { list: Vec::new() }
     }
@@ -184,7 +240,9 @@ impl StatSentenceCorrect {
 
         result
     }
+}
 
+impl StatSentenceCorrect {
     pub fn decode_from_transfer(lang: &str, data: &str) -> Self {
         let mut result = Self::new();
         let counts: Vec<f32> = data
@@ -221,7 +279,9 @@ impl StatSentenceCorrect {
     }
 }
 
+#[cfg_attr(feature = "wasm-support", wasm_bindgen)]
 impl StatChars {
+    #[cfg_attr(feature = "wasm-support", wasm_bindgen(constructor))]
     pub fn new() -> Self {
         Self { list: Vec::new() }
     }
@@ -340,7 +400,9 @@ impl StatChars {
 
         result
     }
+}
 
+impl StatChars {
     pub fn decode_from_transfer(lang: &str, data: &str) -> Self {
         let mut result = Self::new();
         let chars: Vec<&str> = data.split(',').collect();

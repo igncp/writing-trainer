@@ -3,10 +3,6 @@ import { T_LangOpts, T_LangUIController } from '../types';
 import LinksBlock from './LinksBlock/LinksBlock';
 import OptionsBlock from './OptionsBlock';
 
-const handleKeyDown: T_LangUIController['handleKeyDown'] = (params) => {
-  commonHandleWritingKeyDown(params, {});
-};
-
 const langOpts: T_LangOpts = {};
 
 const getLangOpts = () => langOpts;
@@ -19,7 +15,7 @@ const languageUIController: T_LangUIController = {
   getLangOpts,
   getLinksBlock: () => LinksBlock,
   getOptionsBlock: () => OptionsBlock,
-  handleKeyDown,
+  handleKeyDown: commonHandleWritingKeyDown,
   loadDictionary,
   saveLangOptss,
   shouldAllCharsHaveSameWidth: false,

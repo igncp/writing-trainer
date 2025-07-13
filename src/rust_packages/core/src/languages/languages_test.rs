@@ -6,7 +6,7 @@ mod test {
         engine::{CharObj, CurrentCharObj},
         languages::{
             get_cantonese_language, get_english_language, get_japanese_language,
-            get_mandarin_language,
+            get_mandarin_language, LanguagesList,
         },
     };
 
@@ -19,6 +19,13 @@ mod test {
             ("的".to_string(), "dik1".to_string()),
             ("花".to_string(), "faa1".to_string()),
         ])
+    }
+
+    #[test]
+    fn test_default_languages() {
+        let languages = LanguagesList::new(None);
+        assert!(!languages.languages.is_empty());
+        assert_eq!(languages.current, Some("cantonese".to_string()));
     }
 
     #[test]
@@ -237,8 +244,13 @@ mod test {
         cantonese.set_dictionary(get_cantonese_dictionary());
         cantonese.set_original(original_text);
 
-        assert!(!cantonese.does_practice_match_full_text("忘掉種"));
-        assert!(cantonese.does_practice_match_full_text("忘掉種過的花"));
-        assert!(cantonese.does_practice_match_full_text("忘掉種foo過的花"));
+        cantonese.practice_text = "忘掉種".to_string();
+        assert!(!cantonese.does_practice_match_full_text());
+
+        cantonese.practice_text = "忘掉種過的花".to_string();
+        assert!(cantonese.does_practice_match_full_text());
+
+        cantonese.practice_text = "忘掉種foo過的花".to_string();
+        assert!(cantonese.does_practice_match_full_text());
     }
 }

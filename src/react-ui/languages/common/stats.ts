@@ -1,11 +1,11 @@
 import { StatsSaveResultDataGql } from '#/react-ui/graphql/graphql';
 import { backendClient } from '#/react-ui/lib/backendClient';
 import {
-  CharsStats,
   CharType,
   get_db_name,
-  SentencesCorrectStats,
-  SentencesLengthStats,
+  StatChars,
+  StatSentenceCorrect,
+  StatSentenceLength,
   TableNames,
 } from 'writing-trainer-wasm/writing_trainer_wasm';
 
@@ -207,13 +207,13 @@ const saveFailChar = (lang: string, char: string) =>
 
 const getSentenceLengthStats = async (
   objStoreName: string,
-): Promise<SentencesLengthStats> => {
+): Promise<StatSentenceLength> => {
   const objectStore = await getStore(objStoreName);
   const request = objectStore.getAll();
 
   return new Promise((resolve) => {
     request.onsuccess = () => {
-      const stats = new SentencesLengthStats();
+      const stats = new StatSentenceLength();
 
       request.result.forEach((record) => {
         stats.add_stat(record.lang, Number(record.length));
@@ -224,13 +224,13 @@ const getSentenceLengthStats = async (
   });
 };
 
-const getCharsStats = async (objStoreName: string): Promise<CharsStats> => {
+const getCharsStats = async (objStoreName: string): Promise<StatChars> => {
   const objectStore = await getStore(objStoreName);
   const request = objectStore.getAll();
 
   return new Promise((resolve) => {
     request.onsuccess = () => {
-      const stats = new CharsStats();
+      const stats = new StatChars();
 
       request.result.forEach((record) => {
         const statType =
@@ -259,7 +259,7 @@ const getSentencePercentages = async (lang: string): Promise<StatsPair> =>
 
       return new Promise((resolve) => {
         request.onsuccess = () => {
-          const stats = new SentencesCorrectStats();
+          const stats = new StatSentenceCorrect();
 
           request.result.forEach((record) => {
             stats.add_stat(record.lang, Number(record.count));
@@ -276,13 +276,13 @@ const getSentencePercentages = async (lang: string): Promise<StatsPair> =>
 
 const getSentenceCountsStats = async (
   objStoreName: string,
-): Promise<SentencesCorrectStats> => {
+): Promise<StatSentenceCorrect> => {
   const objectStore = await getStore(objStoreName, 'readwrite');
   const request = objectStore.getAll();
 
   return new Promise((resolve) => {
     request.onsuccess = () => {
-      const stats = new SentencesCorrectStats();
+      const stats = new StatSentenceCorrect();
 
       request.result.forEach((record) => {
         stats.add_stat(record.lang, Number(record.count));

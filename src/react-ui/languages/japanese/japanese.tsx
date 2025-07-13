@@ -3,10 +3,6 @@ import { T_LangOpts, T_LangUIController } from '../types';
 import LinksBlock from './LinksBlock/LinksBlock';
 import OptionsBlock from './OptionsBlock/OptionsBlock';
 
-const handleKeyDown: T_LangUIController['handleKeyDown'] = (params) => {
-  commonHandleWritingKeyDown(params, {});
-};
-
 const charToPronunciationMap: { [key: string]: string } = {};
 const pronunciationToCharMap: { [key: string]: string } = {};
 
@@ -53,7 +49,7 @@ const languageUIController: T_LangUIController = {
   getLangOpts: () => langOpts,
   getLinksBlock: () => LinksBlock,
   getOptionsBlock: () => OptionsBlock,
-  handleKeyDown,
+  handleKeyDown: commonHandleWritingKeyDown,
   loadDictionary,
   saveLangOptss: () => {},
   shouldAllCharsHaveSameWidth: false,

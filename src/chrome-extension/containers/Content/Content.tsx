@@ -15,7 +15,7 @@ import {
   useTextSelection,
 } from '#/react-ui';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { LanguagesUI } from 'writing-trainer-wasm/writing_trainer_wasm';
+import { LanguagesList } from 'writing-trainer-wasm/writing_trainer_wasm';
 
 const panelServices = { getCurrentUrl, storage };
 
@@ -41,10 +41,10 @@ const Content = ({ onContentEnabledResult }: ContentProps) => {
   const [isExtensionEnabled, setIsExtensionEnabled] = useState<boolean>(false);
   const [shouldShowPanel, showPanel] = useState<boolean>(false);
   const [usedText, setUsedText] = useState<string>('');
-  const languagesUI = useRef<LanguagesUI>();
+  const languagesList = useRef<LanguagesList>();
 
   if (typeof window !== 'undefined') {
-    languagesUI.current ??= new LanguagesUI();
+    languagesList.current ??= new LanguagesList();
   }
 
   const updateLanguageWithStorage = async () => {
@@ -119,13 +119,13 @@ const Content = ({ onContentEnabledResult }: ContentProps) => {
     showPanel(false);
   };
 
-  if (!languagesUI.current) return null;
+  if (!languagesList.current) return null;
 
   return (
     <面板基本 覆蓋點擊={hidePanel}>
       <Panel
         getPath={() => ''}
-        languagesUI={languagesUI.current}
+        languagesList={languagesList.current}
         onHideRequest={hidePanel}
         replacePath={() => {}}
         services={panelServices}

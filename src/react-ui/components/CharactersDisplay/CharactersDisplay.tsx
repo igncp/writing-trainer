@@ -5,7 +5,7 @@ import GoogleTranslateButton from '#/react-ui/languages/common/Links/GoogleTrans
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaChevronDown, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { CharObjUI } from 'writing-trainer-wasm/writing_trainer_wasm';
+import { CharObj } from 'writing-trainer-wasm/writing_trainer_wasm';
 
 const CHAR_WIDTH = 25;
 const MAX_HEIGHT = 160;
@@ -14,13 +14,13 @@ type Props = {
   重點字元索引?: number;
   應該有不同的寬度?: boolean;
   顯示目前字元的發音?: boolean;
-  charsObjsList: CharObjUI[];
-  colorOfChar?: (isCurrentChar: boolean, c: CharObjUI) => string | undefined;
+  charsObjsList: CharObj[];
+  colorOfChar?: (isCurrentChar: boolean, c: CharObj) => string | undefined;
   fontSize?: number;
   hasCantodict?: boolean;
   onSymbolClick?: (o: {
-    charObj: CharObjUI;
-    charsObjsList: CharObjUI[];
+    charObj: CharObj;
+    charsObjsList: CharObj[];
     index: number;
   }) => void;
   shouldHidePronunciation: boolean;
