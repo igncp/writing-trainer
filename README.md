@@ -6,10 +6,11 @@
 
 要求:
 
-- Node.js LTS
-- Nix
+- `nix` + `direnv`
 
 ```
+direnv allow
 bun i
-bun run build
+bun run dev:fe
+bun run dev:be
 ```

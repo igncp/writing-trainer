@@ -12,10 +12,9 @@ import { T_LangOpts, T_LinksBlock } from '../../types';
 const LinksBlock: T_LinksBlock = ({
   文字,
   focusWritingArea,
-  fragments,
   langOptsObj,
-  languagesList,
-  updateFragments,
+  language,
+  rerender,
   updateLangOpts,
 }) => {
   const dictState = useDictState();
@@ -30,13 +29,10 @@ const LinksBlock: T_LinksBlock = ({
           langOpts={langOptsObj.langOpts as T_LangOpts}
           updateLangOpts={updateLangOpts}
         />
-        <ChangeCharType
-          fragments={fragments}
-          updateFragments={updateFragments}
-        />
+        <ChangeCharType language={language} rerender={rerender} />
         <TranslateButton language="zh-HK" text={文字} />
       </div>
-      <DictContent {...dictState} languagesList={languagesList} text={文字} />
+      <DictContent {...dictState} language={language} text={文字} />
     </>
   );
 };

@@ -25,7 +25,7 @@ bun run type-coverage -- \
 
 cargo clippy --release --all-targets --all-features -- -D warnings
 
-cargo test
+cargo tarpaulin --out Html
 
 rm -rf .next out
 NODE_ENV=production \

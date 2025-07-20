@@ -9,6 +9,7 @@ import {
   ChangeEvent,
   Fragment,
   KeyboardEvent as ReactKeyboardEvent,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -19,6 +20,7 @@ import { CgSpinnerAlt } from 'react-icons/cg';
 import { FaToolbox, FaTools } from 'react-icons/fa';
 import {
   get_mobile_keyboard,
+  Language,
   LanguagesList,
   set_language_dictionary,
   TextRecordObj,
@@ -30,8 +32,6 @@ import ChooseLanguage from '../../components/ChooseLanguage/ChooseLanguage';
 import TextArea from '../../components/TextArea/TextArea';
 import {
   gameModes,
-  PanelState,
-  T_Fragments,
   T_getCurrentCharObjFromPractice,
   T_LangOpts,
 } from '../../languages/types';
@@ -63,12 +63,12 @@ const defaultFontSize = 30;
 type Props = {
   getPath: () => string;
   initialFragmentIndex?: number;
+  initialText?: string;
   languagesList: LanguagesList;
   onChangeTheme?: () => void;
   onHideRequest?: () => void;
   replacePath: (path: string) => void;
   services: T_Services;
-  text: string;
   UI?: {
     noHideButton?: boolean;
   };
@@ -84,32 +84,58 @@ const languageIdToName: Record<string, string> = {
 const Panel = ({
   getPath,
   initialFragmentIndex,
+  initialText,
   languagesList,
   onChangeTheme,
   onHideRequest,
   replacePath,
   services,
-  text,
   UI,
 }: Props) => {
   const { t } = useTranslation();
   const path = getPath();
-  const [, rerender] = useState(0);
 
-  const currentLanguage = languagesList.get_language_id() as string;
+  const currentLanguageId = languagesList.get_language_id() as string;
+  const languageRef = useRef<Language>();
+
+  const hasLoadedSourceText = useRef<boolean>(false);
+
+  const setCurrentLanguage = useCallback(
+    (text: string) => {
+      if (!languageRef.current) {
+        const newLanguage = languagesList.get_current_language_clone();
+
+        newLanguage?.set_source_text(text);
+        languageRef.current = newLanguage;
+      }
+    },
+    [languagesList],
+  );
+
+  setCurrentLanguage(initialText ?? '');
+
+  useEffect(() => {
+    const currentText = languageRef.current?.get_source_text() ?? '';
+
+    currentLanguageId;
+
+    languageRef.current = undefined;
+    setCurrentLanguage(currentText);
+  }, [setCurrentLanguage, currentLanguageId]);
+
+  const language = languageRef.current as Language;
 
   const {
     state: { isLoggedIn },
   } = useMainContext();
 
-  const [, 觸發重新渲染] = useState<number>(0);
-
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const [fragments, setFragments] = useState<T_Fragments>({
-    index: 0,
-    list: [text],
-  });
+  const [, rerenderKey] = useState(0);
+
+  const rerender = useCallback(() => {
+    rerenderKey((i) => i + 1);
+  }, []);
 
   const showingAnkis = (Object.entries(ankiModeToPath).find(
     ([, value]) => value === path,
@@ -125,22 +151,13 @@ const Panel = ({
     null | TextRecordObj['id']
   >(null);
 
-  const [panel, setPanel] = useState<PanelState>({
-    currentDisplayCharIdx: 0,
-    override: '',
-    practice: '',
-    practiceError: false,
-    pronunciation: '',
-    writing: '',
-  });
+  const [pronunciation, setPronunciation] = useState('');
 
-  const originalTextValue = panel.override || fragments.list[fragments.index];
-
-  languagesList.set_practice(panel.practice);
-  languagesList.set_original(originalTextValue);
-  languagesList.set_writing(panel.writing);
-  languagesList.set_override_text(panel.override);
-  languagesList.set_practice_has_error(panel.practiceError);
+  const writingText = language?.writing_text ?? '';
+  const originalTextValue = language?.get_text_to_practice() ?? '';
+  const sourceText = language?.get_source_text();
+  const fragmentsCount = language?.get_fragments_count();
+  const currentFragmentIndex = language?.get_current_fragment_index();
 
   const [fontSize, setFontSize] = useState<number>(defaultFontSize);
   const [isShowingPronunciation, setShowingPronunciation] = useState(false);
@@ -157,8 +174,8 @@ const Panel = ({
   const isMobile = useIsMobile();
 
   const controller = useMemo(
-    () => getController(currentLanguage),
-    [currentLanguage],
+    () => getController(currentLanguageId),
+    [currentLanguageId],
   );
 
   const [displayMobileKeyboard, setDisplayMobileKeyboard] = useState<
@@ -166,51 +183,39 @@ const Panel = ({
   >(null);
 
   const mobileKeyboard = useMemo((): string[][] | undefined => {
-    // @typescript-eslint/no-unused-expressions
-    currentLanguage;
+    currentLanguageId;
 
-    return get_mobile_keyboard(languagesList);
-  }, [currentLanguage, languagesList]);
+    if (language) {
+      return get_mobile_keyboard(language);
+    }
+  }, [currentLanguageId, language]);
 
   const langOpts = controller.getLangOpts();
 
   const { storage } = services;
 
-  const onPracticeSourceChange = (newFragments?: T_Fragments) => {
-    setPanel((s) => ({
-      ...s,
-      currentDisplayCharIdx: 0,
-      override: '',
-      practice: '',
-      practiceError: false,
-      writing: '',
-    }));
+  const onPracticeSourceChange = useCallback(
+    (newText?: string) => {
+      language.clear_practice();
 
-    if (newFragments) {
-      setFragments(newFragments);
-      storage.setValue('fragments', JSON.stringify(newFragments));
-    }
-  };
+      if (typeof newText !== 'undefined') {
+        language.set_source_text(newText);
+      }
 
-  const handleOriginalTextUpdate = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const val = e.target.value;
+      rerender();
+    },
+    [language, rerender],
+  );
 
-    const list = val
-      .split('\n')
-      .map((s) => s.trim())
-      .filter(Boolean);
+  useEffect(() => {
+    currentFragmentIndex;
 
-    const newFragments: T_Fragments = {
-      index: 0,
-      list: list.length ? list : [''],
-    };
-
-    onPracticeSourceChange(newFragments);
-  };
+    onPracticeSourceChange();
+  }, [currentFragmentIndex, sourceText, onPracticeSourceChange]);
 
   const updateLanguage = (lang: string) => {
     languagesList.set_current_language(lang);
-    rerender((i) => i + 1);
+    rerender();
   };
 
   useEffect(() => {
@@ -218,7 +223,7 @@ const Panel = ({
   }, []);
 
   useEffect(() => {
-    if (!hasLoadedStorage) return;
+    if (!hasLoadedStorage || !language) return;
 
     setHasLoadedDictionary(false);
 
@@ -227,12 +232,12 @@ const Panel = ({
       .then((dictionary) => {
         if (!dictionary) return;
 
-        set_language_dictionary(languagesList, currentLanguage, dictionary);
+        set_language_dictionary(language, currentLanguageId, dictionary);
       })
       .finally(() => {
         setHasLoadedDictionary(true);
       });
-  }, [hasLoadedStorage, currentLanguage, languagesList, controller]);
+  }, [hasLoadedStorage, currentLanguageId, language, controller]);
 
   useEffect(() => {
     // eslint-disable-next-line
@@ -274,7 +279,7 @@ const Panel = ({
 
     if (
       storageSelectedLanguage &&
-      storageSelectedLanguage !== currentLanguage
+      storageSelectedLanguage !== currentLanguageId
     ) {
       updateLanguage(storageSelectedLanguage);
     }
@@ -282,44 +287,17 @@ const Panel = ({
     setHasLoadedStorage(true);
   };
 
-  const trimByChunks = (chunks: number) => {
-    setPanel({
-      ...panel,
-      practice: '',
-      practiceError: false,
-      writing: '',
-    });
-
-    const newFragments: T_Fragments = {
-      index: 0,
-      list: fragments.list.reduce<string[]>((acc, fragmentText, idx) => {
-        if (idx % chunks === 0) {
-          acc.push(fragmentText);
-
-          return acc;
-        }
-
-        const lastFragment = acc[acc.length - 1] || '';
-        const lastChar = lastFragment[lastFragment.length - 1] || '';
-
-        const separator =
-          !!lastFragment &&
-          // @TODO: Move this to wasm
-          !['!', '！', '?', '？', '.', '。', '》', '」'].includes(lastChar)
-            ? '. '
-            : ' ';
-
-        const newFragment = `${lastFragment}${separator}${fragmentText}`;
-
-        acc[acc.length - 1] = newFragment;
-
-        return acc;
-      }, []),
-    };
-
-    setFragments(newFragments);
-    storage.setValue('fragments', JSON.stringify(newFragments));
+  const prepareForWriting = useCallback(() => {
+    setShowingEdition(false);
+    setShowingPronunciation(false);
+    setHasExtraControls(false);
     writingArea.current?.focus();
+  }, []);
+
+  const trimByChunks = (chunks: number) => {
+    language?.trim_by_chunks(chunks);
+
+    prepareForWriting();
   };
 
   useEffect(() => {
@@ -328,26 +306,28 @@ const Panel = ({
   }, []);
 
   useEffect(() => {
-    // eslint-disable-next-line
-    (async () => {
-      const lastFragments = await storage.getValue('fragments');
-
-      if (lastFragments) {
-        const parsedFragments = JSON.parse(lastFragments);
-
-        setFragments({
-          ...parsedFragments,
-          ...(initialFragmentIndex !== undefined && {
-            index: initialFragmentIndex,
-          }),
-        });
-      }
-    })();
-  }, [initialFragmentIndex, storage]);
+    if (sourceText && hasLoadedSourceText.current) {
+      storage.setValue('sourceText', sourceText);
+    }
+  }, [sourceText, storage]);
 
   useEffect(() => {
-    languagesList.set_pronunciation_input(panel.pronunciation || undefined);
-  }, [panel.pronunciation, languagesList]);
+    void (async () => {
+      if (!language) return;
+
+      const lastSourceText = await storage.getValue('sourceText');
+
+      if (lastSourceText) {
+        language.set_source_text(lastSourceText);
+      }
+
+      hasLoadedSourceText.current = true;
+    })();
+  }, [initialFragmentIndex, storage, language]);
+
+  useEffect(() => {
+    language?.set_pronunciation_input(pronunciation || undefined);
+  }, [pronunciation, language]);
 
   const langOptsObj = {
     langOpts: {
@@ -355,23 +335,26 @@ const Panel = ({
     },
   };
 
-  const charsObjsList = languagesList.convert_to_char_objs_original();
+  const charsObjsList = language?.convert_to_char_objs_original();
+  const practiceText = language?.practice_text;
 
-  const getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice = (
-    practiceText = panel.practice,
-  ) => languagesList.get_current_char_obj(practiceText) ?? null;
+  const getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice =
+    useCallback(
+      (p = practiceText) => language?.get_current_char_obj(p) ?? null,
+      [language, practiceText],
+    );
 
-  useEffect(() => {
+  const currentDisplayCharIdx = useMemo(() => {
     const practiceCharObj = getCurrentCharObjFromPractice();
 
+    pronunciation;
+
     if (practiceCharObj?.ch && practiceCharObj.ch.pronunciation !== '?') {
-      setPanel((s) => ({
-        ...s,
-        currentDisplayCharIdx: practiceCharObj.index,
-      }));
+      return practiceCharObj.index;
     }
-    // eslint-disable-next-line
-  }, [panel.practice, panel.pronunciation]);
+
+    return null;
+  }, [getCurrentCharObjFromPractice, pronunciation]);
 
   useEffect(() => {
     if (showingAnkis) return;
@@ -380,14 +363,7 @@ const Panel = ({
       const value = e.key;
 
       if (value === SHORTCUT_NEXT_FRAGMENT) {
-        e.preventDefault();
-
-        const newFragments: T_Fragments = {
-          ...fragments,
-          index: (fragments.index + 1) % fragments.list.length,
-        };
-
-        onPracticeSourceChange(newFragments);
+        language.move_fragments(1);
       }
     };
 
@@ -397,24 +373,15 @@ const Panel = ({
       document.removeEventListener('keydown', handleShortcuts);
     };
     // eslint-disable-next-line
-  }, [isShowingEdition, isShowingPronunciation, fragments, showingAnkis]);
+  }, [isShowingEdition, isShowingPronunciation, showingAnkis]);
 
   const clearValues = () => {
-    setPanel((s) => ({
-      ...s,
-      practice: '',
-      pronunciation: '',
-      writing: '',
-    }));
-
-    const newFragments: T_Fragments = { index: 0, list: [''] };
-
     controller.handleClearEvent?.(controller);
-    storage.setValue('fragments', JSON.stringify(newFragments));
+    storage.setValue('sourceText', '');
     setShowingPronunciation(true);
     setShowingEdition(true);
     setCurrentRecord(null);
-    onPracticeSourceChange(newFragments);
+    onPracticeSourceChange('');
   };
 
   const handleLanguageChange = (newSelectedLanguage: string) => {
@@ -424,21 +391,22 @@ const Panel = ({
 
   const handleKeyDown = (事件: ReactKeyboardEvent<HTMLTextAreaElement>) => {
     // 允許瀏覽器快捷鍵
+    // @TODO: Move to wasm
     if (事件.ctrlKey || 事件.metaKey) return;
 
     controller.handleKeyDown({
       按鍵事件: 事件,
       langOpts,
-      languagesList,
-      setPanel,
+      language,
     });
 
     controller.saveLangOptss(langOpts);
+    rerender();
   };
 
   const updateLangOpts = (選項: T_LangOpts) => {
     controller.saveLangOptss(選項);
-    觸發重新渲染(Math.random());
+    rerender();
   };
 
   const LinksBlock = controller.getLinksBlock();
@@ -446,10 +414,6 @@ const Panel = ({
 
   const saveRecord = () => {
     replacePath(Paths.records.save);
-  };
-
-  const listRecords = () => {
-    replacePath(Paths.records.list);
   };
 
   if (!hasLoadedStorage || !hasLoadedDictionary) {
@@ -466,7 +430,7 @@ const Panel = ({
     return (
       <AnkisSection
         charsObjsList={charsObjsList ?? []}
-        language={currentLanguage}
+        language={currentLanguageId}
         mode={showingAnkis}
         setMode={(mode) => {
           replacePath(mode ? ankiModeToPath[mode] : '');
@@ -479,14 +443,12 @@ const Panel = ({
     return (
       <RecordsSection
         initScreen={showingRecordsInitScreen}
-        language={currentLanguage}
-        onPronunciationLoad={(p) =>
-          setPanel((s) => ({ ...s, pronunciation: p }))
-        }
+        language={currentLanguageId}
+        onPronunciationLoad={(p) => setPronunciation(p || '')}
         onRecordLoad={(record: TextRecordObj) => {
           clearValues();
 
-          if (record.language !== currentLanguage) {
+          if (record.language !== currentLanguageId) {
             handleLanguageChange(record.language);
           }
 
@@ -494,33 +456,21 @@ const Panel = ({
           setShowingEdition(false);
           setShowingPronunciation(false);
 
-          const newFragments: T_Fragments = {
-            index: 0,
-            list: record.text.split('\n'),
-          };
-
-          onPracticeSourceChange(newFragments);
+          language.set_source_text(record.text);
           setCurrentRecord(record.id);
 
-          setPanel((s) => ({
-            ...s,
-            pronunciation: record.pronunciation,
-          }));
+          setPronunciation(record.pronunciation || '');
         }}
         onRecordsClose={() => {
           replacePath('');
         }}
         onSongLoad={(lyrics) => {
-          const newFragments: T_Fragments = {
-            index: 0,
-            list: lyrics,
-          };
-
-          onPracticeSourceChange(newFragments);
+          language.set_source_text(lyrics.join('\n'));
+          rerender();
           replacePath('');
         }}
-        pronunciation={panel.pronunciation}
-        selectedLanguage={currentLanguage}
+        pronunciation={pronunciation}
+        selectedLanguage={currentLanguageId}
         services={services}
         text={originalTextValue}
       />
@@ -533,7 +483,7 @@ const Panel = ({
         onClose={() => {
           replacePath('');
         }}
-        selectedLanguage={currentLanguage}
+        selectedLanguage={currentLanguageId}
       />
     );
   }
@@ -545,7 +495,7 @@ const Panel = ({
       name: languageIdToName[lang] ?? lang,
     }));
 
-  const colorOfCurrentChar = panel.practiceError
+  const colorOfCurrentChar = language.practice_has_error
     ? controller.getToneColor?.(
         'current-error',
         { ...langOpts, useTonesColors: 'current-error' },
@@ -554,11 +504,12 @@ const Panel = ({
     : undefined;
 
   const progressStr = (() => {
-    if (!charsObjsList?.length) return `${t('progressStr', 'Progress')}: 0%`;
+    if (!charsObjsList?.length || typeof currentDisplayCharIdx !== 'number')
+      return `${t('progressStr', 'Progress')}: 0%`;
 
     return `Progress: ${Math.round(
-      (panel.currentDisplayCharIdx / charsObjsList.length) * 100,
-    )}% (${panel.currentDisplayCharIdx}/${charsObjsList.length})`;
+      (currentDisplayCharIdx / charsObjsList.length) * 100,
+    )}% (${currentDisplayCharIdx}/${charsObjsList.length})`;
   })();
 
   if (!hasLoadedStorage) return null;
@@ -579,7 +530,13 @@ const Panel = ({
           {hasExtraControls ? <FaTools /> : <FaToolbox />}
         </Button>
         {hasExtraControls && (
-          <Button onClick={listRecords}>{t('panel.recordSongs')}</Button>
+          <Button
+            onClick={() => {
+              replacePath(Paths.records.list);
+            }}
+          >
+            {t('panel.recordSongs')}
+          </Button>
         )}
         {hasExtraControls && (
           <Button
@@ -626,16 +583,16 @@ const Panel = ({
             {t('panel.addAnkis')}
           </Button>
         )}
-        {!hasExtraControls && fragments.list.length > 1 && (
+        {!hasExtraControls && fragmentsCount > 1 && (
           <Button
             onClick={() => {
-              trimByChunks(Infinity);
+              trimByChunks(10000);
             }}
           >
             {t('panel.trim', 'Trim')}
           </Button>
         )}
-        {!hasExtraControls && fragments.list.length > 50 && (
+        {!hasExtraControls && fragmentsCount > 50 && (
           <Button
             onClick={() => {
               trimByChunks(50);
@@ -670,30 +627,10 @@ const Panel = ({
                   }
 
                   void (async () => {
-                    let fileContent = await file.text();
+                    const fileContent = await file.text();
 
-                    // @TODO: Move this to wasm
-                    if (
-                      ['.srt', '.vtt'].find((ext) => file.name.endsWith(ext))
-                    ) {
-                      fileContent = fileContent
-                        .split('\n')
-                        .map((line) => line.trim())
-                        .filter(
-                          (line) =>
-                            !!line &&
-                            !line.includes('-->') &&
-                            !/^[0-9]*$/.test(line),
-                        )
-                        .join('\n');
-                    }
+                    language.set_source_text_from_subtitles(fileContent);
 
-                    const newFragments: T_Fragments = {
-                      index: 0,
-                      list: fileContent.split('\n'),
-                    };
-
-                    onPracticeSourceChange(newFragments);
                     setShowingEdition(false);
                     setShowingPronunciation(false);
                   })();
@@ -717,12 +654,9 @@ const Panel = ({
           <>
             <Button
               onClick={async () => {
-                const newText = await getMostFailures(currentLanguage, 50);
+                const newText = await getMostFailures(currentLanguageId, 50);
 
-                onPracticeSourceChange({
-                  index: 0,
-                  list: [newText],
-                });
+                onPracticeSourceChange(newText);
               }}
             >
               {t('panel.mostFailures', 'Most Failures Round')}
@@ -739,7 +673,7 @@ const Panel = ({
             <ChooseLanguage
               languages={availableLanguages}
               onOptionsChange={handleLanguageChange}
-              selectedLanguage={currentLanguage}
+              selectedLanguage={currentLanguageId}
             />
             <Button onClick={saveRecord}>
               {currentRecord === null
@@ -752,33 +686,22 @@ const Panel = ({
             <span className="flex items-center">{progressStr}</span>
           </>
         )}
-        {fragments.list.length > 1 && (
+        {fragmentsCount > 1 && (
           <Button
             onClick={() => {
-              const newFragments: T_Fragments = {
-                ...fragments,
-                index: (fragments.index + 1) % fragments.list.length,
-              };
-
-              onPracticeSourceChange(newFragments);
+              language.move_fragments(1);
+              rerender();
             }}
           >
-            {t('panel.currentFragment')}: {fragments.index + 1} /{' '}
-            {fragments.list.length}
+            {t('panel.currentFragment')}: {currentFragmentIndex + 1} /{' '}
+            {fragmentsCount}
           </Button>
         )}
-        {fragments.list.length > 5 && (
+        {fragmentsCount > 5 && (
           <Button
             onClick={() => {
-              const newFragments = {
-                ...fragments,
-                index:
-                  fragments.index <= 0
-                    ? fragments.list.length - 1
-                    : fragments.index - 1,
-              };
-
-              onPracticeSourceChange(newFragments);
+              language.move_fragments(-1);
+              rerender();
             }}
           >
             {t('panel.previousFragment')}
@@ -805,42 +728,24 @@ const Panel = ({
           >
             <TextArea
               onBlur={() => {
-                const { onBlur } = controller;
-
-                if (onBlur) {
-                  const { newFragmentsList } = onBlur({
-                    fragmentsList: fragments.list,
-                    langOpts,
-                  });
-
-                  if (newFragmentsList) {
-                    const newFragments = {
-                      ...fragments,
-                      list: newFragmentsList,
-                    };
-
-                    onPracticeSourceChange(newFragments);
-                  }
-                }
-
-                setShowingEdition(false);
-                setShowingPronunciation(false);
-                writingArea.current?.focus();
+                prepareForWriting();
               }}
-              onChange={handleOriginalTextUpdate}
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
+                onPracticeSourceChange(e.target.value);
+              }}
               placeholder={t('panel.sourceText')}
               rows={3}
-              value={fragments.list.join('\n')}
+              value={sourceText}
             />
             {hasExtraControls && (
               <>
                 <TextArea
                   onChange={createInputSetterFn((v: string) =>
-                    setPanel((s) => ({ ...s, pronunciation: v })),
+                    setPronunciation(v),
                   )}
                   placeholder={t('panel.pronunciation')}
                   rows={2}
-                  value={panel.pronunciation}
+                  value={pronunciation}
                 />
                 {OptionsBlock && (
                   <OptionsBlock
@@ -874,10 +779,10 @@ const Panel = ({
         <div>
           <div style={{ marginBottom: 10, marginTop: 5 }}>
             <CharactersDisplay
-              重點字元索引={panel.currentDisplayCharIdx}
+              重點字元索引={currentDisplayCharIdx}
               應該有不同的寬度={!controller.shouldAllCharsHaveSameWidth}
               顯示目前字元的發音={
-                panel.practiceError &&
+                language.practice_has_error &&
                 [gameModes?.reductive, undefined].includes(
                   langOpts.gameModeValue as string | undefined,
                 )
@@ -887,7 +792,7 @@ const Panel = ({
                 controller.getToneColor?.(
                   (() => {
                     if (isCurrentChar) {
-                      if (panel.practiceError) {
+                      if (language.practice_has_error) {
                         return 'current-error';
                       }
 
@@ -901,15 +806,11 @@ const Panel = ({
                 )
               }
               fontSize={fontSize}
-              hasCantodict={['cantonese', 'mandarin'].includes(currentLanguage)}
+              hasCantodict={['cantonese', 'mandarin'].includes(
+                currentLanguageId,
+              )}
               onSymbolClick={() => {
-                setShowingEdition(false);
-                setHasExtraControls(false);
-                setShowingPronunciation(false);
-
-                if (!displayMobileKeyboard) {
-                  writingArea.current?.focus();
-                }
+                prepareForWriting();
               }}
               shouldHidePronunciation={!isShowingPronunciation}
             />
@@ -919,12 +820,7 @@ const Panel = ({
             autoFocus
             onBlur={() => setWritingBorder('normal')}
             onChange={(e) => {
-              const diff = e.target.value.length - panel.writing.length;
-
-              setPanel((s) => ({
-                ...s,
-                writing: e.target.value,
-              }));
+              const diff = e.target.value.length - writingText.length;
 
               // Simulate the keydown event again to support mobile web
               if (diff === 1) {
@@ -934,26 +830,23 @@ const Panel = ({
                 } as unknown as ReactKeyboardEvent<HTMLTextAreaElement>;
 
                 handleKeyDown(mockEvent);
+
+                rerender();
               }
             }}
             onFocus={() => setWritingBorder('bold')}
             onKeyDown={handleKeyDown}
-            placeholder={panel.practice ? '' : t('panel.writingArea')}
+            placeholder={practiceText ? '' : t('panel.writingArea')}
             rows={1}
             setRef={(ref) => (writingArea.current = ref)}
             style={{
               borderWidth: writingBorder === 'bold' ? 2 : 1,
             }}
-            value={panel.writing}
+            value={writingText}
           />
           <TextArea
-            自動捲動
-            onChange={createInputSetterFn((v: string) => {
-              setPanel((s) => ({
-                ...s,
-                practice: v,
-              }));
-            })}
+            autoScroll
+            onChange={() => {}}
             onFocus={() => {
               writingArea.current?.focus();
             }}
@@ -961,7 +854,7 @@ const Panel = ({
             rows={3}
             style={{
               border: `4px solid ${
-                panel.practiceError
+                language.practice_has_error
                   ? (colorOfCurrentChar ?? 'red')
                   : 'var(--color-background, "white")'
               }`,
@@ -969,7 +862,7 @@ const Panel = ({
               lineHeight: `${fontSize + 10}px`,
               maxHeight: isMobile ? '100px' : undefined,
             }}
-            value={panel.practice}
+            value={practiceText ?? ''}
           />
           {isMobile && mobileKeyboard && (
             <div className="flex w-full flex-col justify-between gap-[24px]">
@@ -1038,10 +931,9 @@ const Panel = ({
           focusWritingArea={() => {
             writingArea.current?.focus();
           }}
-          fragments={fragments}
           langOptsObj={langOptsObj}
-          languagesList={languagesList}
-          updateFragments={setFragments}
+          language={language}
+          rerender={rerender}
           updateLangOpts={updateLangOpts}
         />
       </div>

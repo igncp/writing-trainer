@@ -53,25 +53,31 @@ pub struct CurrentCharObj {
 
 type MobileKeyboard = Option<Vec<Vec<char>>>;
 
-#[derive(Debug, Default)]
-#[cfg_attr(feature = "wasm-support", wasm_bindgen)]
-pub struct Language {
-    pub(crate) id: LanguageId,
-    pub(crate) practice_text: String,
-    pub(crate) writing_text: String,
-    pub(crate) override_text: String,
-    pub(crate) practice_has_error: bool,
+#[derive(Debug, Default, Clone)]
+struct FragmentsState {
+    index: usize,
+    list: Vec<String>,
+}
 
+#[derive(Debug, Default, Clone)]
+#[cfg_attr(feature = "wasm-support", wasm_bindgen(getter_with_clone))]
+pub struct Language {
+    pub id: LanguageId,
+    pub practice_text: String,
+    pub writing_text: String,
+    pub override_text: String,
+    pub practice_has_error: bool,
+
+    fragments: FragmentsState,
     special_characters: Option<HashSet<&'static str>>,
     dictionary: Option<Dictionary>,
     mobile_keyboard: MobileKeyboard,
     pronunciation_input: Option<Vec<(String, String)>>,
-    chars_with_mistakes: HashSet<String>,
-    original_text: String,
+    chars_with_mistakes: Vec<String>,
 }
 
 #[cfg_attr(feature = "wasm-support", wasm_bindgen(getter_with_clone))]
-#[derive(Debug, Default)]
+#[derive(Debug, Default, PartialEq)]
 pub struct KeyDownResult {
     pub last_char: String,
     pub last_sentence_length: usize,
@@ -82,36 +88,123 @@ pub struct KeyDownResult {
 
 #[cfg_attr(feature = "wasm-support", wasm_bindgen)]
 impl Language {
-    pub fn id(&self) -> LanguageId {
-        self.id.clone()
+    pub fn set_source_text(&mut self, original: &str) {
+        let list = original
+            .split("\n")
+            .filter(|s| !s.trim().is_empty())
+            .map(|s| s.to_string())
+            .collect::<Vec<String>>();
+
+        self.fragments = FragmentsState { index: 0, list };
     }
 
-    pub fn has_dictionary(&self) -> bool {
-        self.dictionary.is_some()
-    }
-
-    pub fn filter_text_to_practice(&self, text: &str) -> String {
-        text.split("")
-            .filter(|c| !c.is_empty())
-            .filter(|c| {
-                if let Some(special_chars) = &self.special_characters {
-                    !special_chars.contains(*c)
-                } else {
-                    true
-                }
-            })
-            .collect::<String>()
-    }
-
-    pub fn set_original(&mut self, original: &str) {
-        if original != self.original_text {
-            self.original_text = original.to_string();
-            self.chars_with_mistakes.clear();
+    pub fn set_fragment_index(&mut self, index: usize) {
+        if index < self.fragments.list.len() {
+            self.fragments.index = index;
         }
     }
 
+    pub fn get_source_text(&self) -> String {
+        self.fragments.list.to_vec().join("\n")
+    }
+
+    pub fn move_fragments(&mut self, num: usize) {
+        if num > 0 {
+            for _ in 0..num {
+                if self.fragments.index < self.fragments.list.len() - 1 {
+                    self.fragments.index += 1;
+                } else {
+                    self.fragments.index = 0;
+                }
+            }
+        } else {
+            let num = num as i32;
+            for _ in 0..num.abs() {
+                if self.fragments.index > 0 {
+                    self.fragments.index -= 1;
+                } else {
+                    self.fragments.index = self.fragments.list.len() - 1;
+                }
+            }
+        }
+    }
+
+    pub fn get_fragments_count(&self) -> usize {
+        self.fragments.list.len()
+    }
+
+    pub fn get_current_fragment_index(&self) -> usize {
+        self.fragments.index
+    }
+
+    pub fn trim_by_chunks(&mut self, chunk_size: usize) {
+        let mut last_fragment = String::new();
+
+        let list: Vec<String> =
+            self.fragments
+                .list
+                .iter()
+                .enumerate()
+                .fold(Vec::new(), |mut acc, (idx, fragment)| {
+                    if idx % chunk_size == 0 {
+                        acc.push(fragment.clone());
+                        last_fragment = fragment.clone();
+                    } else {
+                        let last_char = last_fragment.chars().last().unwrap_or_default();
+                        let separator = if !last_fragment.is_empty()
+                            && !['!', '！', '?', '？', '.', '。', '》', '」'].contains(&last_char)
+                        {
+                            ". "
+                        } else {
+                            " "
+                        };
+                        let new_fragment = format!("{last_fragment}{separator}{fragment}");
+                        let acc_len = acc.len();
+                        last_fragment = new_fragment.clone();
+                        acc[acc_len - 1] = new_fragment;
+                    }
+
+                    acc
+                });
+
+        self.fragments = FragmentsState { index: 0, list };
+        self.clear_practice();
+    }
+
+    pub fn clear_practice(&mut self) {
+        self.writing_text = String::new();
+        self.practice_text = String::new();
+        self.override_text = String::new();
+        self.practice_has_error = false;
+    }
+
+    pub fn set_source_text_from_subtitles(&mut self, text: &str) {
+        let list = text
+            .split("\n")
+            .map(|line| line.trim())
+            .filter(|line| {
+                !line.is_empty() && !line.contains("-->") && !line.chars().all(char::is_numeric)
+            })
+            .map(|s| s.to_string())
+            .collect::<Vec<String>>();
+
+        self.fragments = FragmentsState { index: 0, list };
+    }
+
+    pub fn get_text_to_practice(&self) -> Option<String> {
+        if !self.override_text.is_empty() {
+            return Some(self.override_text.clone());
+        }
+
+        if self.fragments.index >= self.fragments.list.len() {
+            return None;
+        }
+
+        Some(self.fragments.list[self.fragments.index].clone())
+    }
+
     pub fn convert_to_char_objs_original(&self) -> Vec<CharObj> {
-        self.convert_to_char_objs(&self.original_text)
+        self.convert_to_char_objs(&self.get_text_to_practice().unwrap_or_default())
     }
 
     pub fn convert_to_char_objs_practice(&self, practice_text: Option<String>) -> Vec<CharObj> {
@@ -329,10 +422,6 @@ impl Language {
         }
     }
 
-    pub fn set_writing(&mut self, writing_text: &str) {
-        self.writing_text = writing_text.to_string();
-    }
-
     pub fn set_dictionary(&mut self, dictionary: Dictionary) {
         self.dictionary = Some(dictionary);
     }
@@ -341,7 +430,7 @@ impl Language {
         self.mobile_keyboard.clone()
     }
 
-    pub fn handle_keydown(&mut self, key: Option<String>, lang_opts: &LangOpts) -> KeyDownResult {
+    pub fn handle_keydown(&mut self, key: Option<&str>, lang_opts: &LangOpts) -> KeyDownResult {
         if key.is_none() {
             return KeyDownResult::default();
         }
@@ -385,18 +474,18 @@ impl Language {
 
         let current_char_obj = current_char_obj.unwrap();
 
-        let resolved_key = match key.as_str() {
-            "!" => "4".to_string(),
-            "@" => "5".to_string(),
-            "#" => "6".to_string(),
-            _ => key.clone(),
+        let resolved_key = match key {
+            "!" => "4",
+            "@" => "5",
+            "#" => "6",
+            _ => key,
         };
 
         let re = Regex::new(r"[a-z0-9]").unwrap();
-        let is_valid_key = re.is_match(&resolved_key);
+        let is_valid_key = re.is_match(resolved_key);
 
         if !is_valid_key {
-            self.practice_text.push_str(&resolved_key);
+            self.practice_text.push_str(resolved_key);
             return KeyDownResult {
                 prevent_default: true,
                 ..Default::default()
@@ -414,7 +503,7 @@ impl Language {
             self.practice_has_error = false;
             self.writing_text = "".to_string();
         } else {
-            self.writing_text.push_str(&resolved_key);
+            self.writing_text.push_str(resolved_key);
         }
 
         let parse_pronunciation = |writing: &str| {
@@ -445,21 +534,21 @@ impl Language {
         } else {
             0.0
         };
-        let has_error = !correct_pronunciation_parsed.starts_with(&self.writing_text);
 
+        let has_error = !correct_pronunciation_parsed.starts_with(&self.writing_text);
         let mut save_stat = HashSet::new();
 
         if is_full_word {
             self.writing_text.clear();
-            self.practice_text.push_str(&current_char_obj.ch.word);
+            self.practice_text.push_str(&last_char);
 
             let is_reductive_game = lang_opts
                 .get("gameModeValue")
                 .is_none_or(|mode| mode == GAME_MODE_REDUCTIVE);
 
-            if !self.is_during_reduction()
-                && is_reductive_game
-                && !self.chars_with_mistakes.contains(&current_char_obj.ch.word)
+            if is_reductive_game
+                && !self.is_during_reduction()
+                && !self.chars_with_mistakes.contains(&last_char)
             {
                 save_stat.insert("success_char".to_string());
             }
@@ -470,11 +559,7 @@ impl Language {
                 }
 
                 if !self.chars_with_mistakes.is_empty() {
-                    let full_chars = self
-                        .chars_with_mistakes
-                        .iter()
-                        .cloned()
-                        .collect::<Vec<String>>();
+                    let full_chars = self.chars_with_mistakes.to_vec();
                     let mut override_text: Vec<String> = vec![];
 
                     for _ in 0..3 {
@@ -488,16 +573,19 @@ impl Language {
                     self.override_text = "".to_string();
                 }
 
+                self.chars_with_mistakes.clear();
                 self.practice_text = "".to_string();
             }
         } else if has_error {
-            if !self.is_during_reduction() && self.chars_with_mistakes.contains(&last_char) {
-                save_stat.insert("fail_char".to_string());
+            if !self.chars_with_mistakes.contains(&last_char) {
+                if !self.is_during_reduction() {
+                    save_stat.insert("fail_char".to_string());
+                }
+
+                self.chars_with_mistakes.push(last_char.clone());
             }
 
             self.practice_has_error = true;
-            self.chars_with_mistakes
-                .insert(current_char_obj.ch.word.clone());
         }
 
         KeyDownResult {

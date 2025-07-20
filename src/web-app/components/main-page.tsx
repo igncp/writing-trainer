@@ -126,13 +126,13 @@ const IndexPage = () => {
           initialFragmentIndex={
             query.fragmentIndex ? Number(query.fragmentIndex) : undefined
           }
+          initialText={usedText}
           languagesList={languagesList.current}
           onChangeTheme={() => {
             setTheme(theme === 'light' ? 'dark' : 'light');
           }}
           replacePath={replacePath}
           services={panelServices}
-          text={usedText}
           UI={PANEL_UI}
         />
         {showingHelp && (

@@ -32,8 +32,8 @@ mod test {
     fn test_english_filter_text_to_practice() {
         let english = get_english_language();
 
-        assert_eq!(english.filter_text_to_practice("foo"), "foo");
-        assert_eq!(english.filter_text_to_practice("f_o_o"), "foo");
+        assert_eq!(english.get_filtered_pronunciation("foo", None), "foo");
+        assert_eq!(english.get_filtered_pronunciation("f_o_o", None), "f o o");
     }
 
     #[test]
@@ -71,8 +71,7 @@ mod test {
     fn test_japanese_filter_text_to_practice() {
         let japanese = get_japanese_language();
 
-        assert_eq!(japanese.filter_text_to_practice("foo"), "");
-        assert_eq!(japanese.filter_text_to_practice("f_o_o"), "");
+        assert_eq!(japanese.get_filtered_pronunciation("f_o_o", None), "");
     }
 
     #[test]
@@ -114,7 +113,7 @@ mod test {
             ("は".to_string(), "ha".to_string()),
         ]);
 
-        japanese.set_original("元気は元気約束");
+        japanese.set_source_text("元気は元気約束");
         japanese.set_dictionary(dictionary);
         // This should take precedence over the dictionary
         japanese.set_pronunciation_input(Some("元気 genki1\n元気 genki2\n約束 foo".to_string()));
@@ -147,8 +146,8 @@ mod test {
         let mandarin = get_mandarin_language();
 
         assert_eq!(
-            mandarin.filter_text_to_practice(" 你好嗎?我很好!"),
-            "你好嗎我很好"
+            mandarin.get_filtered_pronunciation(" 你好嗎?我很好!", None),
+            "你好嗎 我很好"
         );
     }
 
@@ -209,8 +208,8 @@ mod test {
         let cantonese = get_cantonese_language();
 
         assert_eq!(
-            cantonese.filter_text_to_practice(" 你好嗎?我很好!"),
-            "你好嗎我很好"
+            cantonese.get_filtered_pronunciation(" 你好嗎?我很好!", None),
+            "你好嗎 我很好"
         );
     }
 
@@ -220,7 +219,7 @@ mod test {
         let original_text = "忘掉種過的花";
 
         cantonese.set_dictionary(get_cantonese_dictionary());
-        cantonese.set_original(original_text);
+        cantonese.set_source_text(original_text);
 
         let current_char_obj = cantonese.get_current_char_obj(Some("忘掉種".to_string()));
 
@@ -242,7 +241,7 @@ mod test {
         let original_text = "忘A掉種過的b花";
 
         cantonese.set_dictionary(get_cantonese_dictionary());
-        cantonese.set_original(original_text);
+        cantonese.set_source_text(original_text);
 
         cantonese.practice_text = "忘掉種".to_string();
         assert!(!cantonese.does_practice_match_full_text());

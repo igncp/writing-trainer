@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaSpinner } from 'react-icons/fa';
 import { RxCross2 } from 'react-icons/rx';
-import { LanguagesList } from 'writing-trainer-wasm/writing_trainer_wasm';
+import { Language } from 'writing-trainer-wasm/writing_trainer_wasm';
 
 import Button, { T_ButtonProps } from '../../../components/button/button';
 
@@ -109,12 +109,12 @@ type ShuffleData = {
 
 const DictContent = ({
   dictResponse,
-  languagesList,
+  language,
   setDictResponse,
   text,
 }: {
   dictResponse: DictResponseState;
-  languagesList: LanguagesList | null;
+  language: Language | null;
   setDictResponse: (dictResponse: [DictResponse, string] | null) => void;
   text: string;
 }) => {
@@ -138,8 +138,8 @@ const DictContent = ({
   const { t } = useTranslation();
 
   const getPronunciation = useCallback(
-    (txt: string) => languagesList?.get_filtered_pronunciation(txt, undefined),
-    [languagesList],
+    (txt: string) => language?.get_filtered_pronunciation(txt, undefined),
+    [language],
   );
 
   useEffect(() => {
@@ -680,6 +680,9 @@ const DictContent = ({
 
                             onPronunciationClicked(index);
                           }
+                        } else if (e.key === 'Tab') {
+                          e.stopPropagation();
+                          e.preventDefault();
                         } else if (e.key === 'Escape') {
                           e.stopPropagation();
                           e.preventDefault();
@@ -763,6 +766,9 @@ const DictContent = ({
 
                           onMeaningClicked(index);
                         }
+                      } else if (e.key === 'Tab') {
+                        e.stopPropagation();
+                        e.preventDefault();
                       } else if (e.key === 'Escape') {
                         e.stopPropagation();
                         e.preventDefault();

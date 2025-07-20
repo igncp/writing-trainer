@@ -11,7 +11,7 @@ const CHAR_WIDTH = 25;
 const MAX_HEIGHT = 160;
 
 type Props = {
-  重點字元索引?: number;
+  重點字元索引?: null | number;
   應該有不同的寬度?: boolean;
   顯示目前字元的發音?: boolean;
   charsObjsList: CharObj[];

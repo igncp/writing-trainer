@@ -13,3 +13,4 @@ src/rust_packages/backend/dicts
 *.vtt
 src/rust_bindings
 src/rust_packages/core/bindings
+tarpaulin-report.html

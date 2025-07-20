@@ -1,6 +1,6 @@
 use crate::engine::{
     special_chars::{get_common_special_chars, get_latin_special_chars},
-    CharObj, CurrentCharObj, KeyDownResult, LangOpts, Language, LanguageId, DEFAULT_PRONUNCIATION,
+    Language, LanguageId, DEFAULT_PRONUNCIATION,
 };
 #[cfg(feature = "wasm-support")]
 use wasm_bindgen::prelude::wasm_bindgen;
@@ -27,39 +27,6 @@ impl LanguagesList {
         Self { languages, current }
     }
 
-    pub fn get_filtered_pronunciation(&mut self, text: &str, separator: Option<String>) -> String {
-        if let Some(language) = self.get_current_language() {
-            language.get_filtered_pronunciation(text, separator)
-        } else {
-            String::new()
-        }
-    }
-
-    pub fn get_current_char_obj(
-        &mut self,
-        practice_text: Option<String>,
-    ) -> Option<CurrentCharObj> {
-        if let Some(language) = self.get_current_language() {
-            return language.get_current_char_obj(practice_text);
-        }
-
-        None
-    }
-
-    pub fn convert_to_char_objs_original(&mut self) -> Vec<CharObj> {
-        if let Some(language) = self.get_current_language() {
-            return language.convert_to_char_objs_original();
-        }
-
-        vec![]
-    }
-
-    pub fn set_pronunciation_input(&mut self, pronunciation_input: Option<String>) {
-        if let Some(language) = self.get_current_language() {
-            language.set_pronunciation_input(pronunciation_input);
-        }
-    }
-
     pub fn get_default_pronunciation() -> String {
         DEFAULT_PRONUNCIATION.to_string()
     }
@@ -80,66 +47,12 @@ impl LanguagesList {
         }
     }
 
-    pub fn set_practice(&mut self, practice_text: &str) {
-        if let Some(language) = self.get_current_language() {
-            language.practice_text = practice_text.to_string();
-        }
-    }
-
-    pub fn get_practice(&mut self) -> Option<String> {
-        if let Some(language) = self.get_current_language() {
-            return Some(language.practice_text.clone());
+    pub fn get_current_language_clone(&mut self) -> Option<Language> {
+        if self.current.is_none() {
+            return self.languages.first().cloned();
         }
 
-        None
-    }
-
-    pub fn set_original(&mut self, original_text: &str) {
-        if let Some(language) = self.get_current_language() {
-            language.set_original(original_text);
-        }
-    }
-
-    pub fn set_writing(&mut self, writing_text: &str) {
-        if let Some(language) = self.get_current_language() {
-            language.set_writing(writing_text);
-        }
-    }
-
-    pub fn set_practice_has_error(&mut self, has_error: bool) {
-        if let Some(language) = self.get_current_language() {
-            language.practice_has_error = has_error;
-        }
-    }
-
-    pub fn set_override_text(&mut self, text: &str) {
-        if let Some(language) = self.get_current_language() {
-            language.override_text = text.to_string();
-        }
-    }
-
-    pub fn get_practice_has_error(&mut self) -> bool {
-        if let Some(language) = self.get_current_language() {
-            return language.practice_has_error;
-        }
-
-        false
-    }
-
-    pub fn get_override_text(&mut self) -> Option<String> {
-        if let Some(language) = self.get_current_language() {
-            return Some(language.override_text.clone());
-        }
-
-        None
-    }
-
-    pub fn get_writing(&mut self) -> Option<String> {
-        if let Some(language) = self.get_current_language() {
-            return Some(language.writing_text.clone());
-        }
-
-        None
+        self.get_current_language().map(|lang| lang.clone())
     }
 }
 
@@ -156,18 +69,6 @@ impl LanguagesList {
 
     pub fn get_default_language(&self) -> Option<&Language> {
         self.languages.first()
-    }
-
-    pub fn handle_keydown(
-        &mut self,
-        key: Option<String>,
-        lang_opts: &LangOpts,
-    ) -> Option<KeyDownResult> {
-        if let Some(language) = self.get_current_language() {
-            return Some(language.handle_keydown(key, lang_opts));
-        }
-
-        None
     }
 }
 

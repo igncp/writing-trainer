@@ -1,7 +1,6 @@
 import OptionsBlock, {
   defaultUseTonesColors,
 } from '../common/CharsOptions/OptionsBlock';
-import { chineseBlurHandler } from '../common/chineseBlurHandler';
 import { commonHandleWritingKeyDown } from '../common/commonLanguageUtils';
 import { 繁體轉簡體 } from '../common/conversion';
 import { T_GetToneColor, T_LangOpts, T_LangUIController } from '../types';
@@ -131,7 +130,6 @@ const languageUIController: T_LangUIController = {
   },
   handleKeyDown: commonHandleWritingKeyDown,
   loadDictionary,
-  onBlur: chineseBlurHandler,
   saveLangOptss,
   shouldAllCharsHaveSameWidth: false,
 };

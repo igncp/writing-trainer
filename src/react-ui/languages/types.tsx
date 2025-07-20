@@ -3,13 +3,11 @@ import {
   CharObj,
   CurrentCharObj,
   GameModes,
-  LanguagesList,
+  Language,
 } from 'writing-trainer-wasm/writing_trainer_wasm';
 
 const gameModes: GameModes | null =
   typeof window !== 'undefined' ? new GameModes() : null;
-
-type T_Fragments = { index: number; list: string[] };
 
 type T_LangOpts = { [k: string]: unknown };
 
@@ -17,10 +15,9 @@ type T_LinksBlock = (選項: {
   文字: string;
   children?: ReactNode;
   focusWritingArea: () => void;
-  fragments: T_Fragments;
   langOptsObj: Record<string, unknown>;
-  languagesList: LanguagesList;
-  updateFragments: (list: T_Fragments) => void;
+  language: Language;
+  rerender: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   updateLangOpts: (...args: any[]) => void;
 }) => ReactNode;
@@ -39,30 +36,11 @@ type T_OptionsBlock = (props: {
 
 type T_getCurrentCharObjFromPractice = (t?: string) => CurrentCharObj | null;
 
-type PanelState = {
-  currentDisplayCharIdx: number;
-  override: string;
-  practice: string;
-  practiceError: boolean;
-  pronunciation: string;
-  writing: string;
-};
-
 type T_HandleKeyDown = (opts: {
   按鍵事件: KeyboardEvent<HTMLTextAreaElement>;
   langOpts: T_LangOpts;
-  languagesList: LanguagesList;
-  setPanel: (state: ((s: PanelState) => PanelState) | PanelState) => void;
+  language: Language;
 }) => void;
-
-type T_BlurHandlerOpts = {
-  fragmentsList: string[];
-  langOpts: T_LangOpts;
-};
-
-type T_BlurHandler = (opts: T_BlurHandlerOpts) => {
-  newFragmentsList: string[] | undefined;
-};
 
 export interface T_LangUIController {
   getLangOpts: () => T_LangOpts;
@@ -72,15 +50,12 @@ export interface T_LangUIController {
   handleClearEvent?: (處理程序: T_LangUIController) => void;
   handleKeyDown: T_HandleKeyDown;
   loadDictionary: () => Promise<Array<[string, string]> | undefined>;
-  onBlur?: T_BlurHandler;
   saveLangOptss: (o: T_LangOpts) => void;
   shouldAllCharsHaveSameWidth: boolean;
 }
 
 export {
   gameModes,
-  type PanelState,
-  type T_Fragments,
   type T_getCurrentCharObjFromPractice,
   type T_GetToneColor,
   type T_LangOpts,

@@ -2,14 +2,14 @@ import 獲取 from 'lodash/get';
 import { TextareaHTMLAttributes, useEffect, useRef } from 'react';
 
 type 特性 = {
-  自動捲動?: boolean;
   無遊標?: boolean;
+  autoScroll?: boolean;
   setRef?: (ref: HTMLTextAreaElement | null) => void;
 } & TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 const TextArea = ({
-  自動捲動 = false,
   無遊標,
+  autoScroll = false,
   className,
   onChange,
   setRef,
@@ -31,7 +31,7 @@ const TextArea = ({
   }
 
   useEffect(() => {
-    if (自動捲動 && ref.current) {
+    if (autoScroll && ref.current) {
       ref.current.scrollTop = ref.current.scrollHeight;
     }
   });
