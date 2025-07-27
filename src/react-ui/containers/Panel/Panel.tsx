@@ -338,10 +338,18 @@ const Panel = ({
   const charsObjsList = language?.convert_to_char_objs_original();
   const practiceText = language?.practice_text;
 
+  const keysCombination = [practiceText, sourceText, hasLoadedDictionary].join(
+    '_',
+  );
+
   const getCurrentCharObjFromPractice: T_getCurrentCharObjFromPractice =
     useCallback(
-      (p = practiceText) => language?.get_current_char_obj(p) ?? null,
-      [language, practiceText],
+      (p = practiceText) => {
+        keysCombination;
+
+        return language?.get_current_char_obj(p) ?? null;
+      },
+      [language, keysCombination, practiceText],
     );
 
   const currentDisplayCharIdx = useMemo(() => {

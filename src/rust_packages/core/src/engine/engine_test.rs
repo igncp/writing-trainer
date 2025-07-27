@@ -1,7 +1,8 @@
 #[cfg(test)]
 mod test {
     use crate::engine::{
-        special_chars::get_common_special_chars, KeyDownResult, Language, LanguageId,
+        special_chars::get_common_special_chars, CharObj, CurrentCharObj, KeyDownResult, Language,
+        LanguageId,
     };
     use std::collections::HashMap;
 
@@ -14,7 +15,7 @@ mod test {
 
     #[test]
     fn test_handle_keydown() {
-        let mut engine = Language::new("text-lang".to_string(), None, None);
+        let mut engine = Language::new("test-lang".to_string(), None, None);
         let lang_opts = HashMap::new();
 
         assert_eq!(
@@ -25,7 +26,7 @@ mod test {
 
     #[test]
     fn test_trim_by_chunks() {
-        let mut engine = Language::new("text-lang".to_string(), None, None);
+        let mut engine = Language::new("test-lang".to_string(), None, None);
         engine.set_source_text("This is a\ntest string that needs\nto be trimmed by\nchunks.");
         let chunk_size = 10;
 
@@ -38,9 +39,39 @@ mod test {
     }
 
     #[test]
+    fn test_correct_current_char() {
+        let mut engine = Language::new(
+            "test-lang".to_string(),
+            Some(get_common_special_chars()),
+            None,
+        );
+
+        engine.set_dictionary(
+            vec![("深".to_string(), "foo".to_string())]
+                .into_iter()
+                .collect(),
+        );
+
+        engine.set_source_text("【深圳");
+
+        let current_char = engine.get_current_char_obj(None);
+
+        assert_eq!(
+            current_char,
+            Some(CurrentCharObj {
+                index: 1,
+                ch: CharObj {
+                    pronunciation: "foo".to_string(),
+                    word: "深".to_string()
+                }
+            })
+        );
+    }
+
+    #[test]
     fn test_reductive_mistakes_order() {
         let mut engine = Language::new(
-            "text-lang".to_string(),
+            "test-lang".to_string(),
             Some(get_common_special_chars()),
             None,
         );
